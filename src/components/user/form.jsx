@@ -9,7 +9,7 @@ export default function UserForm({ onSubmit, mode }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (mode === "Identification") {
+    if (mode === "Connexion") {
       await onSubmit({ identifier, password });
     } else {
       await onSubmit({ username, email, password });
@@ -18,7 +18,7 @@ export default function UserForm({ onSubmit, mode }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      {mode === "Identification" ? (
+      {mode === "Connexion" ? (
         <>
           <label htmlFor="identifier">Username ou Email</label>
           <input
@@ -60,5 +60,5 @@ export default function UserForm({ onSubmit, mode }) {
 
 UserForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  mode: PropTypes.oneOf(["Identification", "Enregistrement"]).isRequired,
+  mode: PropTypes.oneOf(["Connexion", "Enregistrement"]).isRequired,
 };

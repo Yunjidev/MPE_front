@@ -6,5 +6,5 @@ export default function SignIn() {
     await authSignInUp("signin", { identifier, password });
   };
 
-  return <UserForm onSubmit={handleSubmit} mode={"Identification"} />;
+  return <UserForm onSubmit={handleSubmit} mode={"Connexion"} />;
 }
