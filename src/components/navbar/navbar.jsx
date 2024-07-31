@@ -30,7 +30,7 @@ const Navbar = () => {
     <>
       {/* Navbar */}
       <div className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full max-w-8xl z-50 mt-4">
-        <div className="navbar bg-base-100 dark:text-white w-full mx-4 md:mx-16 rounded-xl shadow-lg">
+        <div className="navbar bg-base-100 dark:text-white font-semibold w-full mx-4 md:mx-16 rounded-xl shadow-lg">
           <div className="flex-1 flex justify-between items-center">
             <Link to="/" className="btn btn-ghost text-xl">MPE</Link>
             <div className="flex justify-center gap-4">
