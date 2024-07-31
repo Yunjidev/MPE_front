@@ -6,5 +6,5 @@ export default function SignUp() {
     await authSignInUp("signup", { username, email, password });
   };
 
-  return <UserForm onSubmit={handleSubmit} mode={"Enregistrement"} />;
+  return <UserForm onSubmit={handleSubmit} mode={"Inscription"} />;
 }
