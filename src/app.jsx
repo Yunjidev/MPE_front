@@ -5,6 +5,8 @@ import Footer from "./components/footer/footer";
 import Home from "./pages/home/home";
 import Signup from "./components/user/signup";
 import Signin from "./components/user/signin";
+import Team from "./pages/team/team"
+import TeamMember from "./components/team/teammembers";
 
 function MainLayout({ children }) {
   return (
@@ -41,6 +43,14 @@ function App() {
           element={
             <MainLayout>
               <Signin />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/team"
+          element={
+            <MainLayout>
+              <Team />
             </MainLayout>
           }
         />
