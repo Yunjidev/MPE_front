@@ -3,6 +3,7 @@ export default function Home() {
     <div>
       <h1>Home</h1>
       <p>Bienvenue sur la page d&apos;acceuil</p>
+      <p>ah que coucou</p>
     </div>
   );
 }

@@ -7,11 +7,13 @@ import Signup from "./components/user/signup";
 import Signin from "./components/user/signin";
 import Team from "./pages/team/team"
 import TeamMember from "./components/team/teammembers";
+import SocialLinks from "./components/SocialLinks/sociallinks";
 
 function MainLayout({ children }) {
   return (
     <>
       <NavBar />
+      <SocialLinks />
       <main>{children}</main>
       <Footer />
     </>
