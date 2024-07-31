@@ -2,7 +2,9 @@ import PropTypes from "prop-types";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/navbar/navbar";
 import Footer from "./components/footer/footer";
-import Home from "./pages/home/home";
+import UserChoiceModal from "./components/home/UserChoiceModal";
+import HomeClient from "./pages/home/HomeClient";
+import HomeEnterprise from "./pages/home/HomeEntreprise";
 import Signup from "./components/user/signup";
 import Signin from "./components/user/signin";
 import SocialLinks from "./components/SocialLinks/sociallinks";
@@ -25,14 +27,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <MainLayout>
-              <Home />
-            </MainLayout>
-          }
-        />
+      <Route path="/" element={<UserChoiceModal />} />
+        <Route path="/home-client" element={<HomeClient />} />
+        <Route path="/home-enterprise" element={<HomeEnterprise />} />
         <Route
           path="/signup"
           element={
