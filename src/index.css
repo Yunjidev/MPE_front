@@ -3,10 +3,14 @@
 @import 'tailwindcss/utilities';
 
 body {
-  background-color: #cfd7ff;
+  @apply bg-[#232323] text-white;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+.dark body {
+  @apply bg-white text-black;
 }
 
 main {
