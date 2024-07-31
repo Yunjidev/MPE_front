@@ -6,10 +6,14 @@ import Home from "./pages/home/home";
 import Signup from "./components/user/signup";
 import Signin from "./components/user/signin";
 import SocialLinks from "./components/SocialLinks/sociallinks";
+import Pricing from "./components/pricing/pricing";
+
+
 function MainLayout({ children }) {
   return (
     <>
       <NavBar />
+      <Pricing />
       <SocialLinks />
       <main>{children}</main>
       <Footer />
