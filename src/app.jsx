@@ -9,49 +9,29 @@ import HomeEnterprise from "./pages/home/HomeEntreprise";
 import Signup from "./components/user/signup";
 import Signin from "./components/user/signin";
 import SocialLinks from "./components/SocialLinks/sociallinks";
-
-
-function MainLayout({ children }) {
-  return (
-    <>
-      <NavBar />
-      <SocialLinks />
-      <main>{children}</main>
-      <Footer />
-    </>
-  );
-}
+import { UserProvider } from './context/UserContext'; // Importer UserProvider
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-      <Route path="/" element={<UserChoiceModal />} />
-      <Route path="/home" element={<Home />} />
-        <Route path="/home-client" element={<HomeClient />} />
-        <Route path="/home-enterprise" element={<HomeEnterprise />} />
-        <Route
-          path="/signup"
-          element={
-            <MainLayout>
-              <Signup />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/signin"
-          element={
-            <MainLayout>
-              <Signin />
-            </MainLayout>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <UserProvider> {/* Envelopper l'application avec UserProvider */}
+      <BrowserRouter>
+        <NavBar />
+        <SocialLinks />
+        <Routes>
+          <Route path="/" element={<UserChoiceModal />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/home-client" element={<HomeClient />} />
+          <Route path="/home-enterprise" element={<HomeEnterprise />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/signin" element={<Signin />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </UserProvider>
   );
 }
 
-MainLayout.propTypes = {
+App.propTypes = {
   children: PropTypes.node.isRequired,
 };
 

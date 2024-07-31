@@ -65,11 +65,11 @@ export default function Pricing() {
         <section className='py-14'>
             <div className="max-w-screen-xl mx-auto px-4 text-white md:px-8">
                 <div className='relative max-w-xl mx-auto sm:text-center'>
-                    <h3 className='text-white text-3xl font-semibold sm:text-4xl text-center'>
+                    <h3 className='text-white dark:text-black text-3xl font-semibold sm:text-4xl text-center'>
                         Pricing for all sizes
                     </h3>
                     <div className='mt-3 max-w-xl text-center'>
-                        <p className='text-white'>
+                        <p className='text-white dark:text-black'>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam efficitur consequat nunc.
                         </p>
                     </div>
