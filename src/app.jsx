@@ -5,11 +5,12 @@ import Footer from "./components/footer/footer";
 import Home from "./pages/home/home";
 import Signup from "./components/user/signup";
 import Signin from "./components/user/signin";
-
+import SocialLinks from "./components/SocialLinks/sociallinks";
 function MainLayout({ children }) {
   return (
     <>
       <NavBar />
+      <SocialLinks />
       <main>{children}</main>
       <Footer />
     </>
