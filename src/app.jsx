@@ -18,12 +18,14 @@ const MainLayout = ({ children }) => {
   return (
 
     <>
+      
       <NavBar />
       <ParticlesDemo />
-      <main>{children}
+      <main className="container mx-auto w-5/6">{children}
       <SocialLinks />
       </main>
       <Footer />
+
       </>
   );
 };
