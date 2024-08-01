@@ -19,7 +19,7 @@ export default function UserForm({ onSubmit, mode }) {
   };
 
   return (
-    <div className="h-screen bg-black flex items-center justify-center">
+    <div className="h-screen flex items-center justify-center">
       <div className="relative border-form-1 group">
         <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
         <div className="bg-neutral-900 p-16 rounded-xl shadow-2xl w-80 relative z-10 transform transition duration-500 ease-in-out">
