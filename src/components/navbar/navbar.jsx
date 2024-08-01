@@ -3,12 +3,19 @@ import { Link } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
 import { UserContext } from '../../context/UserContext';
 import logo from '../../../public/assets/img/logo.png';
+import { getData } from '../../services/data-fetch';
+
+//Atoms
+import { useAtom } from "jotai";
+import { userAtom } from '../../store/user'
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { userType } = useContext(UserContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [user] = useAtom(userAtom);
+  const [profile, setProfile] = useState(null);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -26,6 +33,23 @@ const Navbar = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    if (!user.isLogged) {
+      setProfile(null); // Reset profile state when user logs out
+    } else if (user.isLogged) {
+      // Fetch and set profile data if user is logged in
+      const fetchProfileData = async () => {
+        try {
+          const data = await getData(`/users/${user.id}`);
+          setProfile(data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchProfileData();
+    }
+  }, [user]);
 
   return (
     <>
