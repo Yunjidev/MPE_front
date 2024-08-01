@@ -9,7 +9,6 @@ import HomeEnterprise from "./pages/home/HomeEntreprise";
 import Signup from "./components/user/signup";
 import Signin from "./components/user/signin";
 import Team from "./pages/team/team"
-import TeamMember from "./components/team/teammembers";
 import SocialLinks from "./components/SocialLinks/sociallinks";
 import { UserProvider } from './context/UserContext'; // Importer UserProvider
 
@@ -40,6 +39,7 @@ function App() {
           <Route path="/home-enterprise" element={<MainLayout><HomeEnterprise /></MainLayout>} />
           <Route path="/signup" element={<MainLayout><Signup /></MainLayout>} />
           <Route path="/signin" element={<MainLayout><Signin /></MainLayout>} />
+          <Route path="/team" element={<Team />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>
