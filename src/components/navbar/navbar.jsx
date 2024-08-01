@@ -1,39 +1,79 @@
-import { Link } from "react-router-dom";
+import logo from '../../../public/assets/img/logo.png';
 import { useState } from 'react';
-import { HomeIcon } from '@heroicons/react/24/solid'
 
 
-export default function NavBar() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+export default function NavBar({ isLoggedIn}) {
+  const [isSignUp, setIsSignUp] = useState(true);
+  
+  
 
   return (
-    <>
-      <div className="navbar bg-base-100 px-2 sm:px-4 py-2.5 rounded">
-        <div className="flex-1">
-          <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
-        </div>
-        <div className="flex-none">
-          <div className="form-control mr-3">
-            <input type="text" placeholder="Search" className="input input-bordered" />
-          </div>
-          <button className="btn btn-ghost btn-circle" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-            <HomeIcon className="h-5 w-5" aria-hidden="true" />
-          </button>
-          {isDropdownOpen && (
-            <div className="dropdown dropdown-end">
-              <ul className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                <li><a>Profile</a></li>
-                <li><a>Settings</a></li>
-                <li><a>Logout</a></li>
-              </ul>
-            </div>
+    <div className="navbar bg-base-100" data-theme="dark" style={{ width: '80%', margin: '0 auto', borderRadius: '9999px' }}> 
+  <div className="flex-none">
+    
+      <img src={logo} alt="logo" className="w-12 h-13" />
+    
+  </div>
+    <div className='flex-1'>
+  <ul className="menu menu-horizontal px-1">
+    <li><a>Accueil</a></li>
+    </ul>
+  </div>
+
+
+  <div className="flex-1">
+      <ul className="menu menu-horizontal px-1 justify-end">
+        <li><a>Recherche</a></li>
+        
+      </ul>
+    </div>
+
+  <div className="flex-1">
+    <ul className="menu menu-horizontal px-1 justify-end">
+        <li>
+          {isSignUp ? (
+            <a onClick={() => setIsSignUp(false)}>Inscription</a>
+          ) : (
+            <a onClick={() => setIsSignUp(true)}>Connexion</a>
           )}
+        </li>
+  </ul>
+
+  </div>
+  
+
+  <div className="flex-none gap-2">
+    <div className="form-control">
+      <input type="text" placeholder="Rechercher un service ..." className="input input-bordered input-sm w-full max-w-xs" />
+    </div>
+    
+    {isLoggedIn && (
+      <div tabIndex={0} role="button" className="dropdown btn btn-ghost btn-circle avatar"> 
+        <div className="w-10 rounded-full">
+          <img
+            alt="Tailwind CSS Navbar component"
+            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
         </div>
       </div>
-      {isDropdownOpen && (
-        <div className="fixed inset-0 z-10 bg-black bg-opacity-25" onClick={() => setIsDropdownOpen(false)}></div>
-      )}
-    </>
+    )}
+      
+      {/* <ul
+        tabIndex={0}
+        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+        <li>
+          <a className="justify-between">
+            Profile
+            <span className="badge">New</span>
+          </a>
+        </li>
+        <li><a>Settings</a></li>
+        <li><a>Logout</a></li>
+      </ul> */}
+    
+      
+    
+  </div>
+</div>
   );
 }
 
