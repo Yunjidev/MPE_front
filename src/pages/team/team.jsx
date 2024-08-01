@@ -8,7 +8,7 @@ const Team = () => {
   const sections = [
     {
       title: 'Nos Développeurs',
-      content: "Chez MPE, nous croyons que la technologie doit enrichir la vie de chacun. C’est avec cette vision que notre équipe de développement dévouée a créé Ma Petite Entreprise, une application conçue pour simplifier le quotidien des micro-entreprises.Des architectes de l'innovation, nos développeurs combinent expertise technique et créativité pour transformer des idées complexes en réalités conviviales.",
+      content: "Chez MPE, nous croyons que la technologie doit enrichir la vie de chacun. C’est avec cette vision que notre équipe de développement dévouée a créé Ma Petite Entreprise, une application conçue pour simplifier le quotidien des micro-entreprises. Des architectes de l'innovation, nos développeurs combinent expertise technique et créativité pour transformer des idées complexes en réalités conviviales.",
       image: 'https://images.unsplash.com/photo-1618477247222-acbdb0e159b3?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
     {
@@ -37,18 +37,28 @@ const Team = () => {
         console.error('Error fetching team members:', error);
       }
     };
-
+  
     fetchTeamMembers();
   }, []);
+  
 
   return (
     <div className="font-sans">
       <main className="p-4">
         <h1 className="text-center text-3xl font-bold mb-4">Rencontrez l'équipe de développeurs</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {teamMembers.map(member => (
-            <TeamMember key={member.email} {...member} />
-          ))}
+        {teamMembers.map(member => (
+        <TeamMember
+          key={member.email} // Assurez-vous que la clé est unique
+          firstname={member.firstname}
+          lastname={member.lastname}
+          email={member.email}
+          github={member.github}
+          linkedin={member.linkedin}
+          avatar={member.avatar}
+          description={member.description}
+        />
+      ))}
         </div>
         {sections.map((section, index) => (
           <Section

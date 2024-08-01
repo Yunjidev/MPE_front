@@ -3,19 +3,19 @@ import { FaGithub, FaLinkedin } from 'react-icons/fa';
 
 const TeamMember = ({ firstname, lastname, email, github, linkedin, avatar, description }) => {
   return (
-    <div className="text-center p-4 border rounded-lg shadow-lg">
-      <img className="inline-block w-24 h-24 rounded-full" src={avatar} alt={`${firstname} ${lastname}'s avatar`} />
+    <div className="card text-center items-center p-4 border-none rounded-lg shadow-lg">
+      <img className="inline-block w-24 h-24 rounded-full" src={avatar} alt={`${firstname} ${lastname}`} />
       <h3 className="mt-2 font-semibold text-xl">{firstname} {lastname}</h3>
       <p className="text-white-600">{email}</p>
       <p className="mt-2 text-white-800">{description}</p>
       <div className="flex justify-center space-x-4 mt-2">
         {github && (
-          <a href={github} className="text-gray-600 hover:text-gray-800">
+          <a href={github} className="text-gray-600 hover:text-gray-800" target="_blank" rel="noopener noreferrer">
             <FaGithub size={24} />
           </a>
         )}
         {linkedin && (
-          <a href={linkedin} className="text-gray-600 hover:text-gray-800">
+          <a href={linkedin} className="text-gray-600 hover:text-gray-800" target="_blank" rel="noopener noreferrer">
             <FaLinkedin size={24} />
           </a>
         )}
@@ -23,5 +23,6 @@ const TeamMember = ({ firstname, lastname, email, github, linkedin, avatar, desc
     </div>
   );
 };
+
 
 export default TeamMember;
