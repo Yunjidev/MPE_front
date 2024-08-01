@@ -8,6 +8,8 @@ import HomeClient from "./pages/home/HomeClient";
 import HomeEnterprise from "./pages/home/HomeEntreprise";
 import Signup from "./components/user/signup";
 import Signin from "./components/user/signin";
+import Team from "./pages/team/team"
+import TeamMember from "./components/team/teammembers";
 import SocialLinks from "./components/SocialLinks/sociallinks";
 import { UserProvider } from './context/UserContext'; // Importer UserProvider
 
