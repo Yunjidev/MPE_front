@@ -3,16 +3,18 @@
 @import 'tailwindcss/utilities';
 
 body {
-  @apply bg-[#232323] text-white;
+  @apply bg-white text-black;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  padding-top: 3vh;
 }
 
 .dark body {
-  @apply bg-white text-black;
+  @apply bg-[#232323] text-white;
 }
 
 main {
   flex: 1;
 }
+
