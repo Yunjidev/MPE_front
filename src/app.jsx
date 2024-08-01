@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ParticlesDemo from "./components/ParticlesDemo";
 import NavBar from "./components/navbar/navbar";
 import Footer from "./components/footer/footer";
 import UserChoiceModal from "./components/home/UserChoiceModal";
@@ -12,38 +13,42 @@ import Team from "./pages/team/team"
 import SocialLinks from "./components/SocialLinks/sociallinks";
 import { UserProvider } from './context/UserContext'; // Importer UserProvider
 
-// Définir MainLayout pour rendre la mise en page cohérente
-function MainLayout({ children }) {
+const Layout = ({ children }) => {
   return (
-    <>
+    <div className="relative min-h-screen bg-black text-white">
       <NavBar />
       <SocialLinks />
-      <main>{children}</main>
+      <ParticlesDemo />
+      <main className="relative z-10">{children}</main>
       <Footer />
-    </>
+      
+    </div>
   );
-}
-
-MainLayout.propTypes = {
-  children: PropTypes.node.isRequired,
 };
+
 
 function App() {
   return (
-    <UserProvider> {/* Envelopper l'application avec UserProvider */}
-      <BrowserRouter>
+    <UserProvider>
+    <BrowserRouter>
+      <Layout>
         <Routes>
           <Route path="/" element={<UserChoiceModal />} />
-          <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
-          <Route path="/home-client" element={<MainLayout><HomeClient /></MainLayout>} />
-          <Route path="/home-enterprise" element={<MainLayout><HomeEnterprise /></MainLayout>} />
-          <Route path="/signup" element={<MainLayout><Signup /></MainLayout>} />
-          <Route path="/signin" element={<MainLayout><Signin /></MainLayout>} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/home-client" element={<HomeClient />} />
+          <Route path="/home-enterprise" element={<HomeEnterprise />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/signin" element={<Signin />} />
           <Route path="/team" element={<Team />} />
         </Routes>
-      </BrowserRouter>
+      </Layout>
+    </BrowserRouter>
     </UserProvider>
   );
 }
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default App;
