@@ -10,11 +10,7 @@ const Contact = () => {
 
   return (
     <div className="font-sans">
-      <nav className="bg-gray-800 p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="text-white text-xl font-bold">Logo en attendant l'animation</div>
-        </div>
-      </nav>
+        <p>Le logo en attendant l'animation</p>
       <main className="p-4">
         <div className="flex justify-between">
           <div className="w-1/2">
