@@ -4,6 +4,7 @@ import Section from '../../components/team/section';
 
 const Team = () => {
   const [teamMembers, setTeamMembers] = useState([]);
+
   const sections = [
     {
       title: 'Nos Développeurs',
@@ -25,6 +26,7 @@ const Team = () => {
       content: "Ensemble, nous travaillons à vous apporter une application qui non seulement répond à vos besoins mais les anticipe. Nous sommes fiers de vous présenter MPE et nous espérons qu'elle vous apportera autant de satisfaction qu'à nous lors de sa création.",
     },
   ];
+
   useEffect(() => {
     const fetchTeamMembers = async () => {
       try {
@@ -45,7 +47,7 @@ const Team = () => {
         <h1 className="text-center text-3xl font-bold mb-4">Rencontrez l'équipe de développeurs</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {teamMembers.map(member => (
-            <TeamMember key={member.name} {...member}  />
+            <TeamMember key={member.email} {...member} />
           ))}
         </div>
         {sections.map((section, index) => (
