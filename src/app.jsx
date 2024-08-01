@@ -10,7 +10,8 @@ import HomeEnterprise from "./pages/home/HomeEntreprise";
 import Signup from "./components/user/signup";
 import Signin from "./components/user/signin";
 import Team from "./pages/team/team";
-import Contact from "./pages/contact/contact"
+import Contact from "./pages/contact/contact";
+import FAQ from "./pages/FAQ/FAQ";
 import SocialLinks from "./components/SocialLinks/sociallinks";
 import { UserProvider } from './context/UserContext'; // Importer UserProvider
 
@@ -43,6 +44,7 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/team" element={<Team />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/FAQ" element={<FAQ />} />
         </Routes>
       </MainLayout>
     </BrowserRouter>
