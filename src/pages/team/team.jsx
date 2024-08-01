@@ -1,51 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TeamMember from '../../components/team/teammembers';
 import Section from '../../components/team/section';
 
 const Team = () => {
-  const teamMembers = [
-    {
-      name: 'Thibault',
-      github: 'https://github.com/ThibaultL24',
-      linkedin: 'https://www.linkedin.com/in/thibault-lenormand-b38b96268/',
-      avatar: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80',
-    },
-    {
-      name: 'Sacha',
-      github: 'https://github.com/MacDuPain',
-      linkedin: 'https://www.linkedin.com/in/sacha-godel-862a2a300/',
-      avatar: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80',
-    },
-    {
-      name: 'Thomas',
-      github: 'https://github.com/ZealRa',
-      linkedin: 'https://www.linkedin.com/in/thomas-bobichon-824b65300/',
-      avatar: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80',
-    },
-    {
-      name: 'Alexia',
-      github: 'https://github.com/alexiacabanel',
-      linkedin: 'https://www.linkedin.com/in/alexia-cabanel/',
-      avatar: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80',
-    },
-    {
-      name:'Nico',
-      avatar: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80',
-    },
-    {
-      name:'Alexis',
-      avatar: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80',
-    },
-    {
-      name:'Winny',
-      avatar: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80',
-    },
-    {
-      name:'Florian',
-      avatar: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80',
-    }
-  ];
-
+  const [teamMembers, setTeamMembers] = useState([]);
   const sections = [
     {
       title: 'Nos Développeurs',
@@ -67,6 +25,19 @@ const Team = () => {
       content: "Ensemble, nous travaillons à vous apporter une application qui non seulement répond à vos besoins mais les anticipe. Nous sommes fiers de vous présenter MPE et nous espérons qu'elle vous apportera autant de satisfaction qu'à nous lors de sa création.",
     },
   ];
+  useEffect(() => {
+    const fetchTeamMembers = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/team');
+        const data = await response.json();
+        setTeamMembers(data);
+      } catch (error) {
+        console.error('Error fetching team members:', error);
+      }
+    };
+
+    fetchTeamMembers();
+  }, []);
 
   return (
     <div className="font-sans">
