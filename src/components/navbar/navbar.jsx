@@ -2,6 +2,7 @@ import { useState, useContext, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
 import { UserContext } from '../../context/UserContext';
+import logo from '../../../public/assets/img/logo.png';
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -30,9 +31,11 @@ const Navbar = () => {
     <>
       {/* Navbar */}
       <div className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full max-w-8xl z-50 mt-4">
-        <div className="navbar bg-base-100 dark:text-white font-semibold w-full mx-4 md:mx-16 rounded-xl shadow-lg">
+        <div className="navbar bg-base-100 dark:bg-gray-900 dark:text-white font-semibold mx-auto w-3/4 rounded-xl shadow-lg" data-theme="light">
           <div className="flex-1 flex justify-between items-center">
-            <Link to="/" className="btn btn-ghost text-xl">MPE</Link>
+            <Link to="/" >
+              <img src={logo} alt="logo" className="w-10 h-10 ml-2 transition-transform duration-300 hover:scale-110" />
+            </Link>
             <div className="flex justify-center gap-4">
               {userType === 'client' ? (
                 <>
@@ -52,8 +55,8 @@ const Navbar = () => {
               <div className="form-control">
                 <input 
                   type="text" 
-                  placeholder="Search" 
-                  className="input input-bordered w-24 md:w-auto" 
+                  placeholder="Recherche service ..." 
+                  className="input input-bordered input-sm w-full max-w-xs" 
                 />
               </div>
               <div 
@@ -80,7 +83,7 @@ const Navbar = () => {
                 {isDropdownOpen && ( 
                   <ul
                     tabIndex="0"
-                    className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-2 absolute right-0 w-52 p-2 shadow-lg"
+                    className="menu menu-sm dropdown-content bg-base-100 dark:bg-gray-900 rounded-box z-[1] mt-2 absolute right-0 w-52 p-2 shadow-lg"
                   >
                     {isAuthenticated ? (
                       <>
