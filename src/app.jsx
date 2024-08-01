@@ -13,16 +13,17 @@ import Team from "./pages/team/team"
 import SocialLinks from "./components/SocialLinks/sociallinks";
 import { UserProvider } from './context/UserContext'; // Importer UserProvider
 
-const Layout = ({ children }) => {
+const MainLayout = ({ children }) => {
   return (
-    <div className="relative min-h-screen bg-black text-white">
+
+    <>
       <NavBar />
-      <SocialLinks />
       <ParticlesDemo />
-      <main className="relative z-10">{children}</main>
+      <main>{children}
+      <SocialLinks />
+      </main>
       <Footer />
-      
-    </div>
+      </>
   );
 };
 
@@ -31,7 +32,7 @@ function App() {
   return (
     <UserProvider>
     <BrowserRouter>
-      <Layout>
+      <MainLayout>
         <Routes>
           <Route path="/" element={<UserChoiceModal />} />
           <Route path="/home" element={<Home />} />
@@ -41,13 +42,13 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/team" element={<Team />} />
         </Routes>
-      </Layout>
+      </MainLayout>
     </BrowserRouter>
     </UserProvider>
   );
 }
 
-Layout.propTypes = {
+MainLayout.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
