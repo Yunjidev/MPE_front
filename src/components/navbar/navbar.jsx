@@ -31,7 +31,7 @@ const Navbar = () => {
     <>
       {/* Navbar */}
       <div className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full max-w-8xl z-50 mt-4">
-        <div className="navbar light:bg-white dark:bg-white dark:text-white font-semibold mx-auto w-3/4 rounded-xl shadow-lg" >
+      <div className="navbar dark:bg-[#232323] dark:text-white font-semibold mx-auto w-3/4 rounded-xl shadow-lg">
           <div className="flex-1 flex justify-between items-center">
             <Link to="/" >
               <img src={logo} alt="logo" className="w-10 h-10 ml-2 transition-transform duration-300 hover:scale-110" />
@@ -83,7 +83,7 @@ const Navbar = () => {
                 {isDropdownOpen && ( 
                   <ul
                     tabIndex="0"
-                    className="menu menu-sm dropdown-content bg-base-100 dark:bg-gray-900 rounded-box z-[1] mt-2 absolute right-0 w-52 p-2 shadow-lg"
+                    className="menu menu-sm dropdown-content light:bg-white light:text-black dark:bg-dark dark:text-white rounded-box z-[1] mt-2 absolute right-0 w-52 p-2 shadow-lg"
                   >
                     {isAuthenticated ? (
                       <>

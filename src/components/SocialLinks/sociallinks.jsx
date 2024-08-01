@@ -31,7 +31,7 @@ const SocialLinks = () => {
         href="#"
         target="_blank"
         rel="noopener noreferrer"
-        className="mb-4 text-white dark:text-black dark:hover:text-blue-400 hover:text-blue-400 transition"
+        className="mb-4 dark:text-white text-black hover:text-blue-400 dark:hover:text-blue-400 transition"
         aria-label="Compte X"
         id="twitter-link"
       >
@@ -41,7 +41,7 @@ const SocialLinks = () => {
         href="#"
         target="_blank"
         rel="noopener noreferrer"
-        className="mb-4 text-white dark:text-black dark:hover:text-pink-600 hover:text-pink-600 transition"
+        className="mb-4 dark:text-white text-black hover:text-blue-400 dark:hover:text-blue-400 transition"
         aria-label="Compte Instagram"
         id="instagram-link"
       >
@@ -49,7 +49,7 @@ const SocialLinks = () => {
       </a>
       <button
         onClick={toggleDarkMode}
-        className="mb-4 text-white dark:text-black dark:hover:text-yellow-400 hover:text-yellow-400 transition"
+        className="mb-4 dark:text-white text-black hover:text-yellow-400 dark:hover:text-yellow-400 transition"
         aria-label="Toggle Dark Mode"
         id="dark-mode-toggle"
       >
