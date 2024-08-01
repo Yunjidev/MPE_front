@@ -9,7 +9,8 @@ import HomeClient from "./pages/home/HomeClient";
 import HomeEnterprise from "./pages/home/HomeEntreprise";
 import Signup from "./components/user/signup";
 import Signin from "./components/user/signin";
-import Team from "./pages/team/team"
+import Team from "./pages/team/team";
+import Contact from "./pages/contact/contact"
 import SocialLinks from "./components/SocialLinks/sociallinks";
 import { UserProvider } from './context/UserContext'; // Importer UserProvider
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/team" element={<Team />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </Layout>
     </BrowserRouter>

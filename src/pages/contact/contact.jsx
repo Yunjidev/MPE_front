@@ -1,7 +1,7 @@
 // src/pages/Contact.js
 import React from 'react';
-import ContactForm from '../components/contact/ContactForm';
-import ContactInfo from '../components/contact/ContactInfo';
+import ContactForm from '../../components/contact/ContactForm';
+import ContactInfo from '../../components/contact/ContactInfo';
 
 const Contact = () => {
   const handleFormSubmit = async (formData) => {

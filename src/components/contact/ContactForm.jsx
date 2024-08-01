@@ -2,7 +2,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import Button from "../Button/button"; // Assurez-vous que ce composant Button existe
-import './form.css';
 
 export default function ContactForm({ onSubmit }) {
   const [email, setEmail] = useState("");
