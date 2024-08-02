@@ -10,10 +10,10 @@ const DropdownMenu = ({ category, items }) => {
   return (
     <div className="my-4">
       <div
-        className="flex justify-between items-center bg-complementary py-3 px-6 rounded cursor-pointer"
+        className="flex justify-between items-center bg-white dark:bg-gray-800 py-3 px-6 rounded cursor-pointer"
         onClick={handleToggle}
       >
-        <h2 className="text-2xl font-semibold">{category}</h2>
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{category}</h2>
         <button className="bg-secondary p-2 rounded-full">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -28,9 +28,9 @@ const DropdownMenu = ({ category, items }) => {
       {isOpen && (
         <div className="mt-2 space-y-4">
           {items.map((item, index) => (
-            <div key={index} className="light:bg-white dark:bg_black py-2 px-4 rounded shadow">
-              <h3 className="font-bold text-white-900 dark:text-white-100 light:text-black-300">{item.question}</h3>
-              <p className="dark:text-white-900 light:text-black-300">{item.answer}</p>
+            <div key={index} className="bg-white dark:bg-gray-800 py-2 px-4 rounded shadow">
+              <h3 className="font-bold text-gray-900 dark:text-gray-100">{item.question}</h3>
+              <p className="text-gray-700 dark:text-gray-300">{item.answer}</p>
             </div>
           ))}
         </div>
