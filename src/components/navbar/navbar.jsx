@@ -54,8 +54,8 @@ const Navbar = () => {
   return (
     <>
       {/* Navbar */}
-      <div className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full max-w-8xl z-50 mt-4">
-      <div className="navbar dark:bg-[#232323] dark:text-white font-semibold mx-auto w-3/4 rounded-xl shadow-lg">
+      <div className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full max-w-full z-50 mt-4">
+      <div className="navbar backdrop-filter backdrop-blur-lg bg-white bg-opacity-30 dark:bg-[#232323] dark:bg-opacity-30 dark:text-white font-semibold mx-auto w-5/6 rounded-xl shadow-lg">
           <div className="flex-1 flex justify-between items-center">
             <Link to="/" >
               <img src={logo} alt="logo" className="w-10 h-10 ml-2 transition-transform duration-300 hover:scale-110" />
@@ -80,7 +80,7 @@ const Navbar = () => {
                 <input 
                   type="text" 
                   placeholder="Recherche service ..." 
-                  className="input input-bordered input-sm w-full max-w-xs" 
+                  className="dark:bg-neutral-800 bg-white rounded-xl input-bordered input-sm w-full max-w-xs" 
                 />
               </div>
               <div 
