@@ -15,7 +15,7 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [user] = useAtom(userAtom);
-  const [profile, setProfile] = useState(null);
+  
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -36,13 +36,13 @@ const Navbar = () => {
 
   useEffect(() => {
     if (!user.isLogged) {
-      setProfile(null); // Reset profile state when user logs out
+      setIsAuthenticated(null); // Reset profile state when user logs out
     } else if (user.isLogged) {
       // Fetch and set profile data if user is logged in
       const fetchProfileData = async () => {
         try {
           const data = await getData(`/users/${user.id}`);
-          setProfile(data);
+          setIsAuthenticated(data);
         } catch (error) {
           console.error(error);
         }
