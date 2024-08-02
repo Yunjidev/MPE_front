@@ -5,7 +5,7 @@ import { UserContext } from '../../context/UserContext';
 import logo from '../../../public/assets/img/logo.png';
 
 const Navbar = () => {
-  const { isAuthenticated, setIsAuthenticated } = useContext(UserContext);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { userType } = useContext(UserContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -86,22 +86,22 @@ const Navbar = () => {
                     className="menu menu-sm dropdown-content light:bg-white light:text-black dark:bg-dark dark:text-white rounded-box z-[1] mt-2 absolute right-0 w-52 p-2 shadow-lg"
                   >
                     {isAuthenticated ? (
-      <>
-        <li>
-          <Link to="/dashboard">Mon Dashboard</Link>
-        </li>
-        <li><a href="#" onClick={() => setIsAuthenticated(false)}>Se déconnecter</a></li>
-      </>
-    ) : (
-      <>
-        <li>
-          <Link to="/signin">Connexion</Link>
-        </li>
-        <li>
-          <Link to="/signup">Inscription</Link>
-        </li>
-      </>
-    )}
+                      <>
+                        <li>
+                          <Link to="/dashboard">Mon Dashboard</Link>
+                        </li>
+                        <li><a href="#" onClick={() => setIsAuthenticated(false)}>Logout</a></li>
+                      </>
+                    ) : (
+                      <>
+                        <li>
+                          <Link to="/signin">Connexion</Link>
+                        </li>
+                        <li>
+                          <Link to="/signup">Inscription</Link>
+                        </li>
+                      </>
+                    )}
                   </ul>
                 )}
               </div>
