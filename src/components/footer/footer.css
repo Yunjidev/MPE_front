@@ -1,0 +1,8 @@
+.footer {
+    background-image: url('../../assets/footermpe.png');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    padding: 150px 0px;
+    color: white; 
+}
