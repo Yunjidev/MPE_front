@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useContext, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
@@ -6,18 +8,16 @@ import logo from '../../../public/assets/img/logo.png';
 import { getData } from '../../services/data-fetch';
 import SignOut from '../user/signout';
 
-//Atoms
+// Atoms
 import { useAtom } from "jotai";
 import { userAtom } from '../../store/user'
 
 const Navbar = () => {
-  
   const { userType } = useContext(UserContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [user, setUser] = useAtom(userAtom);
   const [profile, setProfile] = useState(null);
-  
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -60,7 +60,7 @@ const Navbar = () => {
     <>
       {/* Navbar */}
       <div className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full max-w-full z-50 mt-4">
-      <div className="navbar backdrop-filter backdrop-blur-lg bg-white bg-opacity-30 dark:bg-[#232323] dark:bg-opacity-30 dark:text-white font-semibold mx-auto w-5/6 rounded-xl shadow-lg">
+        <div className="navbar backdrop-filter backdrop-blur-lg bg-white bg-opacity-30 dark:bg-[#232323] dark:bg-opacity-30 dark:text-white font-semibold mx-auto w-5/6 rounded-xl shadow-lg">
           <div className="flex-1 flex justify-between items-center">
             <Link to="/" >
               <img src={logo} alt="logo" className="w-10 h-10 ml-2 transition-transform duration-300 hover:scale-110" />
@@ -115,7 +115,6 @@ const Navbar = () => {
                     className="menu menu-sm dropdown-content light:bg-white light:text-black dark:bg-dark dark:text-white rounded-box z-[1] mt-2 absolute right-0 w-52 p-2 shadow-lg"
                   >
                     {user.isLogged ? (
-                      
                       <>
                         <li>
                           <Link to="/dashboard">Mon Dashboard</Link>
@@ -139,7 +138,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Main Content */}
       <div className="pt-14">
       </div>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect } from 'react';
 import PropTypes from "prop-types";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -17,26 +18,23 @@ import SocialLinks from "./components/SocialLinks/sociallinks";
 import { UserProvider } from './context/UserContext'; // Importer UserProvider
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {useAtom, Provider} from "jotai";
-import {userAtom} from "./store/user";
+import { useAtom, Provider } from "jotai";
+import { userAtom } from "./store/user";
 
 const MainLayout = ({ children }) => {
   return (
-
     <>
-      
       <NavBar />
       <ToastContainer />
       <ParticlesDemo />
-      <main className="container mx-auto w-5/6">{children}
-      <SocialLinks />
+      <main className="container mx-auto w-5/6">
+        {children}
+        <SocialLinks />
       </main>
       <Footer />
-
-      </>
+    </>
   );
 };
-
 
 function App() {
   const [user, setUser] = useAtom(userAtom);
@@ -49,7 +47,6 @@ function App() {
     }
   }, [setUser]);
 
-  
   return (
     <Provider>
       <UserProvider>
@@ -70,7 +67,6 @@ function App() {
         </BrowserRouter>
       </UserProvider>
     </Provider>
-    
   );
 }
 

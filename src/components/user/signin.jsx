@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 //SERVICES
 import { authSignInUp } from "../../services/auth-fetch";
 //React
