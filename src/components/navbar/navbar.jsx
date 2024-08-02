@@ -10,11 +10,12 @@ import { useAtom } from "jotai";
 import { userAtom } from '../../store/user'
 
 const Navbar = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
   const { userType } = useContext(UserContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const [user] = useAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
+  const [profile, setProfile] = useState(null);
   
 
   const toggleDropdown = () => {
@@ -34,22 +35,25 @@ const Navbar = () => {
     };
   }, []);
 
+  const handleLogout = () => {
+    setUser({ ...user, isLogged: false });
+  };
+
   useEffect(() => {
-    if (!user.isLogged) {
-      setIsAuthenticated(null); // Reset profile state when user logs out
-    } else if (user.isLogged) {
-      // Fetch and set profile data if user is logged in
-      const fetchProfileData = async () => {
+    // Cette fonction est appelée uniquement lorsque `user.id` change.
+    const fetchProfileData = async () => {
+      if (user.isLogged && user.id) {
         try {
           const data = await getData(`/users/${user.id}`);
-          setIsAuthenticated(data);
+          setProfile(data); // Mettre à jour l'état local avec les données de profil
         } catch (error) {
           console.error(error);
         }
-      };
-      fetchProfileData();
-    }
-  }, [user]);
+      }
+    };
+
+    fetchProfileData();
+  }, [user.id]);
 
   return (
     <>
@@ -65,13 +69,13 @@ const Navbar = () => {
                 <>
                   <Link to="/home-client" className="btn btn-ghost">Accueil</Link>
                   <a href="#" className="btn btn-ghost">Recherche</a>
-                  <a href="#" className="btn btn-ghost">FAQ</a>
+                  <Link to="/faq" className="btn btn-ghost">FAQ</Link>
                 </>
               ) : userType === 'enterprise' ? (
                 <>
                   <Link to="/home-enterprise" className="btn btn-ghost">Accueil</Link>
                   <a href="#" className="btn btn-ghost">Recherche</a>
-                  <a href="#" className="btn btn-ghost">Pricing</a>
+                  <Link to="/pricing" className="btn btn-ghost">Pricing</Link>
                 </>
               ) : null}
             </div>
@@ -93,7 +97,7 @@ const Navbar = () => {
                   className="btn btn-ghost btn-circle avatar" 
                   onClick={toggleDropdown}
                 >
-                  {isAuthenticated ? (
+                  {user.isLogged ? (
                     <div className="w-10 rounded-full">
                       <img
                         alt="User Avatar"
@@ -109,12 +113,13 @@ const Navbar = () => {
                     tabIndex="0"
                     className="menu menu-sm dropdown-content light:bg-white light:text-black dark:bg-dark dark:text-white rounded-box z-[1] mt-2 absolute right-0 w-52 p-2 shadow-lg"
                   >
-                    {isAuthenticated ? (
+                    {user.isLogged ? (
+                      
                       <>
                         <li>
                           <Link to="/dashboard">Mon Dashboard</Link>
                         </li>
-                        <li><a href="#" onClick={() => setIsAuthenticated(false)}>Logout</a></li>
+                        {/* <li><a href="#" onClick={() => setUser({ ...user, isLogged: false })}>Logout</a></li> */}
                       </>
                     ) : (
                       <>
