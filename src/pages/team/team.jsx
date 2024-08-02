@@ -21,10 +21,6 @@ const Team = () => {
       content: "Toujours prêts à aider, nos spécialistes du support technique sont là pour vous assurer que votre expérience avec MPE est sans souci.",
       image: 'https://images.unsplash.com/photo-1578402027014-8adededc0fac?q=80&w=2026&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
-    {
-      title: 'Notre Mission',
-      content: "Ensemble, nous travaillons à vous apporter une application qui non seulement répond à vos besoins mais les anticipe. Nous sommes fiers de vous présenter MPE et nous espérons qu'elle vous apportera autant de satisfaction qu'à nous lors de sa création.",
-    },
   ];
 
   useEffect(() => {
@@ -40,8 +36,6 @@ const Team = () => {
   
     fetchTeamMembers();
   }, []);
-  
-
   
   return (
     <div className="font-sans">
@@ -72,6 +66,10 @@ const Team = () => {
             alternate={index % 2 !== 0}
           />
         ))}
+        <div className="text-center mt-8">
+          <h2 className="text-2xl underline font-bold mb-4">Notre mission</h2>
+          <p className="text-lg">Ensemble, nous travaillons à vous apporter une application qui non seulement répond à vos besoins mais les anticipe. Nous sommes fiers de vous présenter MPE et nous espérons qu'elle vous apportera autant de satisfaction qu'à nous lors de sa création.</p>
+        </div>
       </main>
     </div>
   );
