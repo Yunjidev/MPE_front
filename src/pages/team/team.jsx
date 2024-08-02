@@ -39,8 +39,8 @@ const Team = () => {
   
   return (
     <div className="font-sans">
-      <main className="p-4">
-        <h1 className="text-center text-3xl font-bold mb-4">Rencontrez l'équipe de développeurs</h1>
+      <main className="p-4 pt-14">
+        <h1 className="text-center text-3xl font-bold mb-4 dark:text-white">Rencontrez l'équipe de développeurs</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {teamMembers.map((member, index) => (
             <div key={member.email} className="relative">
@@ -54,7 +54,7 @@ const Team = () => {
                 description={member.description}
               />
               {index < teamMembers.length - 1 && (
-                <div className="hidden lg:block absolute top-0 right-0 h-full w-px bg-gray-300"></div>
+                <div className="hidden lg:block absolute top-0 right-0 h-full w-px bg-gray-300 dark:bg-gray-600"></div>
               )}
             </div>
           ))}
@@ -67,12 +67,13 @@ const Team = () => {
           />
         ))}
         <div className="text-center mt-8">
-          <h2 className="text-2xl underline font-bold mb-4">Notre mission</h2>
-          <p className="text-lg">Ensemble, nous travaillons à vous apporter une application qui non seulement répond à vos besoins mais les anticipe. Nous sommes fiers de vous présenter MPE et nous espérons qu'elle vous apportera autant de satisfaction qu'à nous lors de sa création.</p>
+          <h2 className="text-2xl underline font-bold mb-4 dark:text-white">Notre mission</h2>
+          <p className="text-lg dark:text-gray-400">Ensemble, nous travaillons à vous apporter une application qui non seulement répond à vos besoins mais les anticipe. Nous sommes fiers de vous présenter MPE et nous espérons qu'elle vous apportera autant de satisfaction qu'à nous lors de sa création.</p>
         </div>
       </main>
     </div>
   );
 };
+
 
 export default Team;
