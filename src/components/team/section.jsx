@@ -9,7 +9,7 @@ const Section = ({ title, content, image, alternate }) => {
       </div>
       {image && (
         <div className="lg:w-1/2 p-4 order-1 lg:order-2">
-          <img className="w-80 h-60 object-cover rounded-lg" src={image} alt={title} />
+          <img className="w-80 h-60 object-cover rounded-xl" src={image} alt={title} />
         </div>
       )}
     </section>
