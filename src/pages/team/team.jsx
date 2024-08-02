@@ -42,23 +42,28 @@ const Team = () => {
   }, []);
   
 
+  
   return (
     <div className="font-sans">
       <main className="p-4">
         <h1 className="text-center text-3xl font-bold mb-4">Rencontrez l'équipe de développeurs</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {teamMembers.map(member => (
-        <TeamMember
-          key={member.email} // Assurez-vous que la clé est unique
-          firstname={member.firstname}
-          lastname={member.lastname}
-          email={member.email}
-          github={member.github}
-          linkedin={member.linkedin}
-          avatar={member.avatar}
-          description={member.description}
-        />
-      ))}
+          {teamMembers.map((member, index) => (
+            <div key={member.email} className="relative">
+              <TeamMember
+                firstname={member.firstname}
+                lastname={member.lastname}
+                email={member.email}
+                github={member.github}
+                linkedin={member.linkedin}
+                photo={member.photo}
+                description={member.description}
+              />
+              {index < teamMembers.length - 1 && (
+                <div className="hidden lg:block absolute top-0 right-0 h-full w-px bg-gray-300"></div>
+              )}
+            </div>
+          ))}
         </div>
         {sections.map((section, index) => (
           <Section
