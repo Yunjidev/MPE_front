@@ -4,6 +4,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import { UserContext } from '../../context/UserContext';
 import logo from '../../../public/assets/img/logo.png';
 import { getData } from '../../services/data-fetch';
+import SignOut from '../user/signout';
 
 //Atoms
 import { useAtom } from "jotai";
@@ -119,7 +120,7 @@ const Navbar = () => {
                         <li>
                           <Link to="/dashboard">Mon Dashboard</Link>
                         </li>
-                        {/* <li><a href="#" onClick={() => setUser({ ...user, isLogged: false })}>Logout</a></li> */}
+                        <li><SignOut /></li>
                       </>
                     ) : (
                       <>
