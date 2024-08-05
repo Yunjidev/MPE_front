@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Particles from "../@/components/magicui/particles";
 
-const ParticlesDemo = () => {
-    return (
-      <div className="absolute inset-0 z-0">
-        <Particles className="absolute inset-0" quantity={100} ease={80} color="#ffffff" refresh />
-      </div>
-    );
-  };
+const ParticlesDemo = ({ isDarkMode }) => {
+  const particleColor = isDarkMode ? "#ffffff" : "#000000";
+
+  return (
+    <Particles
+      className={"inset-0 -z-10 bg-red-100 dark:bg-neutral-800 fixed"}
+      quantity={200}
+      ease={80}
+      color={particleColor}
+      refresh
+    />
+  );
+};
 
 export default ParticlesDemo;
