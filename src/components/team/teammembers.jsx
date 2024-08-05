@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { GrMail } from "react-icons/gr";
 
