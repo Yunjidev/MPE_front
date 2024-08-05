@@ -2,17 +2,20 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-body {
-  @apply bg-[#232323] text-white;
+/* body {
+  @apply bg-white text-black;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  padding-top: 3vh;
 }
 
-.dark body {
-  @apply bg-white text-black;
+.dark body{
+  @apply bg-[#232323] text-white;
+
 }
 
 main {
   flex: 1;
-}
+} */
+

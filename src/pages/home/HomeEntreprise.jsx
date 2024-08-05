@@ -1,9 +1,11 @@
 import Pricing from '../../components/pricing/pricing';
+import Jumbotron from '../../components/home/jumbotron';
 
 const HomeEnterprise = () => {
   return (
     <>
-      <Pricing />
+    <Jumbotron />
+    <Pricing />
     </>
 
   )
