@@ -12,21 +12,21 @@ const servicePropose = "Petits bricolages et travaux de rénovation";
 
 
 return (
-    <div className="card card-compact bg-base-100 w-96 shadow-xl relative bg-[#262626] text-white">
+    <div className="card card-compact bg-base-100 w-64 shadow-xl relative bg-[#262626] text-white">
       <div className="rating gap-1 absolute top-0 right-0 p-4">
         <input type="radio" name="rating-3" className="mask mask-heart bg-red-400" />
       </div>
       <figure>
         <img src={indexcards} alt="indexcards" className="rounded-3xl"/>
       </figure>
-      <div className="card-body">
+      <div className="card-body border-t-4 border-gray-100 border-opacity-20 mt-4">
         <h2 className="card-title">Multi-Travaux Services</h2>
         
         <div className="flex justify-between gap-4">
           <div className="flex flex-col items-start">
             <div className="flex items-center mb-2">
               <FaCalendarDay className="text-lg mr-2" />
-              <span className="text-sm">Prochaine Disponibilité :</span>
+              <span className="text-sm">Prochaine Disponibilité </span>
             
             <span className="text-sm break-words">{prochainRendezVous}</span>
             </div>
