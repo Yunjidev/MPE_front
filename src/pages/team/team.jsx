@@ -21,10 +21,6 @@ const Team = () => {
       content: "Toujours prêts à aider, nos spécialistes du support technique sont là pour vous assurer que votre expérience avec MPE est sans souci.",
       image: 'https://images.unsplash.com/photo-1578402027014-8adededc0fac?q=80&w=2026&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
-    {
-      title: 'Notre Mission',
-      content: "Ensemble, nous travaillons à vous apporter une application qui non seulement répond à vos besoins mais les anticipe. Nous sommes fiers de vous présenter MPE et nous espérons qu'elle vous apportera autant de satisfaction qu'à nous lors de sa création.",
-    },
   ];
 
   useEffect(() => {
@@ -41,24 +37,27 @@ const Team = () => {
     fetchTeamMembers();
   }, []);
   
-
   return (
     <div className="font-sans">
-      <main className="p-4">
-        <h1 className="text-center text-3xl font-bold mb-4">Rencontrez l'équipe de développeurs</h1>
+      <main className="p-4 pt-14">
+        <h1 className="text-center text-3xl font-bold mb-4 dark:text-white">Rencontrez l'équipe de développeurs</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {teamMembers.map(member => (
-        <TeamMember
-          key={member.email} // Assurez-vous que la clé est unique
-          firstname={member.firstname}
-          lastname={member.lastname}
-          email={member.email}
-          github={member.github}
-          linkedin={member.linkedin}
-          avatar={member.avatar}
-          description={member.description}
-        />
-      ))}
+          {teamMembers.map((member, index) => (
+            <div key={member.email} className="relative">
+              <TeamMember
+                firstname={member.firstname}
+                lastname={member.lastname}
+                email={member.email}
+                github={member.github}
+                linkedin={member.linkedin}
+                photo={member.photo}
+                description={member.description}
+              />
+              {index < teamMembers.length - 1 && (
+                <div className="hidden lg:block absolute top-0 right-0 h-full w-px bg-gray-300 dark:bg-gray-600"></div>
+              )}
+            </div>
+          ))}
         </div>
         {sections.map((section, index) => (
           <Section
@@ -67,9 +66,14 @@ const Team = () => {
             alternate={index % 2 !== 0}
           />
         ))}
+        <div className="text-center mt-8">
+          <h2 className="text-2xl underline font-bold mb-4 dark:text-white">Notre mission</h2>
+          <p className="text-lg dark:text-gray-400">Ensemble, nous travaillons à vous apporter une application qui non seulement répond à vos besoins mais les anticipe. Nous sommes fiers de vous présenter MPE et nous espérons qu'elle vous apportera autant de satisfaction qu'à nous lors de sa création.</p>
+        </div>
       </main>
     </div>
   );
 };
+
 
 export default Team;
