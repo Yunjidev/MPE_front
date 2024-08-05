@@ -10,11 +10,11 @@ const DropdownMenu = ({ category, items }) => {
   return (
     <div className="my-4">
       <div
-        className="flex justify-between items-center bg-white dark:bg-gray-800 py-3 px-6 rounded cursor-pointer"
+        className="flex justify-between items-center bg-black-900 dark:bg-black-900 py-3 px-6 rounded cursor-pointer border border-transparent hover:border-orange-400 rounded shadow-sm shadow-orange-400"
         onClick={handleToggle}
       >
-        <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{category}</h2>
-        <button className="bg-secondary p-2 rounded-full">
+        <h2 className="text-2xl font-semibold text-gray-100 dark:text-gray-100">{category}</h2>
+        <button className="bg-orange-400 p-2 rounded-full">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
@@ -28,9 +28,12 @@ const DropdownMenu = ({ category, items }) => {
       {isOpen && (
         <div className="mt-2 space-y-4">
           {items.map((item, index) => (
-            <div key={index} className="bg-white dark:bg-gray-800 py-2 px-4 rounded shadow">
-              <h3 className="font-bold text-gray-900 dark:text-gray-100">{item.question}</h3>
-              <p className="text-gray-700 dark:text-gray-300">{item.answer}</p>
+            <div
+              key={index}
+              className="bg-black-900 dark:bg-black-900 py-2 px-4 rounded shadow-sm shadow-orange-400"
+            >
+              <h3 className="font-bold text-gray-100 dark:text-gray-100">{item.question}</h3>
+              <p className="text-gray-300 dark:text-gray-300">{item.answer}</p>
             </div>
           ))}
         </div>
@@ -40,3 +43,4 @@ const DropdownMenu = ({ category, items }) => {
 };
 
 export default DropdownMenu;
+

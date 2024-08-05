@@ -64,8 +64,9 @@ const FAQ = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center py-12 px-4 bg-gray-100 dark:bg-gray-900">
-      <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-gray-100">FAQ</h1>
+    <div className="flex flex-col items-center py-12 px-4 bg-black-100 dark:bg-black-900">
+      <p className=" text-6xl dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800  text-transparent bg-clip-text mb-8">Des Questions ?</p>
+      <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-8">La FAQ est là pour ça. Si tu ne trouves pas ta réponse, contacte  nous !</p>
       <div className="w-full max-w-4xl space-y-6">
         {questions.map((section, index) => (
           <DropdownMenu key={index} category={section.category} items={section.items} />
