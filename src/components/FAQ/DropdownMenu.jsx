@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { IoIosArrowDown } from "react-icons/io";
 
 const DropdownMenu = ({ category, items }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,19 +11,13 @@ const DropdownMenu = ({ category, items }) => {
   return (
     <div className="my-4">
       <div
-        className="flex justify-between items-center bg-black-900 dark:bg-black-900 py-3 px-6 rounded cursor-pointer border border-transparent hover:border-orange-400 rounded shadow-sm shadow-orange-400"
+        className="flex justify-between items-center bg-black-900 bg-black-900 py-3 px-6 rounded cursor-pointer border border-transparent hover:dark:border-orange-400 hover:border-violet-400 rounded shadow-sm dark:shadow-orange-400 shadow-violet-400"
         onClick={handleToggle}
       >
         <h2 className="text-2xl font-semibold text-black dark:text-gray-100">{category}</h2>
-        <button className="bg-orange-400 p-2 rounded-full">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            className={`w-6 h-6 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-            viewBox="0 0 16 16"
-          >
-            <path fillRule="evenodd" d="M4.5 10.5a.5.5 0 0 1 .707 0l3-3a.5.5 0 0 1 .707.707L5.707 10H10.5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5v-5a.5.5 0 0 1 1 0v4.293l2.646-2.647z"></path>
-          </svg>
+        <button className=" p-2">
+        <IoIosArrowDown className={`w-6 h-6 bg-none text-violet-600 dark:text-orange-400 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+          
         </button>
       </div>
       {isOpen && (
@@ -30,7 +25,7 @@ const DropdownMenu = ({ category, items }) => {
           {items.map((item, index) => (
             <div
               key={index}
-              className="bg-black-900 dark:bg-black-900 py-2 px-4 rounded shadow-sm shadow-orange-400"
+              className="bg-black-900 dark:bg-black-900 py-2 px-4 rounded shadow-sm shadow-violet-400 dark:shadow-orange-400"
             >
               <h3 className="font-bold text-black dark:text-gray-100">{item.question}</h3>
               <p className="text-black dark:text-gray-300">{item.answer}</p>
