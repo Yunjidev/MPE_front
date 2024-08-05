@@ -4,12 +4,12 @@ import { BsInstagram, BsWhatsapp, BsFacebook, BsTwitterX } from 'react-icons/bs'
 
 const Footer = () => {
   return (
-    <footer className="footer flex justify-between items-center p-4">
+    <footer className="footer flex justify-between items-center p-4 w-full">
       <div className="flex-1"></div>
 
       <div className="flex flex-col items-center">
         <a href="http://localhost:5173/contact" className="footer-link">Contact</a>
-        <p>F.A.Q</p>
+        <a href="http://localhost:5173/faq" className="footer-link">F.A.Q</a>
         <a href="http://localhost:5173/team" className="footer-link">L'équipe</a>
         <p>Prix</p>
         <p>© 2024 MaPetiteEntreprise. Tout droits réservés.</p>
