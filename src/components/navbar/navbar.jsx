@@ -47,7 +47,7 @@ const Navbar = () => {
                 <>
                   <Link to="/home-enterprise" className="btn btn-ghost">Accueil</Link>
                   <a href="#" className="btn btn-ghost">Recherche</a>
-                  <a href="#" className="btn btn-ghost">Pricing</a>
+                  <a href="/pricing" className="btn btn-ghost">Pricing</a>
                 </>
               ) : null}
             </div>

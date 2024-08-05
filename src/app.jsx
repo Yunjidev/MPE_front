@@ -12,6 +12,7 @@ import Signin from "./components/user/signin";
 import Team from "./pages/team/team"
 import SocialLinks from "./components/SocialLinks/sociallinks";
 import { UserProvider } from './context/UserContext'; // Importer UserProvider
+import Pricing_page from "./pages/pricing/pricing_pahe"
 
 const MainLayout = ({ children }) => {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/team" element={<Team />} />
+          <Route path="/pricing" element={<Pricing_page />} />
         </Routes>
       </MainLayout>
     </BrowserRouter>
