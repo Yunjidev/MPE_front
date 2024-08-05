@@ -20,7 +20,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAtom, Provider } from "jotai";
 import { userAtom } from "./store/user";
-import Pricing_page from "./pages/pricing/pricing_pahe"
+import Pricing_page from "./pages/pricing/pricing_page"
 
 const MainLayout = ({ children }) => {
   return (
