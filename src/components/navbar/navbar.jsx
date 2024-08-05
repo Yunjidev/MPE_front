@@ -69,13 +69,13 @@ const Navbar = () => {
               {userType === 'client' ? (
                 <>
                   <Link to="/home-client" className="btn btn-ghost">Accueil</Link>
-                  <a href="#" className="btn btn-ghost">Recherche</a>
+                  <Link to="/searchentreprise" className="btn btn-ghost">Recherche</Link>
                   <Link to="/faq" className="btn btn-ghost">FAQ</Link>
                 </>
               ) : userType === 'enterprise' ? (
                 <>
                   <Link to="/home-enterprise" className="btn btn-ghost">Accueil</Link>
-                  <a href="#" className="btn btn-ghost">Recherche</a>
+                  <Link to="/searchentreprise" className="btn btn-ghost">Recherche</Link>
                   <Link to="/pricing" className="btn btn-ghost">Pricing</Link>
                 </>
               ) : null}
