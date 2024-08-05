@@ -24,7 +24,6 @@ export default function RegisterCompany({ onSubmit }) {
       <div className="relative border-form-1 group max-w-4xl w-full">
         <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
         <div className="bg-neutral-900 p-16 rounded-xl shadow-2xl relative z-10 transform transition duration-500 ease-in-out">
-          <h2 className="text-center text-3xl font-bold mb-10 text-white">Contactez-nous</h2>
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="w-full">
               <input
@@ -139,3 +138,4 @@ export default function RegisterCompany({ onSubmit }) {
 RegisterCompany.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
+

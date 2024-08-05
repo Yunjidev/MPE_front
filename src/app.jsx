@@ -14,6 +14,7 @@ import Signin from "./components/user/signin";
 import Team from "./pages/team/team";
 import Contact from "./pages/contact/contact";
 import FAQ from "./pages/FAQ/FAQ";
+import RegisterCompany from './pages/user/registercompany';
 import SocialLinks from "./components/SocialLinks/sociallinks";
 import { UserProvider } from './context/UserContext'; // Importer UserProvider
 import { ToastContainer } from 'react-toastify';
@@ -62,6 +63,7 @@ function App() {
               <Route path="/team" element={<Team />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/FAQ" element={<FAQ />} />
+              <Route path="/register-company" element={<RegisterCompany />} />
             </Routes>
           </MainLayout>
         </BrowserRouter>
