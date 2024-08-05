@@ -14,6 +14,7 @@ import Signin from "./components/user/signin";
 import Team from "./pages/team/team";
 import Contact from "./pages/contact/contact";
 import FAQ from "./pages/FAQ/FAQ";
+import IndexCardsEntreprises from "./components/CardsEntreprises/IndexCardsEntreprises";
 import SocialLinks from "./components/SocialLinks/sociallinks";
 import { UserProvider } from './context/UserContext'; // Importer UserProvider
 import { ToastContainer } from 'react-toastify';
@@ -27,11 +28,14 @@ const MainLayout = ({ children }) => {
       <NavBar />
       <ToastContainer />
       <ParticlesDemo />
+      
       <main className="container mx-auto w-5/6">
         {children}
         <SocialLinks />
+        
       </main>
       <Footer />
+      <IndexCardsEntreprises />
     </>
   );
 };
@@ -59,6 +63,7 @@ function App() {
               <Route path="/home-enterprise" element={<HomeEnterprise />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/signin" element={<Signin />} />
+              
               <Route path="/team" element={<Team />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/FAQ" element={<FAQ />} />
