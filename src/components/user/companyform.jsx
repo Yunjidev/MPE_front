@@ -24,7 +24,7 @@ export default function RegisterCompany({ onSubmit }) {
   const [city, setCity] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [siret, setSiret] = useState("");
-  const [activité, setActivity] = useState("");
+  const [activity, setActivity] = useState("");
   const [networks, setNetworks] = useState([]);
   const [currentNetwork, setCurrentNetwork] = useState("");
   const [description, setDescription] = useState("");
@@ -59,7 +59,7 @@ export default function RegisterCompany({ onSubmit }) {
   return (
     <div className="flex items-center justify-center bg-neutral-900 min-h-screen py-6">
       <div className="relative border-form-1 group max-w-4xl w-full p-6 md:p-8 lg:p-10">
-        <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
+        <div className="relative -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
         <div className="bg-neutral-900 p-6 md:p-8 lg:p-10 rounded-xl shadow-2xl relative z-10 transform transition duration-500 ease-in-out">
           <h2 className="text-white text-center text-xl md:text-2xl mb-5">
             Création d'entreprise
