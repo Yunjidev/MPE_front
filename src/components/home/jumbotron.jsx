@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unknown-property */
+/* eslint-disable react/prop-types */
 import image from '../../assets/image.png'
 import proparticul from '../../assets/proparticul.png'
 import { Link } from 'react-router-dom';
@@ -23,17 +25,14 @@ const Jumbotron = ({ isDarkMode }) => {
                     </svg>
                     <Link to="/signup">S'inscrire</Link>
                 </button>
+
             </div>
         </div>
-        <div class="image-container mt-8 lg:mt-0 lg:ml-8">
-            <img src={image} alt="placeholder logo" class="w-full lg:w-auto lg:max-w-md" />
+        <div className="image-container mt-8 lg:mt-0 lg:ml-8">
+            <img src={image} alt="placeholder logo" className="w-full lg:w-auto lg:max-w-md" />
         </div>
     </div>
     );
 }
 
-
 export default Jumbotron;
-
-
-

@@ -16,6 +16,7 @@
     "framer-motion": "^11.3.21",
     "jotai": "^2.9.1",
     "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
     "ky": "^1.4.0",
     "lucide-react": "^0.424.0",
     "prop-types": "^15.8.1",
@@ -25,6 +26,7 @@
     "react-router-dom": "^6.25.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7"
+    "react-toastify": "^10.0.5"
   },
   "devDependencies": {
     "@types/node": "^22.1.0",
