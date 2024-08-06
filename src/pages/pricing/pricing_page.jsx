@@ -17,21 +17,21 @@ const PricingPage = () => {
     const plans = [
         {
             name: "Basic",
-            desc: "Lorem ipsum dolor sit amet torrel, consectet adipiscing elit.",
+            desc: "Découvrez notre solution basique pour votre entreprise.",
             price: "15€",
-            color: "text-green-400 ",
-            buttonColor: "bg-green-400 hover:bg-green-500 active:bg-green-600"
+            color: "text-green-300 ",
+            buttonColor: "bg-green-300 hover:bg-green-500 active:bg-green-600"
         },
         {
             name: "Business",
-            desc: "Lorem ipsum dolor sit amet torrel, consectet adipiscing elit.",
+            desc: "Profitez de notre solution mensuelle pour plus de services.",
             price: "20€",
             color: "text-orange-400",
             buttonColor: "bg-orange-400 hover:bg-orange-500 active:bg-orange-600"
         },
         {
             name: "Enterprise",
-            desc: "Lorem ipsum dolor sit amet torrel, consectet adipiscing elit.",
+            desc: "Optez pour notre solution annuelle pour avoir 2 mois offerts.",
             price: "50€",
             color: "text-violet-400",
             buttonColor: "bg-violet-400 hover:bg-violet-500 active:bg-violet-600"
@@ -48,28 +48,58 @@ const PricingPage = () => {
             ),
             items: [
                 {
-                    name: "Aliquam finibus",
+                    name: "Possibilité de créer son entreprise",
                     basic: checkIcon,
                     business: checkIcon,
                     enterprise: checkIcon
                 },
                 {
-                    name: "Vestibulum tristique",
+                    name: "Page d'entreprise",
+                    basic: checkIcon,
+                    business: checkIcon,
+                    enterprise: checkIcon
+                },
+                {
+                    name: "Statistiques détaillées",
+                    basic: checkIcon,
+                    business: checkIcon,
+                    enterprise: checkIcon
+                },
+                {
+                    name: "Dashboard entreprise",
+                    basic: checkIcon,
+                    business: checkIcon,
+                    enterprise: checkIcon
+                },
+                {
+                    name: "Mise en avant sur l'accueil",
                     basic: minusIcon,
                     business: checkIcon,
                     enterprise: checkIcon
                 },
                 {
-                    name: "Aliquam finibus",
+                    name: "Priorisation dans les recherches",
                     basic: minusIcon,
-                    business: minusIcon,
+                    business: checkIcon,
                     enterprise: checkIcon
                 },
                 {
-                    name: "Praesent aliquet",
+                    name: "Certification Premium",
                     basic: minusIcon,
-                    business: "150GB",
-                    enterprise: "Unlimited"
+                    business: checkIcon,
+                    enterprise: checkIcon
+                },
+                {
+                    name: "Galerie Photo",
+                    basic: minusIcon,
+                    business: checkIcon,
+                    enterprise: checkIcon
+                },
+                {
+                    name: "Calendrier + Réservations",
+                    basic: minusIcon,
+                    business: checkIcon,
+                    enterprise: checkIcon
                 },
             ]
         }
@@ -154,7 +184,7 @@ const PricingPage = () => {
                                                 <span className="text-lg font-normal">{item.price}/mois</span>
                                             </div>
                                             <p className="text-sm dark:text-white py-4">{item.desc}</p>
-                                            <button className={`px-4 py-3 rounded-lg w-full font-semibold text-base duration-150 text-white ${item.buttonColor}`}>
+                                            <button className={`px-4 py-3 rounded-lg w-full font-semibold text-base duration-150 text-black  ${item.buttonColor}`}>
                                                 Get Started
                                             </button>
                                         </li>
@@ -170,7 +200,7 @@ const PricingPage = () => {
                                 <table key={idx} className="w-full table-auto text-sm text-left">
                                     <thead className="text-gray-600 font-medium border-b dark:text-white">
                                         <tr>
-                                            <th className="z-20 top-12 py-6 lg:sticky">
+                                            <th className="z-20 top-12 py-6">
                                                 <div className="flex items-center gap-x-3">
                                                     <div className="w-12 h-12 text-indigo-600 rounded-full border flex items-center justify-center">
                                                         {table.label_icon}
