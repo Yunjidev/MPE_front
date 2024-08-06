@@ -4,6 +4,8 @@ import {
   FaUser, FaPhone, FaEnvelope, FaMapMarkerAlt, FaCity, FaBarcode,
   FaPenAlt, FaCloudUploadAlt, FaSearch,
 } from "react-icons/fa";
+import { FaXTwitter, FaInstagram, FaFacebook } from "react-icons/fa6";
+import { MdOutlineAlternateEmail, MdOutlineAreaChart } from "react-icons/md";
 import Button from "../Button/button";
 import regions from "../enterprise/region-names.jsx";
 
@@ -40,7 +42,7 @@ export default function RegisterCompany({ onSubmit }) {
             <div className="col-span-1 flex justify-center items-center">
               <div className="border border-dashed border-gray-500 p-10 rounded-lg cursor-pointer text-gray-400 hover:bg-gray-800">
                 <FaCloudUploadAlt size="3x" />
-                <p className="mt-2">Cliquer pour ajouter des images</p>
+                <p className="mt-2">Cliquer pour ajouter le logo</p>
               </div>
             </div>
 
@@ -65,7 +67,7 @@ export default function RegisterCompany({ onSubmit }) {
                   id="siret"
                   value={siret}
                   onChange={(e) => setSiret(e.target.value)}
-                  placeholder="123 Numéro Siret"
+                  placeholder="Numéro Siret"
                   className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
                 />
               </div>
@@ -81,7 +83,7 @@ export default function RegisterCompany({ onSubmit }) {
                 />
               </div>
               <div className="relative flex items-center justify-end">
-                <FaEnvelope className="absolute left-3 text-gray-400" />
+                <MdOutlineAlternateEmail className="absolute left-3 text-gray-400" />
                 <input
                   type="email"
                   id="email"
@@ -103,6 +105,7 @@ export default function RegisterCompany({ onSubmit }) {
                 />
               </div>
               <div className="relative flex items-center">
+                <MdOutlineAreaChart className="absolute left-3 text-gray-400" />
                 <select
                   id="region"
                   value={region}
@@ -143,6 +146,7 @@ export default function RegisterCompany({ onSubmit }) {
               </div>
             </div>
             <div className="relative flex items-center">
+              <FaXTwitter className="absolute left-3 text-gray-400" />
               <input
                 type="text"
                 id="twitter"
@@ -153,6 +157,7 @@ export default function RegisterCompany({ onSubmit }) {
               />
             </div>
             <div className="relative flex items-center">
+              <FaInstagram className="absolute left-3 text-gray-400" />
               <input
                 type="text"
                 id="instagram"
@@ -163,6 +168,7 @@ export default function RegisterCompany({ onSubmit }) {
               />
             </div>
             <div className="relative flex items-center">
+              <FaFacebook className="absolute left-3 text-gray-400" />
               <input
                 type="text"
                 id="facebook"
@@ -200,6 +206,14 @@ export default function RegisterCompany({ onSubmit }) {
                 className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
                 rows="4"
               />
+            </div>
+
+            {/* Image Upload */}
+            <div className="col-span-1 flex justify-center items-center">
+              <div className="border border-dashed border-gray-500 p-10 rounded-lg cursor-pointer text-gray-400 hover:bg-gray-800">
+                <FaCloudUploadAlt size="3x" />
+                <p className="mt-2">Cliquer pour ajouter des images</p>
+              </div>
             </div>
 
             {/* Submit Button */}
