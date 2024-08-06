@@ -92,7 +92,7 @@ const PricingPage = () => {
                 </div>
 
                 <div className="container mx-auto flex flex-col lg:flex-row justify-start items-center py-8 px-4 lg:py-16">
-                    <img src="public/assets/img/decouvrez.png" alt="Image 2" className="w-5/12 mt-8 lg:mt-0 lg:mr-8 order-first lg:order-last" />
+                    <img src="public/assets/img/decouvrez.png" alt="Image 2" className="w-5/12 mt-8 lg:mt-0 lg:mr-8 order-first lg:order-last rounded-lg" />
                     <div className="md:ml-8 mt-4 md:mt-0 flex flex-col lg:items-start lg:text-left">
                         <h1 className="text-4xl mb-12 lg:ml-6 gradient-text-violet">Mise en avant de votre entreprise</h1>
                         <p className="lg:text-2xl md:text-xl lg:mx-6 dark:text-white">
@@ -102,7 +102,7 @@ const PricingPage = () => {
                 </div>
 
                 <div className="container mx-auto flex flex-col justify-around lg:flex-row items-center py-8 px-4 lg:py-16">
-                    <img src="public/assets/img/vector.png" alt="Image 3" className="w-7/12" />
+                    <img src="public/assets/img/vector.png" alt="Image 3" className="w-7/12 rounded-lg" />
                     <div className="md:ml-8 mt-4 md:mt-0 lg:w-1/2">
                         <p className="lg:text-3xl md:text-xl lg:mx-6 dark:text-white">
                             Profitez de toutes les fonctionnalités proposées par MPE à un tarif avantageux pour une durée choisie.
@@ -111,7 +111,7 @@ const PricingPage = () => {
                 </div>
 
                 <div className="container mx-auto flex flex-col lg:flex-row justify-start items-center py-8 px-4 lg:py-16">
-                    <img src="public/assets/img/decouvrez.png" alt="Image 4" className="w-5/12 mt-8 lg:mt-0 lg:mr-8 order-first lg:order-last" />
+                    <img src="public/assets/img/decouvrez.png" alt="Image 4" className="w-5/12 mt-8 lg:mt-0 lg:mr-8 order-first lg:order-last rounded-lg" />
                     <div className="md:ml-8 mt-4 md:mt-0 flex flex-col lg:items-start lg:text-left">
                         <h1 className="text-4xl mb-12 lg:ml-6 gradient-text-green">Organisez l’activité de votre entreprise</h1>
                         <p className="lg:text-2xl md:text-xl lg:mx-6 dark:text-white">
