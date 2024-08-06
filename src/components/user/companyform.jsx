@@ -14,7 +14,7 @@ export default function RegisterCompany({ onSubmit }) {
   const [city, setCity] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [siret, setSiret] = useState("");
-  const [activité, setActivity] = useState("");
+  const [activity, setActivity] = useState("");
   const [networks, setNetworks] = useState([]);
   const [currentNetwork, setCurrentNetwork] = useState("");
   const [description, setDescription] = useState("");
