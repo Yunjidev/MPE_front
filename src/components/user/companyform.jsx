@@ -24,11 +24,12 @@ export default function RegisterCompany({ onSubmit }) {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-neutral-900">
+    <div className="flex items-center justify-center bg-neutral-900">
       <div className="relative border-form-1 group max-w-8xl w-full p-1">
         <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
         <div className="bg-neutral-900 p-10 rounded-xl shadow-xl relative z-10 transform transition duration-500 ease-in-out">
           <h2 className="text-white text-center text-2xl mb-5">Création d'entreprise</h2>
+          <hr className="w-1/2 my-4 border-t-2 border-gray-400  mx-auto" />
           <form onSubmit={handleSubmit} className="space-y-5 grid grid-cols-3 gap-4">
 
             {/* Image Upload */}
@@ -54,7 +55,7 @@ export default function RegisterCompany({ onSubmit }) {
                     className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
                   />
                 </div>
-                <div className="relative flex items-center">
+                <div className="relative flex items-center justify-end">
                   <FaBarcode className="absolute right-3 text-gray-400" />
                   <input
                     type="text"
@@ -62,7 +63,7 @@ export default function RegisterCompany({ onSubmit }) {
                     value={siret}
                     onChange={(e) => setSiret(e.target.value)}
                     placeholder="123 Numéro Siret"
-                    className="w-full pr-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                    className="w-60 pr-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
                   />
                 </div>
                 <div className="relative flex items-center">
@@ -73,10 +74,10 @@ export default function RegisterCompany({ onSubmit }) {
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
                     placeholder="Contact"
-                    className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                    className="w-60 pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
                   />
                 </div>
-                <div className="relative flex items-center">
+                <div className="relative flex items-center justify-end">
                   <FaEnvelope className="absolute right-3 text-gray-400" />
                   <input
                     type="email"
