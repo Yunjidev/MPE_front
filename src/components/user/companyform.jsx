@@ -1,12 +1,13 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { FaUser, FaPhone, FaEnvelope, FaMapMarkerAlt, FaCity, FaBarcode, FaSearch, FaNetworkWired, FaPenAlt, FaCloudUploadAlt } from "react-icons/fa";
 import Button from "../Button/button"; // Assurez-vous d'importer le composant Button
 
 export default function RegisterCompany({ onSubmit }) {
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
   const [email, setEmail] = useState("");
-  const [adress, setAdress] = useState("");
+  const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [siret, setSiret] = useState("");
@@ -16,7 +17,7 @@ export default function RegisterCompany({ onSubmit }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await onSubmit({ name, contact, email, adress, city, zipcode, siret, search, network, description });
+    await onSubmit({ name, contact, email, address, city, zipcode, siret, search, network, description });
   };
 
   return (
@@ -24,109 +25,115 @@ export default function RegisterCompany({ onSubmit }) {
       <div className="relative border-form-1 group max-w-4xl w-full">
         <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
         <div className="bg-neutral-900 p-16 rounded-xl shadow-2xl relative z-10 transform transition duration-500 ease-in-out">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="w-full">
+          <h2 className="text-white text-center text-2xl mb-5">Création d'entreprise</h2>
+          <form onSubmit={handleSubmit} className="space-y-5 grid grid-cols-2 gap-4">
+            <div className="col-span-2 flex justify-center items-center">
+              <div className="border border-dashed border-gray-500 p-10 rounded-lg cursor-pointer text-gray-400 hover:bg-gray-800">
+                <FaCloudUploadAlt size="3x" />
+                <p className="mt-2">Cliquer pour ajouter des images</p>
+              </div>
+            </div>
+            <div className="relative flex items-center">
+              <FaUser className="absolute left-3 text-gray-400" />
               <input
                 type="text"
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Nom"
-                className="mt-1 block border-none w-full px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-3xl bg-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                placeholder="Nom Entreprise"
+                className="w-full pl-10 px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             </div>
-            <div className="w-full">
-              <input
-                type="text"
-                id="contact"
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}
-                placeholder="Contact"
-                className="mt-1 block border-none w-full px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-3xl bg-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-              />
-            </div>
-            <div className="w-full">
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Votre email"
-                className="mt-1 block border-none w-full px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-3xl bg-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-              />
-            </div>
-            <div className="w-full">
-              <input
-                type="text"
-                id="adress"
-                value={adress}
-                onChange={(e) => setAdress(e.target.value)}
-                placeholder="Adresse"
-                className="mt-1 block border-none w-full px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-3xl bg-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-              />
-            </div>
-            <div className="w-full">
-              <input
-                type="text"
-                id="city"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                placeholder="Ville"
-                className="mt-1 block border-none w-full px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-3xl bg-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-              />
-            </div>
-            <div className="w-full">
-              <input
-                type="text"
-                id="zipcode"
-                value={zipcode}
-                onChange={(e) => setZipcode(e.target.value)}
-                placeholder="Code Postal"
-                className="mt-1 block border-none w-full px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-3xl bg-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-              />
-            </div>
-            <div className="w-full">
+            <div className="relative flex items-center">
+              <FaBarcode className="absolute left-3 text-gray-400" />
               <input
                 type="text"
                 id="siret"
                 value={siret}
                 onChange={(e) => setSiret(e.target.value)}
                 placeholder="123 Numéro Siret"
-                className="mt-1 block border-none w-full px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-3xl bg-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="w-full pl-10 px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             </div>
-            <div className="w-full">
+            <div className="relative flex items-center">
+              <FaPhone className="absolute left-3 text-gray-400" />
+              <input
+                type="text"
+                id="contact"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+                placeholder="Contact"
+                className="w-full pl-10 px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
+            </div>
+            <div className="relative flex items-center">
+              <FaEnvelope className="absolute left-3 text-gray-400" />
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="E-mail"
+                className="w-full pl-10 px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
+            </div>
+            <div className="relative flex items-center">
+              <FaMapMarkerAlt className="absolute left-3 text-gray-400" />
+              <input
+                type="text"
+                id="address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Adresse"
+                className="w-full pl-10 px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
+            </div>
+            <div className="relative flex items-center">
+              <FaCity className="absolute left-3 text-gray-400" />
+              <input
+                type="text"
+                id="city"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                placeholder="Ville"
+                className="w-full pl-10 px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
+            </div>
+            <div className="relative flex items-center">
+              <FaSearch className="absolute left-3 text-gray-400" />
               <input
                 type="text"
                 id="search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="loupe"
-                className="mt-1 block border-none w-full px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-3xl bg-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                placeholder="Recherche"
+                className="w-full pl-10 px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             </div>
-            <div className="w-full">
+            <div className="relative flex items-center">
+              <FaNetworkWired className="absolute left-3 text-gray-400" />
               <input
                 type="text"
                 id="network"
                 value={network}
                 onChange={(e) => setNetwork(e.target.value)}
-                placeholder="Réseaux sociaux"
-                className="mt-1 block border-none w-full px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-3xl bg-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                placeholder="Réseaux Sociaux"
+                className="w-full pl-10 px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             </div>
-            <div className="w-full">
+            <div className="relative flex items-center col-span-2">
+              <FaPenAlt className="absolute left-3 text-gray-400" />
               <textarea
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Description de l'activité"
-                className="mt-1 block border-none w-full px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-3xl bg-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                rows="5"
+                className="w-full pl-10 px-3 py-2 shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                rows="4"
               />
             </div>
-            <div className="flex justify-center">
-              <Button type="submit">Envoyer</Button>
+            <div className="col-span-2 flex justify-center">
+              <Button type="submit">Soumettre</Button>
             </div>
           </form>
         </div>
@@ -137,5 +144,4 @@ export default function RegisterCompany({ onSubmit }) {
 
 RegisterCompany.propTypes = {
   onSubmit: PropTypes.func.isRequired,
-};
-
+}
