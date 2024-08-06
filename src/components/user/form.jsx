@@ -72,7 +72,7 @@ export default function UserForm({ onSubmit, mode }) {
             </div>
             <Button type="submit">{mode === "Inscription" ? "S'inscrire" : mode}</Button> {/* Mise Ã jour du texte */}
             <a className="text-blue-500 hover:text-blue-800 text-sm" href="#">
-              Forgot Password?
+              Mot de passe oublié ?
             </a>
           </form>
         </div>
