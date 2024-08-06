@@ -1,8 +1,18 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import {
-  FaUser, FaPhone, FaEnvelope, FaMapMarkerAlt, FaCity, FaBarcode,
-  FaNetworkWired, FaPenAlt, FaCloudUploadAlt, FaSearch, FaPlus, FaTimes
+  FaUser,
+  FaPhone,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaCity,
+  FaBarcode,
+  FaNetworkWired,
+  FaPenAlt,
+  FaCloudUploadAlt,
+  FaSearch,
+  FaPlus,
+  FaTimes,
 } from "react-icons/fa";
 import Button from "../Button/button";
 
@@ -14,14 +24,25 @@ export default function RegisterCompany({ onSubmit }) {
   const [city, setCity] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [siret, setSiret] = useState("");
-  const [activity, setActivity] = useState("");
+  const [activité, setActivity] = useState("");
   const [networks, setNetworks] = useState([]);
   const [currentNetwork, setCurrentNetwork] = useState("");
   const [description, setDescription] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await onSubmit({ name, contact, email, address, city, zipcode, siret, search, networks, description });
+    await onSubmit({
+      name,
+      contact,
+      email,
+      address,
+      city,
+      zipcode,
+      siret,
+      search,
+      networks,
+      description,
+    });
   };
 
   const handleAddNetwork = () => {
@@ -40,8 +61,13 @@ export default function RegisterCompany({ onSubmit }) {
       <div className="relative border-form-1 group max-w-4xl w-full p-6 md:p-8 lg:p-10">
         <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
         <div className="bg-neutral-900 p-6 md:p-8 lg:p-10 rounded-xl shadow-2xl relative z-10 transform transition duration-500 ease-in-out">
-          <h2 className="text-white text-center text-xl md:text-2xl mb-5">Création d'entreprise</h2>
-          <form onSubmit={handleSubmit} className="space-y-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <h2 className="text-white text-center text-xl md:text-2xl mb-5">
+            Création d'entreprise
+          </h2>
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-5 grid grid-cols-1 sm:grid-cols-2 gap-4"
+          >
             <div className="col-span-1 flex justify-center items-center">
               <div className="border border-dashed border-gray-500 p-8 rounded-lg cursor-pointer text-gray-400 hover:bg-gray-800">
                 <FaCloudUploadAlt size="3x" />
@@ -145,7 +171,10 @@ export default function RegisterCompany({ onSubmit }) {
             </div>
             <div className="col-span-1 sm:col-span-2">
               {networks.map((network, index) => (
-                <div key={index} className="flex items-center mb-2 bg-neutral-800 p-2 rounded-xl">
+                <div
+                  key={index}
+                  className="flex items-center mb-2 bg-neutral-800 p-2 rounded-xl"
+                >
                   <span className="text-white">{network}</span>
                   <button
                     type="button"
@@ -162,7 +191,7 @@ export default function RegisterCompany({ onSubmit }) {
               <select
                 id="activity"
                 value={activity}
-                onChange={(e) => setActivity(e.target.value)}
+                onChange={(e) => setSearch(e.target.value)}
                 className="w-full pl-10 pr-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
               >
                 <option value="">Sélectionner une prestation</option>
