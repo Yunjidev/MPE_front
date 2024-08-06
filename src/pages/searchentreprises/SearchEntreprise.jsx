@@ -10,14 +10,17 @@ const SearchEntreprise = () => {
     useEffect(() => {
         const fetchEntreprises = async () => {
             try {
-                const response = await getData("api/entreprises");
+                const response = await getData("enterprises");
+                console.log(response);
                 setEntreprises(response);
+                
             } catch (error) {
                 console.error('Error fetching entreprises:', error);
             }
         };
     
         fetchEntreprises();
+        
     },[]);
 
   return (
@@ -26,9 +29,9 @@ const SearchEntreprise = () => {
         <h1 className="text-center text-3xl font-bold mb-4 dark:text-white">Recherchez vos entreprises</h1>
         <IndexSearchbarEntreprises />
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {entreprises.map((entreprise) => (
-            <IndexCardsEntreprises key={entreprise.id} enterprise={entreprise} />
-          ))}
+        {entreprises.map((entreprise) => (
+          <IndexCardsEntreprises key={entreprise.id} entreprise={entreprise} />
+        ))}
         </div>
       </main>
     </div> 
