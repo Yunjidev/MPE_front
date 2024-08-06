@@ -14,7 +14,7 @@ export default function RegisterCompany({ onSubmit }) {
   const [city, setCity] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [siret, setSiret] = useState("");
-  const [search, setSearch] = useState("");
+  const [activity, setActivity] = useState("");
   const [network, setNetwork] = useState("");
   const [description, setDescription] = useState("");
 
@@ -136,9 +136,9 @@ export default function RegisterCompany({ onSubmit }) {
             <div className="relative flex items-center col-span-2">
               <FaSearch className="absolute left-3 text-gray-400" />
               <select
-                id="search"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                id="activity"
+                value={activity}
+                onChange={(e) => setActivity(e.target.value)}
                 className="w-full pl-10 pr-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
               >
                 <option value="">Sélectionner une prestation</option>
