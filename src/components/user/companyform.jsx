@@ -2,9 +2,10 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import {
   FaUser, FaPhone, FaEnvelope, FaMapMarkerAlt, FaCity, FaBarcode,
-  FaNetworkWired, FaPenAlt, FaCloudUploadAlt, FaSearch, FaPlus
+  FaPenAlt, FaCloudUploadAlt, FaSearch,
 } from "react-icons/fa";
 import Button from "../Button/button";
+import regions from "../enterprise/region-names.jsx";
 
 export default function RegisterCompany({ onSubmit }) {
   const [name, setName] = useState("");
@@ -15,8 +16,11 @@ export default function RegisterCompany({ onSubmit }) {
   const [zipcode, setZipcode] = useState("");
   const [siret, setSiret] = useState("");
   const [activity, setActivity] = useState("");
-  const [network, setNetwork] = useState("");
+  const [twitter, setTwitter] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [facebook, setFacebook] = useState("");
   const [description, setDescription] = useState("");
+  const [region, setRegion] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,52 +46,50 @@ export default function RegisterCompany({ onSubmit }) {
 
             {/* Fields to the right of the image upload */}
             <div className="col-span-2 grid grid-cols-2 gap-4">
-              <div className="col-span-2 grid grid-cols-2 gap-4">
-                {/* Name, Siret, Contact, Email Fields */}
-                <div className="relative flex items-center">
-                  <FaUser className="absolute left-3 text-gray-400" />
-                  <input
-                    type="text"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Nom Entreprise"
-                    className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                  />
-                </div>
-                <div className="relative flex items-center justify-end">
-                  <FaBarcode className="absolute right-3 text-gray-400" />
-                  <input
-                    type="text"
-                    id="siret"
-                    value={siret}
-                    onChange={(e) => setSiret(e.target.value)}
-                    placeholder="123 Numéro Siret"
-                    className="w-60 pr-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                  />
-                </div>
-                <div className="relative flex items-center">
-                  <FaPhone className="absolute left-3 text-gray-400" />
-                  <input
-                    type="text"
-                    id="contact"
-                    value={contact}
-                    onChange={(e) => setContact(e.target.value)}
-                    placeholder="Contact"
-                    className="w-60 pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                  />
-                </div>
-                <div className="relative flex items-center justify-end">
-                  <FaEnvelope className="absolute right-3 text-gray-400" />
-                  <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="E-mail"
-                    className="w-full pr-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                  />
-                </div>
+              {/* Name, Siret, Contact, Email Fields */}
+              <div className="relative flex items-center">
+                <FaUser className="absolute left-3 text-gray-400" />
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Nom Entreprise"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                />
+              </div>
+              <div className="relative flex items-center justify-end">
+                <FaBarcode className="absolute left-3 text-gray-400" />
+                <input
+                  type="text"
+                  id="siret"
+                  value={siret}
+                  onChange={(e) => setSiret(e.target.value)}
+                  placeholder="123 Numéro Siret"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                />
+              </div>
+              <div className="relative flex items-center">
+                <FaPhone className="absolute left-3 text-gray-400" />
+                <input
+                  type="text"
+                  id="contact"
+                  value={contact}
+                  onChange={(e) => setContact(e.target.value)}
+                  placeholder="Contact"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                />
+              </div>
+              <div className="relative flex items-center justify-end">
+                <FaEnvelope className="absolute left-3 text-gray-400" />
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="E-mail"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                />
               </div>
               <div className="relative flex items-center">
                 <FaMapMarkerAlt className="absolute left-3 text-gray-400" />
@@ -100,16 +102,31 @@ export default function RegisterCompany({ onSubmit }) {
                   className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
                 />
               </div>
+              <div className="relative flex items-center">
+                <select
+                  id="region"
+                  value={region}
+                  onChange={(e) => setRegion(e.target.value)}
+                  className="w-full pl-10 pr-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400"
+                >
+                  <option value="">Sélectionner une région</option>
+                  {regions.map((regionName, index) => (
+                    <option key={index} value={regionName}>
+                      {regionName}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="col-span-2 grid grid-cols-2 gap-4">
                 <div className="relative flex items-center">
-                  <FaCity className="absolute right-3 text-gray-400" />
+                  <FaCity className="absolute left-3 text-gray-400" />
                   <input
                     type="text"
                     id="city"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     placeholder="Ville"
-                    className="w-full pr-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                    className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
                   />
                 </div>
                 <div className="relative flex items-center">
@@ -124,35 +141,36 @@ export default function RegisterCompany({ onSubmit }) {
                   />
                 </div>
               </div>
-              <div className="relative flex items-center">
-                <input
-                  type="text"
-                  id="network"
-                  value={network}
-                  onChange={(e) => setNetwork(e.target.value)}
-                  placeholder="Réseaux Sociaux"
-                  className="w-full px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                />
-                <button
-                  title="Add New"
-                  className="group cursor-pointer ml-2 outline-none hover:rotate-90 duration-300"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="40px"
-                    height="40px"
-                    viewBox="0 0 24 24"
-                    className="stroke-purple-400 fill-none group-hover:fill-purple-800 group-active:stroke-purple-200 group-active:fill-purple-600 group-active:duration-0 duration-300"
-                  >
-                    <path
-                      d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                      strokeWidth="1.5"
-                    ></path>
-                    <path d="M8 12H16" strokeWidth="1.5"></path>
-                    <path d="M12 16V8" strokeWidth="1.5"></path>
-                  </svg>
-                </button>
-              </div>
+            </div>
+            <div className="relative flex items-center">
+              <input
+                type="text"
+                id="twitter"
+                value={twitter}
+                onChange={(e) => setTwitter(e.target.value)}
+                placeholder="Twitter"
+                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
+            </div>
+            <div className="relative flex items-center">
+              <input
+                type="text"
+                id="instagram"
+                value={instagram}
+                onChange={(e) => setInstagram(e.target.value)}
+                placeholder="Instagram"
+                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
+            </div>
+            <div className="relative flex items-center">
+              <input
+                type="text"
+                id="facebook"
+                value={facebook}
+                onChange={(e) => setFacebook(e.target.value)}
+                placeholder="Facebook"
+                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
             </div>
 
             {/* Dropdown */}
@@ -162,7 +180,7 @@ export default function RegisterCompany({ onSubmit }) {
                 id="activity"
                 value={activity}
                 onChange={(e) => setActivity(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="w-full pl-10 pr-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400"
               >
                 <option value="">Sélectionner votre métier</option>
                 <option value="prestation1">Métier 1</option>
