@@ -44,6 +44,11 @@ export default function SignOut() {
   };
 
   return (
-    <button onClick={handleSignOut}>Se déconnecter</button>
+    <button
+      onClick={handleSignOut}
+      className="text-black dark:text-white dark:hover:text-neutral-300 hover:text-neutral-600 mt-2"
+    >
+      Se déconnecter
+    </button>
   );
 }
