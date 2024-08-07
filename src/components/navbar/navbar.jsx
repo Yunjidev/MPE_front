@@ -45,7 +45,7 @@ const Navbar = () => {
     const fetchProfileData = async () => {
       if (user.isLogged && user.id) {
         try {
-          const data = await getData(`/users/${user.id}`);
+          const data = await getData(`users/${user.id}`);
           setProfile(data); // Mettre à jour l'état local avec les données de profil
         } catch (error) {
           console.error(error);

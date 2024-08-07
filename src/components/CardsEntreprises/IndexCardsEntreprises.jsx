@@ -2,9 +2,13 @@ import React from 'react';
 import indexcards from '../../../public/assets/img/indexcards.jpg';
 import { FaCalendarDay, FaWrench, FaMapMarkerAlt } from 'react-icons/fa';
 
-const IndexCardsEntreprises = ({ entreprise }) => {
+const IndexCardsEntreprises = ({ entreprise, disponibilites }) => {
   // Utilisez les props pour afficher les données de l'entreprise
   const { name, city, adress, description, photos } = entreprise;
+
+  const formatDisponibilites = (disponibilites) => {
+    return disponibilites.map(d => `${d.day}: ${d.start_hour} - ${d.end_hour}`).join(', ');
+  };
 
   return (
     <div className="card card-compact w-64 shadow-xl relative dark:bg-[#262626] dark:text-white light:bg-[#FDE8E8]">
@@ -22,8 +26,8 @@ const IndexCardsEntreprises = ({ entreprise }) => {
           <div className="flex flex-col items-start">
             <div className="flex items-center mb-2">
               <FaCalendarDay className="text-lg mr-2" />
-              <span className="text-sm">Prochaine Disponibilité </span>
-              {/* <span className="text-sm break-words">{prochainRendezVous}</span> */}
+              <span className="text-sm">Prochaine Disponibilité: </span>
+              <span className="text-sm break-words">{formatDisponibilites(disponibilites)}</span>
             </div>
 
             <div className="flex items-center mb-2">
