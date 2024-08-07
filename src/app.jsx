@@ -28,7 +28,7 @@ const MainLayout = ({ children }) => {
       <NavBar />
       <ToastContainer />
       <ParticlesDemo />
-      <main className="container mx-auto w-5/6">
+      <main className="container mx-auto lg:w-5/6 w-full">
         {children}
         <SocialLinks />
       </main>
