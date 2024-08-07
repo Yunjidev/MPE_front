@@ -40,11 +40,11 @@ export default function RegisterCompany({ onSubmit }) {
 
             {/* Image Upload */}
             <div className="col-span-1 flex justify-center items-center">
-              <div className="border border-dashed border-gray-500 p-10 rounded-lg cursor-pointer text-gray-400 hover:bg-gray-800">
-                <FaCloudUploadAlt size="3x" />
-                <p className="mt-2">Cliquer pour ajouter le logo</p>
+              <div className="border border-gray-500 p-10 rounded-full cursor-pointer text-gray-400 hover:bg-gray-800 h-56 w-56 flex flex-col justify-center items-center">
+                <p className="mt-2 text-center text-sm">Cliquez pour ajouter votre logo</p>
               </div>
             </div>
+
 
             {/* Fields to the right of the image upload */}
             <div className="col-span-2 grid grid-cols-2 gap-4">
@@ -175,6 +175,18 @@ export default function RegisterCompany({ onSubmit }) {
                 value={facebook}
                 onChange={(e) => setFacebook(e.target.value)}
                 placeholder="Facebook"
+                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
+            </div>
+
+            <div className="relative flex items-center col-span-3">
+              <FaFacebook className="absolute left-3 text-gray-400" />
+              <input
+                type="text"
+                id="facebook"
+                value={facebook}
+                onChange={(e) => setFacebook(e.target.value)}
+                placeholder="Site internet"
                 className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             </div>
