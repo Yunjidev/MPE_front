@@ -60,10 +60,10 @@ export default function Pricing() {
     ];
 
     return (
-        <section className='py-14'>
+        <section className='py-14 mt-12'>
             <div className="max-w-screen-xl mx-auto px-4 text-white md:px-8">
                 <div className='relative max-w-xl mx-auto sm:text-center'>
-                    <h3 className='dark:text-white text-black text-3xl font-bold sm:text-4xl text-center'>
+                    <h3 className='dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text text-3xl font-bold sm:text-4xl text-center'>
                         Nos offres Premium
                     </h3>
                     <div className='mt-3 max-w-xl text-center'>
