@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
 import { IoIosArrowDown } from "react-icons/io";
 
 const DropdownMenu = ({ category, items }) => {

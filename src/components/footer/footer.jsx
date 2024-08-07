@@ -1,31 +1,47 @@
-import React from 'react';
-import "./footer.css"
-import { BsInstagram, BsWhatsapp, BsFacebook, BsTwitterX } from 'react-icons/bs';
+/* eslint-disable react/no-unescaped-entities */
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { BsInstagram, BsFacebook, BsTwitterX, BsEnvelope } from 'react-icons/bs';
+import "./footer.css";
 
 const Footer = () => {
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+  }, []);
+
   return (
     <footer className="footer flex justify-between items-center p-4 w-full">
       <div className="flex-1"></div>
 
       <div className="flex flex-col items-center">
-        <a href="http://localhost:5173/contact" className="footer-link">Contact</a>
-        <a href="http://localhost:5173/faq" className="footer-link">F.A.Q</a>
-        <a href="http://localhost:5173/team" className="footer-link">L'équipe</a>
-        <p>Prix</p>
-        <p>© 2024 MaPetiteEntreprise. Tout droits réservés.</p>
+        <Link to="/contact" className="footer-link hover:text-orange-500 font-semibold">Contact</Link>
+        <Link to="/faq" className="footer-link hover:text-orange-500 font-semibold">F.A.Q</Link>
+        <Link to="/about" className="footer-link hover:text-orange-500 font-semibold">À Propos de Nous</Link>
+        <Link to="/pricing" className="footer-link hover:text-orange-500 font-semibold">Tarifs</Link>
+        <p className="font-semibold">© {currentYear} MaPetiteEntreprise. Tout droits réservés.</p>
       </div>
 
-      <div className="flex flex-col items-end flex-1 mr-5">
-        <p className="mr-3">Suivez-nous sur les réseaux</p>
+      <div className="flex flex-col items-end flex-1 mr-24">
+        <p className="mr-3 font-semibold">Suivez-nous sur les réseaux</p>
         <div className="flex space-x-4 mr-4">
-          <BsInstagram size={24} />
-          <BsWhatsapp size={24} />
-          <BsFacebook size={24} />
-          <BsTwitterX size={24} />
+          <a href="https://www.instagram.com" className="footer-icon hover:text-orange-500">
+            <BsInstagram size={24} />
+          </a>
+          <a href="https://www.facebook.com" className="footer-icon hover:text-orange-500">
+            <BsFacebook size={24} />
+          </a>
+          <a href="https://twitter.com" className="footer-icon hover:text-orange-500">
+            <BsTwitterX size={24} />
+          </a>
+          <a href="mailto:contact@example.com" className="footer-icon hover:text-orange-500">
+            <BsEnvelope size={24} />
+          </a>
         </div>
-        <p>Conditions générales de vente</p>
-        <p className="mr-2">Politique de confidentialité</p>
-        <p className="mr-9">Mentions légales</p>
+        <Link to="/conditions" className="font-semibold hover:text-orange-500">Conditions générales de vente</Link>
+        <Link to="/privacy" className="font-semibold mr-2 hover:text-orange-500">Politique de confidentialité</Link>
+        <Link to="/legal" className="font-semibold mr-9 hover:text-orange-500">Mentions légales</Link>
       </div>
     </footer>
   );
