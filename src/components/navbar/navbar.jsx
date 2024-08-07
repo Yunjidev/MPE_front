@@ -73,14 +73,14 @@ const Navbar = () => {
               {userType === 'client' ? (
                 <>
                   <Link to="/home-client" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Accueil</Link>
-                  <a href="#" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Recherche</a>
+                  <Link to="/searchentreprise" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Recherche</Link>
                   <Link to="/faq" className='hover:text-neutral-600 hover:dark:text-neutral-300'>FAQ</Link>
                   <Link to="/about" className='hover:text-neutral-600 hover:dark:text-neutral-300'>À Propos</Link>
                 </>
               ) : userType === 'enterprise' ? (
                 <>
                   <Link to="/home-enterprise" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Accueil</Link>
-                  <a href="#" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Recherche</a>
+                  <Link to="/searchentreprise" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Recherche</Link>
                   <Link to="/pricing" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Tarifs</Link>
                   <Link to="/faq" className='hover:text-neutral-600 hover:dark:text-neutral-300'>FAQ</Link>
                   <Link to="/about" className='hover:text-neutral-600 hover:dark:text-neutral-300'>À Propos</Link>

@@ -11,7 +11,7 @@ const IndexCardsEntreprises = ({ entreprise, disponibilites }) => {
   };
 
   return (
-    <div className="card card-compact w-64 shadow-xl relative dark:bg-[#262626] dark:text-white light:bg-[#FDE8E8]">
+    <div className="card card-compact w-auto shadow-xl relative dark:bg-[#262626] dark:text-white light:bg-[#FDE8E8]">
       <div className="rating gap-1 absolute top-0 right-0 p-4">
         <input type="radio" name="rating-3" className="mask mask-heart bg-red-400" />
       </div>

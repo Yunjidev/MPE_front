@@ -38,24 +38,24 @@ const SearchEntreprise = () => {
         
     },[]);
 
-  return (
-    <div className="font-sans">
-      <main className="p-4 pt-14">
-        <h1 className="text-center text-3xl font-bold mb-4 dark:text-white">Recherchez vos entreprises</h1>
-        <IndexSearchbarEntreprises />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
-        {entreprises.map((entreprise) => {
-                        // Trouver les disponibilités pour cette entreprise
-                        const entrepriseDisponibilites = disponibilities.filter(d => d.Enterprise_id === entreprise.id);
-                        console.log(entrepriseDisponibilites);
-                        return (
-                            <IndexCardsEntreprises key={entreprise.id} entreprise={entreprise} disponibilites={entrepriseDisponibilites} />
-                        );
-                    })}
-        </div>
-      </main>
-    </div> 
-  );
-};
+    return (
+        <div className="font-sans flex flex-col items-center justify-center min-h-screen">
+          
+            <h1 className="text-center text-2xl sm:text-3xl font-bold mb-4 dark:text-white">Recherchez vos entreprises</h1>
+            <IndexSearchbarEntreprises />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8 md:gap-12 lg:gap-6">
+              {entreprises.map((entreprise) => {
+                // Trouver les disponibilités pour cette entreprise
+                const entrepriseDisponibilites = disponibilities.filter(d => d.Enterprise_id === entreprise.id);
+                console.log(entrepriseDisponibilites);
+                return (
+                  <IndexCardsEntreprises key={entreprise.id} entreprise={entreprise} disponibilites={entrepriseDisponibilites} />
+                );
+              })}
+            </div>
+          
+        </div> 
+      );
+      };
 
 export default SearchEntreprise;
