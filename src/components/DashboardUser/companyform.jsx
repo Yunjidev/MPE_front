@@ -32,8 +32,10 @@ export default function RegisterCompany({ onSubmit }) {
   const [description, setDescription] = useState("");
   const [region, setRegion] = useState("");
   const [website, setWebsite] = useState("");
-  const [photos, setPhotos] = useState("");
-  const [logo, setLogo] = useState("");
+  const [photos, setPhotos] = useState(null);
+  const [photoUrl, setPhotoUrl] = useState(null);
+  const [logo, setLogo] = useState(null);
+  const [logoUrl, setLogoUrl] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,9 +54,20 @@ export default function RegisterCompany({ onSubmit }) {
       photos,
     });
   };
+  const handleLogoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setLogo(file);
+      setLogoUrl(URL.createObjectURL(file));
+    }
+  };
 
-  const handleFileChange = (e) => {
-    setImage(e.target.files[0]);
+  const handlePhotosChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPhotos(file);
+      setPhotoUrl(URL.createObjectURL(file));
+    }
   };
 
   return (
@@ -76,18 +89,27 @@ export default function RegisterCompany({ onSubmit }) {
                 htmlFor="logo-upload"
                 className="border border-gray-500 p-10 rounded-full cursor-pointer text-gray-400 hover:bg-gray-800 h-56 w-56 flex flex-col justify-center items-center"
               >
-                <p className="mt-2 text-center text-sm">
-                  Cliquez pour ajouter votre logo
-                </p>
+                {logoUrl ? (
+                  <img
+                    src={logoUrl}
+                    alt="Logo"
+                    className="h-full w-full object-cover rounded-full"
+                  />
+                ) : (
+                  <>
+                    <p className="mt-2 text-center text-sm">
+                      Cliquez pour ajouter votre logo
+                    </p>
+                  </>
+                )}
               </label>
               <input
                 id="logo-upload"
                 type="file"
-                onChange={handleFileChange}
+                onChange={handleLogoChange}
                 className="hidden"
               />
             </div>
-
             {/* Fields to the right of the image upload */}
             <div className="flex flex-col lg:col-span-2 lg:grid lg:grid-cols-2 gap-6">
               {/* Name, Siret, Contact, Email Fields */}
@@ -218,7 +240,6 @@ export default function RegisterCompany({ onSubmit }) {
                 className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             </div>
-
             <div className="relative flex items-center col-span-3">
               <CgWebsite className="absolute left-3 text-gray-400" />
               <input
@@ -230,7 +251,6 @@ export default function RegisterCompany({ onSubmit }) {
                 className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             </div>
-
             {/* Dropdown */}
             <div className="relative flex items-center col-span-3">
               <FaSearch className="absolute left-3 text-gray-400" />
@@ -246,7 +266,6 @@ export default function RegisterCompany({ onSubmit }) {
                 <option value="prestation3">Métier 3</option>
               </select>
             </div>
-
             {/* Description */}
             <div className="relative flex items-center col-span-3">
               <FaPenAlt className="absolute left-3 top-3 text-gray-400" />
@@ -259,26 +278,36 @@ export default function RegisterCompany({ onSubmit }) {
                 rows="4"
               />
             </div>
-
             {/* Image Upload */}
-            <div className="col-span-3">
+            <div className="col-span-3 flex justify-center items-center">
               <label
-                htmlFor="photo-upload"
-                className="border flex flex-row justify-center items-center border-dashed border-gray-500 p-10 h-20 w-full rounded-lg cursor-pointer text-gray-400 hover:bg-gray-800"
+                htmlFor="photos-upload"
+                className="border border-dashed border-gray-500 p-10 h-20 w-full rounded-lg cursor-pointer text-gray-400 hover:bg-gray-800 flex flex-row justify-center items-center"
               >
-                <FaCloudUploadAlt className="w-16 h-16 mx-5" size="3x" />
-                <p className="text-white">Cliquer pour ajouter des images</p>
+                {photoUrl ? (
+                  <img
+                    src={photoUrl}
+                    alt="Photo"
+                    className="h-20 w-auto object-cover "
+                  />
+                ) : (
+                  <>
+                    <FaCloudUploadAlt className="w-16 h-16 mx-5" size="3x" />
+                    <p className="text-white">
+                      Cliquer pour ajouter des images
+                    </p>
+                  </>
+                )}
               </label>
               <input
-                id="photo-upload"
+                id="photos-upload"
                 type="file"
-                name="photo"
-                onChange={handleFileChange}
+                name="photos"
+                onChange={handlePhotosChange}
                 className="hidden"
               />
             </div>
-
-            {/* Submit Button */}
+            ); }{/* Submit Button */}
             <div className="col-span-3 flex justify-center">
               <Button type="submit">Soumettre</Button>
             </div>
