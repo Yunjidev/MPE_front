@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { MdEmail } from 'react-icons/md'; // Import de l'icône d'enveloppe
+import { MdEmail } from 'react-icons/md';
 
 export default function Section01() {
   return (
@@ -8,8 +8,7 @@ export default function Section01() {
         <div className="flex flex-col justify-center max-w-[1000px]">
           <h3 className="text-3xl md:text-4xl lg:text-5xl mb-8 relative w-fit">
             <span className="text-orange-500 font-semibold">Qui sommes - nous ?</span>
-            <br />
-              L'entreprise
+            <span className="text-gray-500">L'entreprise</span>
             <span className="block h-1 bg-orange-500 transform scale-x-0 origin-bottom-right transition-transform duration-150 ease-out hover:scale-x-100 origin-bottom-left absolute bottom-0 left-0"></span>
           </h3>
           <p className="tracking-wide text-sm md:text-base font-semibold lg:text-lg pb-4 dark:text-gray-300 text-gray-700">
@@ -23,7 +22,7 @@ export default function Section01() {
           </p>
           <a 
             href="mailto:contactblfdev@gmail.com" 
-            className="bg-orange-500 text-white font-semibold py-2 px-4 rounded-xl text-center border-2 border-white transition duration-300 ease-in-out hover:bg-orange-600 dark:bg-[#232323] dark:border-gray-600 dark:hover:bg-neutral-800 shadow-md dark:shadow-none hover:shadow-lg flex items-center justify-center gap-2"
+            className="bg-orange-500 text-black dark:text-white font-semibold py-2 px-4 rounded-xl text-center border-2 border-white transition duration-300 ease-in-out hover:bg-orange-600 dark:bg-[#232323] dark:border-gray-600 dark:hover:bg-neutral-800 shadow-md dark:shadow-none hover:scale-105 transition duration-300 ease-in-out flex items-center justify-center gap-2"
           >
             <MdEmail className="text-lg" />
             Contactez-nous par email
@@ -34,7 +33,7 @@ export default function Section01() {
         <img
           src="https://images.unsplash.com/photo-1618477247222-acbdb0e159b3?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Description"
-          className="max-w-[1000px] w-full rounded-xl" // Ajout de la classe rounded-xl ici
+          className="max-w-[1000px] w-full rounded-xl"
         />
       </div>
     </section>

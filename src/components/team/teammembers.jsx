@@ -12,17 +12,17 @@ const TeamMember = ({ firstname, lastname, email, github, linkedin, photo, descr
       <p className="mt-2 dark:text-white-800">{description}</p>
       <div className="flex justify-center space-x-4 mt-2">
         {github && (
-          <a href={github} className="text-gray-600 hover:text-gray-800" target="_blank" rel="noopener noreferrer">
+          <a href={github} className="text-gray-600 dark:hover:text-orange-300 hover:text-gray-800" target="_blank" rel="noopener noreferrer">
             <FaGithub size={24} />
           </a>
         )}
         {linkedin && (
-          <a href={linkedin} className="text-gray-600 hover:text-gray-800" target="_blank" rel="noopener noreferrer">
+          <a href={linkedin} className="text-gray-600 dark:hover:text-orange-300 hover:text-gray-800" target="_blank" rel="noopener noreferrer">
             <FaLinkedin size={24} />
           </a>
         )}
       {email && (
-          <a href={`mailto:${email}`} className="text-gray-600 hover:text-gray-800">
+          <a href={`mailto:${email}`} className="text-gray-600 dark:hover:text-orange-300 hover:text-gray-800">
             <GrMail size={24} />
           </a>
         )}

@@ -9,7 +9,7 @@ export default function Section02() {
           <h3 className="text-3xl md:text-4xl lg:text-5xl mb-8 relative w-fit">
             <span className="text-orange-500 font-semibold">Nos Développeurs</span>
             <br />
-            Formation & équipe
+            <span className="text-gray-500">Formation & équipe</span>
             <span className="block h-1 bg-orange-500 transform scale-x-0 origin-bottom-right transition-transform duration-150 ease-out hover:scale-x-100 origin-bottom-left absolute bottom-0 left-0"></span>
           </h3>
           <p className="tracking-wide text-sm md:text-base font-semibold lg:text-lg pb-4 dark:text-gray-300 text-gray-700">
