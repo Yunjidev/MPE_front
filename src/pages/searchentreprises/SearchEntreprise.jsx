@@ -12,7 +12,7 @@ const SearchEntreprise = () => {
         const fetchEntreprises = async () => {
             try {
                 const response = await getData("enterprises");
-                console.log(response);
+                // console.log(response);
                 setEntreprises(response);
                 
             } catch (error) {
@@ -23,7 +23,7 @@ const SearchEntreprise = () => {
         const fetchDisponibilites = async () => {
             try {
                 const disponibilitesResponse = await getData("disponibilities");
-                console.log(disponibilitesResponse);
+                // console.log(disponibilitesResponse);
                 const sortedDisponibilites = disponibilitesResponse.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
                 const futureDisponibilites = sortedDisponibilites.filter(d => new Date(d.createdAt) > new Date());
                 setDisponibilites(futureDisponibilites);
@@ -47,7 +47,7 @@ const SearchEntreprise = () => {
               {entreprises.map((entreprise) => {
                 // Trouver les disponibilités pour cette entreprise
                 const entrepriseDisponibilites = disponibilities.filter(d => d.Enterprise_id === entreprise.id);
-                console.log(entrepriseDisponibilites);
+                
                 return (
                   <IndexCardsEntreprises key={entreprise.id} entreprise={entreprise} disponibilites={entrepriseDisponibilites} />
                 );
