@@ -15,6 +15,7 @@ import { FaXTwitter, FaInstagram, FaFacebook } from "react-icons/fa6";
 import { MdOutlineAlternateEmail, MdOutlineAreaChart } from "react-icons/md";
 import Button from "../Button/button";
 import regions from "../enterprise/region-names.jsx";
+import { CgWebsite } from "react-icons/cg";
 
 export default function RegisterCompany({ onSubmit }) {
   const [name, setName] = useState("");
@@ -25,12 +26,12 @@ export default function RegisterCompany({ onSubmit }) {
   const [zipcode, setZipcode] = useState("");
   const [siret, setSiret] = useState("");
   const [activity, setActivity] = useState("");
-  const [website, setWebsite] = useState("");
   const [twitter, setTwitter] = useState("");
   const [instagram, setInstagram] = useState("");
   const [facebook, setFacebook] = useState("");
   const [description, setDescription] = useState("");
   const [region, setRegion] = useState("");
+  const [website, setWebsite] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,16 +44,13 @@ export default function RegisterCompany({ onSubmit }) {
       zipcode,
       siret,
       search,
-      website,
-      facebook,
-      instagram,
-      twitter,
+      network,
       description,
     });
   };
 
   return (
-    <div className="flex items-center justify-center bg-neutral-900">
+    <div className="mt-8 mb-4 flex items-center justify-center bg-neutral-900">
       <div className="relative border-form-1 group max-w-8xl w-full p-1">
         <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
         <div className="bg-neutral-900 p-10 rounded-xl shadow-xl relative z-10 transform transition duration-500 ease-in-out">
@@ -62,18 +60,19 @@ export default function RegisterCompany({ onSubmit }) {
           <hr className="w-1/2 my-4 border-t-2 border-gray-400  mx-auto" />
           <form
             onSubmit={handleSubmit}
-            className="space-y-5 grid grid-cols-3 gap-4"
+            className="flex flex-col lg:space-y-5 lg:grid lg:grid-cols-3 gap-3"
           >
-            {/* Image Upload */}
+            {/* Logo Image */}
             <div className="col-span-1 flex justify-center items-center">
-              <div className="border border-dashed border-gray-500 p-10 rounded-lg cursor-pointer text-gray-400 hover:bg-gray-800">
-                <FaCloudUploadAlt size="3x" />
-                <p className="mt-2">Cliquer pour ajouter le logo</p>
+              <div className="border border-gray-500 p-10 rounded-full cursor-pointer text-gray-400 hover:bg-gray-800 h-56 w-56 flex flex-col justify-center items-center">
+                <p className="mt-2 text-center text-sm">
+                  Cliquez pour ajouter votre logo
+                </p>
               </div>
             </div>
 
             {/* Fields to the right of the image upload */}
-            <div className="col-span-2 grid grid-cols-2 gap-4">
+            <div className="flex flex-col lg:col-span-2 lg:grid lg:grid-cols-2 gap-6">
               {/* Name, Siret, Contact, Email Fields */}
               <div className="relative flex items-center">
                 <FaUser className="absolute left-3 text-gray-400" />
@@ -146,29 +145,27 @@ export default function RegisterCompany({ onSubmit }) {
                   ))}
                 </select>
               </div>
-              <div className="col-span-2 grid grid-cols-2 gap-4">
-                <div className="relative flex items-center">
-                  <FaCity className="absolute left-3 text-gray-400" />
-                  <input
-                    type="text"
-                    id="city"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    placeholder="Ville"
-                    className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                  />
-                </div>
-                <div className="relative flex items-center">
-                  <FaEnvelope className="absolute left-3 text-gray-400" />
-                  <input
-                    type="text"
-                    id="zipcode"
-                    value={zipcode}
-                    onChange={(e) => setZipcode(e.target.value)}
-                    placeholder="Code Postal"
-                    className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                  />
-                </div>
+              <div className="relative flex items-center">
+                <FaCity className="absolute left-3 text-gray-400" />
+                <input
+                  type="text"
+                  id="city"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  placeholder="Ville"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                />
+              </div>
+              <div className="relative flex items-center">
+                <FaEnvelope className="absolute left-3 text-gray-400" />
+                <input
+                  type="text"
+                  id="zipcode"
+                  value={zipcode}
+                  onChange={(e) => setZipcode(e.target.value)}
+                  placeholder="Code Postal"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                />
               </div>
             </div>
             <div className="relative flex items-center">
@@ -204,8 +201,9 @@ export default function RegisterCompany({ onSubmit }) {
                 className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             </div>
-            <div className="relative flex items-center">
-              <FaFacebook className="absolute left-3 text-gray-400" />
+
+            <div className="relative flex items-center col-span-3">
+              <CgWebsite className="absolute left-3 text-gray-400" />
               <input
                 type="text"
                 id="website"
@@ -246,10 +244,10 @@ export default function RegisterCompany({ onSubmit }) {
             </div>
 
             {/* Image Upload */}
-            <div className="col-span-1 flex justify-center items-center">
-              <div className="border border-dashed border-gray-500 p-10 rounded-lg cursor-pointer text-gray-400 hover:bg-gray-800">
-                <FaCloudUploadAlt size="3x" />
-                <p className="mt-2">Cliquer pour ajouter des images</p>
+            <div className="col-span-3">
+              <div className="border flex flex-row justify-center items-center border-dashed border-gray-500 p-10 h-20 w-full rounded-lg cursor-pointer text-gray-400 hover:bg-gray-800">
+                <FaCloudUploadAlt className="w-16 h-16 mx-5" size="3x" />
+                <p className="text-white">Cliquer pour ajouter des images</p>
               </div>
             </div>
 
