@@ -6,6 +6,7 @@ const HomeEnterprise = () => {
   return (
     <>
     <Jumbotron />
+    <PresentationEnterprise />
     <Pricing />
 
     </>

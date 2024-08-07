@@ -1,8 +1,8 @@
-import { AnimatedBeamMultipleOutputDemo } from "@/components/home/animatedbeamdemo";
+
 const HomeClient = () => {
   return (
   <div>Bienvenue, Client !
-    <AnimatedBeamMultipleOutputDemo />
+
   </div>);
 };
 
