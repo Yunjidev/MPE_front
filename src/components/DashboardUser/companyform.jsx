@@ -32,8 +32,8 @@ export default function RegisterCompany({ onSubmit }) {
   const [description, setDescription] = useState("");
   const [region, setRegion] = useState("");
   const [website, setWebsite] = useState("");
-  const [photos, setPhotos] = useState(null);
-  const [photoUrl, setPhotoUrl] = useState(null);
+  const [photos, setPhotos] = useState([]);
+  const [photoUrls, setPhotoUrls] = useState([]);
   const [logo, setLogo] = useState(null);
   const [logoUrl, setLogoUrl] = useState(null);
 
@@ -63,16 +63,17 @@ export default function RegisterCompany({ onSubmit }) {
   };
 
   const handlePhotosChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setPhotos(file);
-      setPhotoUrl(URL.createObjectURL(file));
-    }
+    const files = Array.from(e.target.files);
+    const newFiles = files.slice(0, 3 - photos.length);
+    setPhotos((prevPhotos) => [...prevPhotos, ...newFiles]);
+
+    const newPhotoUrls = files.map((file) => URL.createObjectURL(file));
+    setPhotoUrls((prevPhotoUrls) => [...prevPhotoUrls, ...newPhotoUrls]);
   };
 
   return (
-    <div className="mt-8 mb-4 flex items-center justify-center bg-neutral-900">
-      <div className="relative border-form-1 group max-w-8xl w-full p-1">
+    <div className="mt-12 mb-8 flex items-center justify-center bg-neutral-900">
+      <div className="relative border-form-1 group max-w-8xl w-full">
         <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
         <div className="bg-neutral-900 p-10 rounded-xl shadow-xl relative z-10 transform transition duration-500 ease-in-out">
           <h2 className="text-white text-center text-2xl mb-5">
@@ -279,35 +280,34 @@ export default function RegisterCompany({ onSubmit }) {
               />
             </div>
             {/* Image Upload */}
-            <div className="col-span-3 flex justify-center items-center">
+            <div className="col-span-3 flex flex-col justify-center items-center">
               <label
                 htmlFor="photos-upload"
                 className="border border-dashed border-gray-500 p-10 h-20 w-full rounded-lg cursor-pointer text-gray-400 hover:bg-gray-800 flex flex-row justify-center items-center"
               >
-                {photoUrl ? (
-                  <img
-                    src={photoUrl}
-                    alt="Photo"
-                    className="h-20 w-auto object-cover "
-                  />
-                ) : (
-                  <>
-                    <FaCloudUploadAlt className="w-16 h-16 mx-5" size="3x" />
-                    <p className="text-white">
-                      Cliquer pour ajouter des images
-                    </p>
-                  </>
-                )}
+                <FaCloudUploadAlt className="w-16 h-16 mx-5" />
+                <p className="text-white">Cliquer pour ajouter des images</p>
               </label>
               <input
                 id="photos-upload"
                 type="file"
                 name="photos"
+                multiple
                 onChange={handlePhotosChange}
                 className="hidden"
               />
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-4 w-full">
+                {photoUrls.map((url, index) => (
+                  <img
+                    key={index}
+                    src={url}
+                    alt={`Photo ${index + 1}`}
+                    className="h-40 w-40 col-span-1 object-cover rounded-lg justify-self-center"
+                  />
+                ))}
+              </div>
             </div>
-            ); }{/* Submit Button */}
+            {/* Submit Button */}
             <div className="col-span-3 flex justify-center">
               <Button type="submit">Soumettre</Button>
             </div>
