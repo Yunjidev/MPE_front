@@ -1,47 +1,54 @@
 /* eslint-disable no-unused-vars */
+//Général
 import { useEffect } from 'react';
-import PropTypes from "prop-types";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ParticlesDemo from "./components/ParticlesDemo";
-import NavBar from "./components/navbar/navbar";
-import Footer from "./components/footer/footer";
-import UserChoiceModal from "./components/home/UserChoiceModal";
-import Home from "./pages/home/home";
-import HomeClient from "./pages/home/HomeClient";
-import HomeEnterprise from "./pages/home/HomeEntreprise";
-import Signup from "./components/user/signup";
-import Signin from "./components/user/signin";
-import Team from "./pages/team/team";
-import Contact from "./pages/contact/contact";
-import FAQ from "./pages/FAQ/FAQ";
-import RegisterCompany from './pages/user/registercompany';
-import SocialLinks from "./components/SocialLinks/sociallinks";
-import { UserProvider } from './context/UserContext'; // Importer UserProvider
+import PropTypes from 'prop-types';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useAtom, Provider } from 'jotai';
 import { ToastContainer } from 'react-toastify';
+import { userAtom } from './store/user';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAtom, Provider } from "jotai";
-import { userAtom } from "./store/user";
 
-const MainLayout = ({ children }) => {
-  return (
-    <>
-      <NavBar />
-      <ToastContainer />
-      <ParticlesDemo />
-      <main className="container mx-auto w-5/6">
-        {children}
-        <SocialLinks />
-      </main>
-      <Footer />
-    </>
-  );
-};
+//Context
+import { UserProvider } from './context/UserContext';
+import ScrollToTop from './context/Scrolltotop';
+
+
+//Components
+import ParticlesDemo from './components/ParticlesDemo';
+import NavBar from './components/navbar/navbar';
+import Footer from './components/footer/footer';
+import SocialLinks from './components/SocialLinks/sociallinks';
+import UserChoiceModal from './components/home/UserChoiceModal';
+import Signup from './components/user/signup';
+import Signin from './components/user/signin';
+
+//Pages
+import Home from './pages/home/home';
+import HomeClient from './pages/home/HomeClient';
+import HomeEnterprise from './pages/home/HomeEntreprise';
+import Team from './pages/team/team';
+import Contact from './pages/contact/contact';
+import FAQ from './pages/FAQ/FAQ';
+import RegisterCompany from './pages/user/registercompany';
+import Pricing_page from './components/pricing_page/pricing_page';
+
+const MainLayout = ({ children }) => (
+  <>
+    <NavBar />
+    <ToastContainer />
+    <ParticlesDemo />
+    <main className="container mx-auto w-5/6">
+      {children}
+      <SocialLinks />
+    </main>
+    <Footer />
+  </>
+);
 
 function App() {
   const [user, setUser] = useAtom(userAtom);
 
   useEffect(() => {
-    // Charger l'état initial de l'utilisateur à partir du stockage local
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
       setUser(JSON.parse(savedUser));
@@ -52,6 +59,7 @@ function App() {
     <Provider>
       <UserProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <MainLayout>
             <Routes>
               <Route path="/" element={<UserChoiceModal />} />
@@ -64,6 +72,7 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/FAQ" element={<FAQ />} />
               <Route path="/register-company" element={<RegisterCompany />} />
+              <Route path="/pricing" element={<Pricing_page />} />
             </Routes>
           </MainLayout>
         </BrowserRouter>
