@@ -25,6 +25,7 @@ export default function RegisterCompany({ onSubmit }) {
   const [zipcode, setZipcode] = useState("");
   const [siret, setSiret] = useState("");
   const [activity, setActivity] = useState("");
+  const [website, setWebsite] = useState("");
   const [twitter, setTwitter] = useState("");
   const [instagram, setInstagram] = useState("");
   const [facebook, setFacebook] = useState("");
@@ -42,7 +43,10 @@ export default function RegisterCompany({ onSubmit }) {
       zipcode,
       siret,
       search,
-      network,
+      website,
+      facebook,
+      instagram,
+      twitter,
       description,
     });
   };
@@ -197,6 +201,17 @@ export default function RegisterCompany({ onSubmit }) {
                 value={facebook}
                 onChange={(e) => setFacebook(e.target.value)}
                 placeholder="Facebook"
+                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
+            </div>
+            <div className="relative flex items-center">
+              <FaFacebook className="absolute left-3 text-gray-400" />
+              <input
+                type="text"
+                id="website"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+                placeholder="Website"
                 className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             </div>
