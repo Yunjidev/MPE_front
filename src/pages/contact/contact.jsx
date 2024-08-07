@@ -1,5 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
 // src/pages/Contact.js
-import React from 'react';
 import ContactForm from '../../components/contact/ContactForm';
 import ContactInfo from '../../components/contact/ContactInfo';
 

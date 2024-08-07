@@ -1,0 +1,8 @@
+.footer {
+    background-image: url('../../assets/footermpe.png');
+    background-size: cover; 
+    background-position: center -40px; 
+    background-repeat: no-repeat;
+    min-height: 215px; /* Augmente la hauteur minimale du footer */
+    color: white; 
+}

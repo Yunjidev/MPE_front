@@ -1,6 +1,9 @@
 
 const HomeClient = () => {
-  return <div>Bienvenue, Client !</div>;
+  return (
+  <div>Bienvenue, Client !
+
+  </div>);
 };
 
 export default HomeClient;
