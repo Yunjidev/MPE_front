@@ -17,11 +17,11 @@ const IndexCardsEntreprises = ({ entreprise, disponibilites }) => {
       </div>
       <figure>
         {/* Utilisez la photo de l'entreprise si disponible */}
-        <img src={photos[0] || indexcards} alt={name} className="rounded-3xl"/>
+        <img src={photos[0] || indexcards} alt={name} className="rounded-3xl" />
       </figure>
       <div className="card-body border-t-4 border-gray-100 border-opacity-20 mt-4">
         <h2 className="card-title">{`${name}`}</h2>
-        
+
         <div className="flex justify-between gap-4">
           <div className="flex flex-col items-start">
             <div className="flex items-center mb-2">
@@ -36,7 +36,7 @@ const IndexCardsEntreprises = ({ entreprise, disponibilites }) => {
             </div>
 
             <div className="flex items-center mb-2">
-              <FaWrench className="text-lg mr-2"/>
+              <FaWrench className="text-lg mr-2" />
               <span className="text-sm">{`${description}`}</span>
             </div>
           </div>
