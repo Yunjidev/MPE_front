@@ -16,6 +16,7 @@ import { MdOutlineAlternateEmail, MdOutlineAreaChart } from "react-icons/md";
 import Button from "../Button/button";
 import CountryList from "../enterprise/CountryList";
 import { CgWebsite } from "react-icons/cg";
+import JobsList from "../enterprise/JobsList";
 
 const CompanyForm = ({ onSubmit }) => {
   const [name, setName] = useState("");
@@ -25,7 +26,7 @@ const CompanyForm = ({ onSubmit }) => {
   const [city, setCity] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [siret, setSiret] = useState("");
-  const [activity, setActivity] = useState("");
+  const [selectedJob, setSelectedJob] = useState("");
   const [twitter, setTwitter] = useState("");
   const [instagram, setInstagram] = useState("");
   const [facebook, setFacebook] = useState("");
@@ -48,7 +49,7 @@ const CompanyForm = ({ onSubmit }) => {
     formData.append("city", city);
     formData.append("zipcode", zipcode);
     formData.append("siret", siret);
-    formData.append("activity", activity);
+    formData.append("activity", selectedJob);
     formData.append("twitter", twitter);
     formData.append("instagram", instagram);
     formData.append("facebook", facebook);
@@ -269,17 +270,13 @@ const CompanyForm = ({ onSubmit }) => {
             {/* Dropdown */}
             <div className="relative flex items-center col-span-3">
               <FaSearch className="absolute left-3 text-gray-400" />
-              <select
-                id="activity"
-                value={activity}
-                onChange={(e) => setActivity(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400"
-              >
-                <option value="">Sélectionner votre métier</option>
-                <option value="prestation1">Métier 1</option>
-                <option value="prestation2">Métier 2</option>
-                <option value="prestation3">Métier 3</option>
-              </select>
+              <div className="relative flex items-center col-span-3">
+                <FaSearch className="absolute left-3 text-gray-400" />
+                <JobsList
+                  selectedJob={selectedJob}
+                  onSelectJob={setSelectedJob}
+                />
+              </div>
             </div>
             {/* Description */}
             <div className="relative flex items-center col-span-3">
