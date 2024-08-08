@@ -5,84 +5,90 @@ import AsyncSelect from 'react-select/async';
 
 
 const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
-  const [jobs, setJobs] = useState([]);
-  const [countries, setCountries] = useState([]);
-  const [cities, setCities] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const jobsData = await getData('jobs');
-        const countriesData = await getData('countries');
-        const enterprisesData = await getData('enterprises');
-        const citiesData = enterprisesData.map(enterprise => enterprise.city);
-        const uniqueCities = Array.from(new Set(citiesData)); // Supprime les doublons
-        setCities(uniqueCities);
-
-        setJobs(jobsData);
-        setCountries(countriesData);
-
-      } catch (error) {
-        console.error('Erreur lors de la récupération des données:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (isLoading) {
-    return <span className="loading loading-bars loading-lg"></span>;
-  }
-
-  const handleJobChange = (event) => {
-    updateSearchCriteria('job', event.target.value);
+  const loadJobOptions = async (inputValue) => {
+    try {
+      const jobsData = await getData('jobs');
+      return jobsData.filter(job => job.name.toLowerCase().includes(inputValue.toLowerCase()))
+        .map(job => ({ label: job.name, value: job.id }));
+    } catch (error) {
+      console.error('Erreur lors de la récupération des jobs:', error);
+      return [];
+    }
   };
 
-  const handleCountryChange = (event) => {
-    updateSearchCriteria('country', event.target.value);
+  const loadCountryOptions = async (inputValue) => {
+    try {
+      const countriesData = await getData('countries');
+      return countriesData.filter(country => country.name.toLowerCase().includes(inputValue.toLowerCase()))
+        .map(country => ({ label: country.name, value: country.id }));
+    } catch (error) {
+      console.error('Erreur lors de la récupération des jobs:', error);
+      return [];
+    }
   };
 
-  const handleCityChange = (event) => {
-    updateSearchCriteria('city', event.target.value);
+  const loadCityOptions = async (inputValue) => {
+    try {
+      const enterprisesData = await getData('enterprises');
+      const citiesData = enterprisesData.map(enterprise => enterprise.city);
+      const uniqueCities = Array.from(new Set(citiesData)); // Supprime les doublons
+      return uniqueCities.filter(city => city.toLowerCase().includes(inputValue.toLowerCase()))
+        .map(city => ({ label: city, value: city }));
+    } catch (error) {
+      console.error('Erreur lors de la récupération des jobs:', error);
+      return [];
+    }
   };
-
 
   return (
     <div className="join pt-8 pb-10 rounded-full flex items-center justify-center">
 
-      <select onChange={handleJobChange} className="select select-bordered join-item w-48 rounded-full">
-        <option disabled selected>Métiers</option>
-        {jobs.map(job => (
-          <option key={job.id} value={job.name}>{job.name}</option>
-        ))}
-      </select>
-      <select onChange={handleCountryChange} className="select select-bordered join-item w-48">
-        <option disabled selected>Région</option>
-        {countries.map(country => (
-          <option key={country.id} value={country.name}>{country.name}</option>
-        ))}
-      </select>
-      <select onChange={handleCityChange} className="select select-bordered join-item w-48">
-        <option disabled selected>Ville</option>
-
-        {cities.map((city, index) => (
-          <option key={index} value={city}>{city}</option>
-
-        ))}
-      </select>
 
 
-      <div className="select select-bordered join-item w-48 rounded-full appearance-none">
+      <AsyncSelect
+        cacheOptions
+        loadOptions={loadJobOptions}
+        defaultOptions
+        onChange={(selectedOption) => updateSearchCriteria('job', selectedOption.value)}
+        className="select-bordered join-item w-48 rounded-full"
+        placeholder="Métiers"
+        noOptionsMessage={() => "Aucun métier trouvé"}
+      />
+
+
+      <AsyncSelect
+        cacheOptions
+        loadOptions={loadCountryOptions}
+        defaultOptions
+        onChange={(selectedOption) => updateSearchCriteria('country', selectedOption.value)}
+        className="select-bordered join-item w-48"
+        placeholder="Région"
+        noOptionsMessage={() => "Aucune région trouvée"}
+      />
+
+
+      <AsyncSelect
+        cacheOptions
+        loadOptions={loadCityOptions}
+        defaultOptions
+        onChange={(selectedOption) => updateSearchCriteria('city', selectedOption.value)}
+        className="select-bordered join-item w-48"
+        placeholder="Ville"
+        noOptionsMessage={() => "Aucune ville trouvée"}
+      />
+
+
+
+      <div className=" select-bordered join-item w-48 rounded-full appearance-none">
         <label className="cursor-pointer label flex items-center">
           <span className="label-text mr-2">Premium</span>
           <input type="checkbox" defaultChecked className="checkbox checkbox-accent" />
         </label>
       </div>
 
-      <select className="select select-bordered join-item">
+      <select className="select-bordered join-item">
         <option disabled selected>Prix ou  Rating ?</option>
         <option>Moins cher</option>
         <option>Plus cher</option>
