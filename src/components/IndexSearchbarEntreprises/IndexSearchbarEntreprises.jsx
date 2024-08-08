@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { HiSearch } from "react-icons/hi";
 import { getData } from '../../services/data-fetch';
+import AsyncSelect from 'react-select/async';
 
 
 const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
