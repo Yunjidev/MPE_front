@@ -21,3 +21,17 @@ export async function deleteData(object) {
     console.log(error);
   }
 }
+
+//Fonction pour créer de nouvelles données
+export async function postData(object, data) {
+  try {
+    let response = await ky.post(BASE_URL + object, {
+      headers: setHeaders(),
+      json: data,
+    }).json();
+    return response;
+  } catch (error) {
+    console.error("Error posting data:", error);
+    throw error;
+  }
+}
