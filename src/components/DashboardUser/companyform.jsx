@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
   FaUser,
@@ -17,7 +17,7 @@ import Button from "../Button/button";
 import regions from "../enterprise/region-names.jsx";
 import { CgWebsite } from "react-icons/cg";
 
-export default function RegisterCompany({ onSubmit }) {
+const CompanyForm = ({ onSubmit }) => {
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
   const [email, setEmail] = useState("");
@@ -39,21 +39,34 @@ export default function RegisterCompany({ onSubmit }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await onSubmit({
-      logo,
-      name,
-      contact,
-      email,
-      address,
-      city,
-      zipcode,
-      siret,
-      activity,
-      network,
-      description,
-      photos,
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("contact", contact);
+    formData.append("email", email);
+    formData.append("address", address);
+    formData.append("city", city);
+    formData.append("zipcode", zipcode);
+    formData.append("siret", siret);
+    formData.append("activity", activity);
+    formData.append("twitter", twitter);
+    formData.append("instagram", instagram);
+    formData.append("facebook", facebook);
+    formData.append("description", description);
+    formData.append("region", region);
+    formData.append("website", website);
+
+    if (logo) {
+      formData.append("logo", logo);
+    }
+
+    photos.forEach((photo, index) => {
+      formData.append(`photos[${index}]`, photo);
     });
+
+    await onSubmit(formData);
   };
+
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -326,8 +339,10 @@ export default function RegisterCompany({ onSubmit }) {
       </div>
     </div>
   );
-}
+};
 
-RegisterCompany.propTypes = {
+CompanyForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
+
+export default CompanyForm;
