@@ -73,8 +73,22 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
 
   // Fonction pour annuler la dernière recherche
   const removeLastSearch = () => {
-    // Logique pour enlever le dernier critère de recherche
+    // Réinitialisez l'état local des sélections
+    setSelectedJobs([]);
+    setSelectedCountries([]);
+    setSelectedCities([]);
+
+    // Réinitialisez l'état global de recherche
+    setSearchCriteria({
+      job: [],
+      country: [],
+      city: [],
+      subscription: false,
+    });
+    // Déclenchez une nouvelle recherche pour afficher les résultats par défaut
+    handleSearch();
   };
+
 
 
   return (
@@ -90,7 +104,7 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
         defaultOptions
         value={selectedJobs}
         onChange={handleJobChange}
-        
+
         className="select-bordered join-item w-48 rounded-full"
         placeholder="Métiers"
         noOptionsMessage={() => "Aucun métier trouvé"}
@@ -105,7 +119,7 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
         defaultOptions
         value={selectedCountries}
         onChange={handleCountryChange}
-        
+
         className="select-bordered join-item w-48"
         placeholder="Région"
         noOptionsMessage={() => "Aucune région trouvée"}
@@ -120,7 +134,7 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
         value={selectedCities}
         onChange={handleCityChange}
         defaultOptions
-        
+
         className="select-bordered join-item w-48"
         placeholder="Ville"
         noOptionsMessage={() => "Aucune ville trouvée"}
@@ -144,7 +158,7 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
 
       </select>
       <div className="indicator">
-        <button onClick={removeLastSearch} className="btn">Annuler la dernière recherche</button>
+        <button onClick={removeLastSearch} className="btn join-item">Supprimer les critères de recherche</button>
         <button onClick={handleSearch} className="btn join-item"><HiSearch /></button>
       </div>
       {error && <div className="alert alert-error">{error}</div>}

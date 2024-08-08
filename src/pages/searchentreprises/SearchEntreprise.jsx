@@ -69,14 +69,7 @@ const SearchEntreprise = () => {
         }
     };
 
-    // Mettez à jour les critères de recherche pour gérer les listes
-    const updateSearchCriteria = (criteria, values) => {
-        setSearchCriteria(prevState => ({
-            ...prevState,
-            [criteria]: values.map(value => value.value) // Assurez-vous de passer une liste d'identifiants
-        }));
-    };
-
+    
     // Rendu des résultats de recherche ou de toutes les entreprises si aucune recherche n'a été effectuée
     const displayEnterprises = searchResults.length > 0 ? searchResults : entreprises;
 
