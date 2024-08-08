@@ -14,7 +14,7 @@ import {
 import { FaXTwitter, FaInstagram, FaFacebook } from "react-icons/fa6";
 import { MdOutlineAlternateEmail, MdOutlineAreaChart } from "react-icons/md";
 import Button from "../Button/button";
-import regions from "../enterprise/region-names.jsx";
+import CountryList from "../enterprise/CountryList";
 import { CgWebsite } from "react-icons/cg";
 
 const CompanyForm = ({ onSubmit }) => {
@@ -192,19 +192,12 @@ const CompanyForm = ({ onSubmit }) => {
               </div>
               <div className="relative flex items-center">
                 <MdOutlineAreaChart className="absolute left-3 text-gray-400" />
-                <select
-                  id="region"
-                  value={region}
-                  onChange={(e) => setRegion(e.target.value)}
-                  className="w-full pl-10 pr-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400"
-                >
-                  <option value="">Sélectionner une région</option>
-                  {regions.map((regionName, index) => (
-                    <option key={index} value={regionName}>
-                      {regionName}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative flex items-center">
+                  <CountryList
+                    selectedRegion={region}
+                    onSelectRegion={setRegion}
+                  />
+                </div>
               </div>
               <div className="relative flex items-center">
                 <FaCity className="absolute left-3 text-gray-400" />
