@@ -64,11 +64,19 @@ export default function RegisterCompany({ onSubmit }) {
 
   const handlePhotosChange = (e) => {
     const files = Array.from(e.target.files);
-    const newFiles = files.slice(0, 3 - photos.length);
-    setPhotos((prevPhotos) => [...prevPhotos, ...newFiles]);
+    const currentPhotoCount = photos.length;
+    const newFiles = files.slice(0, 3 - currentPhotoCount);
 
-    const newPhotoUrls = files.map((file) => URL.createObjectURL(file));
-    setPhotoUrls((prevPhotoUrls) => [...prevPhotoUrls, ...newPhotoUrls]);
+    if (newFiles.length + currentPhotoCount > 3) {
+      alert("Vous ne pouvez télécharger que 3 photos au maximum.");
+    }
+
+    setPhotos((prevPhotos) => [...prevPhotos, ...newFiles].slice(0, 3));
+
+    const newPhotoUrls = newFiles.map((file) => URL.createObjectURL(file));
+    setPhotoUrls((prevPhotoUrls) =>
+      [...prevPhotoUrls, ...newPhotoUrls].slice(0, 3)
+    );
   };
 
   return (
@@ -286,7 +294,9 @@ export default function RegisterCompany({ onSubmit }) {
                 className="border border-dashed border-gray-500 p-10 h-20 w-full rounded-lg cursor-pointer text-gray-400 hover:bg-gray-800 flex flex-row justify-center items-center"
               >
                 <FaCloudUploadAlt className="w-16 h-16 mx-5" />
-                <p className="text-white">Cliquer pour ajouter des images</p>
+                <p className="text-white">
+                  Cliquer pour ajouter des images (3 photos max.)
+                </p>
               </label>
               <input
                 id="photos-upload"
