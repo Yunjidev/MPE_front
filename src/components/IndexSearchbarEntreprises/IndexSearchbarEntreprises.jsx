@@ -4,14 +4,14 @@ import { getData } from '../../services/data-fetch';
 import AsyncSelect from 'react-select/async';
 
 
-const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
+const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
   const [error, setError] = useState(null);
-  const [searchCriteria, setSearchCriteria] = useState({
-    job: '',
-    country: '',
-    city: '',
-    subscription: false,
-  });
+  // const [searchCriteria, setSearchCriteria] = useState({
+  //   job: '',
+  //   country: '',
+  //   city: '',
+  //   subscription: false,
+  // });
 
 
   const loadJobOptions = async (inputValue) => {
@@ -52,14 +52,13 @@ const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
     }
   };
 
-  const resetSearch = () => {
-    setSearchCriteria({
-      job: '',
-      country: '',
-      city: '',
-      subscription: false,
-    });
-  };
+  // const resetSearch = () => {
+  //   setSearchCriteria({
+  //     job: '',
+  //     country: '',
+  //     city: '',
+  //     subscription: false,
+  //   });
 
   return (
 
@@ -71,7 +70,7 @@ const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
         cacheOptions
         loadOptions={loadJobOptions}
         defaultOptions
-        onChange={(selectedOption) => updateSearchCriteria('job', selectedOption.value)}
+        onChange={(selectedOption) => setSearchCriteria(prevState => ({ ...prevState, job: selectedOption.value }))}
         className="select-bordered join-item w-48 rounded-full"
         placeholder="Métiers"
         noOptionsMessage={() => "Aucun métier trouvé"}
@@ -83,7 +82,7 @@ const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
         cacheOptions
         loadOptions={loadCountryOptions}
         defaultOptions
-        onChange={(selectedOption) => updateSearchCriteria('country', selectedOption.value)}
+        onChange={(selectedOption) => setSearchCriteria(prevState => ({ ...prevState, country: selectedOption.value }))}
         className="select-bordered join-item w-48"
         placeholder="Région"
         noOptionsMessage={() => "Aucune région trouvée"}
@@ -95,7 +94,7 @@ const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
         cacheOptions
         loadOptions={loadCityOptions}
         defaultOptions
-        onChange={(selectedOption) => updateSearchCriteria('city', selectedOption.value)}
+        onChange={(selectedOption) => setSearchCriteria(prevState => ({ ...prevState, city: selectedOption.value }))}
         className="select-bordered join-item w-48"
         placeholder="Ville"
         noOptionsMessage={() => "Aucune ville trouvée"}
@@ -118,7 +117,7 @@ const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
 
       </select>
       <div className="indicator">
-        <button onClick={resetSearch} className="btn">Réinitialiser</button>
+        {/* <button onClick={resetSearch} className="btn">Réinitialiser</button> */}
         <button onClick={handleSearch} className="btn join-item"><HiSearch /></button>
       </div>
       {error && <div className="alert alert-error">{error}</div>}

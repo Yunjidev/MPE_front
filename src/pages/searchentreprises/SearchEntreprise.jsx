@@ -81,7 +81,7 @@ const SearchEntreprise = () => {
     return (
         <div className="font-sans flex flex-col items-center justify-center min-h-screen">
             <h1 className="text-center text-2xl sm:text-3xl font-bold mb-4 dark:text-white">Recherchez vos entreprises</h1>
-            <IndexSearchbarEntreprises updateSearchCriteria={updateSearchCriteria} handleSearch={handleSearch} />
+            <IndexSearchbarEntreprises setSearchCriteria={setSearchCriteria} handleSearch={handleSearch} />
             {noResultsMessage}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8 md:gap-12 lg:gap-6">
                 {displayEnterprises.map((entreprise) => {
