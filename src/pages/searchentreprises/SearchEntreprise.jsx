@@ -10,11 +10,10 @@ const SearchEntreprise = () => {
     const [searchResults, setSearchResults] = useState([]);
     const [noResultsMessage, setNoResultsMessage] = useState(null);
     const [searchCriteria, setSearchCriteria] = useState({
-        job: '',
-        country: '',
-        city: '',
+        job: [],
+        country: [],
+        city: [],
         subscription: false,
-
     });
 
     useEffect(() => {
@@ -49,12 +48,12 @@ const SearchEntreprise = () => {
 
     const handleSearch = () => {
         const filteredEnterprises = entreprises.filter(entreprise => {
+            // Utilisez 'includes' pour vérifier si l'identifiant est dans la liste
             return (
-                (searchCriteria.job ? entreprise.Job_id === searchCriteria.job : true) &&
-                (searchCriteria.country ? entreprise.Country_id === searchCriteria.country : true) &&
-                (searchCriteria.city ? entreprise.city === searchCriteria.city : true) &&
-                (searchCriteria.subscription ? entreprise.isSubscription : true) // Supposons que vous avez un champ isPremium dans vos données d'entreprise
-                // Ajoutez d'autres conditions de recherche si nécessaire
+                (searchCriteria.job.length ? searchCriteria.job.includes(entreprise.Job_id) : true) &&
+                (searchCriteria.country.length ? searchCriteria.country.includes(entreprise.Country_id) : true) &&
+                (searchCriteria.city.length ? searchCriteria.city.includes(entreprise.city) : true) &&
+                (searchCriteria.subscription ? entreprise.isSubscription : true)
             );
         });
         if (filteredEnterprises.length === 0) {
@@ -70,9 +69,12 @@ const SearchEntreprise = () => {
         }
     };
 
-    // Mettez à jour les critères de recherche en fonction des sélections de l'utilisateur
-    const updateSearchCriteria = (criteria, value) => {
-        setSearchCriteria({ ...searchCriteria, [criteria]: value });
+    // Mettez à jour les critères de recherche pour gérer les listes
+    const updateSearchCriteria = (criteria, values) => {
+        setSearchCriteria(prevState => ({
+            ...prevState,
+            [criteria]: values.map(value => value.value) // Assurez-vous de passer une liste d'identifiants
+        }));
     };
 
     // Rendu des résultats de recherche ou de toutes les entreprises si aucune recherche n'a été effectuée

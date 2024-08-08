@@ -4,15 +4,14 @@ import { getData } from '../../services/data-fetch';
 import AsyncSelect from 'react-select/async';
 
 
+
+
+
 const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
   const [error, setError] = useState(null);
-  // const [searchCriteria, setSearchCriteria] = useState({
-  //   job: '',
-  //   country: '',
-  //   city: '',
-  //   subscription: false,
-  // });
-
+  const [selectedJobs, setSelectedJobs] = useState([]);
+  const [selectedCountries, setSelectedCountries] = useState([]);
+  const [selectedCities, setSelectedCities] = useState([]);
 
   const loadJobOptions = async (inputValue) => {
     try {
@@ -25,6 +24,8 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
       return [];
     }
   };
+
+
 
   const loadCountryOptions = async (inputValue) => {
     try {
@@ -52,13 +53,29 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
     }
   };
 
-  // const resetSearch = () => {
-  //   setSearchCriteria({
-  //     job: '',
-  //     country: '',
-  //     city: '',
-  //     subscription: false,
-  //   });
+  // Fonction pour gérer la sélection multiple des jobs
+  const handleJobChange = (selectedOptions) => {
+    setSelectedJobs(selectedOptions);
+    setSearchCriteria(prevState => ({ ...prevState, job: selectedOptions.map(option => option.value) }));
+  };
+
+  // Fonction pour gérer la sélection multiple des pays
+  const handleCountryChange = (selectedOptions) => {
+    setSelectedCountries(selectedOptions);
+    setSearchCriteria(prevState => ({ ...prevState, country: selectedOptions.map(option => option.value) }));
+  };
+
+  // Fonction pour gérer la sélection multiple des villes
+  const handleCityChange = (selectedOptions) => {
+    setSelectedCities(selectedOptions);
+    setSearchCriteria(prevState => ({ ...prevState, city: selectedOptions.map(option => option.value) }));
+  };
+
+  // Fonction pour annuler la dernière recherche
+  const removeLastSearch = () => {
+    // Logique pour enlever le dernier critère de recherche
+  };
+
 
   return (
 
@@ -67,10 +84,13 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
 
 
       <AsyncSelect
+        isMulti
         cacheOptions
         loadOptions={loadJobOptions}
         defaultOptions
-        onChange={(selectedOption) => setSearchCriteria(prevState => ({ ...prevState, job: selectedOption.value }))}
+        value={selectedJobs}
+        onChange={handleJobChange}
+        
         className="select-bordered join-item w-48 rounded-full"
         placeholder="Métiers"
         noOptionsMessage={() => "Aucun métier trouvé"}
@@ -80,9 +100,12 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
 
       <AsyncSelect
         cacheOptions
+        isMulti
         loadOptions={loadCountryOptions}
         defaultOptions
-        onChange={(selectedOption) => setSearchCriteria(prevState => ({ ...prevState, country: selectedOption.value }))}
+        value={selectedCountries}
+        onChange={handleCountryChange}
+        
         className="select-bordered join-item w-48"
         placeholder="Région"
         noOptionsMessage={() => "Aucune région trouvée"}
@@ -92,9 +115,12 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
 
       <AsyncSelect
         cacheOptions
+        isMulti
         loadOptions={loadCityOptions}
+        value={selectedCities}
+        onChange={handleCityChange}
         defaultOptions
-        onChange={(selectedOption) => setSearchCriteria(prevState => ({ ...prevState, city: selectedOption.value }))}
+        
         className="select-bordered join-item w-48"
         placeholder="Ville"
         noOptionsMessage={() => "Aucune ville trouvée"}
@@ -103,10 +129,11 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
 
 
 
-      <div className=" select-bordered join-item w-48 rounded-full appearance-none">
-        <label className="cursor-pointer label flex items-center">
-          <span className="label-text mr-2">Premium</span>
+      <div className="border border-gray-300 bg-white rounded w-32 p-2" style={{ height: '39px' }}>
+        <label className="flex items-center cursor-pointer">
+          <span className="text-gray-500 mr-5">Premium</span>
           <input type="checkbox" defaultChecked className="checkbox checkbox-accent" />
+          <span className="checkmark"></span>
         </label>
       </div>
 
@@ -117,7 +144,7 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
 
       </select>
       <div className="indicator">
-        {/* <button onClick={resetSearch} className="btn">Réinitialiser</button> */}
+        <button onClick={removeLastSearch} className="btn">Annuler la dernière recherche</button>
         <button onClick={handleSearch} className="btn join-item"><HiSearch /></button>
       </div>
       {error && <div className="alert alert-error">{error}</div>}
