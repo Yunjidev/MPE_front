@@ -5,7 +5,14 @@ import AsyncSelect from 'react-select/async';
 
 
 const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchCriteria, setSearchCriteria] = useState({
+    job: '',
+    country: '',
+    city: '',
+    subscription: false,
+  });
+
 
   const loadJobOptions = async (inputValue) => {
     try {
@@ -13,6 +20,7 @@ const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
       return jobsData.filter(job => job.name.toLowerCase().includes(inputValue.toLowerCase()))
         .map(job => ({ label: job.name, value: job.id }));
     } catch (error) {
+      setError('Une erreur est survenue lors du chargement des données.');
       console.error('Erreur lors de la récupération des jobs:', error);
       return [];
     }
@@ -24,6 +32,7 @@ const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
       return countriesData.filter(country => country.name.toLowerCase().includes(inputValue.toLowerCase()))
         .map(country => ({ label: country.name, value: country.id }));
     } catch (error) {
+      setError('Une erreur est survenue lors du chargement des données.');
       console.error('Erreur lors de la récupération des jobs:', error);
       return [];
     }
@@ -37,12 +46,23 @@ const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
       return uniqueCities.filter(city => city.toLowerCase().includes(inputValue.toLowerCase()))
         .map(city => ({ label: city, value: city }));
     } catch (error) {
+      setError('Une erreur est survenue lors du chargement des données.');
       console.error('Erreur lors de la récupération des jobs:', error);
       return [];
     }
   };
 
+  const resetSearch = () => {
+    setSearchCriteria({
+      job: '',
+      country: '',
+      city: '',
+      subscription: false,
+    });
+  };
+
   return (
+
     <div className="join pt-8 pb-10 rounded-full flex items-center justify-center">
 
 
@@ -55,6 +75,7 @@ const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
         className="select-bordered join-item w-48 rounded-full"
         placeholder="Métiers"
         noOptionsMessage={() => "Aucun métier trouvé"}
+        loadingMessage={() => "Chargement ..."}
       />
 
 
@@ -66,6 +87,7 @@ const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
         className="select-bordered join-item w-48"
         placeholder="Région"
         noOptionsMessage={() => "Aucune région trouvée"}
+        loadingMessage={() => "Chargement ..."}
       />
 
 
@@ -77,6 +99,7 @@ const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
         className="select-bordered join-item w-48"
         placeholder="Ville"
         noOptionsMessage={() => "Aucune ville trouvée"}
+        loadingMessage={() => "Chargement ..."}
       />
 
 
@@ -95,10 +118,12 @@ const IndexSearchbarEntreprises = ({ updateSearchCriteria, handleSearch }) => {
 
       </select>
       <div className="indicator">
-
+        <button onClick={resetSearch} className="btn">Réinitialiser</button>
         <button onClick={handleSearch} className="btn join-item"><HiSearch /></button>
       </div>
+      {error && <div className="alert alert-error">{error}</div>}
     </div>
+
   );
 };
 
