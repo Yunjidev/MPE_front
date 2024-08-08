@@ -12,6 +12,7 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
   const [selectedJobs, setSelectedJobs] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [selectedCities, setSelectedCities] = useState([]);
+  const [selectedRatings, setSelectedRatings] = useState([]);
 
   const loadJobOptions = async (inputValue) => {
     try {
@@ -53,6 +54,18 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
     }
   };
 
+  const loadRatingOptions = async (inputValue) => {
+    try {
+      const ratingsData = await getData('ratings');
+      return ratingsData.filter(rating => rating.name.toLowerCase().includes(inputValue.toLowerCase()))
+        .map(rating => ({ label: rating.name, value: rating.id }));
+    } catch (error) {
+      setError('Une erreur est survenue lors du chargement des données.');
+      console.error('Erreur lors de la récupération des jobs:', error);
+      return [];
+    }
+  };
+
   // Fonction pour gérer la sélection multiple des jobs
   const handleJobChange = (selectedOptions) => {
     setSelectedJobs(selectedOptions);
@@ -69,6 +82,11 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
   const handleCityChange = (selectedOptions) => {
     setSelectedCities(selectedOptions);
     setSearchCriteria(prevState => ({ ...prevState, city: selectedOptions.map(option => option.value) }));
+  };
+
+  const handleRatingChange = (selectedOptions) => {
+    setSelectedRatings(selectedOptions);
+    setSearchCriteria(prevState => ({ ...prevState, rating: selectedOptions.map(option => option.value) }));
   };
 
   // Fonction pour annuler la dernière recherche
@@ -151,12 +169,19 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
         </label>
       </div>
 
-      <select className="select-bordered join-item">
-        <option disabled selected>Prix ou  Rating ?</option>
-        <option>Moins cher</option>
-        <option>Plus cher</option>
+      <AsyncSelect
+        cacheOptions
+        isMulti
+        loadOptions={loadRatingOptions}
+        value={selectedRatings}
+        onChange={handleRatingChange}
+        defaultOptions
 
-      </select>
+        className="select-bordered join-item w-24"
+        placeholder="Notes"
+        noOptionsMessage={() => "Pas de notes disponibles"}
+        loadingMessage={() => "Chargement ..."}
+      />
       <div className="indicator">
         <button onClick={removeLastSearch} className="btn join-item">Supprimer les critères de recherche</button>
         <button onClick={handleSearch} className="btn join-item"><HiSearch /></button>
