@@ -1,19 +1,19 @@
-import SocialLinks from '../SocialLinks/sociallinks';
-import { useContext } from 'react';
+// src/components/home/UserChoiceModal.js
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../context/UserContext';
+import { useAtom } from 'jotai';
+import { userTypeAtom } from '../../store/userType';
+import SocialLinks from '../SocialLinks/sociallinks';
 
 const UserChoiceModal = () => {
   const navigate = useNavigate();
-  const { setUserType } = useContext(UserContext);
+  const [, setUserType] = useAtom(userTypeAtom); // Utiliser le hook jotai pour obtenir et mettre à jour userType
 
   const handleChoice = (choice) => {
-    setUserType(choice);
-    if (choice === 'client') {
-      navigate('/home-client');
-    } else if (choice === 'enterprise') {
-      navigate('/home-enterprise');
-    }
+    setUserType(choice); // Met à jour le userType global
+
+    localStorage.setItem('userType', choice); // Sauvegarde dans le localStorage
+
+    navigate(choice === 'client' ? '/home-client' : '/home-enterprise');
   };
 
   return (
