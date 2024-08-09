@@ -42,7 +42,7 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
 
   const loadCityOptions = async (inputValue) => {
     try {
-      const enterprisesData = await getData('enterprises');
+      const enterprisesData = await getData('enterprises/validate');
       const citiesData = enterprisesData.map(enterprise => enterprise.city);
       const uniqueCities = Array.from(new Set(citiesData)); // Supprime les doublons
       return uniqueCities.filter(city => city.toLowerCase().includes(inputValue.toLowerCase()))

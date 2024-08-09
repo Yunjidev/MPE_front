@@ -19,7 +19,7 @@ const SearchEntreprise = () => {
     useEffect(() => {
         const fetchEntreprises = async () => {
             try {
-                const response = await getData("enterprises");
+                const response = await getData("enterprises/validate");
                 // console.log(response);
                 setEntreprises(response);
 
