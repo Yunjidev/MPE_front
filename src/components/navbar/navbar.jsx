@@ -3,7 +3,7 @@
 import { useState, useContext, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUserCircle, FaBars, FaTimes } from 'react-icons/fa';
-import { UserContext } from '../../context/UserContext';
+import { useModal } from '../../context/ModalContext';
 import logo from '../../../public/assets/img/logo.png';
 import { getData } from '../../services/data-fetch';
 import SignOut from '../user/signout';
@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './navbar.css';
 
 const Navbar = () => {
-  const { userType, setUserType } = useContext(UserContext);
+  const { userType, setUserType } = useModal();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
