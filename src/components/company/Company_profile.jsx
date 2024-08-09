@@ -6,7 +6,6 @@ import { MdOutlinePictureInPicture, MdAlternateEmail, MdPhoneCallback, MdHome } 
 const ProfileManagement = () => {
   return (
       <div className="bg-neutral-800 p-6 rounded-lg w-1/2 mx-auto">
-        {/* Profile Information */}
         <div className="flex flex-col items-center">
           <div className="mb-6">
             <PiUserRectangle size={256} />
