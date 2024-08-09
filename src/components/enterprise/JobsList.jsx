@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { MdWorkOutline } from "react-icons/md";
+import { getData } from "../../services/data-fetch";
 
 const JobsList = ({ selectedJob, onSelectJob }) => {
   const [jobs, setJobs] = useState([]);
@@ -9,27 +10,21 @@ const JobsList = ({ selectedJob, onSelectJob }) => {
 
   useEffect(() => {
     const fetchJobs = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/jobs");
-        if (!response.ok) {
-          throw new Error("Failed to fetch jobs");
-        }
-        const data = await response.json();
+      const data = await getData("jobs");
 
-        const sortedJobs = data
-          .filter((job) => job && job.name)
-          .sort((a, b) => a.name.localeCompare(b.name));
+      const sortedJobs = data
+        .filter((job) => job && job.name)
+        .sort((a, b) => a.name.localeCompare(b.name));
 
-        setJobs(sortedJobs);
-      } catch (error) {
-        console.error("Error fetching jobs:", error);
-        setError("Impossible de charger les métiers.");
-      } finally {
-        setLoading(false);
-      }
+      setJobs(sortedJobs);
+      setLoading(false);
     };
 
-    fetchJobs();
+    fetchJobs().catch((error) => {
+      console.error("Error fetching jobs:", error);
+      setError("Impossible de charger les métiers.");
+      setLoading(false);
+    });
   }, []);
 
   if (loading) {
@@ -51,9 +46,7 @@ const JobsList = ({ selectedJob, onSelectJob }) => {
       >
         <option value="">Sélectionner un métier</option>
         {jobs.map((job) => (
-          <option key={job.id} value={job.id}>
-            {job.name}
-          </option>
+          <option key={job.name} value={job.name}></option>
         ))}
       </select>
     </div>
