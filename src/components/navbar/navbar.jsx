@@ -1,5 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useContext, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUserCircle, FaBars, FaTimes } from 'react-icons/fa';
@@ -50,7 +50,7 @@ const Navbar = () => {
     const fetchProfileData = async () => {
       if (user.isLogged && user.id) {
         try {
-          const data = await getData(`users/${user.id}`);
+          const data = await getData(`user/profile`);
           setProfile(data); // Mettre à jour l'état local avec les données de profil
         } catch (error) {
           console.error(error);
@@ -138,7 +138,7 @@ const Navbar = () => {
                     {user.isLogged ? (
                       <>
                         <li>
-                          <Link to="/dashboard" className="text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300">Mon Dashboard</Link>
+                          <Link to={`/dashboard/${user.id}`} className="text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300">Mon Dashboard</Link>
                         </li>
                         <li><SignOut /></li>
                       </>
