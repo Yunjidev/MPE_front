@@ -1,14 +1,27 @@
-import SocialLinks from '../SocialLinks/sociallinks';
+/* eslint-disable react/prop-types */
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
+import SocialLinks from '../SocialLinks/sociallinks';
 
 const UserChoiceModal = () => {
   const navigate = useNavigate();
-  const { setUserType } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const handleChoice = (choice) => {
-    setUserType(choice);
+    // Mettre à jour l'état de l'utilisateur avec le type sélectionné
+    setUser(prevUser => ({
+      ...prevUser,
+      userType: choice
+    }));
+    
+    // Sauvegarder le choix dans le stockage local
+    localStorage.setItem('user', JSON.stringify({
+      ...user,
+      userType: choice
+    }));
+
+    // Navigation en fonction du choix
     if (choice === 'client') {
       navigate('/home-client');
     } else if (choice === 'enterprise') {
