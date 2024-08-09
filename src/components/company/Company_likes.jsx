@@ -2,7 +2,7 @@ import React from 'react';
 
 const LikesManagement = () => {
   return (
-      <div className="flex flex-col space-around w-1/2 bg-neutral-800 p-6 rounded-lg mx-2">
+      <div className="flex flex-col h-full space-around bg-neutral-800 p-6 rounded-lg">
           <h3 className="text-lg font-medium mb-4">Mes entreprises favorites</h3>
           <hr className="w-full"></hr>
           <ul>
