@@ -46,7 +46,9 @@ const JobsList = ({ selectedJob, onSelectJob }) => {
       >
         <option value="">Sélectionner un métier</option>
         {jobs.map((job) => (
-          <option key={job.name} value={job.name}></option>
+          <option key={job.id} value={job.id}>
+            {job.name}
+          </option>
         ))}
       </select>
     </div>

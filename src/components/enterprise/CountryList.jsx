@@ -23,14 +23,6 @@ const CountryList = ({ selectedRegion, onSelectRegion }) => {
     });
   }, []);
 
-  if (loading) {
-    return <p>Chargement...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
   return (
     <div className="relative flex items-center">
       <MdOutlineAreaChart className="absolute left-3 text-gray-400" />
@@ -42,7 +34,9 @@ const CountryList = ({ selectedRegion, onSelectRegion }) => {
       >
         <option value="">Sélectionner une région</option>
         {countries.map((country) => (
-          <option key={country.name} value={country.name}></option>
+          <option key={country.id} value={country.id}>
+            {country.name}
+          </option>
         ))}
       </select>
     </div>
