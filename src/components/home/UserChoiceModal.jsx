@@ -9,9 +9,6 @@ const UserChoiceModal = () => {
 
   const handleChoice = (choice) => {
     setUserType(choice);
-    
-    // Sauvegarder le choix dans le stockage local
-    localStorage.setItem('userType', choice);
 
     // Navigation en fonction du choix
     if (choice === 'client') {

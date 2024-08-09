@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useContext, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaUserCircle, FaBars, FaTimes } from 'react-icons/fa';
 import { useModal } from '../../context/ModalContext';
 import logo from '../../../public/assets/img/logo.png';
@@ -20,7 +20,8 @@ const Navbar = () => {
   const [user, setUser] = useAtom(userAtom);
   const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const isSelectionPage = location.pathname === '/';
   const toggleDropdown = () => {
     setIsDropdownOpen(prev => !prev);
   };
@@ -51,7 +52,7 @@ const Navbar = () => {
       if (user.isLogged && user.id) {
         try {
           const data = await getData(`user/profile`);
-          setProfile(data); // Mettre à jour l'état local avec les données de profil
+          setProfile(data);
         } catch (error) {
           console.error(error);
         }
@@ -69,7 +70,6 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Navbar */}
       <div className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full max-w-full z-50 mt-4">
         <div className="navbar flex justify-between items-center backdrop-filter backdrop-blur-lg bg-[#F8D7DA] bg-opacity-30 dark:bg-[#232323] dark:bg-opacity-30 dark:text-white border border-neutral-200 font-semibold mx-auto w-5/6 h-16 rounded-xl neon-nav">
           <div className="flex items-center">
@@ -77,32 +77,61 @@ const Navbar = () => {
               <img src={logo} alt="logo" className="w-10 h-10 ml-2 lg:ml-9 transition-transform duration-300 hover:scale-110" />
             </Link>
           </div>
-          <div className="hidden md:flex justify-center gap-8 text-black dark:text-white">
-            {userType === 'client' ? (
-              <>
-                <Link to="/home-client" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Accueil</Link>
-                <a href="#" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Recherche</a>
-                <Link to="/faq" className='hover:text-neutral-600 hover:dark:text-neutral-300'>FAQ</Link>
-                <Link to="/about" className='hover:text-neutral-600 hover:dark:text-neutral-300'>À Propos</Link>
-              </>
-            ) : userType === 'enterprise' ? (
-              <>
-                <Link to="/home-enterprise" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Accueil</Link>
-                <a href="#" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Recherche</a>
-                <Link to="/pricing" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Tarifs</Link>
-                <Link to="/faq" className='hover:text-neutral-600 hover:dark:text-neutral-300'>FAQ</Link>
-                <Link to="/about" className='hover:text-neutral-600 hover:dark:text-neutral-300'>À Propos</Link>
-              </>
-            ) : null}
-          </div>
-          <div className="flex items-center gap-2 lg:mr-9">
-            <div className="form-control">
-              <input 
-                type="text" 
-                placeholder="Recherche service ..." 
-                className="dark:bg-neutral-800 bg-white rounded-xl input-bordered dark:border-neutral-600 input-sm w-full max-w-xs" 
-              />
+          
+          {!isSelectionPage && (
+            <div className="hidden md:flex justify-center items-center gap-8 text-black dark:text-white">
+              {userType === 'client' ? (
+                <>
+                  <Link to="/home-client" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Accueil</Link>
+                  <a href="#" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Recherche</a>
+                  <Link to="/faq" className='hover:text-neutral-600 hover:dark:text-neutral-300'>FAQ</Link>
+                  <Link to="/about" className='hover:text-neutral-600 hover:dark:text-neutral-300'>À Propos</Link>
+                </>
+              ) : userType === 'enterprise' ? (
+                <>
+                  <Link to="/home-enterprise" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Accueil</Link>
+                  <a href="#" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Recherche</a>
+                  <Link to="/pricing" className='hover:text-neutral-600 hover:dark:text-neutral-300'>Tarifs</Link>
+                  <Link to="/faq" className='hover:text-neutral-600 hover:dark:text-neutral-300'>FAQ</Link>
+                  <Link to="/about" className='hover:text-neutral-600 hover:dark:text-neutral-300'>À Propos</Link>
+                </>
+              ) : null}
+              
+              <label className="inline-flex items-center cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  className="sr-only peer" 
+                  checked={userType === 'enterprise'}
+                  onChange={handleUserTypeToggle}
+                />
+                <div className={`relative w-11 h-6 rounded-full transition-colors duration-300 ease-in-out 
+                  ${userType === 'enterprise' ? 'bg-[#67FFCC]' : 'bg-[#A78BFA]'}
+                  peer-checked:after:translate-x-full peer-checked:bg-[#67FFCC]
+                  peer-checked:after:bg-[#67FFCC] peer-checked:after:border-white`}
+                >
+                  <div className={`absolute top-0.5 left-0.5 bg-white border border-gray-300 rounded-full 
+                    h-5 w-5 transition-transform duration-300 ease-in-out
+                    ${userType === 'enterprise' ? 'translate-x-5' : ''}
+                    peer-checked:translate-x-full`}
+                  ></div>
+                </div>
+                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                  {userType === 'client' ? 'Mode Particulier' : 'Mode Professionnel'}
+                </span>
+              </label>
             </div>
+          )}
+          
+          <div className="flex items-center gap-2 lg:mr-9">
+            {!isSelectionPage && (
+              <div className="form-control">
+                <input 
+                  type="text" 
+                  placeholder="Recherche service ..." 
+                  className="dark:bg-neutral-800 bg-white rounded-xl input-bordered dark:border-neutral-600 input-sm w-full max-w-xs" 
+                />
+              </div>
+            )}
             <div 
               className="relative" 
               ref={dropdownRef}
@@ -156,14 +185,16 @@ const Navbar = () => {
                 )}
               </AnimatePresence>
             </div>
-            <div className="md:hidden flex items-center mr-2 lg:mr-9">
-              <button onClick={toggleMobileMenu}>
-                {isMobileMenuOpen ? <FaTimes className="w-6 h-6" /> : <FaBars className="w-6 h-6" />}
-              </button>
-            </div>
+            {!isSelectionPage && (
+              <div className="md:hidden flex items-center mr-2 lg:mr-9">
+                <button onClick={toggleMobileMenu}>
+                  {isMobileMenuOpen ? <FaTimes className="w-6 h-6" /> : <FaBars className="w-6 h-6" />}
+                </button>
+              </div>
+            )}
           </div>
         </div>
-        {isMobileMenuOpen && (
+        {!isSelectionPage && isMobileMenuOpen && (
           <div className="md:hidden backdrop-filter backdrop-blur-lg bg-[#F8D7DA] bg-opacity-30 dark:bg-[#232323] dark:bg-opacity-30 dark:text-white border border-neutral-200 font-semibold mx-auto w-5/6 mt-4 rounded-xl neon-nav">
             <div className="flex flex-col items-center gap-4 py-4">
               {userType === 'client' ? (
@@ -209,7 +240,6 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* Main Content */}
       <div className="pt-14">
       </div>
     </>
