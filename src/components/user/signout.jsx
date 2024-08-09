@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
 import { toast } from 'react-toastify';
+import Cookies from "js-cookie";
 
 export default function SignOut() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function SignOut() {
       await fetch('/api/signout', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // Utilisez la clé correcte
+          'Authorization': `Bearer ${Cookies.get('mpe-auth')}` // Utilisez la clé correcte
         }
       });
 
