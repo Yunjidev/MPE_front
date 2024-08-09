@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 // Context
 import { UserProvider } from './context/UserContext';
+import { ModalProvider } from './context/ModalContext'; // Importez le ModalProvider
 import ScrollToTop from './context/Scrolltotop';
 
 // Components
@@ -33,7 +34,7 @@ import Pricing_page from './components/pricing_page/pricing_page';
 
 // New components
 import Dashboard from './pages/Dashboard/Dashboard';
-import EditProfileForm from './components/DashboardUser/EditProfilForm'; // Importez ici si nécessaire
+import EditProfileForm from './components/DashboardUser/EditProfilForm';
 
 const MainLayout = ({ children }) => (
   <>
@@ -61,29 +62,31 @@ function App() {
   return (
     <Provider>
       <UserProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <MainLayout>
-            <Routes>
-              <Route path="/" element={<UserChoiceModal />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/home-client" element={<HomeClient />} />
-              <Route path="/home-enterprise" element={<HomeEnterprise />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/signin" element={<Signin />} />
-              <Route path="/about" element={<Team />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/FAQ" element={<FAQ />} />
-              <Route path="/register-company" element={<RegisterCompany />} />
-              <Route path="/pricing" element={<Pricing_page />} />
-              <Route path="/dashboard/:id" element={<Dashboard />}>
-                <Route path="user" element={<EditProfileForm />} /> {/* Remplacez Dashboard par EditProfileForm */}
-                <Route path="register-company" element={<RegisterCompany />} />
-                <Route path="security" element={<Team />} />
-              </Route>
-            </Routes>
-          </MainLayout>
-        </BrowserRouter>
+        <ModalProvider> {/* Ajoutez le ModalProvider ici */}
+          <BrowserRouter>
+            <ScrollToTop />
+            <MainLayout>
+              <Routes>
+                <Route path="/" element={<UserChoiceModal />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/home-client" element={<HomeClient />} />
+                <Route path="/home-enterprise" element={<HomeEnterprise />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/signin" element={<Signin />} />
+                <Route path="/about" element={<Team />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/FAQ" element={<FAQ />} />
+                <Route path="/register-company" element={<RegisterCompany />} />
+                <Route path="/pricing" element={<Pricing_page />} />
+                <Route path="/dashboard/:id" element={<Dashboard />}>
+                  <Route path="user" element={<EditProfileForm />} />
+                  <Route path="register-company" element={<RegisterCompany />} />
+                  <Route path="security" element={<Team />} />
+                </Route>
+              </Routes>
+            </MainLayout>
+          </BrowserRouter>
+        </ModalProvider>
       </UserProvider>
     </Provider>
   );
