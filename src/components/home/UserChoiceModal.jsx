@@ -1,19 +1,32 @@
-// src/components/home/UserChoiceModal.js
+/* eslint-disable react/prop-types */
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAtom } from 'jotai';
-import { userTypeAtom } from '../../store/userType';
+import { UserContext } from '../../context/UserContext';
 import SocialLinks from '../SocialLinks/sociallinks';
 
 const UserChoiceModal = () => {
   const navigate = useNavigate();
-  const [, setUserType] = useAtom(userTypeAtom); // Utiliser le hook jotai pour obtenir et mettre à jour userType
+  const { user, setUser } = useContext(UserContext);
 
   const handleChoice = (choice) => {
-    setUserType(choice); // Met à jour le userType global
+    // Mettre à jour l'état de l'utilisateur avec le type sélectionné
+    setUser(prevUser => ({
+      ...prevUser,
+      userType: choice
+    }));
+    
+    // Sauvegarder le choix dans le stockage local
+    localStorage.setItem('user', JSON.stringify({
+      ...user,
+      userType: choice
+    }));
 
-    localStorage.setItem('userType', choice); // Sauvegarde dans le localStorage
-
-    navigate(choice === 'client' ? '/home-client' : '/home-enterprise');
+    // Navigation en fonction du choix
+    if (choice === 'client') {
+      navigate('/home-client');
+    } else if (choice === 'enterprise') {
+      navigate('/home-enterprise');
+    }
   };
 
   return (
