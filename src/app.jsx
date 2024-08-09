@@ -31,6 +31,7 @@ import Contact from './pages/contact/contact';
 import FAQ from './pages/FAQ/FAQ';
 import RegisterCompany from './pages/user/registercompany';
 import Pricing_page from './components/pricing_page/pricing_page';
+import Company_db from './pages/company/Company_db'
 
 const MainLayout = ({ children }) => (
   <>
@@ -73,6 +74,7 @@ function App() {
               <Route path="/FAQ" element={<FAQ />} />
               <Route path="/register-company" element={<RegisterCompany />} />
               <Route path="/pricing" element={<Pricing_page />} />
+              <Route path="/company-db" element={<Company_db />} />
             </Routes>
           </MainLayout>
         </BrowserRouter>

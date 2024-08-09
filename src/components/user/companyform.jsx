@@ -7,7 +7,7 @@ import {
 import { FaXTwitter, FaInstagram, FaFacebook } from "react-icons/fa6";
 import { MdOutlineAlternateEmail, MdOutlineAreaChart } from "react-icons/md";
 import Button from "../Button/button";
-import regions from "../enterprise/region-names.jsx";
+import regions from "../company/region-names.jsx";
 import { CgWebsite } from "react-icons/cg";
 
 export default function RegisterCompany({ onSubmit }) {
