@@ -1,16 +1,16 @@
-import React from 'react';
-import CompanyForm from '../../components/user/companyform';
+import React from "react";
+import CompanyForm from "../../components/DashboardUser/companyform";
 
 const RegisterCompany = () => {
-    const handleFormSubmit = async (formData) => {
-      console.log(formData);
-    };
-  
-    return (
-      <div>
-        <CompanyForm onSubmit={handleFormSubmit} />
-      </div>
-    );
+  const handleFormSubmit = async (formData) => {
+    console.log(formData);
+  };
+
+  return (
+    <div>
+      <CompanyForm onSubmit={handleFormSubmit} />
+    </div>
+  );
 };
-  
+
 export default RegisterCompany;

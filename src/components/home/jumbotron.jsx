@@ -22,7 +22,7 @@ const Jumbotron = ({ isDarkMode }) => {
                         <MdOutlineRocketLaunch className="text-gray-800 dark:text-gray-100 w-8 h-8 mr-4" />
                         Découvrir
                     </button>
-                    <button className="flex dark:bg-gradient-to-r dark:from-green-200 dark:to-green-400 bg-gradient-to-r from-green-400 to-green-800 text-transparent bg-clip-text items-center justify-center w-44 h-12 mr-2 border border-white font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+                    <button className="flex dark:bg-gradient-to-r dark:from-green-200 dark:to-green-400 bg-gradient-to-r from-green-400 to-green-800 text-transparent bg-clip-text items-center justify-center w-44 h-12 mr-2 border border-neutral-300 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
                         <FaUserPlus className="text-gray-800 dark:text-gray-100 w-8 h-8 mr-4" />
                         <Link to="/signup">S'inscrire</Link>
                     </button>
