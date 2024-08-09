@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-// src/App.js
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -8,12 +7,10 @@ import { ToastContainer } from 'react-toastify';
 import { userAtom } from './store/user';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Context
 import { UserProvider } from './context/UserContext';
-import { ModalProvider } from './context/ModalContext'; // Importez le ModalProvider
+import { ModalProvider } from './context/ModalContext'; 
 import ScrollToTop from './context/Scrolltotop';
 
-// Components
 import ParticlesDemo from './components/ParticlesDemo';
 import NavBar from './components/navbar/navbar';
 import Footer from './components/footer/footer';
@@ -22,7 +19,6 @@ import UserChoiceModal from './components/home/UserChoiceModal';
 import Signup from './components/user/signup';
 import Signin from './components/user/signin';
 
-// Pages
 import Home from './pages/home/home';
 import HomeClient from './pages/home/HomeClient';
 import HomeEnterprise from './pages/home/HomeEntreprise';
@@ -32,9 +28,8 @@ import FAQ from './pages/FAQ/FAQ';
 import RegisterCompany from './pages/user/registercompany';
 import Pricing_page from './components/pricing_page/pricing_page';
 
-// New components
 import Dashboard from './pages/Dashboard/Dashboard';
-import EditProfileForm from './components/DashboardUser/EditProfilForm';
+import UserProfilePage from './pages/DashboardUser/UserProfilePage';  // Import de la nouvelle page
 
 const MainLayout = ({ children }) => (
   <>
@@ -62,7 +57,7 @@ function App() {
   return (
     <Provider>
       <UserProvider>
-        <ModalProvider> {/* Ajoutez le ModalProvider ici */}
+        <ModalProvider> 
           <BrowserRouter>
             <ScrollToTop />
             <MainLayout>
@@ -79,7 +74,7 @@ function App() {
                 <Route path="/register-company" element={<RegisterCompany />} />
                 <Route path="/pricing" element={<Pricing_page />} />
                 <Route path="/dashboard/:id" element={<Dashboard />}>
-                  <Route path="user" element={<EditProfileForm />} />
+                  <Route path="user" element={<UserProfilePage />} />  {/* Nouvelle route pour la page de profil */}
                   <Route path="register-company" element={<RegisterCompany />} />
                   <Route path="security" element={<Team />} />
                 </Route>
