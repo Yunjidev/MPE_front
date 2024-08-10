@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   FaUser,
@@ -14,17 +14,16 @@ import {
 import { FaXTwitter, FaInstagram, FaFacebook } from "react-icons/fa6";
 import { MdOutlineAlternateEmail, MdOutlineAreaChart } from "react-icons/md";
 import Button from "../Button/button";
-import regions from "../enterprise/region-names.jsx";
 import { CgWebsite } from "react-icons/cg";
-
+import Cookies from "js-cookie";
 export default function RegisterCompany({ onSubmit }) {
   const [name, setName] = useState("");
-  const [contact, setContact] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [mail, setMail] = useState("");
+  const [adress, setAdress] = useState("");
   const [city, setCity] = useState("");
-  const [zipcode, setZipcode] = useState("");
-  const [siret, setSiret] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [siretNumber, setSiretNumber] = useState("");
   const [activity, setActivity] = useState("");
   const [twitter, setTwitter] = useState("");
   const [instagram, setInstagram] = useState("");
@@ -37,23 +36,97 @@ export default function RegisterCompany({ onSubmit }) {
   const [logo, setLogo] = useState(null);
   const [logoUrl, setLogoUrl] = useState(null);
 
+  const [jobOptions, setJobOptions] = useState([]);
+  const [regionOptions, setRegionOptions] = useState([]);
+
+  useEffect(() => {
+    // Fetch jobs from the API
+    const fetchJobs = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/jobs");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const jobs = await response.json();
+        setJobOptions(jobs);
+      } catch (error) {
+        console.error("Failed to fetch jobs:", error);
+      }
+    };
+
+    // Fetch regions from the API
+    const fetchRegions = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/countries");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const countries = await response.json();
+        
+        // Vérifiez la structure des données ici
+        console.log("Fetched countries:", countries);
+
+        // Supposons que chaque élément de countries soit un objet avec une clé 'name'
+        const regions = countries.map(country => country.name); // Adaptez cela à votre structure de données
+        setRegionOptions(regions);
+      } catch (error) {
+        console.error("Failed to fetch regions:", error);
+      }
+    };
+
+    fetchJobs();
+    fetchRegions();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await onSubmit({
-      logo,
-      name,
-      contact,
-      email,
-      address,
-      city,
-      zipcode,
-      siret,
-      activity,
-      network,
-      description,
-      photos,
+  
+    const formData = new FormData();
+    formData.append("logo", logo);
+    formData.append("name", name);
+    formData.append("phone", phone);
+    formData.append("mail", mail);
+    formData.append("adress", adress);
+    formData.append("city", city);
+    formData.append("zip_code", zipCode);
+    formData.append("siret_number", siretNumber);
+    formData.append("activity", activity);
+    formData.append("description", description);
+    formData.append("region", region);
+    formData.append("website", website);
+  
+    photos.forEach((photo, index) => {
+      formData.append(`photos[${index}]`, photo);
     });
+  
+    try {
+      const token = Cookies.get('mpe-auth');
+      if (!token) {
+        throw new Error('No authentication token found.');
+      }
+      const response = await fetch(`http://localhost:8080/api/enterprise`, {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+        },
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Failed to submit form:", errorText);
+        throw new Error("Network response was not ok");
+      }
+  
+      const result = await response.json();
+      console.log("Success:", result);
+      // Vous pouvez appeler onSubmit ici si nécessaire ou rediriger l'utilisateur
+    } catch (error) {
+      console.error("Failed to submit form:", error.message);
+    }
   };
+
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -79,7 +152,7 @@ export default function RegisterCompany({ onSubmit }) {
           <h2 className="text-white text-center text-2xl mb-5">
             Création d'entreprise
           </h2>
-          <hr className="w-1/2 my-4 border-t-2 border-gray-400  mx-auto" />
+          <hr className="w-1/2 my-4 border-t-2 border-gray-400 mx-auto" />
           <form
             onSubmit={handleSubmit}
             className="flex flex-col lg:space-y-5 lg:grid lg:grid-cols-3 gap-3"
@@ -130,8 +203,8 @@ export default function RegisterCompany({ onSubmit }) {
                 <input
                   type="text"
                   id="siret"
-                  value={siret}
-                  onChange={(e) => setSiret(e.target.value)}
+                  value={siretNumber}
+                  onChange={(e) => setSiretNumber(e.target.value)}
                   placeholder="Numéro Siret"
                   className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
                 />
@@ -141,8 +214,8 @@ export default function RegisterCompany({ onSubmit }) {
                 <input
                   type="text"
                   id="contact"
-                  value={contact}
-                  onChange={(e) => setContact(e.target.value)}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   placeholder="Contact"
                   className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
                 />
@@ -152,19 +225,20 @@ export default function RegisterCompany({ onSubmit }) {
                 <input
                   type="email"
                   id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={mail}
+                  onChange={(e) => setMail(e.target.value)}
                   placeholder="E-mail"
                   className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
                 />
               </div>
+              {/* Address, City, Zipcode Fields */}
               <div className="relative flex items-center">
                 <FaMapMarkerAlt className="absolute left-3 text-gray-400" />
                 <input
                   type="text"
                   id="address"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  value={adress}
+                  onChange={(e) => setAdress(e.target.value)}
                   placeholder="Adresse"
                   className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
                 />
@@ -178,7 +252,7 @@ export default function RegisterCompany({ onSubmit }) {
                   className="w-full pl-10 pr-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400"
                 >
                   <option value="">Sélectionner une région</option>
-                  {regions.map((regionName, index) => (
+                  {regionOptions.map((regionName, index) => (
                     <option key={index} value={regionName}>
                       {regionName}
                     </option>
@@ -201,8 +275,8 @@ export default function RegisterCompany({ onSubmit }) {
                 <input
                   type="text"
                   id="zipcode"
-                  value={zipcode}
-                  onChange={(e) => setZipcode(e.target.value)}
+                  value={zipCode}
+                  onChange={(e) => setZipCode(e.target.value)}
                   placeholder="Code Postal"
                   className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
                 />
@@ -262,9 +336,11 @@ export default function RegisterCompany({ onSubmit }) {
                 className="w-full pl-10 pr-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400"
               >
                 <option value="">Sélectionner votre métier</option>
-                <option value="prestation1">Métier 1</option>
-                <option value="prestation2">Métier 2</option>
-                <option value="prestation3">Métier 3</option>
+                {jobOptions.map((job, index) => (
+                  <option key={index} value={job.name}>
+                    {job.name}
+                  </option>
+                ))}
               </select>
             </div>
             {/* Description */}
