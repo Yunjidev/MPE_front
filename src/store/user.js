@@ -6,6 +6,7 @@ export const userAtom = atomWithStorage("user", {
   email: "",
   firstname: "",   
   lastname: "",    
-  avatar: "",      
+  avatar: "",
+  isAdmin: false,      
   isLogged: false,
 });

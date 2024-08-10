@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useContext, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaUserCircle, FaBars, FaTimes } from 'react-icons/fa';
@@ -51,10 +49,11 @@ const Navbar = () => {
     const fetchProfileData = async () => {
       if (user.isLogged && user.id) {
         try {
-          const data = await getData(`user/profile`);
+          const data = await getData('user/profile');
+          console.log('Fetched profile data:', data); // Log fetched data
           setProfile(data);
         } catch (error) {
-          console.error(error);
+          console.error('Error fetching profile data:', error);
         }
       }
     };
@@ -68,6 +67,13 @@ const Navbar = () => {
     navigate(newUserType === 'client' ? '/home-client' : '/home-enterprise');
   };
 
+  // Base URL for avatars
+  const baseAvatarUrl = 'http://localhost:8080/api';
+  
+  
+  // Construct avatar URL
+  const avatarUrl = profile?.avatar ? `${baseAvatarUrl}${user.avatar}` : 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp';
+  console.log('Avatar URL:', avatarUrl);
   return (
     <>
       <div className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full max-w-full z-50 mt-4">
@@ -147,7 +153,7 @@ const Navbar = () => {
                     <img
                       className='rounded-full hover:outline hover:outline-orange-300'
                       alt="User Avatar"
-                      src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                      src={avatarUrl} // Use computed avatar URL
                     />
                   </div>
                 ) : (

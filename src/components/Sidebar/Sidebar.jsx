@@ -1,7 +1,7 @@
 // Sidebar.jsx
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
-import { FaTachometerAlt, FaSearch, FaComments, FaShoppingCart, FaHeart, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaTachometerAlt, FaCog, FaUsers, FaBuilding, FaBriefcase, FaChartBar, FaChartLine, FaUserShield } from 'react-icons/fa';
 import { UserContext } from '../../context/UserContext';
 
 const Sidebar = () => {
@@ -111,7 +111,7 @@ const Sidebar = () => {
                   className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                   onClick={closeSidebar}
                 >
-                  <FaTachometerAlt className="w-5 h-5 fill-current dark:text-gray-400" />
+                  <FaBuilding className="w-5 h-5 fill-current dark:text-gray-400" />
                   <span>Create Company</span>
                 </Link>
               </li>
@@ -125,71 +125,92 @@ const Sidebar = () => {
                   <span>Security</span>
                 </Link>
               </li>
-              {/* Additional Items */}
-              <li>
-                <Link
-                  to="/search"
-                  className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                  onClick={closeSidebar}
-                >
-                  <FaSearch className="w-5 h-5 fill-current dark:text-gray-400" />
-                  <span>Search</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/chat"
-                  className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                  onClick={closeSidebar}
-                >
-                  <FaComments className="w-5 h-5 fill-current dark:text-gray-400" />
-                  <span>Chat</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/orders"
-                  className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                  onClick={closeSidebar}
-                >
-                  <FaShoppingCart className="w-5 h-5 fill-current dark:text-gray-400" />
-                  <span>Orders</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/wishlist"
-                  className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                  onClick={closeSidebar}
-                >
-                  <FaHeart className="w-5 h-5 fill-current dark:text-gray-400" />
-                  <span>Wishlist</span>
-                </Link>
-              </li>
-            </ul>
-            <ul className="pt-4 pb-2 space-y-1 text-sm">
-              <li>
-                <Link
-                  to="/settings"
-                  className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                  onClick={closeSidebar}
-                >
-                  <FaCog className="w-5 h-5 fill-current dark:text-gray-400" />
-                  <span>Settings</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/logout"
-                  className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                  onClick={closeSidebar}
-                >
-                  <FaSignOutAlt className="w-5 h-5 fill-current dark:text-gray-400" />
-                  <span>Logout</span>
-                </Link>
-              </li>
             </ul>
           </div>
+
+          {user && user.isAdmin && (
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
+                <FaUserShield className="w-10 h-10 mr-2 fill-current dark:text-gray-400" />
+                <div>
+                  <h3 className="text-lg font-semibold">Admin</h3>
+                  <p className="text-xs">Dashboard</p>
+                </div>
+              </div>
+              <ul className="pt-2 pb-4 space-y-1 text-sm">
+                <li>
+                  <Link
+                    to={`/dashboard/${userId}`}
+                    className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={closeSidebar}
+                  >
+                    <FaTachometerAlt className="w-5 h-5 fill-current dark:text-gray-400" />
+                    <span>Tableau de Bord</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={`/dashboard/${userId}/accept-company`}
+                    className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={closeSidebar}
+                  >
+                    <FaBuilding className="w-5 h-5 fill-current dark:text-gray-400" />
+                    <span>Acceptation entreprise</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={`/dashboard/${userId}/manage-users`}
+                    className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={closeSidebar}
+                  >
+                    <FaUsers className="w-5 h-5 fill-current dark:text-gray-400" />
+                    <span>Gestion Utilisateur</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={`/dashboard/${userId}/manage-companies`}
+                    className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={closeSidebar}
+                  >
+                    <FaBuilding className="w-5 h-5 fill-current dark:text-gray-400" />
+                    <span>Gestion Entreprise</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={`/dashboard/${userId}/manage-careers`}
+                    className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={closeSidebar}
+                  >
+                    <FaBriefcase className="w-5 h-5 fill-current dark:text-gray-400" />
+                    <span>Gestion des Métiers</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={`/dashboard/${userId}/manage-subscriptions`}
+                    className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={closeSidebar}
+                  >
+                    <FaChartLine className="w-5 h-5 fill-current dark:text-gray-400" />
+                    <span>Gestion des Abonnements</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={`/dashboard/${userId}/reports`}
+                    className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={closeSidebar}
+                  >
+                    <FaChartBar className="w-5 h-5 fill-current dark:text-gray-400" />
+                    <span>Reports</span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </aside>
     </>
