@@ -1,14 +1,16 @@
-import SocialLinks from '../SocialLinks/sociallinks';
-import { useContext } from 'react';
+/* eslint-disable react/prop-types */
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../context/UserContext';
+import { useModal } from '../../context/ModalContext';
+import SocialLinks from '../SocialLinks/sociallinks';
 
 const UserChoiceModal = () => {
   const navigate = useNavigate();
-  const { setUserType } = useContext(UserContext);
+  const { setUserType } = useModal();
 
   const handleChoice = (choice) => {
     setUserType(choice);
+
+    // Navigation en fonction du choix
     if (choice === 'client') {
       navigate('/home-client');
     } else if (choice === 'enterprise') {
