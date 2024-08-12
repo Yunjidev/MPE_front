@@ -2,6 +2,7 @@ import React from 'react';
 import ProfileManagement from '../../components/company/Company_profile';
 import LikesManagement from '../../components/company/Company_likes';
 import AgendaManagement from '../../components/company/Company_agenda'
+import ComManagement from '../../components/company/Company_coms'
 
 const Companydb = () => {
     return (
@@ -10,15 +11,18 @@ const Companydb = () => {
             <hr className="w-11/12 mb-12" />
             <div className="flex flex-wrap">
                 {/* 1ère ligne : ProfileManagement et LikesManagement */}
-                <div className="w-full md:w-1/2 pr-4 mb-4">
+                <div className="w-full md:w-1/2 px-2 mb-4">
                     <ProfileManagement />
                 </div>
-                <div className="w-full md:w-1/2 pl-4 mb-4">
+                <div className="w-full md:w-1/2 px-2 mb-4">
                     <LikesManagement />
                 </div>
                 {/* 2ème ligne : AgendaManagement */}
                 <div className="w-full">
                     <AgendaManagement />
+                </div>
+                <div className="w-full">
+                    <ComManagement />
                 </div>
             </div>
         </div>
