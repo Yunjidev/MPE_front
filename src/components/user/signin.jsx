@@ -29,7 +29,7 @@ export default function SignIn() {
             return updatedUser;
           });
           // Redirection après authentification réussie
-          navigate('/home');
+          navigate('/');
           toast.success('Authentification réussie');
         } else {
           toast.error('Identifiant ou mot de passe incorrect');

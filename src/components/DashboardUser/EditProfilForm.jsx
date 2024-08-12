@@ -1,19 +1,14 @@
-/* eslint-disable no-unused-vars */
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
 import Cookies from 'js-cookie';
-import {
-  FaUser,
-  FaEnvelope,
-  FaFileUpload,
-} from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaFileUpload } from 'react-icons/fa';
 import Button from '../Button/button';
 
 const EditProfileForm = () => {
   const [user, setUser] = useAtom(userAtom);
-  const { register, handleSubmit, setValue, reset } = useForm({
+  const { register, handleSubmit, reset, setValue } = useForm({
     defaultValues: {
       username: '',
       email: '',
@@ -23,25 +18,38 @@ const EditProfileForm = () => {
     },
   });
 
+  // Vérifier les données utilisateur et mettre à jour le formulaire
   useEffect(() => {
     if (user) {
-      // Remise à zéro des valeurs par défaut avant de mettre à jour
+      console.log('User data from atom:', user);
+
+      const userData = user.user || user;
       reset({
-        username: user.username || '',
-        email: user.email || '',
-        firstname: user.firstname || '',
-        lastname: user.lastname || '',
-        avatar: null, // L'avatar ne doit pas être réinitialisé ici
+        username: userData.username || '',
+        email: userData.email || '',
+        firstname: userData.firstname || '',
+        lastname: userData.lastname || '',
+        avatar: null,
       });
+
+      // Si les données ne sont pas réinitialisées correctement, utiliser setValue
+      setValue('username', userData.username || '');
+      setValue('email', userData.email || '');
+      setValue('firstname', userData.firstname || '');
+      setValue('lastname', userData.lastname || '');
     }
-  }, [user, reset]);
+  }, [user, reset, setValue]);
 
   const onSubmit = async (data) => {
+    console.log('Form data submitted:', data);
+
     const formData = new FormData();
-    formData.append('username', data.username);
-    formData.append('email', data.email);
-    formData.append('firstname', data.firstname);
-    formData.append('lastname', data.lastname);
+
+    // Ajouter uniquement les champs modifiés
+    if (data.username !== user.username) formData.append('username', data.username);
+    if (data.email !== user.email) formData.append('email', data.email);
+    if (data.firstname !== user.firstname) formData.append('firstname', data.firstname);
+    if (data.lastname !== user.lastname) formData.append('lastname', data.lastname);
 
     // Si un fichier a été sélectionné
     if (data.avatar && data.avatar[0]) {
@@ -54,7 +62,7 @@ const EditProfileForm = () => {
         throw new Error('No authentication token found.');
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/user/update`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}user/update`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -73,22 +81,18 @@ const EditProfileForm = () => {
 
       const updatedUser = await response.json();
 
-      // Vérifiez si un nouveau token est renvoyé
       if (updatedUser.token) {
-        // Met à jour le cookie avec le nouveau token
         Cookies.set('mpe-auth', updatedUser.token, { secure: true, sameSite: 'Strict' });
       }
 
-      // Mettre à jour l'état utilisateur
       setUser(updatedUser);
 
-      // Mise à jour des valeurs dans le formulaire
       reset({
         username: updatedUser.username,
         email: updatedUser.email,
         firstname: updatedUser.firstname,
         lastname: updatedUser.lastname,
-        avatar: null, // L'avatar ne doit pas être réinitialisé ici
+        avatar: null,
       });
 
       alert('Profile updated successfully');
@@ -108,7 +112,6 @@ const EditProfileForm = () => {
           </h2>
           <hr className="w-1/2 my-4 border-t-2 border-gray-400 mx-auto" />
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col lg:space-y-5 lg:grid lg:grid-cols-2 gap-3">
-            {/* Avatar Image */}
             <div className="flex justify-center items-center">
               <label
                 htmlFor="avatar"
@@ -126,7 +129,6 @@ const EditProfileForm = () => {
                 className="hidden"
               />
             </div>
-            {/* Fields */}
             <div className="flex flex-col lg:col-span-1 gap-6">
               <div className="relative flex items-center">
                 <FaUser className="absolute left-3 text-gray-400" />
