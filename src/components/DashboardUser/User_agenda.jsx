@@ -1,4 +1,3 @@
-import React from 'react';
 import { MdCalendarToday } from 'react-icons/md';
 
 const AgendaManagement = () => {

@@ -1,7 +1,9 @@
+/* eslint-disable react/no-unknown-property */
+/* eslint-disable react/prop-types */
 "use client";
 import { FcOldTimeCamera } from "react-icons/fc";
 
-import React, { forwardRef, useRef } from "react";
+import { forwardRef, useRef } from "react";
 import { cn } from "../../@/lib/utils";
 import { AnimatedBeam } from "../../@/components/magicui/animated-beam";
 

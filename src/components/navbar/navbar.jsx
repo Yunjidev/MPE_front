@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import { useState, useContext, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaUserCircle, FaBars, FaTimes } from 'react-icons/fa';
@@ -173,7 +175,7 @@ const Navbar = () => {
                     {user.isLogged ? (
                       <>
                         <li>
-                          <Link to={`/dashboard/${user.id}/company-db`} className="text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300">Mon Dashboard</Link>
+                          <Link to={`/dashboard/${user.id}/user-db`} className="text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300">Mon Dashboard</Link>
                         </li>
                         <li><SignOut /></li>
                       </>
