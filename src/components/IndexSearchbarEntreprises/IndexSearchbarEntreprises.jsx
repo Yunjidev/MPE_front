@@ -4,7 +4,7 @@ import { getData } from '../../services/data-fetch';
 import AsyncSelect from 'react-select/async';
 
 
-const IndexSearchbarEntreprises = ({ setSearchResults }) => {
+const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
   const [error, setError] = useState(null);
   const [selectedJobs, setSelectedJobs] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
@@ -106,7 +106,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults }) => {
     setSelectedCountries([]);
     setSelectedCities([]);
     setSelectedRatings([]);
-    setSearchResults([]);
+    resetSearch();
   };
 
   return (

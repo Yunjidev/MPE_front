@@ -1,17 +1,35 @@
 import React from 'react';
 import indexcards from '../../../public/assets/img/indexcards.jpg';
 import { FaCalendarDay, FaWrench, FaMapMarkerAlt } from 'react-icons/fa';
+import { postData } from '../../services/data-fetch';
 
-const IndexCardsEntreprises = ({ entreprise }) => {
+const IndexCardsEntreprises = ({ entreprise, userId }) => {
   // Utilisez les props pour afficher les données de l'entreprise
-  const { name, city, zip_code, job, nextAvailableDate, logo } = entreprise;
-
+  const { id, name, city, zip_code, job, nextAvailableDate, logo } = entreprise;
+ 
+  const handleLike = async () => {
+    try {
+      const likeData = {
+        User_id: userId,
+        Enterprise_id: entreprise.id
+      };
+      const response = await postData('like', likeData);
+      console.log('Like créé avec succès:', response);
+    } catch (error) {
+      console.error('Erreur lors de la création du like:', error);
+    }
+  };
 
 
   return (
     <div className="card card-compact w-auto shadow-xl relative dark:bg-[#262626] dark:text-white light:bg-[#FDE8E8]">
       <div className="rating gap-1 absolute top-0 right-0 p-4">
-        <input type="radio" name="rating-3" className="mask mask-heart bg-red-400" />
+        <input 
+        type="radio" 
+        name="rating-3" 
+        className="mask mask-heart bg-red-400"
+        onClick={handleLike}
+         />
       </div>
       <figure>
         {/* Utilisez la photo de l'entreprise si disponible */}

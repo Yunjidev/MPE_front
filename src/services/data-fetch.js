@@ -31,3 +31,22 @@ export async function deleteData(object) {
     throw error;
   }
 }
+
+// Fonction pour envoyer des données (créer un like)
+export async function postData(object, data) {
+  try {
+    const headers = setHeaders();
+    console.log('Request Headers:', headers); // Afficher les en-têtes pour le débogage
+
+    const response = await ky.post(BASE_URL + object, { headers, json: data }).json();
+    return response;
+  } catch (error) {
+    if (error.response) {
+      const errorText = await error.response.text();
+      console.log('Error Response Text:', errorText);
+    } else {
+      console.log('Error Message:', error.message);
+    }
+    throw error;
+  }
+}
