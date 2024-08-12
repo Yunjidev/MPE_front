@@ -1,7 +1,6 @@
-import React from 'react';
-import ProfileManagement from '../../components/company/Company_profile';
-import LikesManagement from '../../components/company/Company_likes';
-import AgendaManagement from '../../components/company/Company_agenda'
+import ProfileManagement from '../../components/DashboardUser/EditProfilForm';
+import LikesManagement from '../../components/DashboardUser/User_likes';
+import AgendaManagement from '../../components/DashboardUser/User_agenda'
 
 const Companydb = () => {
     return (

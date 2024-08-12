@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
