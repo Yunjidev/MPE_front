@@ -3,12 +3,14 @@ import { HiSearch } from "react-icons/hi";
 import { getData } from '../../services/data-fetch';
 import AsyncSelect from 'react-select/async';
 
+
 const IndexSearchbarEntreprises = ({ setSearchResults }) => {
   const [error, setError] = useState(null);
   const [selectedJobs, setSelectedJobs] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [selectedCities, setSelectedCities] = useState([]);
   const [selectedRatings, setSelectedRatings] = useState([]);
+  
 
   // Fonctions de chargement des options pour les AsyncSelect
   const loadOptions = async (inputValue, category) => {
@@ -21,7 +23,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults }) => {
         case 'job':
           options = response
             .filter(item => item.job && item.job.name && item.job.name.toLowerCase().includes(inputValue.toLowerCase()))
-            .map(item => ({ label: item.job.name, value: item.id }));
+            .map(item => ({ label: item.job.name, value: item.job.id }));
           break;
         case 'country':
           options = response
@@ -48,44 +50,54 @@ const IndexSearchbarEntreprises = ({ setSearchResults }) => {
   // Fonction de recherche
   const performSearch = async () => {
     try {
-      const response = await getData('enterprises/validate', {
-        params: {
-          country: selectedCountries.map(option => option.value).join(','),
-          job: selectedJobs.map(option => option.value).join(','),
-          city: selectedCities.map(option => option.value).join(','),
-          averageRating: selectedRatings.map(option => option.value).join(',')
-        }
+      // Supposons que cette fonction récupère toutes les entreprises sans filtrage
+      const response = await getData('enterprises/validate');
+
+      // Affichage des sélections actuelles pour le débogage
+      console.log('Sélections actuelles:', {
+        jobs: selectedJobs,
+        countries: selectedCountries,
+        cities: selectedCities,
+        ratings: selectedRatings
       });
-      setSearchResults(response); // Utilisez la fonction passée en prop pour mettre à jour l'état
-      console.log('Recherche effectuée avec les paramètres:', response);
+
+       // Assurez-vous que les ID correspondent aux valeurs attendues
+    console.log('Exemple de données reçues pour les jobs:', response.map(item => item.job));
+    console.log('Exemple de données reçues pour les pays:', response.map(item => item.country));
+    console.log('Exemple de données reçues pour les villes:', response.map(item => item.city));
+    console.log('Exemple de données reçues pour les notes:', response.map(item => item.averageRating));
+
+      // Filtrage des résultats en fonction des sélections de l'utilisateur
+      const filteredResponse = response.filter(entreprise => {
+        const jobMatch = selectedJobs.length === 0 || selectedJobs.some(job => entreprise.job && entreprise.job.name === job.label);
+        const countryMatch = selectedCountries.length === 0 || selectedCountries.some(country => entreprise.country && entreprise.country.name === country.label);
+        const cityMatch = selectedCities.length === 0 || selectedCities.some(city => entreprise.city === city.label);
+        const ratingMatch = selectedRatings.length === 0 || selectedRatings.some(rating => entreprise.averageRating && entreprise.averageRating.toString() === rating.label);
+        
+        // Affichage des résultats de la correspondance pour le débogage
+        console.log(`Résultats de la correspondance pour l'entreprise ${entreprise.name}:`, {
+          jobMatch,
+          countryMatch,
+          cityMatch,
+          ratingMatch
+        });
+        return jobMatch && countryMatch && cityMatch && ratingMatch;
+      }).map(entreprise => ({
+        ...entreprise,
+        logo: JSON.parse(entreprise.logo || '[]') // Parsez le logo ici
+      }));
+      
+      console.log('Filtrés:', filteredResponse);
+      // Mise à jour des résultats de recherche
+      setSearchResults(filteredResponse);
+      console.log('Recherche effectuée avec les paramètres:', filteredResponse);
     } catch (error) {
       console.error('Erreur lors de la recherche:', error);
       setError('Une erreur est survenue lors de la recherche.');
     }
   };
 
-  // Fonction pour gérer la sélection multiple des jobs
-  const handleJobChange = (selectedOptions) => {
-    setSelectedJobs(selectedOptions);
-    setSearchCriteria(prevState => ({ ...prevState, job: selectedOptions.map(option => option.value) }));
-  };
 
-  // Fonction pour gérer la sélection multiple des pays
-  const handleCountryChange = (selectedOptions) => {
-    setSelectedCountries(selectedOptions);
-    setSearchCriteria(prevState => ({ ...prevState, country: selectedOptions.map(option => option.value) }));
-  };
-
-  // Fonction pour gérer la sélection multiple des villes
-  const handleCityChange = (selectedOptions) => {
-    setSelectedCities(selectedOptions);
-    setSearchCriteria(prevState => ({ ...prevState, city: selectedOptions.map(option => option.value) }));
-  };
-
-  const handleRatingChange = (selectedOptions) => {
-    setSelectedRatings(selectedOptions);
-    setSearchCriteria(prevState => ({ ...prevState, rating: selectedOptions.map(option => option.value) }));
-  };
 
   // Fonction pour annuler la dernière recherche
   const removeLastSearch = () => {
@@ -93,19 +105,9 @@ const IndexSearchbarEntreprises = ({ setSearchResults }) => {
     setSelectedJobs([]);
     setSelectedCountries([]);
     setSelectedCities([]);
-
-    // Réinitialisez l'état global de recherche
-    setSearchCriteria({
-      job: [],
-      country: [],
-      city: [],
-      subscription: false,
-    });
-    // Déclenchez une nouvelle recherche pour afficher les résultats par défaut
-    handleSearch();
+    setSelectedRatings([]);
+    setSearchResults([]);
   };
-
-
 
   return (
 
@@ -115,7 +117,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults }) => {
         isMulti
         cacheOptions
         loadOptions={(inputValue) => loadOptions(inputValue, 'job')}
-        onChange={setSelectedJobs}
+        onChange={(selectedOptions) => setSelectedJobs(selectedOptions.map(option => ({ label: option.label })))}
         defaultOptions
         value={selectedJobs}
         className="select-bordered join-item w-48 rounded-full"
@@ -188,7 +190,4 @@ const IndexSearchbarEntreprises = ({ setSearchResults }) => {
 
   );
 };
-
-
-
 export default IndexSearchbarEntreprises;

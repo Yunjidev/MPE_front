@@ -17,7 +17,7 @@ const SearchEntreprise = () => {
                 response = response.map(entreprise => {
                     return {
                         ...entreprise,
-                        logo: JSON.parse(entreprise.logo)
+                        logo: JSON.parse(entreprise.logo || '[]')
                     };
                 });
                 setEntreprises(response);
@@ -30,7 +30,10 @@ const SearchEntreprise = () => {
         fetchEntreprises();
     }, []);
 
-    
+    // Ajoutez ce useEffect pour vérifier les logos après chaque mise à jour de l'état 'entreprises'
+    useEffect(() => {
+        console.log('Vérification des logos après recherche:', entreprises.map(e => e.logo));
+    }, [entreprises]);    
 
     return (
         <section className='py-14'>
