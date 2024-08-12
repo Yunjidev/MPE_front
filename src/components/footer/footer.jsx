@@ -12,9 +12,7 @@ const Footer = () => {
   }, []);
 
   return (
-    <footer className="footer flex justify-between items-center p-4 w-full">
-      <div className="flex-1"></div>
-
+    <footer className="text-white bg-gradient-to-t from-orange-900 flex justify-between items-center p-4 w-full">
       <div className="flex flex-col items-center">
         <Link to="/contact" className="footer-link hover:text-orange-500 font-semibold">Contact</Link>
         <Link to="/faq" className="footer-link hover:text-orange-500 font-semibold">F.A.Q</Link>
