@@ -82,7 +82,7 @@ const Sidebar = () => {
               <h2 className="text-lg font-semibold">{user ? user.username : 'Guest'}</h2>
               <span className="flex items-center space-x-1">
                 <Link
-                  to={`/profile/${userId}`} // Utiliser l'ID utilisateur pour les liens de profil
+                  to={`/dashboard/${userId}/user`} // Utiliser l'ID utilisateur pour les liens de profil
                   className="text-xs hover:underline dark:text-gray-400"
                   onClick={closeSidebar}
                 >
@@ -97,7 +97,7 @@ const Sidebar = () => {
             <ul className="pt-2 pb-4 space-y-1 text-sm">
               <li>
                 <Link
-                  to={`/dashboard/${userId}/user`} // Utiliser l'ID utilisateur pour les liens de navigation
+                  to={`/dashboard/${userId}/company-db`} // Utiliser l'ID utilisateur pour les liens de navigation
                   className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                   onClick={closeSidebar}
                 >

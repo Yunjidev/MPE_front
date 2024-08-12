@@ -173,7 +173,7 @@ const Navbar = () => {
                     {user.isLogged ? (
                       <>
                         <li>
-                          <Link to={`/dashboard/${user.id}/user`} className="text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300">Mon Dashboard</Link>
+                          <Link to={`/dashboard/${user.id}/company-db`} className="text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300">Mon Dashboard</Link>
                         </li>
                         <li><SignOut /></li>
                       </>
