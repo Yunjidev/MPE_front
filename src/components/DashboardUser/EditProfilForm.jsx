@@ -43,7 +43,7 @@ const EditProfileForm = () => {
   const onSubmit = async (data) => {
     console.log("Form data submitted:", data);
 
-    const formData = new FormData();
+    /*const formData = new FormData();
 
     // Ajouter uniquement les champs modifiés
     if (data.username !== user.username)
@@ -58,9 +58,18 @@ const EditProfileForm = () => {
     if (data.avatar && data.avatar[0]) {
       formData.append("avatar", data.avatar[0]);
     }
-    console.log("Form data:", formData);
+    console.log("Form data:", formData);*/
+    const userUpdate = {};
+    if (data.username !== user.username) userUpdate.username = data.username;
+    if (data.email !== user.email) userUpdate.email = data.email;
+    if (data.firstname !== user.firstname)
+      userUpdate.firstname = data.firstname;
+    if (data.lastname !== user.lastname) userUpdate.lastname = data.lastname;
+    if (data.avatar && data.avatar[0]) {
+      userUpdate.avatar = data.avatar[0];
+    }
 
-    const response = await putData("user/update", formData);
+    const response = await putData("user/update", userUpdate);
     console.log("Response from PUT:", response);
     setUser((prevUser) => ({
       ...prevUser,
