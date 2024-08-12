@@ -3,66 +3,64 @@ import { HiSearch } from "react-icons/hi";
 import { getData } from '../../services/data-fetch';
 import AsyncSelect from 'react-select/async';
 
-
-
-
-
-const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
+const IndexSearchbarEntreprises = ({ setSearchResults }) => {
   const [error, setError] = useState(null);
   const [selectedJobs, setSelectedJobs] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [selectedCities, setSelectedCities] = useState([]);
   const [selectedRatings, setSelectedRatings] = useState([]);
 
-  const loadJobOptions = async (inputValue) => {
+  // Fonctions de chargement des options pour les AsyncSelect
+  const loadOptions = async (inputValue, category) => {
+    console.log(`Chargement des options pour ${category} avec la valeur saisie:`, inputValue);
     try {
-      const jobsData = await getData('jobs');
-      return jobsData.filter(job => job.name.toLowerCase().includes(inputValue.toLowerCase()))
-        .map(job => ({ label: job.name, value: job.id }));
+      const response = await getData(`enterprises/validate`);
+      console.log(`Réponse de l'API pour ${category}:`, response);
+      let options;
+      switch (category) {
+        case 'job':
+          options = response
+            .filter(item => item.job && item.job.name && item.job.name.toLowerCase().includes(inputValue.toLowerCase()))
+            .map(item => ({ label: item.job.name, value: item.id }));
+          break;
+        case 'country':
+          options = response
+            .filter(item => item.country && item.country.name && item.country.name.toLowerCase().includes(inputValue.toLowerCase()))
+            .map(item => ({ label: item.country.name, value: item.id }));
+          break;
+        case 'city':
+          options = response
+            .filter(item => item.city && item.city.toLowerCase().includes(inputValue.toLowerCase()))
+            .map(item => ({ label: item.city, value: item.id }));
+          break;
+        // Ajoutez d'autres cas au besoin
+        default:
+          options = [];
+      }
+      console.log(`Options filtrées pour ${category}:`, options);
+      return options;
     } catch (error) {
-      setError('Une erreur est survenue lors du chargement des données.');
-      console.error('Erreur lors de la récupération des jobs:', error);
+      console.error(`Erreur lors du chargement des options pour ${category}:`, error);
+      setError(`Une erreur est survenue lors du chargement des options pour ${category}.`);
       return [];
     }
   };
-
-
-
-  const loadCountryOptions = async (inputValue) => {
+  // Fonction de recherche
+  const performSearch = async () => {
     try {
-      const countriesData = await getData('countries');
-      return countriesData.filter(country => country.name.toLowerCase().includes(inputValue.toLowerCase()))
-        .map(country => ({ label: country.name, value: country.id }));
+      const response = await getData('enterprises/validate', {
+        params: {
+          country: selectedCountries.map(option => option.value).join(','),
+          job: selectedJobs.map(option => option.value).join(','),
+          city: selectedCities.map(option => option.value).join(','),
+          averageRating: selectedRatings.map(option => option.value).join(',')
+        }
+      });
+      setSearchResults(response); // Utilisez la fonction passée en prop pour mettre à jour l'état
+      console.log('Recherche effectuée avec les paramètres:', response);
     } catch (error) {
-      setError('Une erreur est survenue lors du chargement des données.');
-      console.error('Erreur lors de la récupération des jobs:', error);
-      return [];
-    }
-  };
-
-  const loadCityOptions = async (inputValue) => {
-    try {
-      const enterprisesData = await getData('enterprises/validate');
-      const citiesData = enterprisesData.map(enterprise => enterprise.city);
-      const uniqueCities = Array.from(new Set(citiesData)); // Supprime les doublons
-      return uniqueCities.filter(city => city.toLowerCase().includes(inputValue.toLowerCase()))
-        .map(city => ({ label: city, value: city }));
-    } catch (error) {
-      setError('Une erreur est survenue lors du chargement des données.');
-      console.error('Erreur lors de la récupération des jobs:', error);
-      return [];
-    }
-  };
-
-  const loadRatingOptions = async (inputValue) => {
-    try {
-      const ratingsData = await getData('ratings');
-      return ratingsData.filter(rating => rating.name.toLowerCase().includes(inputValue.toLowerCase()))
-        .map(rating => ({ label: rating.name, value: rating.id }));
-    } catch (error) {
-      setError('Une erreur est survenue lors du chargement des données.');
-      console.error('Erreur lors de la récupération des jobs:', error);
-      return [];
+      console.error('Erreur lors de la recherche:', error);
+      setError('Une erreur est survenue lors de la recherche.');
     }
   };
 
@@ -113,31 +111,26 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
 
     <div className="join pt-8 pb-10 rounded-full flex items-center justify-center">
 
-
-
       <AsyncSelect
         isMulti
         cacheOptions
-        loadOptions={loadJobOptions}
+        loadOptions={(inputValue) => loadOptions(inputValue, 'job')}
+        onChange={setSelectedJobs}
         defaultOptions
         value={selectedJobs}
-        onChange={handleJobChange}
-
         className="select-bordered join-item w-48 rounded-full"
         placeholder="Métiers"
         noOptionsMessage={() => "Aucun métier trouvé"}
         loadingMessage={() => "Chargement ..."}
       />
 
-
       <AsyncSelect
         cacheOptions
         isMulti
-        loadOptions={loadCountryOptions}
+        loadOptions={(inputValue) => loadOptions(inputValue, 'country')}
+        onChange={setSelectedCountries}
         defaultOptions
         value={selectedCountries}
-        onChange={handleCountryChange}
-
         className="select-bordered join-item w-48"
         placeholder="Région"
         noOptionsMessage={() => "Aucune région trouvée"}
@@ -148,11 +141,10 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
       <AsyncSelect
         cacheOptions
         isMulti
-        loadOptions={loadCityOptions}
+        loadOptions={(inputValue) => loadOptions(inputValue, 'city')}
+        onChange={setSelectedCities}
         value={selectedCities}
-        onChange={handleCityChange}
         defaultOptions
-
         className="select-bordered join-item w-48"
         placeholder="Ville"
         noOptionsMessage={() => "Aucune ville trouvée"}
@@ -172,22 +164,27 @@ const IndexSearchbarEntreprises = ({ setSearchCriteria, handleSearch }) => {
       <AsyncSelect
         cacheOptions
         isMulti
-        loadOptions={loadRatingOptions}
+        loadOptions={(inputValue) => loadOptions(inputValue, 'averageRating')}
+        onChange={setSelectedRatings}
         value={selectedRatings}
-        onChange={handleRatingChange}
         defaultOptions
-
         className="select-bordered join-item w-24"
         placeholder="Notes"
         noOptionsMessage={() => "Pas de notes disponibles"}
         loadingMessage={() => "Chargement ..."}
       />
-      <div className="indicator">
+
+      <div className="indicator ">
+
+        {error && <div className="alert alert-error">{error}</div>}
+
         <button onClick={removeLastSearch} className="btn join-item">Supprimer les critères de recherche</button>
-        <button onClick={handleSearch} className="btn join-item"><HiSearch /></button>
+        <button onClick={performSearch} className="btn join-item"><HiSearch /></button>
       </div>
-      {error && <div className="alert alert-error">{error}</div>}
+
     </div>
+
+
 
   );
 };
