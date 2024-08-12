@@ -4,7 +4,7 @@ import { BsChatRightTextFill } from "react-icons/bs";
 const ComManagement = () => {
     return (
         <div className="bg-neutral-800 text-white p-6 rounded-lg mx-auto mt-8">
-            <h2 className="text-xl font-semibold mb-6 text-center">Mes rendez-vous</h2>
+            <h2 className="text-xl font-semibold mb-6 text-center">Mes commentaires</h2>
             <table className="table-auto w-full bg-neutral-800 rounded-lg border border-white border-collapse">
                 <tbody>
                     <tr className="border-b border-white">
