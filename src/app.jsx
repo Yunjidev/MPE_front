@@ -27,10 +27,9 @@ import Contact from './pages/contact/contact';
 import FAQ from './pages/FAQ/FAQ';
 import RegisterCompany from './pages/user/registercompany';
 import Pricing_page from './components/pricing_page/pricing_page';
-import Company_db from './pages/company/Company_db'
+import User_db from './pages/DashboardUser/User_db'
 
 import Dashboard from './pages/Dashboard/Dashboard';
-import UserProfilePage from './pages/DashboardUser/UserProfilePage';  // Import de la nouvelle page
 
 const MainLayout = ({ children }) => (
   <>
@@ -75,8 +74,7 @@ function App() {
                 <Route path="/register-company" element={<RegisterCompany />} />
                 <Route path="/pricing" element={<Pricing_page />} />
                 <Route path="/dashboard/:id" element={<Dashboard />}>
-                  <Route path="company-db" element={<Company_db />} />
-                  <Route path="user" element={<UserProfilePage />} />  {/* Nouvelle route pour la page de profil */}
+                  <Route path="user-db" element={<User_db />} />
                   <Route path="register-company" element={<RegisterCompany />} />
                   <Route path="security" element={<Team />} />
                 </Route>

@@ -97,7 +97,7 @@ const Sidebar = () => {
             <ul className="pt-2 pb-4 space-y-1 text-sm">
               <li>
                 <Link
-                  to={`/dashboard/${userId}/company-db`} // Utiliser l'ID utilisateur pour les liens de navigation
+                  to={`/dashboard/${userId}/user-db`} // Utiliser l'ID utilisateur pour les liens de navigation
                   className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                   onClick={closeSidebar}
                 >
