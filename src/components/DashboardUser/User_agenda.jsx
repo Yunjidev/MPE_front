@@ -2,7 +2,7 @@ import { MdCalendarToday } from 'react-icons/md';
 
 const AgendaManagement = () => {
     return (
-        <div className="bg-neutral-800 text-white p-6 rounded-lg max-w-4xl mx-auto mt-8">
+        <div className="bg-neutral-800 text-white p-6 rounded-lg mx-auto mt-4">
             <h2 className="text-xl font-semibold mb-6 text-center">Mes rendez-vous</h2>
             <table className="table-auto w-full bg-neutral-800 rounded-lg border border-white border-collapse">
                 <tbody>
