@@ -75,6 +75,7 @@ function App() {
                 <Route path="/register-company" element={<RegisterCompany />} />
                 <Route path="/pricing" element={<Pricing_page />} />
                 <Route path="/dashboard/:id" element={<Dashboard />}>
+                  <Route path="company-db" element={<Company_db />} />
                   <Route path="user" element={<UserProfilePage />} />  {/* Nouvelle route pour la page de profil */}
                   <Route path="register-company" element={<RegisterCompany />} />
                   <Route path="security" element={<Team />} />
