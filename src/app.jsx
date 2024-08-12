@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-//Général
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -8,12 +7,10 @@ import { ToastContainer } from 'react-toastify';
 import { userAtom } from './store/user';
 import 'react-toastify/dist/ReactToastify.css';
 
-//Context
 import { UserProvider } from './context/UserContext';
+import { ModalProvider } from './context/ModalContext'; 
 import ScrollToTop from './context/Scrolltotop';
 
-
-//Components
 import ParticlesDemo from './components/ParticlesDemo';
 import NavBar from './components/navbar/navbar';
 import Footer from './components/footer/footer';
@@ -22,7 +19,6 @@ import UserChoiceModal from './components/home/UserChoiceModal';
 import Signup from './components/user/signup';
 import Signin from './components/user/signin';
 
-//Pages
 import Home from './pages/home/home';
 import HomeClient from './pages/home/HomeClient';
 import HomeEnterprise from './pages/home/HomeEntreprise';
@@ -32,6 +28,9 @@ import FAQ from './pages/FAQ/FAQ';
 import RegisterCompany from './pages/user/registercompany';
 import Pricing_page from './components/pricing_page/pricing_page';
 import Company_db from './pages/company/Company_db'
+
+import Dashboard from './pages/Dashboard/Dashboard';
+import UserProfilePage from './pages/DashboardUser/UserProfilePage';  // Import de la nouvelle page
 
 const MainLayout = ({ children }) => (
   <>
@@ -59,25 +58,31 @@ function App() {
   return (
     <Provider>
       <UserProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <MainLayout>
-            <Routes>
-              <Route path="/" element={<UserChoiceModal />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/home-client" element={<HomeClient />} />
-              <Route path="/home-enterprise" element={<HomeEnterprise />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/signin" element={<Signin />} />
-              <Route path="/about" element={<Team />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/FAQ" element={<FAQ />} />
-              <Route path="/register-company" element={<RegisterCompany />} />
-              <Route path="/pricing" element={<Pricing_page />} />
-              <Route path="/company-db" element={<Company_db />} />
-            </Routes>
-          </MainLayout>
-        </BrowserRouter>
+        <ModalProvider> 
+          <BrowserRouter>
+            <ScrollToTop />
+            <MainLayout>
+              <Routes>
+                <Route path="/" element={<UserChoiceModal />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/home-client" element={<HomeClient />} />
+                <Route path="/home-enterprise" element={<HomeEnterprise />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/signin" element={<Signin />} />
+                <Route path="/about" element={<Team />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/FAQ" element={<FAQ />} />
+                <Route path="/register-company" element={<RegisterCompany />} />
+                <Route path="/pricing" element={<Pricing_page />} />
+                <Route path="/dashboard/:id" element={<Dashboard />}>
+                  <Route path="user" element={<UserProfilePage />} />  {/* Nouvelle route pour la page de profil */}
+                  <Route path="register-company" element={<RegisterCompany />} />
+                  <Route path="security" element={<Team />} />
+                </Route>
+              </Routes>
+            </MainLayout>
+          </BrowserRouter>
+        </ModalProvider>
       </UserProvider>
     </Provider>
   );

@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { AnimatedBeamMultipleOutputDemo } from "./animatedbeamdemo";
+import { AnimatedBeamMultipleOutputDemo } from "./animatedbeammultipleoutputdemo";
 
 const PresentationEnterprise = () => {
   return (
