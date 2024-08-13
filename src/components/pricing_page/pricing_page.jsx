@@ -16,21 +16,21 @@ const PricingPage = () => {
 
     const plans = [
         {
-            name: "Basic",
+            name: "Basique",
             desc: "Découvrez notre solution basique pour votre entreprise.",
             price: "0€",
             color: "text-green-300 ",
             buttonColor: "bg-green-300 hover:bg-green-500 active:bg-green-600"
         },
         {
-            name: "Business",
+            name: "Mensuel",
             desc: "Profitez de notre solution mensuelle pour plus de services.",
             price: "35€",
             color: "text-orange-400",
             buttonColor: "bg-orange-400 hover:bg-orange-500 active:bg-orange-600"
         },
         {
-            name: "Enterprise",
+            name: "Annuel",
             desc: "Optez pour notre solution annuelle pour avoir 2 mois offerts.",
             price: "350€",
             color: "text-violet-400",
@@ -49,57 +49,57 @@ const PricingPage = () => {
             items: [
                 {
                     name: "Possibilité de créer son entreprise",
-                    basic: checkIcon,
-                    business: checkIcon,
-                    enterprise: checkIcon
+                    basique: checkIcon,
+                    mensuel: checkIcon,
+                    annuel: checkIcon
                 },
                 {
                     name: "Page d'entreprise",
-                    basic: checkIcon,
-                    business: checkIcon,
-                    enterprise: checkIcon
+                    basique: checkIcon,
+                    mensuel: checkIcon,
+                    annuel: checkIcon
                 },
                 {
                     name: "Statistiques détaillées",
-                    basic: checkIcon,
-                    business: checkIcon,
-                    enterprise: checkIcon
+                    basique: checkIcon,
+                    mensuel: checkIcon,
+                    annuel: checkIcon
                 },
                 {
                     name: "Dashboard entreprise",
-                    basic: checkIcon,
-                    business: checkIcon,
-                    enterprise: checkIcon
+                    basique: checkIcon,
+                    mensuel: checkIcon,
+                    annuel: checkIcon
                 },
                 {
                     name: "Mise en avant sur l'accueil",
-                    basic: minusIcon,
-                    business: checkIcon,
-                    enterprise: checkIcon
+                    basique: minusIcon,
+                    mensuel: checkIcon,
+                    annuel: checkIcon
                 },
                 {
                     name: "Priorisation dans les recherches",
-                    basic: minusIcon,
-                    business: checkIcon,
-                    enterprise: checkIcon
+                    basique: minusIcon,
+                    mensuel: checkIcon,
+                    annuel: checkIcon
                 },
                 {
                     name: "Certification Premium",
-                    basic: minusIcon,
-                    business: checkIcon,
-                    enterprise: checkIcon
+                    basique: minusIcon,
+                    mensuel: checkIcon,
+                    annuel: checkIcon
                 },
                 {
                     name: "Galerie Photo",
-                    basic: minusIcon,
-                    business: checkIcon,
-                    enterprise: checkIcon
+                    basique: minusIcon,
+                    mensuel: checkIcon,
+                    annuel: checkIcon
                 },
                 {
                     name: "Calendrier + Réservations",
-                    basic: minusIcon,
-                    business: checkIcon,
-                    enterprise: checkIcon
+                    basique: minusIcon,
+                    mensuel: checkIcon,
+                    annuel: checkIcon
                 },
             ]
         }
@@ -109,11 +109,11 @@ const PricingPage = () => {
 
     return (
         <>
-            <div className="container mx-auto">
+            <div className="mx-auto">
                 <h1 className="text-4xl font-bold text-center mt-14 dark:text-white gradient-text-orange">Notre formule premium</h1>
 
-                <div className="container mx-auto flex flex-col justify-around lg:flex-row items-center py-8 px-4 lg:py-16">
-                    <img src="public/assets/img/logo.png" alt="Image 1" className="w-6/12" />
+                <div className="mx-auto flex flex-col text-center lg:text-start justify-around lg:flex-row items-center py-8 lg:py-16">
+                    <img src="public/assets/img/logo.png" alt="Image 1" className="lg:w-6/12 w-8/12" />
                     <div className="md:ml-8 mt-4 md:mt-0">
                         <p className="lg:text-2xl md:text-xl lg:mx-6 font-semibold dark:text-white">
                             Profitez de toutes les fonctionnalités proposées par MPE à un tarif avantageux pour une durée choisie.
@@ -121,28 +121,29 @@ const PricingPage = () => {
                     </div>
                 </div>
 
-                <div className="container mx-auto flex flex-col lg:flex-row justify-start items-center py-8 px-4 lg:py-16">
-                    <img src="public/assets/img/decouvrez.png" alt="Image 2" className="w-5/12 mt-8 lg:mt-0 lg:mr-8 order-first lg:order-last rounded-lg" />
-                    <div className="md:ml-8 mt-4 md:mt-0 flex flex-col lg:items-start lg:text-left">
-                        <h1 className="text-4xl mb-12 lg:ml-6 font-bold dark:text-white gradient-text-violet">Mise en avant de votre entreprise</h1>
+                <div className="mx-auto flex flex-col lg:flex-row justify-start items-center py-8 lg:py-16">
+                    <img src="public/assets/img/decouvrez.png" alt="Image 2" className="lg:w-5/12 w-full mt-8 lg:mt-0 lg:mr-8 order-first lg:order-last rounded-lg" />
+                    <div className="mt-4 text-center lg:text-start md:mt-0 flex flex-col ">
+                        <h1 className="text-4xl text-center lg:text-start mb-12 lg:ml-6 font-bold dark:text-white gradient-text-violet">Mise en avant de votre entreprise</h1>
                         <p className="lg:text-2xl md:text-xl lg:mx-6 font-semibold dark:text-white">
                             Augmentez votre chiffre d’affaires en apparaissant dans les premiers résultats de recherche d’un utilisateur. Votre entreprise sera également affichée sur la page d’accueil.
                         </p>
                     </div>
                 </div>
 
-                <div className="container mx-auto flex flex-col justify-around lg:flex-row items-center py-8 px-4 lg:py-16">
-                    <img src="public/assets/img/vector.png" alt="Image 3" className="w-7/12 rounded-lg" />
-                    <div className="md:ml-8 mt-4 md:mt-0 lg:w-1/2">
+                <div className="mx-auto flex flex-col justify-around lg:flex-row items-center py-8 px-4 lg:py-16">
+                    <img src="public/assets/img/vector.png" alt="Image 3" className="w-1/2 rounded-lg hide-on-small" />
+                    <img src="src/assets/calendarpres.png" alt="Image 3" className="mr-16 w-full rounded-lg block lg:hidden" />
+                    <div className="md:ml-8 text-center lg:text-start lg:mt-4 md:mt-0 lg:w-1/2">
                         <p className="lg:text-3xl md:text-xl lg:mx-6 font-semibold dark:text-white">
                             Profitez de toutes les fonctionnalités proposées par MPE à un tarif avantageux pour une durée choisie.
                         </p>
                     </div>
                 </div>
 
-                <div className="container mx-auto flex flex-col lg:flex-row justify-start items-center py-8 px-4 lg:py-16">
-                    <img src="public/assets/img/decouvrez.png" alt="Image 4" className="ml-4 w-5/12 mt-8 lg:mt-0 lg:mr-8 order-first lg:order-last rounded-lg" />
-                    <div className="md:ml-8 mt-4 md:mt-0 flex flex-col lg:items-start lg:text-left">
+                <div className="mx-auto flex flex-col lg:flex-row justify-start items-center py-8 lg:py-16">
+                    <img src="public/assets/img/decouvrez.png" alt="Image 4" className="w-10/12 lg:w-5/12 mt-8 lg:mt-0 lg:mr-8 order-first lg:order-last rounded-lg" />
+                    <div className="mt-4 md:mt-0 text-center lg:text-start flex flex-col lg:items-start lg:text-left">
                         <h1 className="text-4xl mb-12 lg:ml-6 font-bold dark:text-white gradient-text-green">Organisez l’activité de votre entreprise</h1>
                         <p className="lg:text-2xl md:text-xl lg:mx-6 font-semibold dark:text-white">
                             Le dashboard administrateur mit à votre disposition permet d’avoir un regard précis sur le nombre de passage de clients sur votre page, les rendez-vous, demande de contact,...
@@ -153,12 +154,12 @@ const PricingPage = () => {
                 <h2 className="text-4xl font-bold text-center dark:text-white gradient-text-orange">Comparez nos formules</h2>
             </div>
 
-            <section className="py-4">
+            <section className="py-4 mb-28">
                 <div className="">
                     <div className="mt-16">
                         <div className="top-0">
                             <div className="max-w-screen-xl mx-auto">
-                                <ul className="flex flex-wrap justify-center items-center gap-x-6 px-4 md:px-8">
+                                <ul className="flex flex-wrap justify-center items-center gap-x-6 px-4 ">
                                     <li className="flex justify-center w-full lg:w-auto">
                                         <img src="public/assets/img/logo.png" alt="Logo" className="w-36 lg:w-48" />
                                     </li>
@@ -195,9 +196,9 @@ const PricingPage = () => {
 
                             </div>
                         </div>
-                        <div className="w-4/5 mx-auto px-4 overflow-auto md:overflow-visible md:px-8">
+                        <div className="w-full flex justify-center overflow-auto md:overflow-visible flex justify-center">
                             {tables.map((table, idx) => (
-                                <table key={idx} className="w-full table-auto text-sm text-left">
+                                <table key={idx} className="w-fulltable-auto text-sm text-left">
                                     <thead className="text-gray-600 font-medium border-b dark:text-white">
                                         <tr>
                                             <th className="z-20 top-12 py-6">
@@ -210,19 +211,19 @@ const PricingPage = () => {
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y dark:divide-gray-700">
+                                    <tbody className="divide-ydark:divide-gray-700">
                                         {table.items.map((item, idx) => (
                                             <tr key={idx}>
-                                                <td className="px-6 py-4 whitespace-nowrap dark:text-white">{item.name}</td>
+                                                <td className="px-6 py-4 m-4 whitespace-nowrap dark:text-white">{item.name}</td>
                                                 {/* For large devices */}
                                                 <td className="text-center w-[250px] px-6 py-4 whitespace-nowrap hidden lg:table-cell dark:text-white">
-                                                    {item.basic}
+                                                    {item.basique}
                                                 </td>
                                                 <td className="text-center w-[250px] px-6 py-4 whitespace-nowrap hidden lg:table-cell dark:text-white">
-                                                    {item.business}
+                                                    {item.mensuel}
                                                 </td>
                                                 <td className="text-center w-[250px] px-6 py-4 whitespace-nowrap hidden lg:table-cell dark:text-white">
-                                                    {item.enterprise}
+                                                    {item.annuel}
                                                 </td>
                                                 {/* For small devices */}
                                                 <td className="text-center w-[250px] px-6 py-4 whitespace-nowrap lg:hidden dark:text-white">
