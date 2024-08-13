@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { AnimatedBeamMultipleOutputDemo } from "./animatedbeamdemo";
+import { AnimatedBeamMultipleOutputDemo } from "./animatedbeammultipleoutputdemo";
 
 const PresentationEnterprise = () => {
   return (
@@ -7,7 +7,7 @@ const PresentationEnterprise = () => {
       <div className="flex items-center lg:flex-row flex-col">
         <AnimatedBeamMultipleOutputDemo className="lg:w-2/3 w-full lg:mr-16" />
         <div className="lg:w-1/2 lg:mr-16 dark:text-neutral-300">
-          <h2 className="dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-green-400 to-green-800 text-transparent bg-clip-text text-black text-3xl font-bold sm:text-4xl text-center mb-9">
+          <h2 className="dark:bg-gradient-to-r dark:from-green-200 dark:to-[#67FFCC] bg-gradient-to-r from-green-400 to-green-800 text-transparent bg-clip-text text-black text-3xl font-bold sm:text-4xl text-center mb-9">
             Le Concept
           </h2>
           <p className="font-semibold">

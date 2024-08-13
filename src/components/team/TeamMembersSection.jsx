@@ -33,9 +33,9 @@ const TeamMembersSection = () => {
             photo={member.photo}
             description={member.description}
           />
-          {index < teamMembers.length - 1 && (
+          {/* {index < teamMembers.length - 1 && (
             <div className="hidden lg:block absolute top-0 right-0 h-full w-px bg-gray-300 dark:bg-gray-600"></div>
-          )}
+          )} */}
         </div>
       ))}
     </div>

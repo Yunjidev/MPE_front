@@ -1,52 +1,55 @@
-import ky from 'ky';
-import { BASE_URL, setHeaders } from './config-fetch';
+import ky from "ky";
+import { BASE_URL, setHeaders } from "./config-fetch";
 
 // Fonction pour récupérer les données
 export async function getData(object) {
   try {
-    const headers = setHeaders();
-    console.log('Request Headers:', headers); // Afficher les en-têtes pour le débogage
-
-    const response = await ky.get(BASE_URL + object, { headers }).json();
+    const response = await ky
+      .get(BASE_URL + object, { headers: setHeaders() })
+      .json();
     return response;
   } catch (error) {
     if (error.response) {
       const errorText = await error.response.text();
-      console.log('Error Response Text:', errorText);
+      console.log("Error Response Text:", errorText);
     } else {
-      console.log('Error Message:', error.message);
+      console.log("Error Message:", error.message);
     }
     throw error;
   }
 }
 
+export async function postData(object, data) {
+  try {
+    const response = await ky
+      .post(BASE_URL + object, { headers: setHeaders(), json: data })
+      .json();
+    return response;
+  } catch (error) {
+    console.log("Error:", error);
+    throw error;
+  }
+}
+
+export async function putData(object, data) {
+  try {
+    console.log("Data to PUT:", data);
+    const response = await ky
+      .put(BASE_URL + object, { headers: setHeaders(), json: data })
+      .json();
+    return response;
+  } catch (error) {
+    console.log("Error:", error);
+    throw error;
+  }
+}
 // Fonction pour supprimer les données
 export async function deleteData(object) {
   try {
-    const headers = setHeaders();
-    await ky.delete(BASE_URL + object, { headers });
+    await ky.delete(BASE_URL + object, { headers: setHeaders() });
     return null;
   } catch (error) {
-    console.log('Error:', error);
-    throw error;
-  }
-}
-
-// Fonction pour envoyer des données (créer un like)
-export async function postData(object, data) {
-  try {
-    const headers = setHeaders();
-    console.log('Request Headers:', headers); // Afficher les en-têtes pour le débogage
-
-    const response = await ky.post(BASE_URL + object, { headers, json: data }).json();
-    return response;
-  } catch (error) {
-    if (error.response) {
-      const errorText = await error.response.text();
-      console.log('Error Response Text:', errorText);
-    } else {
-      console.log('Error Message:', error.message);
-    }
+    console.log("Error:", error);
     throw error;
   }
 }
