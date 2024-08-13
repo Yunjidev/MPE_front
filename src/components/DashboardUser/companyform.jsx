@@ -83,6 +83,7 @@ export default function RegisterCompany({ onSubmit }) {
       twitter,
       instagram,
       facebook,
+      website,
     };
 
     if (logo) {
@@ -90,7 +91,7 @@ export default function RegisterCompany({ onSubmit }) {
     }
 
     photos.forEach((photo, index) => {
-      compagny[`photos[${index}]`] = photo;
+      compagny.photos[index] = photo;
     });
     console.log("FormData being sent:", compagny);
 
