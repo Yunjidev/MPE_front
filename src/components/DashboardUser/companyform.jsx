@@ -157,7 +157,7 @@ export default function RegisterCompany({ onSubmit }) {
             <div className="col-span-1 flex justify-center items-center">
               <label
                 htmlFor="logo-upload"
-                className="border border-gray-500 p-10 rounded-full cursor-pointer text-gray-400 hover:bg-gray-800 h-56 w-56 flex flex-col justify-center items-center"
+                className="border border-gray-500 p-10 rounded-full cursor-pointer text-gray-400 hover:bg-neutral-700 h-56 w-56 flex flex-col justify-center items-center"
               >
                 {logoUrl ? (
                   <img
@@ -355,29 +355,28 @@ export default function RegisterCompany({ onSubmit }) {
               </div>
             </div>
             <div className="col-span-3 flex flex-col justify-center items-center">
-              <div className="relative w-full">
-                <FaCloudUploadAlt className="absolute left-3 top-3 text-gray-400" />
-                <input
-                  type="file"
-                  id="photos"
-                  onChange={handlePhotosChange}
-                  multiple
-                  className="hidden"
-                />
-                <label
-                  htmlFor="photos"
-                  className="cursor-pointer flex justify-center items-center bg-gray-700 text-white w-full pl-10 py-2 rounded-xl"
-                >
-                  Ajouter Photos
-                </label>
-              </div>
-              <div className="flex mt-4 space-x-4">
+              <label
+                htmlFor="photos-upload"
+                className="border border-dashed border-gray-500 p-10 h-20 w-full rounded-lg cursor-pointer text-gray-400 hover:bg-neutral-700 flex flex-row justify-center items-center"
+              >
+                <FaCloudUploadAlt className="w-16 h-16 mx-5" />
+                <p className="text-white">Cliquer pour ajouter des images</p>
+              </label>
+              <input
+                id="photos-upload"
+                type="file"
+                name="photos"
+                multiple
+                onChange={handlePhotosChange}
+                className="hidden"
+              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-4 w-full">
                 {photoUrls.map((url, index) => (
                   <img
                     key={index}
                     src={url}
                     alt={`Photo ${index + 1}`}
-                    className="w-24 h-24 object-cover rounded-lg"
+                    className="h-40 w-40 col-span-1 object-cover rounded-lg justify-self-center"
                   />
                 ))}
               </div>
