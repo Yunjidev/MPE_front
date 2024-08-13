@@ -105,6 +105,9 @@ export default function RegisterCompany({ onSubmit }) {
         console.log("Erreur sans réponse:", error.message);
       }
     }
+
+    alert("Entreprise enregistrée");
+
   };
 
   const handleLogoChange = (e) => {
