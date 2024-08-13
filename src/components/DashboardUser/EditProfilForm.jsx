@@ -42,22 +42,7 @@ const EditProfileForm = () => {
   const onSubmit = async (data) => {
     console.log("Form data submitted:", data);
 
-    /*const formData = new FormData();
-
-    // Ajouter uniquement les champs modifiés
-    if (data.username !== user.username)
-      formData.append("username", data.username);
-    if (data.email !== user.email) formData.append("email", data.email);
-    if (data.firstname !== user.firstname)
-      formData.append("firstname", data.firstname);
-    if (data.lastname !== user.lastname)
-      formData.append("lastname", data.lastname);
-
-    // Si un fichier a été sélectionné
-    if (data.avatar && data.avatar[0]) {
-      formData.append("avatar", data.avatar[0]);
-    }
-    console.log("Form data:", formData);*/
+    
     const userUpdate = {};
     if (data.username !== user.username) userUpdate.username = data.username;
     if (data.email !== user.email) userUpdate.email = data.email;
@@ -78,50 +63,7 @@ const EditProfileForm = () => {
 
     alert("Profile updated successfully");
 
-    /*try {
-      const token = Cookies.get('mpe-auth');
-      if (!token) {
-        throw new Error('No authentication token found.');
-      }
-
-      const response = await fetch(`${import.meta.env.VITE_API_URL}user/update`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json',
-        },
-        body: formData,
-      });
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error('Unauthorized: Please check your authentication.');
-        } else {
-          throw new Error('Failed to update profile.');
-        }
-      }
-
-      const updatedUser = await response.json();
-
-      if (updatedUser.token) {
-        Cookies.set('mpe-auth', updatedUser.token, { secure: true, sameSite: 'Strict' });
-      }
-
-      setUser(updatedUser);
-
-      reset({
-        username: updatedUser.username,
-        email: updatedUser.email,
-        firstname: updatedUser.firstname,
-        lastname: updatedUser.lastname,
-        avatar: null,
-      });
-
-      alert('Profile updated successfully');
-    } catch (error) {
-      console.error('Error updating profile', error);
-      alert(`Error: ${error.message}`);
-    }*/
+  
   };
 
   return (
