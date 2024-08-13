@@ -12,7 +12,7 @@ const LikesManagement = () => {
 
       // Récupérer les détails des entreprises pour chaque Like
       const enterpriseIds = likes.map((like) => like.Enterprise_id);
-      const uniqueEnterpriseIds = [...new Set(enterpriseIds)]; // Supprime les doublons
+      const uniqueEnterpriseIds = [...new Set(enterpriseIds)];
 
       const enterprisesData = await Promise.all(
         uniqueEnterpriseIds.map((id) => getData(`enterprise/${id}`))
