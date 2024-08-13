@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 import Cookies from "js-cookie";
 
 export default function SignOut() {
@@ -10,15 +10,38 @@ export default function SignOut() {
   const [user, setUser] = useAtom(userAtom);
 
   const handleSignOut = async () => {
-    window.localStorage.removeItem("token");
-    window.sessionStorage.removeItem("token");
-    // Réinitialisation de l'état utilisateur
-    setUser({ id: "", email: "", isLogged: false });
+    try {
+      // Appel à l'API pour la déconnexion
+      await fetch('/api/signout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${Cookies.get('mpe-auth')}` // Utilisez la clé correcte
+        }
+      });
 
-    // Notification de succès
-    toast.info("Vous êtes maintenant déconnecté !");
-    // Redirection après la déconnexion
-    navigate("/signin");
+      // Effacer le token du stockage local et session
+      window.localStorage.removeItem('token');
+      window.sessionStorage.removeItem('token');
+
+      // Effacer les cookies si nécessaire
+      document.cookie.split(";").forEach((c) => {
+        if (c.trim().startsWith('mpe-auth=')) {
+          document.cookie = c.trim() + ';expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
+        }
+      });
+
+      // Réinitialisation de l'état utilisateur
+      setUser({ id: "", email: "", isLogged: false });
+
+      // Notification de succès
+      toast.info("Vous êtes maintenant déconnecté !");
+
+      // Redirection après la déconnexion
+      navigate("/signin");
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion :', error);
+      toast.error(`Erreur lors de la déconnexion : ${error.message}`);
+    }
   };
 
   return (

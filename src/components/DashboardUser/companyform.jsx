@@ -42,16 +42,30 @@ export default function RegisterCompany({ onSubmit }) {
 
   const [jobOptions, setJobOptions] = useState([]);
   const [regionOptions, setRegionOptions] = useState([]);
-
   useEffect(() => {
-    async function searchOptions() {
-      const response = await getData("search");
-      setJobOptions(response.jobs);
-      setRegionOptions(response.countries);
-    }
-    searchOptions();
-  }, []);
+    const fetchJobs = async () => {
+      try {
+        const jobs = await getData("jobs");
+        setJobOptions(jobs);
+      } catch (error) {
+        console.error("Failed to fetch jobs:", error);
+      }
+    };
 
+    const fetchRegions = async () => {
+      try {
+        const countries = await getData("countries");
+        const regions = countries.map((country) => country);
+        setRegionOptions(regions);
+      } catch (error) {
+        console.error("Failed to fetch regions:", error);
+      }
+    };
+
+    fetchJobs();
+    fetchRegions();
+  }, []);
+  console.log("User data from atom:", user);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -70,8 +84,6 @@ export default function RegisterCompany({ onSubmit }) {
       instagram,
       facebook,
       website,
-      logo,
-      photos,
     };
 
     if (logo) {
@@ -81,10 +93,14 @@ export default function RegisterCompany({ onSubmit }) {
     photos.forEach((photo, index) => {
       compagny.photos[index] = photo;
     });
+    console.log("FormData being sent:", compagny);
 
     try {
       const response = await postData("enterprise", compagny);
+      console.log("Formulaire soumis avec succès:", response);
     } catch (error) {
+      console.error("Erreur lors de la soumission du formulaire:", error);
+
       if (error.response) {
         // Handle the server response
         const status = error.response.status;
