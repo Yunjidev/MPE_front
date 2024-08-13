@@ -9,7 +9,7 @@ export async function authSignInUp(object, data) {
       json: data,
     });
     Cookies.set("mpe-auth", response.headers.get("Authorization"));
-    return response;
+    return response.json();
   } catch (error) {
     console.log(error);
     throw error;
@@ -18,19 +18,7 @@ export async function authSignInUp(object, data) {
 
 export async function authSignOut() {
   try {
-    const token = Cookies.get("mpe-auth"); 
-    // Récupérer le token JWT depuis les cookies
-    if (!token) {
-      throw new Error("Aucun token d'authentification trouvé.");
-    }
-    let response = await ky.post(`${BASE_URL}signout`, { // Assurez-vous que l'URL est correctement formatée
-      headers: {
-        ...setHeaders(),
-        
-        'Authorization': `${token}`  // Ajouter le token JWT dans l'en-tête d'autorisation
-      
-      },
-    });
+    let response = await ky.post(BASE_URL + "signout");
     Cookies.remove("mpe-auth"); // Supprimer le token JWT des cookies après la déconnexion
     return response;
   } catch (error) {
