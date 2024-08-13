@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
 import { FaUser, FaEnvelope, FaFileUpload } from "react-icons/fa";
-import Button from "../Button/button";
 import { putData } from "../../services/data-fetch";
 
 const EditProfileForm = () => {
@@ -43,22 +42,7 @@ const EditProfileForm = () => {
   const onSubmit = async (data) => {
     console.log("Form data submitted:", data);
 
-    /*const formData = new FormData();
-
-    // Ajouter uniquement les champs modifiés
-    if (data.username !== user.username)
-      formData.append("username", data.username);
-    if (data.email !== user.email) formData.append("email", data.email);
-    if (data.firstname !== user.firstname)
-      formData.append("firstname", data.firstname);
-    if (data.lastname !== user.lastname)
-      formData.append("lastname", data.lastname);
-
-    // Si un fichier a été sélectionné
-    if (data.avatar && data.avatar[0]) {
-      formData.append("avatar", data.avatar[0]);
-    }
-    console.log("Form data:", formData);*/
+    
     const userUpdate = {};
     if (data.username !== user.username) userUpdate.username = data.username;
     if (data.email !== user.email) userUpdate.email = data.email;
@@ -79,55 +63,14 @@ const EditProfileForm = () => {
 
     alert("Profile updated successfully");
 
-    /*try {
-      const token = Cookies.get('mpe-auth');
-      if (!token) {
-        throw new Error('No authentication token found.');
-      }
-
-      const response = await fetch(`${import.meta.env.VITE_API_URL}user/update`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json',
-        },
-        body: formData,
-      });
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error('Unauthorized: Please check your authentication.');
-        } else {
-          throw new Error('Failed to update profile.');
-        }
-      }
-
-      const updatedUser = await response.json();
-
-      if (updatedUser.token) {
-        Cookies.set('mpe-auth', updatedUser.token, { secure: true, sameSite: 'Strict' });
-      }
-
-      setUser(updatedUser);
-
-      reset({
-        username: updatedUser.username,
-        email: updatedUser.email,
-        firstname: updatedUser.firstname,
-        lastname: updatedUser.lastname,
-        avatar: null,
-      });
-
-      alert('Profile updated successfully');
-    } catch (error) {
-      console.error('Error updating profile', error);
-      alert(`Error: ${error.message}`);
-    }*/
+  
   };
 
   return (
     <div className="flex flex-col h-full space-around bg-neutral-800 p-6 rounded-lg">
-      <h2 className="text-white text-center text-2xl mb-5">Edition de profil</h2>
+      <h2 className="text-white text-center text-2xl mb-5">
+        Edition de profil
+      </h2>
       <hr className="w-1/2 my-4 border-t-2 border-gray-400 mx-auto" />
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -193,9 +136,11 @@ const EditProfileForm = () => {
           </div>
         </div>
         <div className="col-span-2 flex justify-center">
-          <button 
-            className="flex w-full dark:bg-gradient-to-r dark:from-green-200 dark:to-green-400 bg-gradient-to-r from-green-400 to-green-800 text-transparent bg-clip-text items-center justify-center border border-gray-500 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-green-200 transition duration-300 ease-in-out" 
-            type="submit">Sauvegarder
+          <button
+            className="flex w-full dark:bg-gradient-to-r dark:from-green-200 dark:to-green-400 bg-gradient-to-r from-green-400 to-green-800 text-transparent bg-clip-text items-center justify-center border border-gray-500 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-green-200 transition duration-300 ease-in-out"
+            type="submit"
+          >
+            Sauvegarder
           </button>
         </div>
       </form>
