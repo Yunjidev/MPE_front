@@ -305,15 +305,14 @@ export default function RegisterCompany({ onSubmit }) {
                   ))}
                 </select>
               </div>
-              <div className="relative flex items-center">
-                <FaBarcode className="absolute left-3 text-gray-400" />
+              <div className="relative flex items-center justify-end">
+                <FaCity className="absolute left-3 text-gray-400" />
                 <input
                   type="text"
-                  id="zipCode"
-                  value={zipCode}
-                  onChange={(e) => setZipCode(e.target.value)}
-                  onBlur={handleBlur}
-                  placeholder="Code Postal"
+                  id="city"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  placeholder="Ville"
                   className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                 />
               </div>
@@ -400,7 +399,7 @@ export default function RegisterCompany({ onSubmit }) {
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  
+
                   placeholder="Description"
                   className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                   rows="5"
