@@ -54,7 +54,7 @@ export default function RegisterCompany({ onSubmit }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const compagny = {
+    const company = {
       name,
       phone,
       mail,
@@ -74,15 +74,15 @@ export default function RegisterCompany({ onSubmit }) {
     };
 
     if (logo) {
-      compagny.logo = logo;
+      company.logo = logo;
     }
 
     photos.forEach((photo, index) => {
-      compagny.photos[index] = photo;
+      company.photos[index] = photo;
     });
 
     try {
-      const response = await postData("enterprise", compagny);
+      const response = await postData("enterprise", company);
     } catch (error) {
       if (error.response) {
         // Handle the server response
