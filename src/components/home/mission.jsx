@@ -7,7 +7,7 @@ const Mission = () => {
   <h2 className="text-black text-3xl font-bold sm:text-4xl text-center mb-9 bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">
     Notre Mission
   </h2>
-  <p className="text-center font-semibold">
+  <p className="font-semibold">
     Notre mission est de connecter les professionnels locaux avec les particuliers à la recherche de services de qualité près de chez eux. Chaque entreprise a sa propre page dédiée où les utilisateurs peuvent découvrir les services offerts, les tarifs, et des photos de leurs réalisations. Cette approche personnalisée aide les clients potentiels à faire un choix éclairé en trouvant le professionnel qui correspond le mieux à leurs besoins.
   </p>
 </div>

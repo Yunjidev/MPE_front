@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
 import { FaUser, FaEnvelope, FaFileUpload } from "react-icons/fa";
-import Button from "../Button/button";
 import { putData } from "../../services/data-fetch";
 
 const EditProfileForm = () => {
