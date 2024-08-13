@@ -388,3 +388,10 @@ export default function RegisterCompany({ onSubmit }) {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+RegisterCompany.propTypes = {
+  onSubmit: PropTypes.func,
+};
