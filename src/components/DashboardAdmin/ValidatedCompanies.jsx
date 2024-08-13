@@ -3,16 +3,21 @@
 /* eslint-disable react/jsx-key */
 import React, { useState, useEffect } from "react";
 import { useTable } from "react-table";
-import { getData, putData } from "../../services/data-fetch";
+import { getData, deleteData } from "../../services/data-fetch";
+import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import Button from "../Button/button";
+import Modal from "./Modal";
+import EditCompanyForm from "./EditCompanyForm";
 
-const NonValidatedCompanies = () => {
+const ValidatedCompanies = () => {
   const [companies, setCompanies] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState(null);
 
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const data = await getData("admin/enterprises/not-validate");
+        const data = await getData("enterprises/validate");
         setCompanies(data);
       } catch (error) {
         console.error("Error fetching companies:", error);
@@ -22,46 +27,65 @@ const NonValidatedCompanies = () => {
     fetchCompanies();
   }, []);
 
-  const validateCompany = async (companyId) => {
+  const deleteCompany = async (companyId) => {
     try {
-      const updatedCompany = { isValidate: 'true' };
-      console.log("Company ID:", companyId);
-      console.log("Data to update:", updatedCompany);
-
-      const response = await putData(`enterprise/${companyId}`, updatedCompany);
-      console.log("Response from PUT:", response);
-
+      await deleteData(`enterprise/${companyId}`);
       setCompanies((prevCompanies) =>
         prevCompanies.filter((company) => company.id !== companyId)
       );
-
-      alert("Entreprise validée avec succès");
+      alert("Entreprise supprimée avec succès");
     } catch (error) {
-      console.error("Error validating company:", error);
+      console.error("Error deleting company:", error);
     }
+  };
+
+  const editCompany = (company) => {
+    setSelectedCompany(company);
+    setIsModalOpen(true);
+  };
+
+  const viewCompany = (companyId) => {
+    history.push(`/enterprise/${companyId}/show`);
+  };
+
+  const handleSave = () => {
+    setIsModalOpen(false);
+    // Re-fetch or update companies data here if necessary
   };
 
   const columns = React.useMemo(
     () => [
       { Header: "Name", accessor: "name" },
-      { Header: "Phone", accessor: "phone" },
-      { Header: "Mail", accessor: "mail" },
-      { Header: "Address", accessor: "adress" },
       { Header: "City", accessor: "city" },
       { Header: "Zip Code", accessor: "zip_code" },
-      { Header: "Siret Number", accessor: "siret_number" },
       { Header: "Country", accessor: "country.name" },
       { Header: "Activity", accessor: "job.name" },
+      { Header: "Siret Number", accessor: "siret_number" },
+      
       {
         Header: "Actions",
         accessor: "id",
-        Cell: ({ value }) => (
-          <Button
-            onClick={() => validateCompany(value)}
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            Valider
-          </Button>
+        Cell: ({ row }) => (
+          <div className="flex space-x-2">
+            <Button
+              onClick={() => viewCompany(row.original.id)}
+              className="text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              <FaEye />
+            </Button>
+            <Button
+              onClick={() => editCompany(row.original)}
+              className="text-green-600 dark:text-green-500 hover:underline"
+            >
+              <FaEdit />
+            </Button>
+            <Button
+              onClick={() => deleteCompany(row.original.id)}
+              className="text-red-600 dark:text-red-500 hover:underline"
+            >
+              <FaTrash />
+            </Button>
+          </div>
         ),
       },
     ],
@@ -76,9 +100,9 @@ const NonValidatedCompanies = () => {
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table
         {...getTableProps()}
-        className="w-full text-sm text-left text-gray-500 bg-white border border-gray-200 dark:bg-neutral-800 dark:text-gray-400 "
+        className="w-full text-sm text-left text-gray-500 bg-white border border-gray-200 dark:bg-neutral-800 dark:text-gray-400"
       >
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400 bg-black text-white">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
@@ -98,7 +122,7 @@ const NonValidatedCompanies = () => {
             return (
               <tr
                 {...row.getRowProps()}
-                className="border-b dark:bg-neutral-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 hover:bg-neutral-300 bg-neutral-200 border-black-200"
+                className="border-b dark:bg-neutral-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
               >
                 {row.cells.map((cell) => (
                   <td
@@ -113,8 +137,18 @@ const NonValidatedCompanies = () => {
           })}
         </tbody>
       </table>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        {selectedCompany && (
+          <EditCompanyForm
+            company={selectedCompany}
+            onClose={() => setIsModalOpen(false)}
+            onSave={handleSave}
+          />
+        )}
+      </Modal>
     </div>
   );
 };
 
-export default NonValidatedCompanies;
+export default ValidatedCompanies;
