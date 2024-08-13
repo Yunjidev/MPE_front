@@ -34,3 +34,17 @@
     -webkit-text-fill-color: transparent;
 }
 
+@media (max-width: 1023px) {
+    .hide-on-small {
+      display: none;
+    }
+    .display-on-small {
+        display: block;
+    }
+  }
+
+  @media (min-width: 1023px) {
+    .display-on-small {
+        display: block;
+    }
+  }
