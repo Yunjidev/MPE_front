@@ -11,11 +11,7 @@ import {
   FaPenAlt,
   FaCloudUploadAlt,
 } from "react-icons/fa";
-import {
-  FaXTwitter,
-  FaInstagram,
-  FaFacebook,
-} from "react-icons/fa6";
+import { FaXTwitter, FaInstagram, FaFacebook } from "react-icons/fa6";
 import { MdOutlineAlternateEmail, MdOutlineAreaChart } from "react-icons/md";
 import Button from "../Button/button";
 import { CgWebsite } from "react-icons/cg";
@@ -59,7 +55,7 @@ export default function RegisterCompany({ onSubmit }) {
     const fetchRegions = async () => {
       try {
         const countries = await getData("countries");
-        const regions = countries.map((country) => country.name);
+        const regions = countries.map((country) => country);
         setRegionOptions(regions);
       } catch (error) {
         console.error("Failed to fetch regions:", error);
@@ -72,66 +68,62 @@ export default function RegisterCompany({ onSubmit }) {
   console.log("User data from atom:", user);
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("phone", phone);
-    formData.append("mail", mail);
-    formData.append("adress", adress);
-    formData.append("city", city);
-    formData.append("zip_code", zipCode);
-    formData.append("siret_number", siretNumber);
-    formData.append("activity", activity);
-    formData.append("description", description);
-    formData.append("region", region);
-    formData.append("website", website);
-    formData.append("twitter", twitter);
-    formData.append("instagram", instagram);
-    formData.append("facebook", facebook);
-    formData.append("user_id", user?.id);
+
+    const compagny = {
+      name,
+      phone,
+      mail,
+      adress,
+      city,
+      zip_code: zipCode,
+      siret_number: siretNumber,
+      Job_id: activity,
+      description,
+      Country_id: region,
+      twitter,
+      instagram,
+      facebook,
+      website,
+    };
 
     if (logo) {
-      formData.append("logo", logo);
+      compagny.logo = logo;
     }
-  
+
     photos.forEach((photo, index) => {
-      formData.append(`photos[${index}]`, photo);
+      compagny.photos[index] = photo;
     });
-  
-    console.log("FormData being sent:");
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-  
+    console.log("FormData being sent:", compagny);
+
     try {
-    const response = await postData("enterprise", formData);
-    console.log("Formulaire soumis avec succès:", response);
-  } catch (error) {
-    console.error("Erreur lors de la soumission du formulaire:", error);
+      const response = await postData("enterprise", compagny);
+      console.log("Formulaire soumis avec succès:", response);
+    } catch (error) {
+      console.error("Erreur lors de la soumission du formulaire:", error);
 
-    if (error.response) {
-      // Handle the server response
-      const status = error.response.status;
-      if (status === 422) {
-        // Parse and log the detailed error response
-        const errorDetails = await error.response.json();
-        console.log("Détails de l'erreur:", errorDetails);
+      if (error.response) {
+        // Handle the server response
+        const status = error.response.status;
+        if (status === 422) {
+          // Parse and log the detailed error response
+          const errorDetails = await error.response.json();
+          console.log("Détails de l'erreur:", errorDetails);
 
-        // Extract and display validation errors if available
-        const validationErrors = errorDetails.errors || {};
-        console.log("Erreurs de validation:", validationErrors);
+          // Extract and display validation errors if available
+          const validationErrors = errorDetails.errors || {};
+          console.log("Erreurs de validation:", validationErrors);
+        } else {
+          // Handle other status codes
+          const errorText = await error.response.text();
+          console.log("Erreur non liée à la validation:", errorText);
+        }
       } else {
-        // Handle other status codes
-        const errorText = await error.response.text();
-        console.log("Erreur non liée à la validation:", errorText);
+        // Handle errors without a response
+        console.log("Erreur sans réponse:", error.message);
       }
-    } else {
-      // Handle errors without a response
-      console.log("Erreur sans réponse:", error.message);
     }
-  }
-};
-  
+  };
+
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -255,9 +247,9 @@ export default function RegisterCompany({ onSubmit }) {
                   <option value="" className="text-gray-400">
                     Région
                   </option>
-                  {regionOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
+                  {regionOptions.map((option, index) => (
+                    <option key={option} value={index + 1}>
+                      {option.name}
                     </option>
                   ))}
                 </select>
@@ -350,8 +342,8 @@ export default function RegisterCompany({ onSubmit }) {
                   <option value="" className="text-gray-400">
                     Secteur d'activité
                   </option>
-                  {jobOptions.map((option) => (
-                    <option key={option.id} value={option.name}>
+                  {jobOptions.map((option, index) => (
+                    <option key={option.id} value={index + 1}>
                       {option.name}
                     </option>
                   ))}
@@ -396,10 +388,3 @@ export default function RegisterCompany({ onSubmit }) {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-RegisterCompany.propTypes = {
-  onSubmit: PropTypes.func,
-};
