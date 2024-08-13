@@ -1,12 +1,29 @@
 import React, { useState, useEffect } from "react";
+import { getData } from "../../services/data-fetch";
 
 const LikesManagement = () => {
   const [favorites, setFavorites] = useState([]);
+  const [enterprises, setEnterprises] = useState({});
 
   useEffect(() => {
     const fetchFavorites = async () => {
-      const response = await getData("/api/likes");
-      setFavorites(response);
+      const likes = await getData("likes");
+      setFavorites(likes);
+
+      // Récupérer les détails des entreprises pour chaque Like
+      const enterpriseIds = likes.map((like) => like.Enterprise_id);
+      const uniqueEnterpriseIds = [...new Set(enterpriseIds)]; // Supprime les doublons
+
+      const enterprisesData = await Promise.all(
+        uniqueEnterpriseIds.map((id) => getData(`enterprise/${id}`))
+      );
+
+      const enterprisesMap = enterprisesData.reduce((map, enterprise) => {
+        map[enterprise.id] = enterprise;
+        return map;
+      }, {});
+
+      setEnterprises(enterprisesMap);
     };
 
     fetchFavorites();
@@ -23,7 +40,7 @@ const LikesManagement = () => {
               key={favorite.id}
               className="flex justify-between items-center bg-neutral-800 p-2 rounded-lg"
             >
-              <span>❤️ {favorite.name}</span>
+              <span>❤️ {enterprises[favorite.Enterprise_id]?.name}</span>
               <button className="bg-white text-black px-3 rounded-lg hover:bg-gray-300">
                 Voir fiche
               </button>
