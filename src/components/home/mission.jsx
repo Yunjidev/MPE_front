@@ -4,7 +4,7 @@ const Mission = () => {
     return (
     <div className="flex items-center lg:flex-row flex-col-reverse">
 <div className="lg:w-1/2 lg:mr-16 dark:text-neutral-300 flex flex-col justify-center">
-  <h2 className="text-black text-3xl font-bold sm:text-4xl text-center mb-9 bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">
+  <h2 className="text-black text-3xl font-bold sm:text-4xl text-center mb-9 bg-gradient-to-r from-white to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">
     Notre Mission
   </h2>
   <p className="font-semibold">
