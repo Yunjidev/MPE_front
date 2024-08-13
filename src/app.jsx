@@ -30,7 +30,7 @@ import Pricing_page from "./components/pricing_page/pricing_page";
 import User_db from "./pages/DashboardUser/User_db";
 
 import Dashboard from "./pages/Dashboard/Dashboard";
-
+import AcceptCompanyPage from "./pages/DashboardAdmin/Accept_company";
 const MainLayout = ({ children }) => (
   <>
     <NavBar />
@@ -80,6 +80,7 @@ function App() {
                     element={<RegisterCompany />}
                   />
                   <Route path="security" element={<Team />} />
+                  <Route path="accept-company" element={<AcceptCompanyPage />} />
                 </Route>
               </Routes>
             </MainLayout>
