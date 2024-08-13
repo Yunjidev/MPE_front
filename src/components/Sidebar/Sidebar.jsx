@@ -1,40 +1,43 @@
 // Sidebar.jsx
-import { Link } from 'react-router-dom';
-import { useState, useEffect, useContext } from 'react';
-import { FaTachometerAlt, FaCog, FaUsers, FaBuilding, FaBriefcase, FaChartBar, FaChartLine, FaUserShield } from 'react-icons/fa';
-import { UserContext } from '../../context/UserContext';
+import { Link } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import {
+  FaTachometerAlt,
+  FaCog,
+  FaUsers,
+  FaBuilding,
+  FaBriefcase,
+  FaChartBar,
+  FaChartLine,
+  FaUserShield,
+} from "react-icons/fa";
+import { UserContext } from "../../context/UserContext";
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user } = useContext(UserContext);
-  const [userId, setUserId] = useState('');
-
-  useEffect(() => {
-    if (user && user.id) {
-      setUserId(user.id);
-    }
-  }, [user]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   const closeSidebar = () => {
-    if (window.innerWidth < 1024) { // Apply only on mobile
+    if (window.innerWidth < 1024) {
+      // Apply only on mobile
       setIsSidebarOpen(false);
     }
   };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (event.target.closest('aside') === null && isSidebarOpen) {
+      if (event.target.closest("aside") === null && isSidebarOpen) {
         setIsSidebarOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isSidebarOpen]);
 
@@ -67,7 +70,7 @@ const Sidebar = () => {
       {/* Sidebar */}
       <aside
         id="sidebar"
-        className={`fixed top-28 ${isSidebarOpen ? 'left-0' : 'left-full'} lg:left-8 rounded-xl z-40 w-64 h-4/5 bg-gray-50 dark:bg-neutral-600 transition-transform duration-300 ease-in-out`}
+        className={`fixed top-28 ${isSidebarOpen ? "left-0" : "left-full"} lg:left-8 rounded-xl z-40 w-64 h-4/5 bg-gray-50 dark:bg-neutral-600 transition-transform duration-300 ease-in-out`}
         aria-label="Sidebar"
       >
         <div className="h-full p-3 space-y-2 dark:bg-neutral-600 rounded-xl dark:text-gray-200">
@@ -79,10 +82,12 @@ const Sidebar = () => {
               className="w-12 h-12 rounded-full dark:bg-gray-500"
             />
             <div>
-              <h2 className="text-lg font-semibold">{user ? user.username : 'Guest'}</h2>
+              <h2 className="text-lg font-semibold">
+                {user ? user.username : "Guest"}
+              </h2>
               <span className="flex items-center space-x-1">
                 <Link
-                  to={`/dashboard/${userId}/user`} // Utiliser l'ID utilisateur pour les liens de profil
+                  to={`/dashboard/user`} // Utiliser l'ID utilisateur pour les liens de profil
                   className="text-xs hover:underline dark:text-gray-400"
                   onClick={closeSidebar}
                 >
@@ -97,7 +102,7 @@ const Sidebar = () => {
             <ul className="pt-2 pb-4 space-y-1 text-sm">
               <li>
                 <Link
-                  to={`/dashboard/${userId}/user-db`} // Utiliser l'ID utilisateur pour les liens de navigation
+                  to={`/dashboard/user-db`} // Utiliser l'ID utilisateur pour les liens de navigation
                   className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                   onClick={closeSidebar}
                 >
@@ -107,7 +112,7 @@ const Sidebar = () => {
               </li>
               <li>
                 <Link
-                  to={`/dashboard/${userId}/register-company`}
+                  to={`/dashboard/register-company`}
                   className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                   onClick={closeSidebar}
                 >
@@ -117,7 +122,7 @@ const Sidebar = () => {
               </li>
               <li>
                 <Link
-                  to={`/dashboard/${userId}/security`}
+                  to={`/dashboard/security`}
                   className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                   onClick={closeSidebar}
                 >
@@ -140,7 +145,7 @@ const Sidebar = () => {
               <ul className="pt-2 pb-4 space-y-1 text-sm">
                 <li>
                   <Link
-                    to={`/dashboard/${userId}`}
+                    to={`/dashboard`}
                     className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                     onClick={closeSidebar}
                   >
@@ -150,7 +155,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <Link
-                    to={`/dashboard/${userId}/accept-company`}
+                    to={`/dashboard/accept-company`}
                     className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                     onClick={closeSidebar}
                   >
@@ -160,7 +165,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <Link
-                    to={`/dashboard/${userId}/manage-users`}
+                    to={`/dashboard/manage-users`}
                     className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                     onClick={closeSidebar}
                   >
@@ -170,7 +175,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <Link
-                    to={`/dashboard/${userId}/manage-companies`}
+                    to={`/dashboard/manage-companies`}
                     className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                     onClick={closeSidebar}
                   >
@@ -180,7 +185,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <Link
-                    to={`/dashboard/${userId}/manage-careers`}
+                    to={`/dashboard/manage-careers`}
                     className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                     onClick={closeSidebar}
                   >
@@ -190,7 +195,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <Link
-                    to={`/dashboard/${userId}/manage-subscriptions`}
+                    to={`/dashboard/manage-subscriptions`}
                     className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                     onClick={closeSidebar}
                   >
@@ -200,7 +205,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <Link
-                    to={`/dashboard/${userId}/reports`}
+                    to={`/dashboard/reports`}
                     className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                     onClick={closeSidebar}
                   >
