@@ -157,7 +157,7 @@ export default function RegisterCompany({ onSubmit }) {
             <div className="col-span-1 flex justify-center items-center">
               <label
                 htmlFor="logo-upload"
-                className="border border-gray-500 p-10 rounded-full cursor-pointer text-gray-400 hover:bg-gray-800 h-56 w-56 flex flex-col justify-center items-center"
+                className="border border-gray-500 p-10 rounded-full cursor-pointer text-gray-400 hover:bg-neutral-700 h-56 w-56 flex flex-col justify-center items-center"
               >
                 {logoUrl ? (
                   <img
@@ -180,7 +180,7 @@ export default function RegisterCompany({ onSubmit }) {
                 className="hidden"
               />
             </div>
-            <div className="flex flex-col lg:col-span-2 lg:grid lg:grid-cols-2 gap-6">
+            <div className="flex flex-col lg:col-span-2 lg:grid lg:grid-cols-2 gap-5">
               <div className="relative flex items-center">
                 <FaUser className="absolute left-3 text-gray-400" />
                 <input
@@ -276,62 +276,7 @@ export default function RegisterCompany({ onSubmit }) {
                   className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
                 />
               </div>
-              <div className="relative flex items-center">
-                <FaPenAlt className="absolute left-3 text-gray-400" />
-                <textarea
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Description"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                  rows="3"
-                />
-              </div>
-              <div className="relative flex items-center justify-end">
-                <CgWebsite className="absolute left-3 text-gray-400" />
-                <input
-                  type="url"
-                  id="website"
-                  value={website}
-                  onChange={(e) => setWebsite(e.target.value)}
-                  placeholder="Site Web"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                />
-              </div>
-              <div className="relative flex items-center justify-end">
-                <FaXTwitter className="absolute left-3 text-gray-400" />
-                <input
-                  type="url"
-                  id="twitter"
-                  value={twitter}
-                  onChange={(e) => setTwitter(e.target.value)}
-                  placeholder="Twitter"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                />
-              </div>
-              <div className="relative flex items-center justify-end">
-                <FaInstagram className="absolute left-3 text-gray-400" />
-                <input
-                  type="url"
-                  id="instagram"
-                  value={instagram}
-                  onChange={(e) => setInstagram(e.target.value)}
-                  placeholder="Instagram"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                />
-              </div>
-              <div className="relative flex items-center justify-end">
-                <FaFacebook className="absolute left-3 text-gray-400" />
-                <input
-                  type="url"
-                  id="facebook"
-                  value={facebook}
-                  onChange={(e) => setFacebook(e.target.value)}
-                  placeholder="Facebook"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                />
-              </div>
-              <div className="relative flex items-center">
+              <div className="col-span-2 relative flex items-center">
                 <MdOutlineAreaChart className="absolute left-3 text-gray-400" />
                 <select
                   id="job"
@@ -349,31 +294,91 @@ export default function RegisterCompany({ onSubmit }) {
                   ))}
                 </select>
               </div>
-              <div className="relative flex flex-col items-center justify-center">
-                <FaCloudUploadAlt className="absolute left-3 text-gray-400" />
-                <input
-                  type="file"
-                  id="photos"
-                  onChange={handlePhotosChange}
-                  multiple
-                  className="hidden"
+            </div>
+            <div className="relative flex items-center justify-end">
+              <FaXTwitter className="absolute left-3 text-gray-400" />
+              <input
+                type="url"
+                id="twitter"
+                value={twitter}
+                onChange={(e) => setTwitter(e.target.value)}
+                placeholder="Twitter"
+                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
+            </div>
+            <div className="relative flex items-center justify-end">
+              <FaInstagram className="absolute left-3 text-gray-400" />
+              <input
+                type="url"
+                id="instagram"
+                value={instagram}
+                onChange={(e) => setInstagram(e.target.value)}
+                placeholder="Instagram"
+                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
+            </div>
+            <div className="relative flex items-center justify-end">
+              <FaFacebook className="absolute left-3 text-gray-400" />
+              <input
+                type="url"
+                id="facebook"
+                value={facebook}
+                onChange={(e) => setFacebook(e.target.value)}
+                placeholder="Facebook"
+                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
+            </div>
+            <div className="col-span-3 flex flex-col justify-center items-center">
+              <div className="relative w-full">
+                <FaPenAlt className="absolute left-3 top-3 text-gray-400" />
+                <textarea
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Description"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                  rows="3"
                 />
-                <label
-                  htmlFor="photos"
-                  className="cursor-pointer flex justify-center items-center bg-gray-700 text-white w-full pl-10 py-2 rounded-xl"
-                >
-                  Ajouter Photos
-                </label>
-                <div className="flex mt-4 space-x-4">
-                  {photoUrls.map((url, index) => (
-                    <img
-                      key={index}
-                      src={url}
-                      alt={`Photo ${index + 1}`}
-                      className="w-24 h-24 object-cover rounded-lg"
-                    />
-                  ))}
-                </div>
+              </div>
+            </div>
+            <div className="col-span-3 flex flex-col justify-center items-center">
+              <div className="relative w-full">
+                <CgWebsite className="absolute left-3 top-3 text-gray-400" />
+                <input
+                  type="url"
+                  id="website"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                  placeholder="Site Web"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                />
+              </div>
+            </div>
+            <div className="col-span-3 flex flex-col justify-center items-center">
+              <label
+                htmlFor="photos-upload"
+                className="border border-dashed border-gray-500 p-10 h-20 w-full rounded-lg cursor-pointer text-gray-400 hover:bg-neutral-700 flex flex-row justify-center items-center"
+              >
+                <FaCloudUploadAlt className="w-16 h-16 mx-5" />
+                <p className="text-white">Cliquer pour ajouter des images</p>
+              </label>
+              <input
+                id="photos-upload"
+                type="file"
+                name="photos"
+                multiple
+                onChange={handlePhotosChange}
+                className="hidden"
+              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-4 w-full">
+                {photoUrls.map((url, index) => (
+                  <img
+                    key={index}
+                    src={url}
+                    alt={`Photo ${index + 1}`}
+                    className="h-40 w-40 col-span-1 object-cover rounded-lg justify-self-center"
+                  />
+                ))}
               </div>
             </div>
           </form>
@@ -388,3 +393,10 @@ export default function RegisterCompany({ onSubmit }) {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+RegisterCompany.propTypes = {
+  onSubmit: PropTypes.func,
+};
