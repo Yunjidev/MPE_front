@@ -9,7 +9,12 @@ export async function getData(object) {
       .json();
     return response;
   } catch (error) {
-    console.log("Error Message:", error.message);
+    if (error.response) {
+      const errorText = await error.response.text();
+      console.log("Error Response Text:", errorText);
+    } else {
+      console.log("Error Message:", error.message);
+    }
     throw error;
   }
 }
