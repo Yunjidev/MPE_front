@@ -1,0 +1,21 @@
+.react-select-container__control {
+    border-radius: 20px; /* Bords arrondis */
+    border: 1px solid #cccccc; /* Bordure grise */
+    padding: 8px; /* Espacement intérieur */
+  }
+  
+  .react-select-container__control--is-focused {
+    border-color: #2684ff; /* Bordure bleue lors du focus */
+  }
+  
+  .react-select-container__menu {
+    border-radius: 20px; /* Bords arrondis pour le menu */
+  }
+  
+  .react-select-container__option--is-selected {
+    background-color: #2684ff; /* Fond bleu pour l'option sélectionnée */
+  }
+  
+  .react-select-container__option--is-focused {
+    background-color: #b2d4ff; /* Fond bleu clair pour l'option survolée */
+  }

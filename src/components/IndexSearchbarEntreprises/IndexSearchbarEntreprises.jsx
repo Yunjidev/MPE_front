@@ -2,6 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { HiSearch } from "react-icons/hi";
 import { getData } from '../../services/data-fetch';
 import AsyncSelect from 'react-select/async';
+import './indexsearchbarentreprises.css';
+
+const customClassNames = {
+  control: () => 'react-select-container__control',
+  menu: () => 'react-select-container__menu',
+  option: (state) => state.isSelected
+    ? 'react-select-container__option--is-selected'
+    : state.isFocused
+      ? 'react-select-container__option--is-focused'
+      : ''
+};
 
 
 const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
@@ -10,7 +21,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [selectedCities, setSelectedCities] = useState([]);
   const [selectedRatings, setSelectedRatings] = useState([]);
-  
+
 
   // Fonctions de chargement des options pour les AsyncSelect
   const loadOptions = async (inputValue, category) => {
@@ -61,11 +72,11 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         ratings: selectedRatings
       });
 
-       // Assurez-vous que les ID correspondent aux valeurs attendues
-    console.log('Exemple de données reçues pour les jobs:', response.map(item => item.job));
-    console.log('Exemple de données reçues pour les pays:', response.map(item => item.country));
-    console.log('Exemple de données reçues pour les villes:', response.map(item => item.city));
-    console.log('Exemple de données reçues pour les notes:', response.map(item => item.averageRating));
+      // Assurez-vous que les ID correspondent aux valeurs attendues
+      console.log('Exemple de données reçues pour les jobs:', response.map(item => item.job));
+      console.log('Exemple de données reçues pour les pays:', response.map(item => item.country));
+      console.log('Exemple de données reçues pour les villes:', response.map(item => item.city));
+      console.log('Exemple de données reçues pour les notes:', response.map(item => item.averageRating));
 
       // Filtrage des résultats en fonction des sélections de l'utilisateur
       const filteredResponse = response.filter(entreprise => {
@@ -73,7 +84,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         const countryMatch = selectedCountries.length === 0 || selectedCountries.some(country => entreprise.country && entreprise.country.name === country.label);
         const cityMatch = selectedCities.length === 0 || selectedCities.some(city => entreprise.city === city.label);
         const ratingMatch = selectedRatings.length === 0 || selectedRatings.some(rating => entreprise.averageRating && entreprise.averageRating.toString() === rating.label);
-        
+
         // Affichage des résultats de la correspondance pour le débogage
         console.log(`Résultats de la correspondance pour l'entreprise ${entreprise.name}:`, {
           jobMatch,
@@ -86,7 +97,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         ...entreprise,
         logo: JSON.parse(entreprise.logo || '[]') // Parsez le logo ici
       }));
-      
+
       console.log('Filtrés:', filteredResponse);
       // Mise à jour des résultats de recherche
       setSearchResults(filteredResponse);
@@ -111,7 +122,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
 
   return (
 
-    <div className="join pt-8 pb-10 rounded-full flex items-center justify-center">
+    <div className="join pt-8 pb-10  flex items-center justify-center">
 
       <AsyncSelect
         isMulti
@@ -120,7 +131,8 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         onChange={(selectedOptions) => setSelectedJobs(selectedOptions.map(option => ({ label: option.label })))}
         defaultOptions
         value={selectedJobs}
-        className="select-bordered join-item w-48 rounded-full"
+        classNamePrefix="react-select-container"
+        classNames={customClassNames}
         placeholder="Métiers"
         noOptionsMessage={() => "Aucun métier trouvé"}
         loadingMessage={() => "Chargement ..."}
@@ -133,7 +145,8 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         onChange={setSelectedCountries}
         defaultOptions
         value={selectedCountries}
-        className="select-bordered join-item w-48"
+        classNamePrefix="react-select-container"
+        classNames={customClassNames}
         placeholder="Région"
         noOptionsMessage={() => "Aucune région trouvée"}
         loadingMessage={() => "Chargement ..."}
@@ -147,7 +160,8 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         onChange={setSelectedCities}
         value={selectedCities}
         defaultOptions
-        className="select-bordered join-item w-48"
+        classNamePrefix="react-select-container"
+        classNames={customClassNames}
         placeholder="Ville"
         noOptionsMessage={() => "Aucune ville trouvée"}
         loadingMessage={() => "Chargement ..."}
@@ -170,18 +184,17 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         onChange={setSelectedRatings}
         value={selectedRatings}
         defaultOptions
-        className="select-bordered join-item w-24"
+        classNamePrefix="react-select-container"
+        classNames={customClassNames}
         placeholder="Notes"
         noOptionsMessage={() => "Pas de notes disponibles"}
         loadingMessage={() => "Chargement ..."}
       />
 
-      <div className="indicator ">
-
+      <div className="indicator flex gap-2">
         {error && <div className="alert alert-error">{error}</div>}
-
-        <button onClick={removeLastSearch} className="btn join-item">Supprimer les critères de recherche</button>
-        <button onClick={performSearch} className="btn join-item"><HiSearch /></button>
+        <button onClick={removeLastSearch} className="btn join-item border-2 border-gray-300">Supprimer les critères de recherche</button>
+        <button onClick={performSearch} className="btn join-item border-2 border-gray-300"><HiSearch /></button>
       </div>
 
     </div>
