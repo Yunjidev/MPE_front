@@ -13,7 +13,7 @@ const EditUserForm = ({ user, onClose, onSave }) => {
       lastname: "",
       email: "",
       isAdmin: false,
-      isEntrepeneur: false,
+      isEntrepreneur: false,
     },
   });
 
@@ -26,7 +26,7 @@ const EditUserForm = ({ user, onClose, onSave }) => {
         lastname: user.lastname || "",
         email: user.email || "",
         isAdmin: user.isAdmin || false,
-        isEntrepeneur: user.isEntrepeneur || false,
+        isEntrepreneur: user.isEntrepreneur || false,
       });
 
       setValue("username", user.username || "");
@@ -34,7 +34,7 @@ const EditUserForm = ({ user, onClose, onSave }) => {
       setValue("lastname", user.lastname || "");
       setValue("email", user.email || "");
       setValue("isAdmin", user.isAdmin || false);
-      setValue("isEntrepeneur", user.isEntrepeneur || false);
+      setValue("isEntrepreneur", user.isEntrepreneur || false);
     }
   }, [user, reset, setValue]);
 
@@ -46,7 +46,7 @@ const EditUserForm = ({ user, onClose, onSave }) => {
     if (data.lastname !== user.lastname) userUpdate.lastname = data.lastname;
     if (data.email !== user.email) userUpdate.email = data.email;
     if (data.isAdmin !== user.isAdmin) userUpdate.isAdmin = data.isAdmin;
-    if (data.isEntrepeneur !== user.isEntrepeneur) userUpdate.isEntrepeneur = data.isEntrepeneur;
+    if (data.isEntrepreneur !== user.isEntrepreneur) userUpdate.isEntrepreneur = data.isEntrepreneur;
   
     try {
       const response = await putData(`admin/user/${user.id}`, userUpdate);
@@ -120,12 +120,12 @@ const EditUserForm = ({ user, onClose, onSave }) => {
           </div>
           <div className="relative flex items-center">
             <input
-              id="isEntrepeneur"
+              id="isEntrepreneur"
               type="checkbox"
-              {...register("isEntrepeneur")}
+              {...register("isEntrepreneur")}
               className="mr-2"
             />
-            <label htmlFor="isEntrepeneur" className="text-white">Entrepreneur</label>
+            <label htmlFor="isEntrepreneur" className="text-white">Entrepreneur</label>
           </div>
         </div>
         <div className="col-span-2 flex justify-center mt-6">

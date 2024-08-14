@@ -169,7 +169,7 @@ const Sidebar = () => {
           )}
 
           {/* Section Divider */}
-          {user && user.isEntrepeneur && <div className="border-t border-black dark:border-white my-4 mx-2"></div>}
+          {user && user.isEntrepreneur && <div className="border-t border-black dark:border-white my-4 mx-2"></div>}
 
           {user && user.isAdmin && (
             <div className="space-y-4">
