@@ -1,69 +1,61 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
-import { putData } from "../../services/data-fetch";
+import { postData, getData } from "../../services/data-fetch";
+import { UserContext } from "../../context/UserContext";
 
-export default function EditOfferForm({ offer, onClose, onSave }) {
-  const { register, handleSubmit, reset, setValue } = useForm({
-    defaultValues: {
-      name: "",
-      description: "",
-      duration: 0,
-      price: "",
-      estimate: false,
-      image: "",
-    },
-  });
+export default function OfferForm({ onSubmit }) {
+  const { user } = useContext(UserContext); // Utilisation du contexte utilisateur
 
-  useEffect(() => {
-    if (offer) {
-      reset({
-        name: offer.name || "",
-        description: offer.description || "",
-        duration: offer.duration || 0,
-        price: offer.price || "",
-        estimate: offer.estimate || false,
-        image: offer.image || "",
-      });
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [duration, setDuration] = useState(0);
+  const [price, setPrice] = useState("");
+  const [estimate, setEstimate] = useState(false);
+  const [image, setImage] = useState(null);
 
-      setValue("name", offer.name || "");
-      setValue("description", offer.description || "");
-      setValue("duration", offer.duration || 0);
-      setValue("price", offer.price || "");
-      setValue("estimate", offer.estimate || false);
-      setValue("image", offer.image || "");
-    }
-  }, [offer, reset, setValue]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const onSubmit = async (data) => {
-    const offerUpdate = {};
-
-    if (data.name !== offer.name) offerUpdate.name = data.name;
-    if (data.description !== offer.description) offerUpdate.description = data.description;
-    if (data.duration !== offer.duration) offerUpdate.duration = data.duration;
-    if (data.price !== offer.price) offerUpdate.price = data.price;
-    if (data.estimate !== offer.estimate) offerUpdate.estimate = data.estimate;
-    if (data.image !== offer.image) offerUpdate.image = data.image;
+    const offer = {
+      name,
+      description,
+      duration,
+      price,
+      estimate,
+      image,
+    };
 
     try {
-      const response = await putData(`admin/offers/${offer.id}`, offerUpdate);
-      onSave({ ...offer, ...offerUpdate });
-      alert("Offer updated successfully");
-      onClose();
+      const response = await postData("admin/offers", offer);
+      alert("Offre créée avec succès");
+      onSubmit(response);  // Appelle une fonction de rappel pour gérer le succès
     } catch (error) {
-      console.error("Error updating offer:", error);
-      alert("Failed to update offer");
+      console.error("Erreur lors de la création de l'offre:", error);
+
+      if (error.response) {
+        const status = error.response.status;
+        if (status === 422) {
+          const errorDetails = await error.response.json();
+          const validationErrors = errorDetails.errors || {};
+          // Gérer les erreurs de validation
+        } else {
+          const errorText = await error.response.text();
+          // Gérer d'autres codes de statut
+        }
+      } else {
+        // Gérer les erreurs sans réponse
+      }
     }
   };
 
   return (
     <div className="bg-neutral-900 text-white w-full p-8">
       <div className="mb-4 text-center">
-        <h2 className="text-2xl font-semibold">Édition Offre</h2>
+        <h2 className="text-2xl font-semibold">Création Offre</h2>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="name" className="block text-sm font-medium">
             Nom de l'offre
@@ -71,9 +63,11 @@ export default function EditOfferForm({ offer, onClose, onSave }) {
           <input
             type="text"
             id="name"
-            {...register("name", { required: true })}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             className="w-full mt-1 p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
             placeholder="Nom de l'offre"
+            required
           />
         </div>
         <div className="mb-4">
@@ -82,10 +76,12 @@ export default function EditOfferForm({ offer, onClose, onSave }) {
           </label>
           <textarea
             id="description"
-            {...register("description", { required: true })}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             className="w-full mt-1 p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
             rows="4"
             placeholder="Description de l'offre"
+            required
           />
         </div>
         <div className="mb-4">
@@ -95,9 +91,11 @@ export default function EditOfferForm({ offer, onClose, onSave }) {
           <input
             type="number"
             id="duration"
-            {...register("duration", { required: true })}
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
             className="w-full mt-1 p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
             placeholder="Durée de l'offre"
+            required
           />
         </div>
         <div className="mb-4">
@@ -107,16 +105,19 @@ export default function EditOfferForm({ offer, onClose, onSave }) {
           <input
             type="text"
             id="price"
-            {...register("price", { required: true })}
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
             className="w-full mt-1 p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
             placeholder="Prix de l'offre"
+            required
           />
         </div>
         <div className="mb-4 flex items-center">
           <input
             type="checkbox"
             id="estimate"
-            {...register("estimate")}
+            checked={estimate}
+            onChange={(e) => setEstimate(e.target.checked)}
             className="mr-2"
           />
           <label htmlFor="estimate" className="text-sm font-medium">
@@ -130,7 +131,7 @@ export default function EditOfferForm({ offer, onClose, onSave }) {
           <input
             type="file"
             id="image"
-            {...register("image")}
+            onChange={(e) => setImage(e.target.files[0])}
             className="w-full mt-1 p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
           />
         </div>
@@ -139,7 +140,7 @@ export default function EditOfferForm({ offer, onClose, onSave }) {
             type="submit"
             className="bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text font-semibold py-2 px-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
           >
-            Sauvegarder
+            Créer Offre
           </button>
         </div>
       </form>
@@ -147,8 +148,6 @@ export default function EditOfferForm({ offer, onClose, onSave }) {
   );
 }
 
-EditOfferForm.propTypes = {
-  offer: PropTypes.object.isRequired,
-  onClose: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired,
+OfferForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 };

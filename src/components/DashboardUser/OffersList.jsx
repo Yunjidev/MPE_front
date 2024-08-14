@@ -4,7 +4,7 @@ import { getData, deleteData, postData } from "../../services/data-fetch";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import Button from "../Button/button";
 import Modal from "../DashboardAdmin/Modal";
-import EditOfferForm from "./EditOfferForm"; // Formulaire d'édition des offres
+import EditOfferForm from "./OfferForm"; // Formulaire d'édition des offres
 
 const OffersList = () => {
   const [offers, setOffers] = useState([]);
