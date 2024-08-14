@@ -33,6 +33,7 @@ export async function postData(object, data) {
 
 export async function putData(object, data) {
   try {
+    console.log("Data to PUT:", data);
     const response = await ky
       .put(BASE_URL + object, { headers: setHeaders(), json: data })
       .json();

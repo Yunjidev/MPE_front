@@ -1,8 +1,21 @@
 .footer {
-    background-image: url('../../assets/footermpe.png');
+    /* background-image: url('../../assets/footermpe.png'); */
     background-size: cover; 
     background-position: center -40px; 
     background-repeat: no-repeat;
     min-height: 215px; /* Augmente la hauteur minimale du footer */
     color: white; 
 }
+
+.bg-footer {
+    background-image: url('../../assets/svgs/bgfooter.svg');
+    background-size: cover; /* or contain, depending on your needs */
+    background-position: bottom;
+    background-repeat: no-repeat;
+    height: 50px; /* Adjust height as needed */
+    padding: 20px; /* Adjust padding as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  

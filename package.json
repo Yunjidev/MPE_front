@@ -10,9 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^5.16.7",
+=======
+    "antd": "^5.20.1",
+>>>>>>> 75f2160b142f09dfdd8b14fa25ea5f60fc990971
     "axios": "^1.7.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -34,6 +38,7 @@
     "react-icon-cloud": "^4.1.4",
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.25.1",
+    "react-table": "^7.8.0",
     "react-toastify": "^10.0.5",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7"
