@@ -43,27 +43,43 @@ export default function UpdateCompany({ onSubmit }) {
   const [regionOptions, setRegionOptions] = useState([]);
   useEffect(() => {
     const fetchCompanyData = async () => {
-      try {
-        const company = await getData(`enterprise/${user?.companyId}`);
-
-        setName(company.name);
-        setPhone(company.phone);
-        setMail(company.mail);
-        setAdress(company.adress);
-        setCity(company.city);
-        setZipCode(company.zip_code);
-        setSiretNumber(company.siret_number);
-        setActivity(company.Job_id);
-        setTwitter(company.twitter);
-        setInstagram(company.instagram);
-        setFacebook(company.facebook);
-        setDescription(company.description);
-        setRegion(company.Country_id);
-        setWebsite(company.website);
-        setLogoUrl(company.logoUrl);
-      } catch (error) {
-        console.error("Failed to fetch company data:", error);
+      // Vérifiez si `user` et `user.companyId` sont disponibles
+      if (!user?.companyId) {
+        console.error("Company ID is not available");
+        return;
       }
+
+      const company = await getData(`enterprise/${user.companyId}`).catch(
+        (error) => {
+          console.error("Failed to fetch company data:", error);
+          return null; // Retourner null en cas d'erreur pour éviter d'exécuter le code suivant
+        }
+      );
+
+      // Assurez-vous que `company` n'est pas null ou undefined
+      if (!company) {
+        console.error("Company data is not available");
+        return;
+      }
+
+      // Utilisez une fonction pour assigner les valeurs par défaut
+      const setValue = (setter, value) => setter(value || "");
+
+      setValue(setName, company.name);
+      setValue(setPhone, company.phone);
+      setValue(setMail, company.mail);
+      setValue(setAdress, company.adress);
+      setValue(setCity, company.city);
+      setValue(setZipCode, company.zip_code);
+      setValue(setSiretNumber, company.siret_number);
+      setValue(setActivity, company.Job_id);
+      setValue(setTwitter, company.twitter);
+      setValue(setInstagram, company.instagram);
+      setValue(setFacebook, company.facebook);
+      setValue(setDescription, company.description);
+      setValue(setRegion, company.Country_id);
+      setValue(setWebsite, company.website);
+      setValue(setLogoUrl, company.logoUrl);
     };
 
     const fetchJobs = async () => {
@@ -90,6 +106,7 @@ export default function UpdateCompany({ onSubmit }) {
     fetchRegions();
   }, [user?.companyId]);
   console.log("User data from atom:", user);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -108,46 +125,38 @@ export default function UpdateCompany({ onSubmit }) {
       instagram,
       facebook,
       website,
+      photos: photos || [], // Initialisation
     };
 
     if (logo) {
       company.logo = logo;
     }
 
-    photos.forEach((photo, index) => {
-      company.photos[index] = photo;
-    });
     console.log("FormData being sent:", company);
 
     try {
       const response = await putData("enterprise", company);
       console.log("Mise à jour effectuée !", response);
+      alert("Entreprise mise à jour !");
     } catch (error) {
       console.error("Erreur lors de la soumission du formulaire:", error);
 
       if (error.response) {
-        // Handle the server response
         const status = error.response.status;
         if (status === 422) {
-          // Parse and log the detailed error response
           const errorDetails = await error.response.json();
           console.log("Détails de l'erreur:", errorDetails);
 
-          // Extract and display validation errors if available
           const validationErrors = errorDetails.errors || {};
           console.log("Erreurs de validation:", validationErrors);
         } else {
-          // Handle other status codes
           const errorText = await error.response.text();
           console.log("Erreur non liée à la validation:", errorText);
         }
       } else {
-        // Handle errors without a response
         console.log("Erreur sans réponse:", error.message);
       }
     }
-
-    alert("Entreprise mise à jour !");
   };
 
   const handleLogoChange = (e) => {

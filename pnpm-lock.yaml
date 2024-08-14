@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      axios:
-        specifier: ^1.7.3
-        version: 1.7.3
       antd:
         specifier: ^5.20.1
         version: 5.20.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
