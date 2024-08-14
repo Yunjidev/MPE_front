@@ -33,7 +33,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import AcceptCompanyPage from "./pages/DashboardAdmin/Accept_company";
 import Company from "./pages/DashboardAdmin/ValidatedCompaniesPage";
 import ManageUser from "./pages/DashboardAdmin/UsersPage";
-import UpdateCompany from "./components/DashboardUser/UpdateCompanyForm";
+import UpdateCompany from "./pages/user/updatecompany";
 const MainLayout = ({ children }) => (
   <>
     <NavBar />
@@ -89,7 +89,10 @@ function App() {
                   />
                   <Route path="manage-companies" element={<Company />} />
                   <Route path="manage-users" element={<ManageUser />} />
-                  <Route path="enterprise/:id" element={<UpdateCompany />} />
+                  <Route
+                    path="enterprise/:id/edit"
+                    element={<UpdateCompany />}
+                  />
                 </Route>
               </Routes>
             </MainLayout>

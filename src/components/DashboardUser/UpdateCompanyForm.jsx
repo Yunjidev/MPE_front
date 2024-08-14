@@ -18,7 +18,7 @@ import { putData, getData } from "../../services/data-fetch";
 import { UserContext } from "../../context/UserContext";
 
 export default function UpdateCompany({ onSubmit }) {
-  const { user } = useContext(UserContext); // Utilisation du contexte utilisateur
+  const { user } = useContext(UserContext);
 
   const [name, setName] = useState(user?.name || "");
   const [phone, setPhone] = useState(user?.phone || "");
@@ -46,7 +46,6 @@ export default function UpdateCompany({ onSubmit }) {
       try {
         const company = await getData(`enterprise/${user?.companyId}`);
 
-        // Initialiser les champs avec les données de l'entreprise
         setName(company.name);
         setPhone(company.phone);
         setMail(company.mail);
@@ -86,9 +85,10 @@ export default function UpdateCompany({ onSubmit }) {
       }
     };
 
+    fetchCompanyData();
     fetchJobs();
     fetchRegions();
-  }, []);
+  }, [user?.companyId]);
   console.log("User data from atom:", user);
   const handleSubmit = async (e) => {
     e.preventDefault();

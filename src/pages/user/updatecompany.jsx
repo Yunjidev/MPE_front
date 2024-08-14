@@ -1,5 +1,4 @@
-import React from "react";
-import UpdateCompany from "../../components/DashboardUser/UpdateCompanyForm";
+import UpdateCompanyForm from "../../components/DashboardUser/UpdateCompanyForm";
 
 const UpdateCompany = () => {
   const handleFormSubmit = async (formData) => {
@@ -8,7 +7,7 @@ const UpdateCompany = () => {
 
   return (
     <div>
-      <UpdateCompany onSubmit={handleFormSubmit} />
+      <UpdateCompanyForm onSubmit={handleFormSubmit} />
     </div>
   );
 };
