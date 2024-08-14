@@ -28,6 +28,8 @@ import FAQ from "./pages/FAQ/FAQ";
 import RegisterCompany from "./pages/user/registercompany";
 import Pricing_page from "./components/pricing_page/pricing_page";
 import User_db from "./pages/DashboardUser/User_db";
+import EnterprisePage from "./pages/EnterprisePage/EnterprisePage"; // Importer la page EnterprisePage
+
 
 import Dashboard from "./pages/Dashboard/Dashboard";
 import AcceptCompanyPage from "./pages/DashboardAdmin/Accept_company";
@@ -75,6 +77,7 @@ function App() {
                 <Route path="/FAQ" element={<FAQ />} />
                 <Route path="/register-company" element={<RegisterCompany />} />
                 <Route path="/pricing" element={<Pricing_page />} />
+                <Route path="/enterprise/:id" element={<EnterprisePage />} />
                 <Route path="/dashboard" element={<Dashboard />}>
                   <Route path="user-db" element={<User_db />} />
                   <Route
