@@ -84,7 +84,7 @@ const UsersList = () => {
       { Header: "Nom", accessor: "lastname" },
       { Header: "Email", accessor: "email" },
       { Header: "Admin", accessor: "isAdmin", Cell: ({ value }) => (value ? "Oui" : "Non") },
-      { Header: "Entrepreneur", accessor: "isEntrepeneur", Cell: ({ value }) => (value ? "Oui" : "Non") },
+      { Header: "Entrepreneur", accessor: "isEntrepreneur", Cell: ({ value }) => (value ? "Oui" : "Non") },
       {
         Header: "Actions",
         accessor: "id",

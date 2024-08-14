@@ -8,6 +8,6 @@ export const userAtom = atomWithStorage("user", {
   lastname: "",    
   avatar: "",
   isAdmin: false,
-  isEntrepeneur: false,     
+  isEntrepreneur: false,     
   isLogged: false,
 });
