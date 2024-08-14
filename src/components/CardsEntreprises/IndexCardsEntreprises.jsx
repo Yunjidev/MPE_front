@@ -2,6 +2,7 @@ import React from 'react';
 import indexcards from '../../../public/assets/img/indexcards.jpg';
 import { FaCalendarDay, FaWrench, FaMapMarkerAlt } from 'react-icons/fa';
 import { postData } from '../../services/data-fetch';
+import formatDate from '../../services/formatdate';
 
 const IndexCardsEntreprises = ({ entreprise, userId }) => {
   // Utilisez les props pour afficher les données de l'entreprise
@@ -47,7 +48,7 @@ const IndexCardsEntreprises = ({ entreprise, userId }) => {
           <div className="flex flex-col items-start">
             <div className="flex items-center mb-2">
               <FaCalendarDay className="text-lg mr-2" />
-              <span className="text-sm">Prochaine Disponibilité: {nextAvailableDate || 'Non disponible'}</span>
+              <span className="text-sm">Prochaine Disponibilité: {nextAvailableDate ? formatDate(nextAvailableDate) : 'Non disponible'}</span>
 
             </div>
 
