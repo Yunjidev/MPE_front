@@ -5,6 +5,7 @@
 /* eslint-disable react/jsx-key */
 import React, { useState, useEffect } from "react";
 import { useTable, usePagination } from "react-table";
+import { useNavigate } from "react-router-dom";
 import { getData, deleteData } from "../../services/data-fetch";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import Button from "../Button/button";
@@ -19,6 +20,8 @@ const ValidatedCompanies = () => {
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -75,6 +78,10 @@ const ValidatedCompanies = () => {
   const editCompany = (company) => {
     setSelectedCompany(company);
     setIsModalOpen(true);
+  };
+
+  const viewCompany = (companyId) => {
+    navigate(`/enterprise/${companyId}`);
   };
 
   const handleSave = (updatedCompany) => {

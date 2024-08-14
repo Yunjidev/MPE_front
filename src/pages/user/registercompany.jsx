@@ -1,4 +1,3 @@
-import React from "react";
 import CompanyForm from "../../components/DashboardUser/companyform";
 
 const RegisterCompany = () => {
