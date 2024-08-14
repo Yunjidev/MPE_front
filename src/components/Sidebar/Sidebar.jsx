@@ -142,7 +142,7 @@ const Sidebar = () => {
           <div className="border-t border-black dark:border-white my-4 mx-2"></div>
 
           {/* Conditional Sections */}
-          {user && user.isEntrepeneur && (
+          {user && user.isEntrepreneur && (
             <div className="space-y-4">
               <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
                 <FaBriefcase className="w-10 h-10 mr-2 dark:text-white text-black" />
