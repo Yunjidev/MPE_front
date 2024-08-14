@@ -13,7 +13,6 @@ import {
 } from "react-icons/fa";
 import { FaXTwitter, FaInstagram, FaFacebook } from "react-icons/fa6";
 import { MdOutlineAlternateEmail, MdOutlineAreaChart } from "react-icons/md";
-import Button from "../Button/button";
 import { CgWebsite } from "react-icons/cg";
 import { postData, getData } from "../../services/data-fetch";
 import { UserContext } from "../../context/UserContext";
@@ -65,11 +64,10 @@ export default function RegisterCompany({ onSubmit }) {
     fetchJobs();
     fetchRegions();
   }, []);
-  console.log("User data from atom:", user);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const compagny = {
+    const company = {
       name,
       phone,
       mail,
@@ -87,17 +85,15 @@ export default function RegisterCompany({ onSubmit }) {
     };
 
     if (logo) {
-      compagny.logo = logo;
+      company.logo = logo;
     }
 
     photos.forEach((photo, index) => {
-      compagny.photos[index] = photo;
+      company.photos[index] = photo;
     });
-    console.log("FormData being sent:", compagny);
 
     try {
-      const response = await postData("enterprise", compagny);
-      console.log("Formulaire soumis avec succès:", response);
+      const response = await postData("enterprise", company);
     } catch (error) {
       console.error("Erreur lors de la soumission du formulaire:", error);
 
@@ -107,21 +103,19 @@ export default function RegisterCompany({ onSubmit }) {
         if (status === 422) {
           // Parse and log the detailed error response
           const errorDetails = await error.response.json();
-          console.log("Détails de l'erreur:", errorDetails);
 
           // Extract and display validation errors if available
           const validationErrors = errorDetails.errors || {};
-          console.log("Erreurs de validation:", validationErrors);
         } else {
           // Handle other status codes
           const errorText = await error.response.text();
-          console.log("Erreur non liée à la validation:", errorText);
         }
       } else {
         // Handle errors without a response
-        console.log("Erreur sans réponse:", error.message);
       }
     }
+
+    alert("Entreprise enregistrée");
   };
 
   const handleLogoChange = (e) => {
@@ -141,6 +135,72 @@ export default function RegisterCompany({ onSubmit }) {
     setPhotoUrls((prevPhotoUrls) => [...prevPhotoUrls, ...newPhotoUrls]);
   };
 
+  const handleBlur = (e) => {
+    const { id, value } = e.target;
+
+    let errorMessage = "";
+    switch (id) {
+      case "name":
+        if (value.length < 3 || value.length > 20) {
+          errorMessage =
+            "Le nom de l'entreprise doit être compris entre 3 et 20 caractères.";
+        }
+        break;
+      case "siret":
+        if (!/^\d{14}$/.test(value)) {
+          errorMessage =
+            "Le numéro SIRET doit contenir exactement 14 chiffres.";
+        }
+        break;
+      case "contact":
+        if (!/^\+?(\d.*){10,}$/.test(value)) {
+          errorMessage = "Veuillez entrer un numéro de téléphone valide.";
+        }
+        break;
+      case "email":
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          errorMessage = "Veuillez entrer une adresse e-mail valide.";
+        }
+        break;
+      case "address":
+        if (value.length < 5) {
+          errorMessage = "L'adresse doit contenir au moins 5 caractères.";
+        }
+        break;
+      case "city":
+        if (value.length < 2) {
+          errorMessage =
+            "Le nom de la ville doit contenir au moins 2 caractères.";
+        }
+        break;
+      case "zipCode":
+        if (!/^\d{5}$/.test(value)) {
+          errorMessage = "Le code postal doit contenir exactement 5 chiffres.";
+        }
+        break;
+      case "region":
+        if (!value) {
+          errorMessage = "Veuillez sélectionner une région.";
+        }
+        break;
+      case "job":
+        if (!value) {
+          errorMessage = "Veuillez sélectionner un secteur d'activité.";
+        }
+        break;
+      case "description":
+        if (value.trim() === "") {
+          errorMessage = "La description ne peut pas être vide.";
+        }
+        break;
+      default:
+        break;
+    }
+
+    e.target.setCustomValidity(errorMessage);
+    e.target.reportValidity();
+  };
+
   return (
     <div className="mt-12 mb-8 flex items-center justify-center bg-neutral-900">
       <div className="relative border-form-1 group max-w-8xl w-full">
@@ -157,7 +217,7 @@ export default function RegisterCompany({ onSubmit }) {
             <div className="col-span-1 flex justify-center items-center">
               <label
                 htmlFor="logo-upload"
-                className="border border-gray-500 p-10 rounded-full cursor-pointer text-gray-400 hover:bg-gray-800 h-56 w-56 flex flex-col justify-center items-center"
+                className="border border-gray-500 p-10 rounded-full cursor-pointer text-gray-400 hover:bg-neutral-700 h-56 w-56 flex flex-col justify-center items-center"
               >
                 {logoUrl ? (
                   <img
@@ -180,7 +240,7 @@ export default function RegisterCompany({ onSubmit }) {
                 className="hidden"
               />
             </div>
-            <div className="flex flex-col lg:col-span-2 lg:grid lg:grid-cols-2 gap-6">
+            <div className="flex flex-col lg:col-span-2 lg:grid lg:grid-cols-2 gap-5">
               <div className="relative flex items-center">
                 <FaUser className="absolute left-3 text-gray-400" />
                 <input
@@ -188,8 +248,9 @@ export default function RegisterCompany({ onSubmit }) {
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  onBlur={handleBlur}
                   placeholder="Nom Entreprise"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                 />
               </div>
               <div className="relative flex items-center justify-end">
@@ -199,8 +260,9 @@ export default function RegisterCompany({ onSubmit }) {
                   id="siret"
                   value={siretNumber}
                   onChange={(e) => setSiretNumber(e.target.value)}
+                  onBlur={handleBlur}
                   placeholder="Numéro Siret"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                 />
               </div>
               <div className="relative flex items-center">
@@ -210,8 +272,9 @@ export default function RegisterCompany({ onSubmit }) {
                   id="contact"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  onBlur={handleBlur}
                   placeholder="Contact"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                 />
               </div>
               <div className="relative flex items-center justify-end">
@@ -221,8 +284,9 @@ export default function RegisterCompany({ onSubmit }) {
                   id="email"
                   value={mail}
                   onChange={(e) => setMail(e.target.value)}
+                  onBlur={handleBlur}
                   placeholder="E-mail"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                 />
               </div>
               <div className="relative flex items-center">
@@ -232,8 +296,9 @@ export default function RegisterCompany({ onSubmit }) {
                   id="address"
                   value={adress}
                   onChange={(e) => setAdress(e.target.value)}
+                  onBlur={handleBlur}
                   placeholder="Adresse"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                 />
               </div>
               <div className="relative flex items-center">
@@ -242,11 +307,9 @@ export default function RegisterCompany({ onSubmit }) {
                   id="region"
                   value={region}
                   onChange={(e) => setRegion(e.target.value)}
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-green-400 focus:border-green-400"
                 >
-                  <option value="" className="text-gray-400">
-                    Région
-                  </option>
+                  <option value="">Région</option>
                   {regionOptions.map((option, index) => (
                     <option key={option} value={index + 1}>
                       {option.name}
@@ -262,7 +325,7 @@ export default function RegisterCompany({ onSubmit }) {
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   placeholder="Ville"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                 />
               </div>
               <div className="relative flex items-center">
@@ -273,75 +336,18 @@ export default function RegisterCompany({ onSubmit }) {
                   value={zipCode}
                   onChange={(e) => setZipCode(e.target.value)}
                   placeholder="Code Postal"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                 />
               </div>
-              <div className="relative flex items-center">
-                <FaPenAlt className="absolute left-3 text-gray-400" />
-                <textarea
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Description"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                  rows="3"
-                />
-              </div>
-              <div className="relative flex items-center justify-end">
-                <CgWebsite className="absolute left-3 text-gray-400" />
-                <input
-                  type="url"
-                  id="website"
-                  value={website}
-                  onChange={(e) => setWebsite(e.target.value)}
-                  placeholder="Site Web"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                />
-              </div>
-              <div className="relative flex items-center justify-end">
-                <FaXTwitter className="absolute left-3 text-gray-400" />
-                <input
-                  type="url"
-                  id="twitter"
-                  value={twitter}
-                  onChange={(e) => setTwitter(e.target.value)}
-                  placeholder="Twitter"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                />
-              </div>
-              <div className="relative flex items-center justify-end">
-                <FaInstagram className="absolute left-3 text-gray-400" />
-                <input
-                  type="url"
-                  id="instagram"
-                  value={instagram}
-                  onChange={(e) => setInstagram(e.target.value)}
-                  placeholder="Instagram"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                />
-              </div>
-              <div className="relative flex items-center justify-end">
-                <FaFacebook className="absolute left-3 text-gray-400" />
-                <input
-                  type="url"
-                  id="facebook"
-                  value={facebook}
-                  onChange={(e) => setFacebook(e.target.value)}
-                  placeholder="Facebook"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                />
-              </div>
-              <div className="relative flex items-center">
+              <div className="col-span-2 relative flex items-center">
                 <MdOutlineAreaChart className="absolute left-3 text-gray-400" />
                 <select
                   id="job"
                   value={activity}
                   onChange={(e) => setActivity(e.target.value)}
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-green-400 focus:border-green-400"
                 >
-                  <option value="" className="text-gray-400">
-                    Secteur d'activité
-                  </option>
+                  <option value="">Secteur d'activité</option>
                   {jobOptions.map((option, index) => (
                     <option key={option.id} value={index + 1}>
                       {option.name}
@@ -349,42 +355,102 @@ export default function RegisterCompany({ onSubmit }) {
                   ))}
                 </select>
               </div>
-              <div className="relative flex flex-col items-center justify-center">
-                <FaCloudUploadAlt className="absolute left-3 text-gray-400" />
+            </div>
+            <div className="relative flex items-center justify-end">
+              <FaXTwitter className="absolute left-3 text-gray-400" />
+              <input
+                type="url"
+                id="twitter"
+                value={twitter}
+                onChange={(e) => setTwitter(e.target.value)}
+                placeholder="Twitter"
+                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-green-400 focus:border-green-400"
+              />
+            </div>
+            <div className="relative flex items-center justify-end">
+              <FaInstagram className="absolute left-3 text-gray-400" />
+              <input
+                type="url"
+                id="instagram"
+                value={instagram}
+                onChange={(e) => setInstagram(e.target.value)}
+                placeholder="Instagram"
+                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
+              />
+            </div>
+            <div className="relative flex items-center justify-end">
+              <FaFacebook className="absolute left-3 text-gray-400" />
+              <input
+                type="url"
+                id="facebook"
+                value={facebook}
+                onChange={(e) => setFacebook(e.target.value)}
+                placeholder="Facebook"
+                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
+              />
+            </div>
+            <div className="col-span-3 flex flex-col justify-center items-center">
+              <div className="relative w-full">
+                <CgWebsite className="absolute left-3 top-3 text-gray-400" />
                 <input
-                  type="file"
-                  id="photos"
-                  onChange={handlePhotosChange}
-                  multiple
-                  className="hidden"
+                  type="url"
+                  id="website"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                  placeholder="Site Web"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                 />
-                <label
-                  htmlFor="photos"
-                  className="cursor-pointer flex justify-center items-center bg-gray-700 text-white w-full pl-10 py-2 rounded-xl"
-                >
-                  Ajouter Photos
-                </label>
-                <div className="flex mt-4 space-x-4">
-                  {photoUrls.map((url, index) => (
-                    <img
-                      key={index}
-                      src={url}
-                      alt={`Photo ${index + 1}`}
-                      className="w-24 h-24 object-cover rounded-lg"
-                    />
-                  ))}
-                </div>
+              </div>
+            </div>
+            <div className="col-span-3 flex flex-col justify-center items-center">
+              <div className="relative w-full">
+                <FaPenAlt className="absolute left-3 top-3 text-gray-400" />
+                <textarea
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Description"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
+                  rows="5"
+                />
+              </div>
+            </div>
+            <div className="col-span-3 flex flex-col justify-center items-center">
+              <label
+                htmlFor="photos-upload"
+                className="border border-dashed border-gray-500 p-10 h-30 w-full rounded-lg cursor-pointer text-gray-400 hover:bg-neutral-700 flex flex-row justify-center items-center"
+              >
+                <FaCloudUploadAlt className="w-16 h-16 mx-5" />
+                <p className="text-white">Cliquez pour ajouter des images</p>
+              </label>
+              <input
+                id="photos-upload"
+                type="file"
+                name="photos"
+                multiple
+                onChange={handlePhotosChange}
+                className="hidden"
+              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-4 w-full">
+                {photoUrls.map((url, index) => (
+                  <img
+                    key={index}
+                    src={url}
+                    alt={`Photo ${index + 1}`}
+                    className="h-40 w-40 col-span-1 object-cover rounded-lg justify-self-center"
+                  />
+                ))}
               </div>
             </div>
           </form>
           <div className="flex justify-center mt-6">
-            <Button
+            <button
               type="submit"
               onClick={handleSubmit}
-              className="rounded-lg px-5 py-2 bg-blue-600 hover:bg-blue-800 text-white"
+              className="flex w-full dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text items-center justify-center w-44 h-12 mr-2 border border-neutral-300 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
             >
               Soumettre
-            </Button>
+            </button>
           </div>
         </div>
       </div>
