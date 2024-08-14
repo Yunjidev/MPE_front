@@ -224,7 +224,7 @@ const Sidebar = () => {
                               onClick={closeSidebar}
                             >
                               <FaPlusCircle className="w-4 h-4 fill-current dark:text-white text-black" />
-                              <span className="font-semibold dark:text-gray-100 text-black">Ajouts de Services</span>
+                              <span className="font-semibold dark:text-gray-100 text-black">Offres</span>
                             </Link>
                           </li>
                         </ul>

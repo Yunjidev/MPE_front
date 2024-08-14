@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect } from "react";
 import PropTypes from "prop-types";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
 import { useAtom, Provider } from "jotai";
 import { ToastContainer } from "react-toastify";
 import { userAtom } from "./store/user";
@@ -28,6 +28,7 @@ import FAQ from "./pages/FAQ/FAQ";
 import RegisterCompany from "./pages/user/registercompany";
 import Pricing_page from "./components/pricing_page/pricing_page";
 import User_db from "./pages/DashboardUser/User_db";
+import OffersList from "./components/DashboardUser/OffersList";
 
 import Dashboard from "./pages/Dashboard/Dashboard";
 import AcceptCompanyPage from "./pages/DashboardAdmin/Accept_company";
@@ -81,6 +82,7 @@ function App() {
                     path="register-company"
                     element={<RegisterCompany />}
                   />
+                  <Route path="enterprise/:id/services" element={<OffersList />} />
                   <Route path="security" element={<Team />} />
                   <Route path="accept-company" element={<AcceptCompanyPage />} />
                   <Route path="manage-companies" element={<Company />} />

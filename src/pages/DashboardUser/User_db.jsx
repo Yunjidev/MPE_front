@@ -2,6 +2,7 @@ import ProfileManagement from '../../components/DashboardUser/EditProfilForm';
 import LikesManagement from '../../components/DashboardUser/User_likes';
 import AgendaManagement from '../../components/DashboardUser/User_agenda'
 import ComManagement from '../../components/DashboardUser/Company_coms';
+import OffersList from '@/components/DashboardUser/OffersList';
 
 const Companydb = () => {
     return (
