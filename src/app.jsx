@@ -31,6 +31,8 @@ import User_db from "./pages/DashboardUser/User_db";
 
 import Dashboard from "./pages/Dashboard/Dashboard";
 import AcceptCompanyPage from "./pages/DashboardAdmin/Accept_company";
+import Company from "./pages/DashboardAdmin/ValidatedCompaniesPage";
+import ManageUser from "./pages/DashboardAdmin/UsersPage";
 const MainLayout = ({ children }) => (
   <>
     <NavBar />
@@ -81,6 +83,9 @@ function App() {
                   />
                   <Route path="security" element={<Team />} />
                   <Route path="accept-company" element={<AcceptCompanyPage />} />
+                  <Route path="manage-companies" element={<Company />} />
+                  <Route path="manage-users" element={<ManageUser />} />
+
                 </Route>
               </Routes>
             </MainLayout>
