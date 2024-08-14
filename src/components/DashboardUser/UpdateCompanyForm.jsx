@@ -14,10 +14,10 @@ import {
 import { FaXTwitter, FaInstagram, FaFacebook } from "react-icons/fa6";
 import { MdOutlineAlternateEmail, MdOutlineAreaChart } from "react-icons/md";
 import { CgWebsite } from "react-icons/cg";
-import { postData, getData } from "../../services/data-fetch";
+import { putData, getData } from "../../services/data-fetch";
 import { UserContext } from "../../context/UserContext";
 
-export default function RegisterCompany({ onSubmit }) {
+export default function UpdateCompany({ onSubmit }) {
   const { user } = useContext(UserContext); // Utilisation du contexte utilisateur
 
   const [name, setName] = useState(user?.name || "");
@@ -42,6 +42,31 @@ export default function RegisterCompany({ onSubmit }) {
   const [jobOptions, setJobOptions] = useState([]);
   const [regionOptions, setRegionOptions] = useState([]);
   useEffect(() => {
+    const fetchCompanyData = async () => {
+      try {
+        const company = await getData(`enterprise/${user?.companyId}`);
+
+        // Initialiser les champs avec les données de l'entreprise
+        setName(company.name);
+        setPhone(company.phone);
+        setMail(company.mail);
+        setAdress(company.adress);
+        setCity(company.city);
+        setZipCode(company.zip_code);
+        setSiretNumber(company.siret_number);
+        setActivity(company.Job_id);
+        setTwitter(company.twitter);
+        setInstagram(company.instagram);
+        setFacebook(company.facebook);
+        setDescription(company.description);
+        setRegion(company.Country_id);
+        setWebsite(company.website);
+        setLogoUrl(company.logoUrl);
+      } catch (error) {
+        console.error("Failed to fetch company data:", error);
+      }
+    };
+
     const fetchJobs = async () => {
       try {
         const jobs = await getData("jobs");
@@ -95,8 +120,8 @@ export default function RegisterCompany({ onSubmit }) {
     console.log("FormData being sent:", company);
 
     try {
-      const response = await postData("enterprise", company);
-      console.log("Formulaire soumis avec succès:", response);
+      const response = await putData("enterprise", company);
+      console.log("Mise à jour effectuée !", response);
     } catch (error) {
       console.error("Erreur lors de la soumission du formulaire:", error);
 
@@ -122,7 +147,7 @@ export default function RegisterCompany({ onSubmit }) {
       }
     }
 
-    alert("Entreprise enregistrée");
+    alert("Entreprise mise à jour !");
   };
 
   const handleLogoChange = (e) => {
@@ -214,7 +239,7 @@ export default function RegisterCompany({ onSubmit }) {
         <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
         <div className="bg-neutral-900 p-10 rounded-xl shadow-xl relative z-10 transform transition duration-500 ease-in-out">
           <h2 className="text-white text-center text-2xl mb-5">
-            Création d'entreprise
+            Mise à jour d'entreprise
           </h2>
           <hr className="w-1/2 my-4 border-t-2 border-gray-400 mx-auto" />
           <form
@@ -465,6 +490,6 @@ export default function RegisterCompany({ onSubmit }) {
   );
 }
 
-RegisterCompany.propTypes = {
+UpdateCompany.propTypes = {
   onSubmit: PropTypes.func,
 };

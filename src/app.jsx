@@ -33,6 +33,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import AcceptCompanyPage from "./pages/DashboardAdmin/Accept_company";
 import Company from "./pages/DashboardAdmin/ValidatedCompaniesPage";
 import ManageUser from "./pages/DashboardAdmin/UsersPage";
+import UpdateCompany from "./components/DashboardUser/UpdateCompanyForm";
 const MainLayout = ({ children }) => (
   <>
     <NavBar />
@@ -82,10 +83,13 @@ function App() {
                     element={<RegisterCompany />}
                   />
                   <Route path="security" element={<Team />} />
-                  <Route path="accept-company" element={<AcceptCompanyPage />} />
+                  <Route
+                    path="accept-company"
+                    element={<AcceptCompanyPage />}
+                  />
                   <Route path="manage-companies" element={<Company />} />
                   <Route path="manage-users" element={<ManageUser />} />
-
+                  <Route path="enterprise/:id" element={<UpdateCompany />} />
                 </Route>
               </Routes>
             </MainLayout>
