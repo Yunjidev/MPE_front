@@ -1,6 +1,6 @@
 // Sidebar.jsx
 import { Link } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import {
   FaTachometerAlt,
   FaCog,
@@ -11,11 +11,25 @@ import {
   FaChartLine,
   FaUserShield,
 } from "react-icons/fa";
-import { UserContext } from "../../context/UserContext";
+import { getData } from "../../services/data-fetch"; // Adjust the import path as needed
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { user } = useContext(UserContext);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const data = await getData("user/profile");
+        console.log('Fetched user data:', data);
+        setUser(data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -23,7 +37,6 @@ const Sidebar = () => {
 
   const closeSidebar = () => {
     if (window.innerWidth < 1024) {
-      // Apply only on mobile
       setIsSidebarOpen(false);
     }
   };
@@ -70,7 +83,7 @@ const Sidebar = () => {
       {/* Sidebar */}
       <aside
         id="sidebar"
-        className={`fixed top-28 ${isSidebarOpen ? "left-0" : "left-full"} lg:left-8 rounded-xl z-40 w-64 h-4/5 bg-gray-50 dark:bg-neutral-600 transition-transform duration-300 ease-in-out`}
+        className={`absolute top-28 ${isSidebarOpen ? "left-0" : "left-full"} lg:left-8 rounded-xl z-40 w-64 h-4/5 bg-gray-50 dark:bg-neutral-600 transition-transform duration-300 ease-in-out`}
         aria-label="Sidebar"
       >
         <div className="h-full p-3 space-y-2 dark:bg-neutral-600 rounded-xl dark:text-gray-200">
@@ -82,32 +95,24 @@ const Sidebar = () => {
               className="w-12 h-12 rounded-full dark:bg-gray-500"
             />
             <div>
-              <h2 className="text-lg font-semibold">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">
                 {user ? user.username : "Guest"}
               </h2>
-              <span className="flex items-center space-x-1">
-                <Link
-                  to={`/dashboard/user`} // Utiliser l'ID utilisateur pour les liens de profil
-                  className="text-xs hover:underline dark:text-gray-400"
-                  onClick={closeSidebar}
-                >
-                  View profile
-                </Link>
-              </span>
             </div>
           </div>
 
           {/* Navigation Links */}
-          <div className="divide-y dark:divide-gray-700">
+          
+          <div className="border-t border-black dark:border-white my-4 mx-4">
             <ul className="pt-2 pb-4 space-y-1 text-sm">
               <li>
                 <Link
-                  to={`/dashboard/user-db`} // Utiliser l'ID utilisateur pour les liens de navigation
+                  to={`/dashboard/user-db`}
                   className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                   onClick={closeSidebar}
                 >
-                  <FaTachometerAlt className="w-5 h-5 fill-current dark:text-gray-400" />
-                  <span>Dashboard</span>
+                  <FaTachometerAlt className="w-5 h-5 fill-current dark:text-white text-black" />
+                  <span className="font-semibold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">Profil Utilisateur</span>
                 </Link>
               </li>
               <li>
@@ -116,8 +121,8 @@ const Sidebar = () => {
                   className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                   onClick={closeSidebar}
                 >
-                  <FaBuilding className="w-5 h-5 fill-current dark:text-gray-400" />
-                  <span>Create Company</span>
+                  <FaBuilding className="w-5 h-5 fill-current dark:text-white text-black" />
+                  <span className="font-semibold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">Création Entreprise</span>
                 </Link>
               </li>
               <li>
@@ -126,31 +131,64 @@ const Sidebar = () => {
                   className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                   onClick={closeSidebar}
                 >
-                  <FaCog className="w-5 h-5 fill-current dark:text-gray-400" />
-                  <span>Security</span>
+                  <FaCog className="w-5 h-5 fill-current dark:text-white text-black" />
+                  <span className="font-semibold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">Gestion mot de passe</span>
                 </Link>
               </li>
             </ul>
           </div>
 
+          {/* Section Divider */}
+          <div className="border-t border-black dark:border-white my-4 mx-2"></div>
+
+          {/* Conditional Sections */}
+          {user && user.isEntrepreneur && (
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
+                <FaBriefcase className="w-10 h-10 mr-2 dark:text-white text-black" />
+                <div>
+                  <h3 className="text-lg font-bold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">Entreprise</h3>
+                  <p className="text-xs dark:text-white text-black">Gestion des entreprises</p>
+                </div>
+              </div>
+              <ul className="pt-2 pb-4 space-y-1 text-sm">
+                {user.enterprises && user.enterprises.map((enterprise) => (
+                  <li key={enterprise.id}>
+                    <Link
+                      to={`/dashboard/enterprise/${enterprise.id}`}
+                      className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                      onClick={closeSidebar}
+                    >
+                      <FaBuilding className="w-5 h-5 fill-current dark:text-white text-black" />
+                      <span className="font-semibold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">{enterprise.name}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Section Divider */}
+          {user && user.isEntrepreneur && <div className="border-t border-black dark:border-white my-4 mx-2"></div>}
+
           {user && user.isAdmin && (
             <div className="space-y-4">
               <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
-                <FaUserShield className="w-10 h-10 mr-2 fill-current dark:text-gray-400" />
+                <FaUserShield className="w-10 h-10 mr-2 fill-current dark:text-white text-black" />
                 <div>
-                  <h3 className="text-lg font-semibold">Admin</h3>
-                  <p className="text-xs">Dashboard</p>
+                  <h3 className="text-lg font-bold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">Dashboard</h3>
+                  <p className="text-xs dark:text-white text-black">Admin</p>
                 </div>
               </div>
               <ul className="pt-2 pb-4 space-y-1 text-sm">
                 <li>
                   <Link
-                    to={`/dashboard`}
+                    to={`/dashboard/admin-overview`}
                     className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                     onClick={closeSidebar}
                   >
-                    <FaTachometerAlt className="w-5 h-5 fill-current dark:text-gray-400" />
-                    <span>Tableau de Bord</span>
+                    <FaTachometerAlt className="w-5 h-5 fill-current dark:text-white text-black" />
+                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">Tableau de bord</span>
                   </Link>
                 </li>
                 <li>
@@ -159,8 +197,8 @@ const Sidebar = () => {
                     className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                     onClick={closeSidebar}
                   >
-                    <FaBuilding className="w-5 h-5 fill-current dark:text-gray-400" />
-                    <span>Acceptation entreprise</span>
+                    <FaBuilding className="w-5 h-5 fill-current dark:text-white text-black" />
+                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">Validation Entreprises</span>
                   </Link>
                 </li>
                 <li>
@@ -169,8 +207,8 @@ const Sidebar = () => {
                     className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                     onClick={closeSidebar}
                   >
-                    <FaUsers className="w-5 h-5 fill-current dark:text-gray-400" />
-                    <span>Gestion Utilisateur</span>
+                    <FaUsers className="w-5 h-5 fill-current dark:text-white text-black" />
+                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">Liste des utilisateurs</span>
                   </Link>
                 </li>
                 <li>
@@ -179,28 +217,18 @@ const Sidebar = () => {
                     className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                     onClick={closeSidebar}
                   >
-                    <FaBuilding className="w-5 h-5 fill-current dark:text-gray-400" />
-                    <span>Gestion Entreprise</span>
+                    <FaBuilding className="w-5 h-5 fill-current dark:text-white text-black" />
+                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">Liste des entreprises</span>
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to={`/dashboard/manage-careers`}
+                    to={`/dashboard/statistics`}
                     className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                     onClick={closeSidebar}
                   >
-                    <FaBriefcase className="w-5 h-5 fill-current dark:text-gray-400" />
-                    <span>Gestion des Métiers</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={`/dashboard/manage-subscriptions`}
-                    className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                    onClick={closeSidebar}
-                  >
-                    <FaChartLine className="w-5 h-5 fill-current dark:text-gray-400" />
-                    <span>Gestion des Abonnements</span>
+                    <FaChartBar className="w-5 h-5 fill-current dark:text-white text-black" />
+                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">Statistiques</span>
                   </Link>
                 </li>
                 <li>
@@ -209,8 +237,8 @@ const Sidebar = () => {
                     className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                     onClick={closeSidebar}
                   >
-                    <FaChartBar className="w-5 h-5 fill-current dark:text-gray-400" />
-                    <span>Reports</span>
+                    <FaChartLine className="w-5 h-5 fill-current dark:text-white text-black" />
+                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">Reports</span>
                   </Link>
                 </li>
               </ul>

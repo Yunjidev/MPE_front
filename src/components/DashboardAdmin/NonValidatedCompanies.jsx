@@ -1,13 +1,17 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-key */
 import React, { useState, useEffect } from "react";
-import { useTable } from "react-table";
+import { useTable, usePagination } from "react-table";
 import { getData, putData } from "../../services/data-fetch";
 import Button from "../Button/button";
 
 const NonValidatedCompanies = () => {
   const [companies, setCompanies] = useState([]);
+  const [pageSize, setPageSize] = useState(10);
+  const [pageIndex, setPageIndex] = useState(0);
 
-  // Fonction pour récupérer les entreprises non validées
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
@@ -21,50 +25,45 @@ const NonValidatedCompanies = () => {
     fetchCompanies();
   }, []);
 
-  // Fonction pour valider une entreprise
   const validateCompany = async (companyId) => {
     try {
-        const updatedCompany = { isValidate: 'true' };
-        console.log("Company ID:", companyId);
-        console.log("Data to update:", updatedCompany);
+      const updatedCompany = { isValidate: 'true' };
+      console.log("Company ID:", companyId);
+      console.log("Data to update:", updatedCompany);
 
-        
-        const response = await putData(`enterprise/${companyId}`, updatedCompany);
-        console.log("Response from PUT:", response);
+      const response = await putData(`enterprise/${companyId}`, updatedCompany);
+      console.log("Response from PUT:", response);
 
-        
-        setCompanies((prevCompanies) =>
-            prevCompanies.map((company) =>
-                company.id === companyId ? { ...company, isValidate: true } : company
-            )
-        );
+      setCompanies((prevCompanies) =>
+        prevCompanies.filter((company) => company.id !== companyId)
+      );
 
-        alert("Entreprise validée avec succès");
+      alert("Entreprise validée avec succès");
     } catch (error) {
-        console.error("Error validating company:", error);
+      console.error("Error validating company:", error);
     }
-};
+  };
 
-
-  // Colonnes pour le tableau
   const columns = React.useMemo(
     () => [
-      { Header: "Name", accessor: "name" },
-      { Header: "Phone", accessor: "phone" },
+      { Header: "Nom", accessor: "name" },
+      { Header: "Téléphone", accessor: "phone" },
       { Header: "Mail", accessor: "mail" },
-      { Header: "Address", accessor: "adress" },
-      { Header: "City", accessor: "city" },
-      { Header: "Zip Code", accessor: "zip_code" },
-      { Header: "Siret Number", accessor: "siret_number" },
+      { Header: "Adresse", accessor: "adress" },
+      { Header: "Ville", accessor: "city" },
+      { Header: "CP", accessor: "zip_code" },
+      { Header: "Siret", accessor: "siret_number" },
+      { Header: "Région", accessor: "country.name" },
+      { Header: "Métier", accessor: "job.name" },
       {
         Header: "Actions",
         accessor: "id",
         Cell: ({ value }) => (
           <Button
             onClick={() => validateCompany(value)}
-            className="rounded-lg px-3 py-1 bg-green-600 hover:bg-green-800 text-white"
+            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
           >
-            Validate
+            Valider
           </Button>
         ),
       },
@@ -72,48 +71,100 @@ const NonValidatedCompanies = () => {
     [companies]
   );
 
-  const tableInstance = useTable({ columns, data: companies });
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    tableInstance;
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    page, // Use `page` instead of `rows` for pagination
+    prepareRow,
+    state: { pageIndex: currentPageIndex, pageSize: currentPageSize },
+    gotoPage,
+    setPageSize: setTablePageSize,
+  } = useTable(
+    {
+      columns,
+      data: companies,
+      initialState: { pageIndex, pageSize },
+      pageCount: Math.ceil(companies.length / pageSize),
+    },
+    usePagination
+  );
+
+  const handlePageSizeChange = (event) => {
+    const newSize = Number(event.target.value);
+    setPageSize(newSize);
+    setTablePageSize(newSize);
+    setPageIndex(0); // Reset page to 0
+  };
 
   return (
-    <div className="mt-8 flex justify-center">
-      <table
-        {...getTableProps()}
-        className="min-w-full bg-neutral-900 text-white border border-gray-700 rounded-lg"
-      >
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th
-                  {...column.getHeaderProps()}
-                  className="px-4 py-2 border-b border-gray-700 text-left"
-                >
-                  {column.render("Header")}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <td
-                    {...cell.getCellProps()}
-                    className="px-4 py-2 border-b border-gray-700"
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-neutral-600 dark:bg-neutral-800 border dark:border-neutral-700 p-4">
+      <div className="p-4">
+        <input
+          type="text"
+          placeholder="Rechercher..."
+          className="w-full px-4 py-2 mb-4 rounded-lg dark:bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
+        />
+      </div>
+      <div className="overflow-x-auto">
+        <table
+          {...getTableProps()}
+          className="w-full text-sm text-center text-gray-500 bg-white border border-gray-200 dark:bg-neutral-800 dark:text-gray-400"
+        >
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    {...column.getHeaderProps()}
+                    className="px-6 py-3 border-b border-gray-200 dark:border-gray-200"
                   >
-                    {cell.render("Cell")}
-                  </td>
+                    {column.render("Header")}
+                  </th>
                 ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              return (
+                <tr
+                  {...row.getRowProps()}
+                  className="border-b dark:bg-neutral-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
+                >
+                  {row.cells.map((cell) => (
+                    <td
+                      {...cell.getCellProps()}
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {cell.render("Cell")}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="flex justify-center items-center mt-4">
+        <button
+          onClick={() => gotoPage(0)}
+          disabled={currentPageIndex === 0}
+          className="px-4 py-2 mx-1 bg-gray-200 rounded-lg mr-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+          >
+          &laquo; Précédent
+        </button>
+        <span className="dark:text-white text-black font-bold">Page {currentPageIndex + 1} sur {Math.ceil(companies.length / pageSize)}</span>
+        <button
+          onClick={() => gotoPage(currentPageIndex + 1)}
+          disabled={currentPageIndex >= Math.ceil(companies.length / pageSize) - 1}
+          className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+          >
+          Suivant &raquo;
+        </button>
+      </div>
     </div>
   );
 };
