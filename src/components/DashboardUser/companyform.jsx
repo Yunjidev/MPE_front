@@ -64,7 +64,6 @@ export default function RegisterCompany({ onSubmit }) {
     fetchJobs();
     fetchRegions();
   }, []);
-  console.log("User data from atom:", user);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -92,11 +91,9 @@ export default function RegisterCompany({ onSubmit }) {
     photos.forEach((photo, index) => {
       company.photos[index] = photo;
     });
-    console.log("FormData being sent:", compagny);
 
     try {
-      const response = await postData("enterprise", compagny);
-      console.log("Formulaire soumis avec succès:", response);
+      const response = await postData("enterprise", company);
     } catch (error) {
       console.error("Erreur lors de la soumission du formulaire:", error);
 
@@ -106,19 +103,15 @@ export default function RegisterCompany({ onSubmit }) {
         if (status === 422) {
           // Parse and log the detailed error response
           const errorDetails = await error.response.json();
-          console.log("Détails de l'erreur:", errorDetails);
 
           // Extract and display validation errors if available
           const validationErrors = errorDetails.errors || {};
-          console.log("Erreurs de validation:", validationErrors);
         } else {
           // Handle other status codes
           const errorText = await error.response.text();
-          console.log("Erreur non liée à la validation:", errorText);
         }
       } else {
         // Handle errors without a response
-        console.log("Erreur sans réponse:", error.message);
       }
     }
 

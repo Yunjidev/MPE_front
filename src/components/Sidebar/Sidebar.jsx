@@ -1,4 +1,3 @@
-// Sidebar.jsx
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
@@ -10,12 +9,18 @@ import {
   FaChartBar,
   FaChartLine,
   FaUserShield,
+  FaChevronDown,
+  FaChevronUp,
+  FaCalendarAlt,
+  FaEdit,
+  FaPlusCircle,
 } from "react-icons/fa";
 import { getData } from "../../services/data-fetch"; // Adjust the import path as needed
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [dropdowns, setDropdowns] = useState({});
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -39,6 +44,13 @@ const Sidebar = () => {
     if (window.innerWidth < 1024) {
       setIsSidebarOpen(false);
     }
+  };
+
+  const toggleDropdown = (enterpriseId) => {
+    setDropdowns((prevDropdowns) => ({
+      ...prevDropdowns,
+      [enterpriseId]: !prevDropdowns[enterpriseId],
+    }));
   };
 
   useEffect(() => {
@@ -75,7 +87,7 @@ const Sidebar = () => {
           <path
             clipRule="evenodd"
             fillRule="evenodd"
-            d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75,0 010 1.5H2.75A.75.75,0 012 10z"
+            d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75,0 010 1.5H2.75A.75.75 0 012 10z"
           ></path>
         </svg>
       </button>
@@ -102,7 +114,6 @@ const Sidebar = () => {
           </div>
 
           {/* Navigation Links */}
-          
           <div className="border-t border-black dark:border-white my-4 mx-4">
             <ul className="pt-2 pb-4 space-y-1 text-sm">
               <li>
@@ -154,14 +165,71 @@ const Sidebar = () => {
               <ul className="pt-2 pb-4 space-y-1 text-sm">
                 {user.enterprises && user.enterprises.map((enterprise) => (
                   <li key={enterprise.id}>
-                    <Link
-                      to={`/dashboard/enterprise/${enterprise.id}`}
-                      className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                      onClick={closeSidebar}
-                    >
-                      <FaBuilding className="w-5 h-5 fill-current dark:text-white text-black" />
-                      <span className="font-semibold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">{enterprise.name}</span>
-                    </Link>
+                    <div>
+                      <button
+                        className="flex items-center justify-between w-full p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                        onClick={() => toggleDropdown(enterprise.id)}
+                      >
+                        <div className="flex items-center space-x-3">
+                          <FaBuilding className="w-5 h-5 fill-current dark:text-white text-black" />
+                          <span className="font-semibold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">
+                            {enterprise.name}
+                          </span>
+                        </div>
+                        <div>
+                          {dropdowns[enterprise.id] ? (
+                            <FaChevronUp className="w-5 h-5 fill-current dark:text-white text-black" />
+                          ) : (
+                            <FaChevronDown className="w-5 h-5 fill-current dark:text-white text-black" />
+                          )}
+                        </div>
+                      </button>
+
+                      {dropdowns[enterprise.id] && (
+                        <ul className="pl-6 mt-2 space-y-1 text-sm">
+                          <li>
+                            <Link
+                              to={`/dashboard/enterprise/${enterprise.id}/statistics`}
+                              className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                              onClick={closeSidebar}
+                            >
+                              <FaChartBar className="w-4 h-4 fill-current dark:text-white text-black" />
+                              <span className="font-semibold dark:text-gray-100 text-black">Statistiques</span>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to={`/dashboard/enterprise/${enterprise.id}/planning`}
+                              className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                              onClick={closeSidebar}
+                            >
+                              <FaCalendarAlt className="w-4 h-4 fill-current dark:text-white text-black" />
+                              <span className="font-semibold dark:text-gray-100 text-black">Planning</span>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to={`/dashboard/enterprise/${enterprise.id}/edit`}
+                              className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                              onClick={closeSidebar}
+                            >
+                              <FaEdit className="w-4 h-4 fill-current dark:text-white text-black" />
+                              <span className="font-semibold dark:text-gray-100 text-black">Edition</span>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to={`/dashboard/enterprise/${enterprise.id}/services`}
+                              className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                              onClick={closeSidebar}
+                            >
+                              <FaPlusCircle className="w-4 h-4 fill-current dark:text-white text-black" />
+                              <span className="font-semibold dark:text-gray-100 text-black">Ajouts de Services</span>
+                            </Link>
+                          </li>
+                        </ul>
+                      )}
+                    </div>
                   </li>
                 ))}
               </ul>
