@@ -35,7 +35,7 @@ const IndexCardsEntreprises = ({ entreprise, userId }) => {
       <figure>
         {/* Utilisez la photo de l'entreprise si disponible */}
         <img
-          src={logo[0] || indexcards}
+          src={logo || indexcards}
           alt={name}
           className="rounded-3xl"
           onError={(e) => e.target.src = indexcards}

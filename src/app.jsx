@@ -24,6 +24,7 @@ import HomeClient from "./pages/home/HomeClient";
 import HomeEnterprise from "./pages/home/HomeEntreprise";
 import Team from "./pages/team/team";
 import Contact from "./pages/contact/contact";
+import SearchEntreprise from "./pages/searchentreprises/SearchEntreprise";
 import FAQ from "./pages/FAQ/FAQ";
 import RegisterCompany from "./pages/user/registercompany";
 import Pricing_page from "./components/pricing_page/pricing_page";
