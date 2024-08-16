@@ -16,9 +16,11 @@ import { MdOutlineAlternateEmail, MdOutlineAreaChart } from "react-icons/md";
 import { CgWebsite } from "react-icons/cg";
 import { putData, getData } from "../../services/data-fetch";
 import { UserContext } from "../../context/UserContext";
+import { useParams } from "react-router-dom";
 
 export default function UpdateCompany({ onSubmit }) {
   const { user } = useContext(UserContext);
+  const { enterpriseId } = useParams();
   const [companyId, setCompanyId] = useState(null);
 
   const [name, setName] = useState(user?.name || "");
@@ -44,53 +46,57 @@ export default function UpdateCompany({ onSubmit }) {
   const [regionOptions, setRegionOptions] = useState([]);
 
   useEffect(() => {
+    console.log("Enterprise ID from URL:", enterpriseId);
+
+    if (!enterpriseId) {
+      console.error("No enterprise ID provided in the URL");
+      return;
+    }
+
     const fetchUserData = async () => {
+      const userInfo = await getData("user/profile");
+
+      if (
+        !userInfo ||
+        !userInfo.enterprises ||
+        userInfo.enterprises.length === 0
+      ) {
+        console.error("No enterprises available for this user");
+        return;
+      }
+
+      const id = parseInt(enterpriseId, 10); // Convertir en entier
+      setCompanyId(id);
+
       try {
-        // Utilisation de la nouvelle URL pour obtenir les informations utilisateur
-        const userInfo = await getData("user/profile");
-        if (
-          !userInfo ||
-          !userInfo.enterprises ||
-          userInfo.enterprises.length === 0
-        ) {
-          console.error("Company ID is not available from user data");
+        const company = await getData(`enterprise/${id}`);
+        if (!company) {
+          console.error("Company data is not available");
           return;
         }
-        const id = userInfo.enterprises[0].id;
-        setCompanyId(id);
 
-        try {
-          const company = await getData(`enterprise/${id}`); // Fetch company info
-          if (!company) {
-            console.error("Company data is not available");
-            return;
-          }
-
-          setName(company.name || "");
-          setPhone(company.phone || "");
-          setMail(company.mail || "");
-          setAdress(company.adress || "");
-          setCity(company.city || "");
-          setZipCode(company.zip_code || "");
-          setSiretNumber(company.siret_number || "");
-          setActivity(company.job?.name || "");
-          setTwitter(company.twitter || "");
-          setInstagram(company.instagram || "");
-          setFacebook(company.facebook || "");
-          setDescription(company.description || "");
-          setRegion(company.country?.name || "");
-          setWebsite(company.website || "");
-          setLogoUrl(company.logo || "");
-        } catch (error) {
-          console.error("Failed to fetch company data:", error);
-        }
+        setName(company.name || "");
+        setPhone(company.phone || "");
+        setMail(company.mail || "");
+        setAdress(company.adress || "");
+        setCity(company.city || "");
+        setZipCode(company.zip_code || "");
+        setSiretNumber(company.siret_number || "");
+        setActivity(company.job?.name || "");
+        setTwitter(company.twitter || "");
+        setInstagram(company.instagram || "");
+        setFacebook(company.facebook || "");
+        setDescription(company.description || "");
+        setRegion(company.country?.name || "");
+        setWebsite(company.website || "");
+        setLogoUrl(company.logo || "");
       } catch (error) {
-        console.error("Failed to fetch user data:", error);
+        console.error("Error fetching company data:", error);
       }
     };
 
     fetchUserData();
-  }, [user]);
+  }, [enterpriseId]);
 
   useEffect(() => {
     const fetchJobs = async () => {
