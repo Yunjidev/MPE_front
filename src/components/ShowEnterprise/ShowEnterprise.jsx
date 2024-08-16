@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -22,6 +23,21 @@ const EnterpriseShow = () => {
 
     // Ajoute le protocole https://
     return `https://${cleanUrl}`;
+  };
+
+  const StarRating = ({ rating }) => {
+    return (
+      <div className="flex">
+        {[...Array(5)].map((star, index) => {
+          index += 1;
+          return (
+            <span key={index} className={index <= rating ? "text-yellow-500" : "text-gray-300"}>
+              &#9733;
+            </span>
+          );
+        })}
+      </div>
+    );
   };
 
   const formatDuration = (minutes) => {
@@ -215,14 +231,47 @@ const EnterpriseShow = () => {
   </div>
 
       {/* Section Commentaires */}
-      <div className="mt-8">
-        <h2 className="text-2xl font-bold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text mb-4">
-          Commentaires
-        </h2>
-        <div className="p-6 rounded-lg space-y-4">
-          <p className="text-center text-gray-400">Aucun commentaire pour le moment</p>
+<div className="mt-8">
+  <h2 className="text-2xl font-bold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text mb-4">
+    Commentaires
+  </h2>
+  <div className="p-6 rounded-lg space-y-4">
+    {enterprise.offers.flatMap(offer => 
+      offer.ratings.map((rating, index) => (
+        <div key={index} className="bg-gray-700 p-4 rounded-lg">
+          <div className="flex items-center mb-2">
+            <div className="w-10 h-10 bg-gray-500 rounded-full mr-3 flex items-center justify-center">
+              {rating.User?.avatar ? (
+                <img 
+                  src={rating.User.avatar} 
+                  alt={`${rating.User.firstname} ${rating.User.lastname}`} 
+                  className="w-10 h-10 object-cover rounded-full" 
+                />
+              ) : (
+                <span className="text-white">
+                  {rating.User?.firstname?.charAt(0) || 'U'}
+                </span>
+              )}
+            </div>
+            <div>
+              <p className="font-semibold">
+                {rating.User?.firstname || 'Utilisateur'} {rating.User?.lastname || ''}
+              </p>
+              <div className="flex items-center">
+                <StarRating rating={parseInt(rating.note)} />
+                <span className="ml-2 text-sm text-gray-400">{offer.name}</span>
+              </div>
+            </div>
+          </div>
+          <p className="text-sm mt-2">{rating.comment}</p>
         </div>
-      </div>
+      ))
+    )}
+    {enterprise.offers.every(offer => offer.ratings.length === 0) && (
+      <p className="text-center text-gray-400">Aucun commentaire pour le moment</p>
+    )}
+  </div>
+</div>
     </div>
   );
 };
