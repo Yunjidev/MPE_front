@@ -46,8 +46,6 @@ export default function UpdateCompany({ onSubmit }) {
   const [regionOptions, setRegionOptions] = useState([]);
 
   useEffect(() => {
-    console.log("Enterprise ID from URL:", enterpriseId);
-
     if (!enterpriseId) {
       console.error("No enterprise ID provided in the URL");
       return;
@@ -121,53 +119,47 @@ export default function UpdateCompany({ onSubmit }) {
     fetchRegionOptions();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!companyId) {
-      console.error("Company ID is missing");
-      return;
-    }
-
     const company = {
-      name,
-      phone,
-      mail,
-      adress,
-      city,
-      zip_code: zipCode,
-      siret_number: siretNumber,
-      Job_id: activity,
-      description,
-      Country_id: region,
-      twitter,
-      instagram,
-      facebook,
-      website,
-      photos: photos || [], // Initialisation
+      name: name.trim(), // Enlevez les espaces inutiles
+      phone: phone.trim(),
+      mail: mail.trim(),
+      adress: adress.trim(),
+      city: city.trim(),
+      zip_code: zipCode.trim(),
+      siret_number: siretNumber.trim(),
+      Job_id: activity ? parseInt(activity, 10) : null,
+      description: description.trim(),
+      Country_id: region ? parseInt(region, 10) : null,
+      twitter: twitter.trim(),
+      instagram: instagram.trim(),
+      facebook: facebook.trim(),
+      website: website.trim(),
+      logo: logo ? logo : null,
     };
 
-    if (logo) {
-      company.logo = logo;
+    // Affichez les données envoyées pour débogage
+    console.log("Données envoyées au serveur:", company);
+
+    try {
+      const response = await putData(`enterprise/${companyId}`, company);
+      console.log("Mise à jour effectuée !", response);
+      alert("Entreprise mise à jour !");
+      if (onSubmit) {
+        onSubmit(response);
+      }
+    } catch (error) {
+      if (error.response) {
+        const errorText = await error.response.text();
+        console.error("Error Response Text:", errorText);
+      } else {
+        console.error("Error Message:", error.message);
+      }
     }
-
-    putData(`enterprise/${companyId}`, company)
-      .then((response) => {
-        console.log("Mise à jour effectuée !", response);
-        alert("Entreprise mise à jour !");
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la soumission du formulaire:", error);
-
-        if (error.response) {
-          error.response.text().then((errorText) => {
-            console.log("Erreur non liée à la validation:", errorText);
-          });
-        } else {
-          console.log("Erreur sans réponse:", error.message);
-        }
-      });
   };
+
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -509,6 +501,5 @@ export default function UpdateCompany({ onSubmit }) {
 }
 
 UpdateCompany.propTypes = {
-  companyId: PropTypes.number.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };
