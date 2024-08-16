@@ -7,18 +7,20 @@ import { ToastContainer } from "react-toastify";
 import { userAtom } from "./store/user";
 import "react-toastify/dist/ReactToastify.css";
 
+// Context Providers
 import { UserProvider } from "./context/UserContext";
 import { ModalProvider } from "./context/ModalContext";
 import ScrollToTop from "./context/Scrolltotop";
 
+// Components
 import ParticlesDemo from "./components/ParticlesDemo";
 import NavBar from "./components/navbar/navbar";
 import Footer from "./components/footer/footer";
 import SocialLinks from "./components/SocialLinks/sociallinks";
 import UserChoiceModal from "./components/home/UserChoiceModal";
-import Signup from "./components/user/signup";
-import Signin from "./components/user/signin";
+import Pricing_page from "./components/pricing_page/pricing_page";
 
+// Pages
 import Home from "./pages/home/home";
 import HomeClient from "./pages/home/HomeClient";
 import HomeEnterprise from "./pages/home/HomeEntreprise";
@@ -26,15 +28,20 @@ import Team from "./pages/team/team";
 import Contact from "./pages/contact/contact";
 import FAQ from "./pages/FAQ/FAQ";
 import RegisterCompany from "./pages/user/registercompany";
-import Pricing_page from "./components/pricing_page/pricing_page";
-import User_db from "./pages/DashboardUser/User_db";
-import EnterprisePage from "./pages/EnterprisePage/EnterprisePage"; // Importer la page EnterprisePage
+import EnterprisePage from "./pages/EnterprisePage/EnterprisePage";
 
+// User Pages
+import Signup from "./components/user/signup";
+import Signin from "./components/user/signin";
+import UpdateCompany from "./pages/user/updatecompany";
+
+// Dashboard Pages
 import Dashboard from "./pages/Dashboard/Dashboard";
+import User_db from "./pages/DashboardUser/User_db";
 import AcceptCompanyPage from "./pages/DashboardAdmin/Accept_company";
 import Company from "./pages/DashboardAdmin/ValidatedCompaniesPage";
 import ManageUser from "./pages/DashboardAdmin/UsersPage";
-import UpdateCompany from "./pages/user/updatecompany";
+
 const MainLayout = ({ children }) => (
   <>
     <NavBar />
@@ -80,21 +87,12 @@ function App() {
                 <Route path="/enterprise/:id" element={<EnterprisePage />} />
                 <Route path="/dashboard" element={<Dashboard />}>
                   <Route path="user-db" element={<User_db />} />
-                  <Route
-                    path="register-company"
-                    element={<RegisterCompany />}
-                  />
+                  <Route path="register-company" element={<RegisterCompany />} />
                   <Route path="security" element={<Team />} />
-                  <Route
-                    path="accept-company"
-                    element={<AcceptCompanyPage />}
-                  />
+                  <Route path="accept-company" element={<AcceptCompanyPage />} />
                   <Route path="manage-companies" element={<Company />} />
                   <Route path="manage-users" element={<ManageUser />} />
-                  <Route
-                    path="/dashboard/enterprise/:enterpriseId/edit"
-                    element={<UpdateCompany />}
-                  />
+                  <Route path="/dashboard/enterprise/:enterpriseId/edit" element={<UpdateCompany />} />
                 </Route>
               </Routes>
             </MainLayout>
