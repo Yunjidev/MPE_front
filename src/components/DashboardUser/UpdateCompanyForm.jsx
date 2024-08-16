@@ -19,6 +19,7 @@ import { UserContext } from "../../context/UserContext";
 
 export default function UpdateCompany({ onSubmit }) {
   const { user } = useContext(UserContext);
+  const [companyId, setCompanyId] = useState(null);
 
   const [name, setName] = useState(user?.name || "");
   const [phone, setPhone] = useState(user?.phone || "");
@@ -55,11 +56,11 @@ export default function UpdateCompany({ onSubmit }) {
           console.error("Company ID is not available from user data");
           return;
         }
-
-        const companyId = userInfo.enterprises[0].id;
+        const id = userInfo.enterprises[0].id;
+        setCompanyId(id);
 
         try {
-          const company = await getData(`enterprise/${companyId}`); // Fetch company info
+          const company = await getData(`enterprise/${id}`); // Fetch company info
           if (!company) {
             console.error("Company data is not available");
             return;
@@ -115,8 +116,13 @@ export default function UpdateCompany({ onSubmit }) {
     fetchRegions();
   }, []); // Ce useEffect ne dépend de rien
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!companyId) {
+      console.error("Company ID is missing");
+      return;
+    }
 
     const company = {
       name,
@@ -140,33 +146,23 @@ export default function UpdateCompany({ onSubmit }) {
       company.logo = logo;
     }
 
-    console.log("FormData being sent:", company);
+    putData(`enterprise/${companyId}`, company)
+      .then((response) => {
+        console.log("Mise à jour effectuée !", response);
+        alert("Entreprise mise à jour !");
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la soumission du formulaire:", error);
 
-    try {
-      const response = await putData("enterprise", company);
-      console.log("Mise à jour effectuée !", response);
-      alert("Entreprise mise à jour !");
-    } catch (error) {
-      console.error("Erreur lors de la soumission du formulaire:", error);
-
-      if (error.response) {
-        const status = error.response.status;
-        if (status === 422) {
-          const errorDetails = await error.response.json();
-          console.log("Détails de l'erreur:", errorDetails);
-
-          const validationErrors = errorDetails.errors || {};
-          console.log("Erreurs de validation:", validationErrors);
+        if (error.response) {
+          error.response.text().then((errorText) => {
+            console.log("Erreur non liée à la validation:", errorText);
+          });
         } else {
-          const errorText = await error.response.text();
-          console.log("Erreur non liée à la validation:", errorText);
+          console.log("Erreur sans réponse:", error.message);
         }
-      } else {
-        console.log("Erreur sans réponse:", error.message);
-      }
-    }
+      });
   };
-
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -508,5 +504,6 @@ export default function UpdateCompany({ onSubmit }) {
 }
 
 UpdateCompany.propTypes = {
-  onSubmit: PropTypes.func,
+  companyId: PropTypes.number.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
