@@ -10,7 +10,7 @@ import { getData, deleteData } from "../../services/data-fetch";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import Button from "../Button/button";
 import Modal from "./Modal";
-import EditCompanyForm from "./EditCompanyForm";
+import EditCompanyForm from "../DashboardEnterprise/EditCompanyForm";
 
 const ValidatedCompanies = () => {
   const [companies, setCompanies] = useState([]);

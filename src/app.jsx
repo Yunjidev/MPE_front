@@ -92,7 +92,7 @@ function App() {
                   <Route path="accept-company" element={<AcceptCompanyPage />} />
                   <Route path="manage-companies" element={<Company />} />
                   <Route path="manage-users" element={<ManageUser />} />
-                  <Route path="enterprise/:id/edit" element={<UpdateCompany />} />
+                  <Route path="/dashboard/enterprise/:enterpriseId/edit" element={<UpdateCompany />} />
                 </Route>
               </Routes>
             </MainLayout>
