@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BsInstagram, BsFacebook, BsTwitterX, BsEnvelope } from 'react-icons/bs';
 import "./footer.css";
-import BgFooter from '../../assets/svgs/bgfooter.svg'
 import Logo from '../../assets/image.png'
 
 const Footer = () => {
