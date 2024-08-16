@@ -99,7 +99,7 @@ export default function UpdateCompany({ onSubmit }) {
   }, [enterpriseId]);
 
   useEffect(() => {
-    const fetchJobs = async () => {
+    const fetchJobOptions = async () => {
       try {
         const jobs = await getData("jobs");
         setJobOptions(jobs);
@@ -108,7 +108,7 @@ export default function UpdateCompany({ onSubmit }) {
       }
     };
 
-    const fetchRegions = async () => {
+    const fetchRegionOptions = async () => {
       try {
         const countries = await getData("countries");
         setRegionOptions(countries);
@@ -117,10 +117,9 @@ export default function UpdateCompany({ onSubmit }) {
       }
     };
 
-    // Ces appels peuvent être faits immédiatement, ils ne dépendent pas des données utilisateur
-    fetchJobs();
-    fetchRegions();
-  }, []); // Ce useEffect ne dépend de rien
+    fetchJobOptions();
+    fetchRegionOptions();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -358,11 +357,11 @@ export default function UpdateCompany({ onSubmit }) {
                   id="region"
                   value={region}
                   onChange={(e) => setRegion(e.target.value)}
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-green-400 focus:border-green-400"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                 >
                   <option value="">Région</option>
-                  {regionOptions.map((option, index) => (
-                    <option key={option} value={index + 1}>
+                  {regionOptions.map((option) => (
+                    <option key={option.id} value={option.id}>
                       {option.name}
                     </option>
                   ))}
@@ -396,11 +395,11 @@ export default function UpdateCompany({ onSubmit }) {
                   id="job"
                   value={activity}
                   onChange={(e) => setActivity(e.target.value)}
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-green-400 focus:border-green-400"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                 >
                   <option value="">Secteur d'activité</option>
-                  {jobOptions.map((option, index) => (
-                    <option key={option.id} value={index + 1}>
+                  {jobOptions.map((option) => (
+                    <option key={option.id} value={option.id}>
                       {option.name}
                     </option>
                   ))}
@@ -415,7 +414,7 @@ export default function UpdateCompany({ onSubmit }) {
                 value={twitter}
                 onChange={(e) => setTwitter(e.target.value)}
                 placeholder="Twitter"
-                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-green-400 focus:border-green-400"
+                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
               />
             </div>
             <div className="relative flex items-center justify-end">
