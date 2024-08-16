@@ -41,47 +41,57 @@ export default function UpdateCompany({ onSubmit }) {
 
   const [jobOptions, setJobOptions] = useState([]);
   const [regionOptions, setRegionOptions] = useState([]);
+
   useEffect(() => {
-    const fetchCompanyData = async () => {
-      // Vérifiez si `user` et `user.companyId` sont disponibles
-      if (!user?.companyId) {
-        console.error("Company ID is not available");
-        return;
-      }
-
-      const company = await getData(`enterprise/${user.companyId}`).catch(
-        (error) => {
-          console.error("Failed to fetch company data:", error);
-          return null; // Retourner null en cas d'erreur pour éviter d'exécuter le code suivant
+    const fetchUserData = async () => {
+      try {
+        // Utilisation de la nouvelle URL pour obtenir les informations utilisateur
+        const userInfo = await getData("user/profile");
+        if (
+          !userInfo ||
+          !userInfo.enterprises ||
+          userInfo.enterprises.length === 0
+        ) {
+          console.error("Company ID is not available from user data");
+          return;
         }
-      );
 
-      // Assurez-vous que `company` n'est pas null ou undefined
-      if (!company) {
-        console.error("Company data is not available");
-        return;
+        const companyId = userInfo.enterprises[0].id;
+
+        try {
+          const company = await getData(`enterprise/${companyId}`); // Fetch company info
+          if (!company) {
+            console.error("Company data is not available");
+            return;
+          }
+
+          setName(company.name || "");
+          setPhone(company.phone || "");
+          setMail(company.mail || "");
+          setAdress(company.adress || "");
+          setCity(company.city || "");
+          setZipCode(company.zip_code || "");
+          setSiretNumber(company.siret_number || "");
+          setActivity(company.job?.name || "");
+          setTwitter(company.twitter || "");
+          setInstagram(company.instagram || "");
+          setFacebook(company.facebook || "");
+          setDescription(company.description || "");
+          setRegion(company.country?.name || "");
+          setWebsite(company.website || "");
+          setLogoUrl(company.logo || "");
+        } catch (error) {
+          console.error("Failed to fetch company data:", error);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
       }
-
-      // Utilisez une fonction pour assigner les valeurs par défaut
-      const setValue = (setter, value) => setter(value || "");
-
-      setValue(setName, company.name);
-      setValue(setPhone, company.phone);
-      setValue(setMail, company.mail);
-      setValue(setAdress, company.adress);
-      setValue(setCity, company.city);
-      setValue(setZipCode, company.zip_code);
-      setValue(setSiretNumber, company.siret_number);
-      setValue(setActivity, company.Job_id);
-      setValue(setTwitter, company.twitter);
-      setValue(setInstagram, company.instagram);
-      setValue(setFacebook, company.facebook);
-      setValue(setDescription, company.description);
-      setValue(setRegion, company.Country_id);
-      setValue(setWebsite, company.website);
-      setValue(setLogoUrl, company.logoUrl);
     };
 
+    fetchUserData();
+  }, [user]);
+
+  useEffect(() => {
     const fetchJobs = async () => {
       try {
         const jobs = await getData("jobs");
@@ -94,18 +104,16 @@ export default function UpdateCompany({ onSubmit }) {
     const fetchRegions = async () => {
       try {
         const countries = await getData("countries");
-        const regions = countries.map((country) => country);
-        setRegionOptions(regions);
+        setRegionOptions(countries);
       } catch (error) {
         console.error("Failed to fetch regions:", error);
       }
     };
 
-    fetchCompanyData();
+    // Ces appels peuvent être faits immédiatement, ils ne dépendent pas des données utilisateur
     fetchJobs();
     fetchRegions();
-  }, [user?.companyId]);
-  console.log("User data from atom:", user);
+  }, []); // Ce useEffect ne dépend de rien
 
   const handleSubmit = async (e) => {
     e.preventDefault();
