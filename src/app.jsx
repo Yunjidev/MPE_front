@@ -30,7 +30,6 @@ import Pricing_page from "./components/pricing_page/pricing_page";
 import User_db from "./pages/DashboardUser/User_db";
 import EnterprisePage from "./pages/EnterprisePage/EnterprisePage"; // Importer la page EnterprisePage
 
-
 import Dashboard from "./pages/Dashboard/Dashboard";
 import AcceptCompanyPage from "./pages/DashboardAdmin/Accept_company";
 import Company from "./pages/DashboardAdmin/ValidatedCompaniesPage";
@@ -93,7 +92,7 @@ function App() {
                   <Route path="manage-companies" element={<Company />} />
                   <Route path="manage-users" element={<ManageUser />} />
                   <Route
-                    path="enterprise/:id/edit"
+                    path="/dashboard/enterprise/:enterpriseId/edit"
                     element={<UpdateCompany />}
                   />
                 </Route>
