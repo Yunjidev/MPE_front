@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react/no-unescaped-entities */
+import { useState, useEffect } from "react";
 import { getData } from "../../services/data-fetch";
+import { useNavigate } from "react-router-dom";
 
 const LikesManagement = () => {
   const [favorites, setFavorites] = useState([]);
   const [enterprises, setEnterprises] = useState({});
+  const navigate = useNavigate(); // Initialize the navigate function
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -41,7 +44,10 @@ const LikesManagement = () => {
               className="flex justify-between items-center bg-neutral-800 p-2 rounded-lg"
             >
               <span>❤️ {enterprises[favorite.Enterprise_id]?.name}</span>
-              <button className="bg-white text-black px-3 rounded-lg hover:bg-gray-300">
+              <button
+                className="bg-white text-black px-3 rounded-lg hover:bg-gray-300"
+                onClick={() => navigate(`/enterprise/${favorite.Enterprise_id}`)} // Navigate to the enterprise detail page
+              >
                 Voir fiche
               </button>
             </li>
