@@ -28,49 +28,59 @@ const Calendar = () => {
   );
 
   return (
-    <div className="flex items-center justify-center p-8">
-      <div className="w-full max-w-3xl dark:bg-neutral-800 bg-neutral-800 shadow-lg rounded-lg border dark:border-[#67FFCC]">
+    <div className="flex items-center justify-center p-4">
+      <div className="w-full max-w-full sm:max-w-md md:max-w-3xl dark:bg-neutral-800 bg-neutral-800 shadow-lg rounded-lg border dark:border-[#67FFCC]">
         <div className="flex items-center justify-between p-4 border-b">
-          <button onClick={handlePreviousMonth} className="text-white">
+          <button
+            onClick={handlePreviousMonth}
+            className="text-white"
+            aria-label="Previous month"
+          >
             <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <polyline points="15 6 9 12 15 18" />
             </svg>
           </button>
-          <span className="text-xl font-semibold">{monthYear}</span>
-          <button onClick={handleNextMonth} className="text-white">
+          <span className="text-lg sm:text-xl font-semibold">{monthYear}</span>
+          <button
+            onClick={handleNextMonth}
+            className="text-white"
+            aria-label="Next month"
+          >
             <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <polyline points="9 6 15 12 9 18" />
             </svg>
           </button>
         </div>
-        <table className="w-full table-fixed">
-          <thead>
-            <tr>
-              {daysOfWeek.map(day => (
-                <th key={day} className="p-2 text-white">{day}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {Array.from({ length: Math.ceil(days.length / 7) }).map((_, rowIndex) => (
-              <tr key={rowIndex}>
-                {days.slice(rowIndex * 7, (rowIndex + 1) * 7).map((day, index) => (
-                  <td key={index} className="p-2 text-center">
-                    {day ? (
-                      <span className={`block p-2 rounded ${day === new Date().getDate() && currentMonth.getMonth() === new Date().getMonth() ? 'bg-[#67FFCC] text-black' : 'text-white'}`}>
-                        {day}
-                      </span>
-                    ) : (
-                      <span className="block p-2 text-gray-400"> </span>
-                    )}
-                  </td>
+        <div className="overflow-x-auto">
+          <table className="w-full table-fixed">
+            <thead>
+              <tr>
+                {daysOfWeek.map(day => (
+                  <th key={day} className="p-2 text-white text-xs sm:text-sm md:text-base">{day}</th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {Array.from({ length: Math.ceil(days.length / 7) }).map((_, rowIndex) => (
+                <tr key={rowIndex}>
+                  {days.slice(rowIndex * 7, (rowIndex + 1) * 7).map((day, index) => (
+                    <td key={index} className="p-2 text-center text-xs sm:text-sm md:text-base">
+                      {day ? (
+                        <span className={`block p-2 rounded ${day === new Date().getDate() && currentMonth.getMonth() === new Date().getMonth() ? 'bg-[#67FFCC] text-black' : 'text-white'}`}>
+                          {day}
+                        </span>
+                      ) : (
+                        <span className="block p-2 text-gray-400"> </span>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -13,10 +13,10 @@ const requirements = [
 
 const ListingClient = () => {
   return (
-    <div className="p-6"> {/* Augmente l'espace autour du composant */}
-      <ul className="max-w-lg space-y-2 text-gray-300 list-inside dark:text-gray-300">
+    <div className="p-6">
+      <ul className="max-w-lg space-y-2 text-gray-300 list-inside dark:text-white">
         {requirements.map((item, index) => (
-          <li key={index} className="flex items-center text-lg"> {/* Augmente la taille du texte */}
+          <li key={index} className="flex items-center text-lg">
             <svg
               className={`w-4 h-4 me-3 flex-shrink-0 ${item.fulfilled ? 'text-green-500 dark:text-green-400' : 'text-white dark:text-gray-400'}`} // Augmente la taille du SVG
               aria-hidden="true"
