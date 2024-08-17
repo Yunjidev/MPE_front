@@ -10,21 +10,6 @@ const EnterpriseShow = () => {
   const { id } = useParams();
   const [enterprise, setEnterprise] = useState(null);
 
-  const ensureCompleteUrl = (url) => {
-    if (!url) return null;
-
-    // Supprime les protocoles existants pour uniformiser le traitement
-    let cleanUrl = url.replace(/^(https?:\/\/)/, '');
-
-    // Ajoute "www." si ce n'est pas déjà présent
-    if (!cleanUrl.startsWith('www.')) {
-      cleanUrl = 'www.' + cleanUrl;
-    }
-
-    // Ajoute le protocole https://
-    return `https://${cleanUrl}`;
-  };
-
   const StarRating = ({ rating }) => {
     return (
       <div className="flex">
@@ -150,7 +135,7 @@ const EnterpriseShow = () => {
               <div className="flex space-x-4">
                 {enterprise.instagram && (
                   <a 
-                    href={ensureCompleteUrl(enterprise.instagram)} 
+                    href={enterprise.instagram} 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="text-xl"
@@ -160,7 +145,7 @@ const EnterpriseShow = () => {
                 )}
                 {enterprise.twitter && (
                   <a 
-                    href={ensureCompleteUrl(enterprise.twitter)} 
+                    href={enterprise.twitter} 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="text-xl"
@@ -170,7 +155,7 @@ const EnterpriseShow = () => {
                 )}
                 {enterprise.facebook && (
                   <a 
-                    href={ensureCompleteUrl(enterprise.facebook)} 
+                    href={enterprise.facebook} 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="text-xl"
@@ -196,78 +181,83 @@ const EnterpriseShow = () => {
 
       {/* Section Prestations */}
       <div className="mt-8">
-  <h2 className="text-2xl font-bold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text mb-4">
-    Prestations
-  </h2>
-    <div className="p-6 rounded-lg space-y-4">
-      {enterprise.offers.length > 0 ? (
-        enterprise.offers.map((offer, index) => (
-          <div 
-            key={index} 
-            className="flex justify-between items-center bg-gray-700 p-4 rounded-lg"
-          >
-            <img 
-              src={offer.image} 
-              alt={`Offer ${offer.name}`} 
-              className="w-20 h-20 object-cover rounded-lg"
-            />
-              <p className="text-lg font-semibold">{offer.name}</p>
-              <p>{offer.description}</p>
-              <p>{formatDuration(offer.duration)}</p>
-              <p>{offer.price ? `${offer.price}€` : 'Prix non disponible'}</p>
+        <h2 className="text-2xl font-bold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text mb-4">
+          Prestations
+        </h2>
+        <div className="p-6 rounded-lg space-y-4">
+          {enterprise.offers.length > 0 ? (
+            enterprise.offers.map((offer, index) => (
+              <div 
+                key={index} 
+                className="flex justify-between items-center bg-gray-700 p-4 rounded-lg"
+              >
+                <img 
+                  src={offer.image} 
+                  alt={`Offer ${offer.name}`} 
+                  className="w-20 h-20 object-cover rounded-lg"
+                />
+                <p className="text-lg font-semibold">{offer.name}</p>
+                <p>{offer.description}</p>
+                <p>{formatDuration(offer.duration)}</p>
+                <p>{offer.price ? `${offer.price}€` : 'Prix non disponible'}</p>
 
-            <button 
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => handleReservation(offer)}
-            >
-              Réserver
-            </button>
-          </div>
-        ))
-      ) : (
-        <p>Aucune prestation disponible</p>
-      )}
-    </div>
-  </div>
+                <button 
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={() => handleReservation(offer)}
+                >
+                  Réserver
+                </button>
+              </div>
+            ))
+          ) : (
+            <p>Aucune prestation disponible</p>
+          )}
+        </div>
+      </div>
 
       {/* Section Commentaires */}
-<div className="mt-8">
+      <div className="mt-8">
   <h2 className="text-2xl font-bold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text mb-4">
     Commentaires
   </h2>
   <div className="p-6 rounded-lg space-y-4">
-    {enterprise.offers.flatMap(offer => 
+    {enterprise.offers.flatMap((offer) =>
       offer.ratings.map((rating, index) => (
         <div key={index} className="bg-gray-700 p-4 rounded-lg">
           <div className="flex items-center mb-2">
             <div className="w-10 h-10 bg-gray-500 rounded-full mr-3 flex items-center justify-center">
-              {rating.User?.avatar ? (
-                <img 
-                  src={rating.User.avatar} 
-                  alt={`${rating.User.firstname} ${rating.User.lastname}`} 
-                  className="w-10 h-10 object-cover rounded-full" 
+              {rating.user?.avatar ? (
+                <img
+                  src={rating.user.avatar}
+                  alt={`${rating.user.username}`}
+                  className="w-10 h-10 object-cover rounded-full"
+                  onError={(e) => {
+                    e.target.onerror = null; // Prévenir la boucle infinie
+                    e.target.src = 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp'; // Image par défaut
+                  }}
                 />
               ) : (
                 <span className="text-white">
-                  {rating.User?.firstname?.charAt(0) || 'U'}
+                  {rating.user?.firstname?.charAt(0) || 'U'}
                 </span>
               )}
             </div>
             <div>
               <p className="font-semibold">
-                {rating.User?.firstname || 'Utilisateur'} {rating.User?.lastname || ''}
+                {rating.user?.username || 'Utilisateur'}
               </p>
               <div className="flex items-center">
-                <StarRating rating={parseInt(rating.note)} />
+                <StarRating rating={parseInt(rating.note, 10)} />
                 <span className="ml-2 text-sm text-gray-400">{offer.name}</span>
               </div>
             </div>
           </div>
           <p className="text-sm mt-2">{rating.comment}</p>
+          <p className="text-xs text-gray-500 mt-1">Posté le {new Date(rating.createdAt).toLocaleDateString()}</p>
         </div>
       ))
     )}
-    {enterprise.offers.every(offer => offer.ratings.length === 0) && (
+    {enterprise.offers.every((offer) => offer.ratings.length === 0) && (
       <p className="text-center text-gray-400">Aucun commentaire pour le moment</p>
     )}
   </div>

@@ -1,12 +1,12 @@
 // pages/Dashboard/Dashboard.js
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Sidebar from "../../components/Sidebar/Sidebar";
 
 const Dashboard = () => {
   return (
-    <div className="flex">
-      <Sidebar /> {/* Passer l'ID utilisateur à Sidebar */}
-      <div className="p-4 sm:ml-64">
+    <div className="flex min-h-screen">
+      <Sidebar /> {/* Sidebar est maintenant dans un conteneur flex */}
+      <div className="flex-1 p-4 "> {/* Contenu principal avec un espace à gauche pour la sidebar */}
         <Outlet />
       </div>
     </div>
