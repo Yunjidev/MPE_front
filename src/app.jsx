@@ -43,16 +43,15 @@ import Company from "./pages/DashboardAdmin/ValidatedCompaniesPage";
 import ManageUser from "./pages/DashboardAdmin/UsersPage";
 
 const MainLayout = ({ children }) => (
-  <>
+  <div className="flex flex-col min-h-screen">
     <NavBar />
-    <ToastContainer />
     <ParticlesDemo />
-    <main className="container mx-auto lg:w-5/6 w-full">
+    <main className="flex-1 container mx-auto lg:w-5/6 w-full">
       {children}
       <SocialLinks />
     </main>
     <Footer />
-  </>
+  </div>
 );
 
 function App() {
