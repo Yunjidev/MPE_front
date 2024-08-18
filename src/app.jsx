@@ -27,7 +27,7 @@ import Team from "./pages/team/team";
 import Contact from "./pages/contact/contact";
 import FAQ from "./pages/FAQ/FAQ";
 import RegisterCompany from "./pages/user/registercompany";
-import EnterprisePage from "./pages/EnterprisePage/EnterprisePage";
+import EnterprisePage from "./pages/EnterpriseShow/EnterpriseShow";
 import CookieBanner from "./pages/NotificationBanner/NotificationBanner";
 import CookiePolicies from "./pages/Policies/CookiePolicies";
 
