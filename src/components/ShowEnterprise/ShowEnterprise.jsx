@@ -6,24 +6,25 @@ import { getData } from "../../services/data-fetch";
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 import { IoLocationOutline, IoMailOutline, IoPhonePortraitOutline, IoBusinessOutline } from "react-icons/io5";
 
+// Composant StarRating déplacé en dehors de EnterpriseShow pour une réutilisation facile
+const StarRating = ({ rating }) => {
+  return (
+    <div className="flex">
+      {[...Array(5)].map((star, index) => {
+        index += 1;
+        return (
+          <span key={index} className={index <= rating ? "text-yellow-500" : "text-gray-300"}>
+            &#9733;
+          </span>
+        );
+      })}
+    </div>
+  );
+};
+
 const EnterpriseShow = () => {
   const { id } = useParams();
   const [enterprise, setEnterprise] = useState(null);
-
-  const StarRating = ({ rating }) => {
-    return (
-      <div className="flex">
-        {[...Array(5)].map((star, index) => {
-          index += 1;
-          return (
-            <span key={index} className={index <= rating ? "text-yellow-500" : "text-gray-300"}>
-              &#9733;
-            </span>
-          );
-        })}
-      </div>
-    );
-  };
 
   const formatDuration = (minutes) => {
     const hours = Math.floor(minutes / 60);
@@ -105,6 +106,8 @@ const EnterpriseShow = () => {
                 </div>
               )}
               <p className="font-semibold text-lg text-center">{enterprise.job.name}</p>
+              {/* Ajout de la note globale ici */}
+              <StarRating rating={Math.round(enterprise.averageRating)} />
             </div>
 
             <div className="flex flex-col justify-between">
