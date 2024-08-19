@@ -10,9 +10,9 @@ const DeleteAccount = () => {
     if (confirmation) {
       try {
         // Suppression du compte
-        await deleteData("users/me");
+        await deleteData("users/delete");
         alert("Votre compte a été supprimé avec succès.");
-        window.location.href = "/logout"; // Redirection après suppression
+        window.location.href = "/logout";
       } catch (error) {
         console.error("Erreur lors de la suppression du compte:", error);
         alert(

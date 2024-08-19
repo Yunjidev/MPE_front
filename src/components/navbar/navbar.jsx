@@ -42,7 +42,6 @@ const Navbar = () => {
     };
   }, []);
 
-
   useEffect(() => {
     const fetchProfileData = async () => {
       if (user.isLogged && user.id) {
@@ -187,70 +186,70 @@ const Navbar = () => {
               </div>
             )}
             <div className="relative" ref={dropdownRef}>
-  <div
-    tabIndex="0"
-    role="button"
-    className="btn btn-ghost btn-circle flex items-center justify-center w-10 h-10 hover:border hover:border-[#67FFCC] rounded-full overflow-hidden"
-    onClick={toggleDropdown}
-  >
-    {user.isLogged ? (
-      <img
-        className="w-full h-full object-cover rounded-full"
-        alt="User Avatar"
-        src={avatarUrl} //
-      />
-    ) : (
-      <FaUserCircle className="w-10 h-10 text-black dark:text-white" />
-    )}
-  </div>
-  <AnimatePresence>
-    {isDropdownOpen && (
-      <motion.ul
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.25, ease: "easeInOut" }}
-        tabIndex="0"
-        className="menu menu-sm dropdown-content bg-[#F8D7DA] dark:bg-neutral-800 dark:text-white dark:border dark:border-neutral-600 border border-black rounded-lg rounded-box z-[1] mt-2 absolute right-0 w-52 p-2 shadow-lg"
-      >
-        {user.isLogged ? (
-          <>
-            <li>
-              <Link
-                to={`/dashboard/user-db`}
-                className="text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300"
+              <div
+                tabIndex="0"
+                role="button"
+                className="btn btn-ghost btn-circle flex items-center justify-center w-10 h-10 hover:border hover:border-[#67FFCC] rounded-full overflow-hidden"
+                onClick={toggleDropdown}
               >
-                Mon Dashboard
-              </Link>
-            </li>
-            <li>
-              <SignOut />
-            </li>
-          </>
-        ) : (
-          <>
-            <li>
-              <Link
-                to="/signin"
-                className="text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300"
-              >
-                Connexion
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/signup"
-                className="text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300"
-              >
-                Inscription
-              </Link>
-            </li>
-          </>
-        )}
-      </motion.ul>
-    )}
-  </AnimatePresence>
-</div>
+                {user.isLogged ? (
+                  <img
+                    className="w-full h-full object-cover rounded-full"
+                    alt="User Avatar"
+                    src={avatarUrl} //
+                  />
+                ) : (
+                  <FaUserCircle className="w-10 h-10 text-black dark:text-white" />
+                )}
+              </div>
+              <AnimatePresence>
+                {isDropdownOpen && (
+                  <motion.ul
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                    tabIndex="0"
+                    className="menu menu-sm dropdown-content bg-[#F8D7DA] dark:bg-neutral-800 dark:text-white dark:border dark:border-neutral-600 border border-black rounded-lg rounded-box z-[1] mt-2 absolute right-0 w-52 p-2 shadow-lg"
+                  >
+                    {user.isLogged ? (
+                      <>
+                        <li>
+                          <Link
+                            to={`/dashboard/user-db`}
+                            className="text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300"
+                          >
+                            Mon Dashboard
+                          </Link>
+                        </li>
+                        <li>
+                          <SignOut />
+                        </li>
+                      </>
+                    ) : (
+                      <>
+                        <li>
+                          <Link
+                            to="/signin"
+                            className="text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300"
+                          >
+                            Connexion
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/signup"
+                            className="text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300"
+                          >
+                            Inscription
+                          </Link>
+                        </li>
+                      </>
+                    )}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </div>
 
             {!isSelectionPage && (
               <div className="md:hidden flex items-center mr-2 lg:mr-9">

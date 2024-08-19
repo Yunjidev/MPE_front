@@ -18,7 +18,6 @@ import Footer from "./components/footer/footer";
 import SocialLinks from "./components/SocialLinks/sociallinks";
 import UserChoiceModal from "./components/home/UserChoiceModal";
 import Pricing_page from "./components/pricing_page/pricing_page";
-import DeleteAccount from "./components/DashboardUser/DeleteAccount";
 // Pages
 import Home from "./pages/home/home";
 import HomeClient from "./pages/home/HomeClient";
@@ -42,6 +41,9 @@ import User_db from "./pages/DashboardUser/User_db";
 import AcceptCompanyPage from "./pages/DashboardAdmin/Accept_company";
 import Company from "./pages/DashboardAdmin/ValidatedCompaniesPage";
 import ManageUser from "./pages/DashboardAdmin/UsersPage";
+import DeleteAccount from "./components/DashboardUser/DeleteAccount";
+import ResetPasswordForm from "./components/DashboardUser/ResetPassword";
+import ForgotPasswordForm from "./components/DashboardUser/ForgotPassword";
 
 // Protected Routes
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
@@ -96,8 +98,12 @@ function App() {
                         path="register-company"
                         element={<RegisterCompany />}
                       />
-                      <Route path="security" element={<DeleteAccount />} />
+                      <Route path="security" element={<ResetPasswordForm />} />
                       <Route path="deleteAccount" element={<DeleteAccount />} />
+                      <Route
+                        path="forgotPassword"
+                        element={<ForgotPasswordForm />}
+                      />
                       {/* Routes protégées pour les entrepreneurs */}
                       <Route element={<EntrepreneurRoute />}>
                         <Route
