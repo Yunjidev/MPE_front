@@ -69,10 +69,11 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <aside
-        id="sidebar"
-        className={`absolute top-28 ${isSidebarOpen ? "left-0" : "left-full"} lg:left-8 rounded-xl z-40 w-64 h-4/5 bg-gray-50 dark:bg-neutral-600 transition-transform duration-300 ease-in-out`}
-        aria-label="Sidebar"
-      >
+  id="sidebar"
+  className={`absolute top-28 ${isSidebarOpen ? "left-0" : "-left-full"} lg:left-8 rounded-xl z-40 w-64 h-4/5 bg-gray-50 dark:bg-neutral-600 transition-transform duration-300 ease-in-out`}
+  aria-label="Sidebar"
+>
+
         <div className="h-full p-3 space-y-2 dark:bg-neutral-600 rounded-xl dark:text-gray-200">
           {/* Profile Section */}
           <div className="flex items-center p-2 space-x-4">
