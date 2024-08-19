@@ -77,7 +77,7 @@ const OffersList = () => {
     } else {
       // Add new offer
       try {
-        const newOffer = await postData("admin/offers", updatedOffer);
+        const newOffer = await postData("enterprise/:id/offers", updatedOffer);
         setOffers((prevOffers) => [...prevOffers, newOffer]);
       } catch (error) {
         console.error("Error adding new offer:", error);

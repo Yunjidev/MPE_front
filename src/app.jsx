@@ -77,17 +77,12 @@ function App() {
                 <Route path="/register-company" element={<RegisterCompany />} />
                 <Route path="/pricing" element={<Pricing_page />} />
                 <Route path="/dashboard" element={<Dashboard />}>
-                  <Route path="user-db" element={<User_db />} />
-                  <Route
-                    path="register-company"
-                    element={<RegisterCompany />}
-                  />
-                  <Route path="enterprise/:id/services" element={<OffersList />} />
-                  <Route path="security" element={<Team />} />
-                  <Route path="accept-company" element={<AcceptCompanyPage />} />
-                  <Route path="manage-companies" element={<Company />} />
-                  <Route path="manage-users" element={<ManageUser />} />
-
+                <Route path="user-db" element={<User_db />} />
+                <Route path="enterprise/:id/services" element={<OffersList />} />
+                <Route path="security" element={<Team />} />
+                <Route path="accept-company" element={<AcceptCompanyPage />} />
+                <Route path="manage-companies" element={<Company />} />
+                <Route path="manage-users" element={<ManageUser />} />
                 </Route>
               </Routes>
             </MainLayout>

@@ -1,12 +1,13 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable no-unused-vars */
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import PropTypes from "prop-types";
-import { postData, getData } from "../../services/data-fetch";
+import { postData } from "../../services/data-fetch";
 import { UserContext } from "../../context/UserContext";
+import { useParams } from 'react-router-dom';
 
 export default function OfferForm({ onSubmit }) {
   const { user } = useContext(UserContext); // Utilisation du contexte utilisateur
+  const { id } = useParams(); // Récupération de l'ID de l'entreprise
+  console.log(id); // Affiche l'ID de l'entreprise dans la console
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -28,7 +29,7 @@ export default function OfferForm({ onSubmit }) {
     };
 
     try {
-      const response = await postData("admin/offers", offer);
+      const response = await postData(`http://localhost:8080/api/enterprise/${id}/offer`, offer);
       alert("Offre créée avec succès");
       onSubmit(response);  // Appelle une fonction de rappel pour gérer le succès
     } catch (error) {
