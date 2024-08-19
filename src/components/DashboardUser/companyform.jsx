@@ -66,7 +66,7 @@ export default function RegisterCompany({ onSubmit }) {
   }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const company = {
       name,
       phone,
@@ -82,39 +82,33 @@ export default function RegisterCompany({ onSubmit }) {
       instagram,
       facebook,
       website,
+      photos: [],
     };
-
+  
     if (logo) {
       company.logo = logo;
     }
-
+  
     photos.forEach((photo, index) => {
       company.photos[index] = photo;
     });
-
+  
     try {
       const response = await postData("enterprise", company);
     } catch (error) {
       console.error("Erreur lors de la soumission du formulaire:", error);
-
+  
       if (error.response) {
-        // Handle the server response
         const status = error.response.status;
         if (status === 422) {
-          // Parse and log the detailed error response
           const errorDetails = await error.response.json();
-
-          // Extract and display validation errors if available
           const validationErrors = errorDetails.errors || {};
         } else {
-          // Handle other status codes
           const errorText = await error.response.text();
         }
-      } else {
-        // Handle errors without a response
       }
     }
-
+  
     alert("Entreprise enregistrée");
   };
 
