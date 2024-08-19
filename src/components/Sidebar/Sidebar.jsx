@@ -175,8 +175,8 @@ const Sidebar = () => {
                           </span>
                           {!enterprise.isValidate && (
                             <span className="bg-red-100 text-red-800 text-xs font-medium px-1 py-0.5 rounded dark:bg-red-700 dark:text-white">
-                            Attente Validation
-                          </span>
+                              Attente Validation
+                            </span>
                           )}
                         </div>
                         <div>
