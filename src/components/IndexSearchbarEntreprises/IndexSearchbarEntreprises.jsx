@@ -1,18 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { HiSearch } from "react-icons/hi";
 import { getData } from '../../services/data-fetch';
 import AsyncSelect from 'react-select/async';
 import './indexsearchbarentreprises.css';
+import { toast } from "react-toastify";
 
-const customClassNames = {
-  control: () => 'react-select-container__control',
-  menu: () => 'react-select-container__menu',
-  option: (state) => state.isSelected
-    ? 'react-select-container__option--is-selected'
-    : state.isFocused
-      ? 'react-select-container__option--is-focused'
-      : ''
-};
 
 
 const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
@@ -54,6 +46,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
       return options;
     } catch (error) {
       console.error(`Erreur lors du chargement des options pour ${category}:`, error);
+      toast.error(`Une erreur est survenue lors du chargement des options pour ${category}.`);
       setError(`Une erreur est survenue lors du chargement des options pour ${category}.`);
       return [];
     }
@@ -104,6 +97,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
       console.log('Recherche effectuée avec les paramètres:', filteredResponse);
     } catch (error) {
       console.error('Erreur lors de la recherche:', error);
+      toast.error('Une erreur est survenue lors de la recherche.');
       setError('Une erreur est survenue lors de la recherche.');
     }
   };
@@ -132,7 +126,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         defaultOptions
         value={selectedJobs}
         classNamePrefix="react-select-container"
-        classNames={customClassNames}
+        className="react-select-container first-select"
         placeholder="Métiers"
         noOptionsMessage={() => "Aucun métier trouvé"}
         loadingMessage={() => "Chargement ..."}
@@ -146,7 +140,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         defaultOptions
         value={selectedCountries}
         classNamePrefix="react-select-container"
-        classNames={customClassNames}
+        className="react-select-container"
         placeholder="Région"
         noOptionsMessage={() => "Aucune région trouvée"}
         loadingMessage={() => "Chargement ..."}
@@ -161,7 +155,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         value={selectedCities}
         defaultOptions
         classNamePrefix="react-select-container"
-        classNames={customClassNames}
+        className="react-select-container"
         placeholder="Ville"
         noOptionsMessage={() => "Aucune ville trouvée"}
         loadingMessage={() => "Chargement ..."}
@@ -169,13 +163,13 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
 
 
 
-      <div className="border border-gray-300 bg-white rounded w-32 p-2" style={{ height: '39px' }}>
-        <label className="flex items-center cursor-pointer">
-          <span className="text-gray-500 mr-5">Premium</span>
-          <input type="checkbox" defaultChecked className="checkbox checkbox-accent" />
-          <span className="checkmark"></span>
-        </label>
-      </div>
+<div className="checkbox-container">
+  <label className="checkbox-label">
+    Premium
+    <input type="checkbox" defaultChecked className="checkbox" />
+    <span className="checkmark"></span>
+  </label>
+</div>
 
       <AsyncSelect
         cacheOptions
@@ -185,17 +179,19 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         value={selectedRatings}
         defaultOptions
         classNamePrefix="react-select-container"
-        classNames={customClassNames}
+        className="react-select-container"
         placeholder="Notes"
         noOptionsMessage={() => "Pas de notes disponibles"}
         loadingMessage={() => "Chargement ..."}
       />
 
       <div className="indicator flex gap-2">
-        {error && <div className="alert alert-error">{error}</div>}
-        <button onClick={removeLastSearch} className="btn join-item border-2 border-gray-300">Supprimer les critères de recherche</button>
-        <button onClick={performSearch} className="btn join-item border-2 border-gray-300"><HiSearch /></button>
+        
+        <button onClick={removeLastSearch} className="custom-btn">Supprimer les critères de recherche</button>
+        <button onClick={performSearch} className="custom-btn perform-search"><HiSearch /></button>
       </div>
+
+      
 
     </div>
 
