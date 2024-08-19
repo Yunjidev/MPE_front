@@ -28,7 +28,6 @@ const Sidebar = () => {
     const fetchUserData = async () => {
       try {
         const data = await getData("user/profile");
-        console.log('Fetched user data:', data);
         setUser(data);
       } catch (error) {
         console.error('Error fetching user data:', error);

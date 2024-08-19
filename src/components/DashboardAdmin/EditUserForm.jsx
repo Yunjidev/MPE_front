@@ -17,7 +17,6 @@ const EditUserForm = ({ user, onClose, onSave }) => {
     },
   });
 
-  // Effect to set form values when user data is loaded
   useEffect(() => {
     if (user) {
       reset({
@@ -50,7 +49,6 @@ const EditUserForm = ({ user, onClose, onSave }) => {
   
     try {
       const response = await putData(`admin/user/${user.id}`, userUpdate);
-      console.log("Response from PUT:", response);
       onSave({ ...user, ...userUpdate }); // Passez l'utilisateur mis à jour ici
       alert("User updated successfully");
       onClose();

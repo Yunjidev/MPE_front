@@ -36,7 +36,6 @@ const EditCompanyForm = ({ company, onClose, onSave }) => {
 
   useEffect(() => {
     if (company) {
-      console.log("Company data:", company);
 
       reset({
         name: company.name || "",

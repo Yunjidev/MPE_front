@@ -1,7 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useEffect, useState } from 'react';
 import { getData } from '../../services/data-fetch';
-import { FaUsers, FaBusinessTime, FaBuilding, FaStar } from 'react-icons/fa';
+import { FaUsers, FaBuilding} from 'react-icons/fa';
+import { MdOutlineWorkspacePremium } from "react-icons/md";
+import { FaBuildingUser } from "react-icons/fa6";
 
 const Statistique = () => {
   const [stats, setStats] = useState({
@@ -47,7 +49,7 @@ const Statistique = () => {
               </div>
             </div>
             <div className="flex items-center justify-center bg-white/5 p-8">
-              <FaBusinessTime className="text-4xl text-violet-400 mr-4" />
+              <FaBuildingUser className="text-4xl text-violet-400 mr-4" />
               <div className="text-left">
                 <dt className="text-sm font-semibold leading-6 dark:text-white text-black">Entrepreneurs</dt>
                 <dd className="text-3xl font-semibold tracking-tight dark:text-white text-black text-center">
@@ -65,7 +67,7 @@ const Statistique = () => {
               </div>
             </div>
             <div className="flex items-center justify-center bg-white/5 p-8">
-              <FaStar className="text-4xl text-violet-400 mr-4" />
+              <MdOutlineWorkspacePremium className="text-4xl text-violet-400 mr-4" />
               <div className="text-left">
                 <dt className="text-sm font-semibold leading-6 dark:text-white text-black">Entreprises Premium</dt>
                 <dd className="text-3xl font-semibold tracking-tight dark:text-white text-black text-center">
