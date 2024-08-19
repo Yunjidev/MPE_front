@@ -24,7 +24,7 @@ const OfferList = ({ offers }) => {
             <img 
               src={offer.image} 
               alt={`Offer ${offer.name}`} 
-              className="w-20 h-20 object-cover rounded-lg"
+              className="w-20 h-20 object-cover rounded-full"
             />
             <p className="text-lg font-semibold">{offer.name}</p>
             <p>{offer.description}</p>
