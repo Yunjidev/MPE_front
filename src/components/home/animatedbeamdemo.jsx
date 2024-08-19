@@ -8,7 +8,6 @@ import { forwardRef, useRef } from "react";
 import { cn } from "../../@/lib/utils";
 import { AnimatedBeam } from "../../@/components/magicui/animated-beam";
 import Svg1 from "../../assets/svgs/svg1.svg"
-import Svg2 from "../../assets/svgs/svg2.svg"
 import Svg11 from "../../assets/svgs/svg11.svg"
 import Svg12 from "../../assets/svgs/svg12.svg"
 import Svg13 from "../../assets/svgs/svg13.svg"

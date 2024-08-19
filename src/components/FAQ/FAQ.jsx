@@ -68,7 +68,7 @@ const FAQ = () => {
       <p className="text-6xl bg-gradient-to-r from-violet-400 to-violet-800 text-transparent bg-clip-text mb-8 bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400">
         Des Questions ?
       </p>
-      <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-8">
+      <p className="text-2xl font-semibold text-gray-900 dark:text-white mb-8">
         La FAQ est là pour ça. Si tu ne trouves pas ta réponse, contacte nous !
       </p>
       <div className="w-full max-w-4xl space-y-6">

@@ -42,28 +42,31 @@ const EditProfileForm = () => {
   const onSubmit = async (data) => {
     console.log("Form data submitted:", data);
 
-    
-    const userUpdate = {};
-    if (data.username !== user.username) userUpdate.username = data.username;
-    if (data.email !== user.email) userUpdate.email = data.email;
-    if (data.firstname !== user.firstname)
-      userUpdate.firstname = data.firstname;
-    if (data.lastname !== user.lastname) userUpdate.lastname = data.lastname;
+    const userUpdate = new FormData();
+    if (data.username !== user.username) userUpdate.append("username", data.username);
+    if (data.email !== user.email) userUpdate.append("email", data.email);
+    if (data.firstname !== user.firstname) userUpdate.append("firstname", data.firstname);
+    if (data.lastname !== user.lastname) userUpdate.append("lastname", data.lastname);
     if (data.avatar && data.avatar[0]) {
-      userUpdate.avatar = data.avatar[0];
+      userUpdate.append("avatar", data.avatar[0]);
     }
 
-    const response = await putData("user/update", userUpdate);
-    console.log("Response from PUT:", response);
-    setUser((prevUser) => ({
-      ...prevUser,
-      user: response.user,
-      isLogged: true,
-    }));
+    try {
+      const response = await putData("user/update", userUpdate, {
+      });
 
-    alert("Profile updated successfully");
+      console.log("Response from PUT:", response);
 
-  
+      setUser((prevUser) => ({
+        ...prevUser,
+        user: response.user,
+        isLogged: true,
+      }));
+
+      alert("Profil mis à jour avec succès !");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
 
   return (
@@ -83,7 +86,7 @@ const EditProfileForm = () => {
           >
             <FaFileUpload className="text-3xl" />
             <p className="mt-2 text-center text-sm">
-              Cliquez pour ajouter une photo
+              Cliquez pour modifier votre photo de profil
             </p>
           </label>
           <input

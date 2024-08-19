@@ -22,4 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# local env files
 .env
+
+# Dependencies
+package-lock.json
+
+

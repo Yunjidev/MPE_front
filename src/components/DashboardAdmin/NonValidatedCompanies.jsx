@@ -27,15 +27,12 @@ const NonValidatedCompanies = () => {
 
   const validateCompany = async (companyId) => {
     try {
-      const updatedCompany = { isValidate: 'true' };
-      console.log("Company ID:", companyId);
-      console.log("Data to update:", updatedCompany);
-
-      const response = await putData(`enterprise/${companyId}`, updatedCompany);
-      console.log("Response from PUT:", response);
+      const formData = new FormData();
+      formData.append("isValidate", "true");
+      const response = await putData(`enterprise/${companyId}`, formData);
 
       setCompanies((prevCompanies) =>
-        prevCompanies.filter((company) => company.id !== companyId)
+        prevCompanies.filter((company) => company.id !== companyId),
       );
 
       alert("Entreprise validée avec succès");
@@ -68,7 +65,7 @@ const NonValidatedCompanies = () => {
         ),
       },
     ],
-    [companies]
+    [companies],
   );
 
   const {
@@ -87,7 +84,7 @@ const NonValidatedCompanies = () => {
       initialState: { pageIndex, pageSize },
       pageCount: Math.ceil(companies.length / pageSize),
     },
-    usePagination
+    usePagination,
   );
 
   const handlePageSizeChange = (event) => {
@@ -153,15 +150,20 @@ const NonValidatedCompanies = () => {
           onClick={() => gotoPage(0)}
           disabled={currentPageIndex === 0}
           className="px-4 py-2 mx-1 bg-gray-200 rounded-lg mr-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
-          >
+        >
           &laquo; Précédent
         </button>
-        <span className="dark:text-white text-black font-bold">Page {currentPageIndex + 1} sur {Math.ceil(companies.length / pageSize)}</span>
+        <span className="dark:text-white text-black font-bold">
+          Page {currentPageIndex + 1} sur{" "}
+          {Math.ceil(companies.length / pageSize)}
+        </span>
         <button
           onClick={() => gotoPage(currentPageIndex + 1)}
-          disabled={currentPageIndex >= Math.ceil(companies.length / pageSize) - 1}
+          disabled={
+            currentPageIndex >= Math.ceil(companies.length / pageSize) - 1
+          }
           className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
-          >
+        >
           Suivant &raquo;
         </button>
       </div>

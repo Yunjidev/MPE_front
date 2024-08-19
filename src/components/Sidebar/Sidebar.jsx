@@ -14,6 +14,7 @@ import {
   FaCalendarAlt,
   FaEdit,
   FaPlusCircle,
+  FaEye,
 } from "react-icons/fa";
 import { getData } from "../../services/data-fetch"; // Adjust the import path as needed
 
@@ -93,16 +94,12 @@ const Sidebar = () => {
       </button>
 
       {/* Sidebar */}
-      <aside
-        id="sidebar"
-        className={`absolute top-28 ${isSidebarOpen ? "left-0" : "left-full"} lg:left-8 rounded-xl z-40 w-64 h-4/5 bg-gray-50 dark:bg-neutral-600 transition-transform duration-300 ease-in-out`}
-        aria-label="Sidebar"
-      >
-        <div className="h-full p-3 space-y-2 dark:bg-neutral-600 rounded-xl dark:text-gray-200">
+      <aside className="sticky top-12 w-auto h-screen bg-gray-800 text-white mb-12 mt-16">
+        <div className="flex flex-col h-full p-3 space-y-2 dark:bg-neutral-900 rounded-xl dark:text-gray-200 overflow-auto">
           {/* Profile Section */}
           <div className="flex items-center p-2 space-x-4">
             <img
-              src="https://source.unsplash.com/100x100/?portrait"
+              src={user?.avatar || "https://source.unsplash.com/100x100/?portrait"}
               alt="Profile"
               className="w-12 h-12 rounded-full dark:bg-gray-500"
             />
@@ -154,7 +151,7 @@ const Sidebar = () => {
 
           {/* Conditional Sections */}
           {user && user.isEntrepreneur && (
-            <div className="space-y-4">
+            <div className="flex flex-col flex-grow space-y-4">
               <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
                 <FaBriefcase className="w-10 h-10 mr-2 dark:text-white text-black" />
                 <div>
@@ -168,13 +165,19 @@ const Sidebar = () => {
                     <div>
                       <button
                         className="flex items-center justify-between w-full p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                        onClick={() => toggleDropdown(enterprise.id)}
+                        onClick={() => enterprise.isValidate && toggleDropdown(enterprise.id)}
+                        disabled={!enterprise.isValidate}
                       >
                         <div className="flex items-center space-x-3">
                           <FaBuilding className="w-5 h-5 fill-current dark:text-white text-black" />
-                          <span className="font-semibold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">
+                          <span className={`font-semibold ${!enterprise.isValidate ? 'text-gray-500 dark:text-gray-400' : 'text-black dark:text-gray-100'}`}>
                             {enterprise.name}
                           </span>
+                          {!enterprise.isValidate && (
+                            <span className="bg-red-100 text-red-800 text-xs font-medium px-1 py-0.5 rounded dark:bg-red-700 dark:text-white">
+                            Attente Validation
+                          </span>
+                          )}
                         </div>
                         <div>
                           {dropdowns[enterprise.id] ? (
@@ -185,7 +188,7 @@ const Sidebar = () => {
                         </div>
                       </button>
 
-                      {dropdowns[enterprise.id] && (
+                      {enterprise.isValidate && dropdowns[enterprise.id] && (
                         <ul className="pl-6 mt-2 space-y-1 text-sm">
                           <li>
                             <Link
@@ -214,7 +217,7 @@ const Sidebar = () => {
                               onClick={closeSidebar}
                             >
                               <FaEdit className="w-4 h-4 fill-current dark:text-white text-black" />
-                              <span className="font-semibold dark:text-gray-100 text-black">Edition</span>
+                              <span className="font-semibold dark:text-gray-100 text-black">Édition</span>
                             </Link>
                           </li>
                           <li>
@@ -225,6 +228,16 @@ const Sidebar = () => {
                             >
                               <FaPlusCircle className="w-4 h-4 fill-current dark:text-white text-black" />
                               <span className="font-semibold dark:text-gray-100 text-black">Ajouts de Services</span>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to={`/enterprise/${enterprise.id}`}
+                              className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                              onClick={closeSidebar}
+                            >
+                              <FaEye className="w-4 h-4 fill-current dark:text-white text-black" />
+                              <span className="font-semibold dark:text-gray-100 text-black">Ma page entreprise</span>
                             </Link>
                           </li>
                         </ul>
@@ -240,7 +253,7 @@ const Sidebar = () => {
           {user && user.isEntrepreneur && <div className="border-t border-black dark:border-white my-4 mx-2"></div>}
 
           {user && user.isAdmin && (
-            <div className="space-y-4">
+            <div className="flex flex-col flex-grow space-y-4">
               <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
                 <FaUserShield className="w-10 h-10 mr-2 fill-current dark:text-white text-black" />
                 <div>
