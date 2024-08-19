@@ -44,7 +44,7 @@ export async function putData(object, data, options = {}) {
 
     // Si on n'a pas déjà défini les headers, on les ajoute
     if (!requestOptions.headers) {
-      requestOptions.headers = setHeaders();
+      requestOptions.headers = setHeaders(); // Ensure setHeaders() does not set Content-Type for FormData
     }
 
     // Pour FormData, ne pas inclure `Content-Type` dans les headers
@@ -53,15 +53,23 @@ export async function putData(object, data, options = {}) {
     return response;
   } catch (error) {
     console.log("Error:", error);
+
+    // Check if error has response property for detailed error messages
     if (error.response) {
-      const errorText = await error.response.text();
-      console.log("Error Response Text:", errorText);
+      try {
+        const errorText = await error.response.text();
+        console.log("Error Response Text:", errorText);
+      } catch (e) {
+        console.log("Failed to get error response text:", e);
+      }
     } else {
       console.log("Error Message:", error.message);
     }
+
     throw error;
   }
 }
+
 
 // Fonction pour supprimer les données
 export async function deleteData(object) {
