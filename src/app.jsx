@@ -47,6 +47,7 @@ import ManageUser from "./pages/DashboardAdmin/UsersPage";
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
 import EntrepreneurRoute from "./context/EntrepreneurRoute";
 import AdminRoute from "./context/AdminRoute";
+import OfferList from "./components/DashboardUser/OffersList";
 
 function App() {
   const [user, setUser] = useAtom(userAtom);
@@ -94,6 +95,7 @@ function App() {
                       {/* Routes protégées pour les entrepreneurs */}
                       <Route element={<EntrepreneurRoute />}>
                         <Route path="enterprise/:enterpriseId/edit" element={<UpdateCompany />} />
+                        <Route path="enterprise/:id/offer" element={<OfferList />} />
                       </Route>
                       {/* Routes protégées pour les administrateurs */}
                       <Route element={<AdminRoute />}>

@@ -222,7 +222,7 @@ const Sidebar = () => {
                           </li>
                           <li>
                             <Link
-                              to={`/dashboard/enterprise/${enterprise.id}/services`}
+                              to={`/dashboard/enterprise/${enterprise.id}/offer`}
                               className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                               onClick={closeSidebar}
                             >

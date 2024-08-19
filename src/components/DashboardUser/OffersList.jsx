@@ -4,9 +4,11 @@ import { getData, deleteData, postData } from "../../services/data-fetch";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import Button from "../Button/button";
 import Modal from "../DashboardAdmin/Modal";
-import EditOfferForm from "./OfferForm"; // Formulaire d'édition des offres
+import EditOfferForm from "./OfferForm";
+import { useParams } from 'react-router-dom'; // Importer useParams
 
 const OffersList = () => {
+  const { id } = useParams();  // Récupérer l'ID de l'entreprise
   const [offers, setOffers] = useState([]);
   const [filteredOffers, setFilteredOffers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,18 +18,21 @@ const OffersList = () => {
   const [pageIndex, setPageIndex] = useState(0);
 
   useEffect(() => {
-    const fetchOffers = async () => {
-      try {
-        const data = await getData("admin/offers");
-        setOffers(data);
-        setFilteredOffers(data);
-      } catch (error) {
-        console.error("Error fetching offers:", error);
-      }
-    };
+    if (id) {
+      // Fonction pour obtenir les offres
+      const fetchOffers = async () => {
+        try {
+          const data = await getData(`enterprise/${id}/offers`);
+          setOffers(data);
+          setFilteredOffers(data);
+        } catch (error) {
+          console.error("Erreur lors de la récupération des offres:", error);
+        }
+      };
 
-    fetchOffers();
-  }, []);
+      fetchOffers();
+    }
+  }, [id]);  // Recharger les offres si l'ID change
 
   useEffect(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
@@ -46,13 +51,13 @@ const OffersList = () => {
 
   const deleteOffer = async (offerId) => {
     try {
-      await deleteData(`admin/offers/${offerId}`);
+      await deleteData(`enterprise/${id}/offers/${offerId}`);
       setOffers((prevOffers) =>
         prevOffers.filter((offer) => offer.id !== offerId)
       );
-      alert("Offer deleted successfully");
+      alert("Offre supprimée avec succès");
     } catch (error) {
-      console.error("Error deleting offer:", error);
+      console.error("Erreur lors de la suppression de l'offre:", error);
     }
   };
 
@@ -67,23 +72,24 @@ const OffersList = () => {
   };
 
   const handleSave = async (updatedOffer) => {
-    if (updatedOffer.id) {
-      // Update existing offer
-      setOffers((prevOffers) =>
-        prevOffers.map((offer) =>
-          offer.id === updatedOffer.id ? { ...offer, ...updatedOffer } : offer
-        )
-      );
-    } else {
-      // Add new offer
-      try {
-        const newOffer = await postData("enterprise/:id/offers", updatedOffer);
+    try {
+      if (updatedOffer.id) {
+        // Update existing offer
+        setOffers((prevOffers) =>
+          prevOffers.map((offer) =>
+            offer.id === updatedOffer.id ? { ...offer, ...updatedOffer } : offer
+          )
+        );
+      } else {
+        // Add new offer
+        const newOffer = await postData(`enterprise/${id}/offers`, updatedOffer);
         setOffers((prevOffers) => [...prevOffers, newOffer]);
-      } catch (error) {
-        console.error("Error adding new offer:", error);
       }
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Erreur lors de la sauvegarde de l'offre:", error);
+      alert("Une erreur est survenue lors de la sauvegarde de l'offre.");
     }
-    setIsModalOpen(false);
   };
 
   const columns = React.useMemo(
@@ -228,7 +234,7 @@ const OffersList = () => {
         <EditOfferForm
           offer={selectedOffer}
           onClose={() => setIsModalOpen(false)}
-          onSave={handleSave}
+          onSubmit={handleSave}  // Passer handleSave ici
         />
       </Modal>
     </div>

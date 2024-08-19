@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { postData } from "../../services/data-fetch";
 import { UserContext } from "../../context/UserContext";
@@ -7,118 +7,73 @@ import { useParams } from 'react-router-dom';
 export default function OfferForm({ onSubmit }) {
   const { user } = useContext(UserContext); // Utilisation du contexte utilisateur
   const { id } = useParams(); // Récupération de l'ID de l'entreprise
-  console.log(id); // Affiche l'ID de l'entreprise dans la console
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [duration, setDuration] = useState(0);
-  const [price, setPrice] = useState("");
-  const [estimate, setEstimate] = useState(false);
-  const [image, setImage] = useState(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    duration: 0,
+    price: "",
+    estimate: false,
+    image: null
+  });
+
+  const handleChange = (e) => {
+    const { id, type, value, checked, files } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: type === 'checkbox' ? checked : (type === 'file' ? files[0] : value)
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const offer = {
-      name,
-      description,
-      duration,
-      price,
-      estimate,
-      image,
-    };
+    const { name, description, duration, price, estimate, image } = formData;
+    const offer = { name, description, duration, price, estimate, image };
+
+    if (typeof onSubmit !== 'function') {
+      console.error("onSubmit is not a function");
+      return;
+    }
 
     try {
-      const response = await postData(`http://localhost:8080/api/enterprise/${id}/offer`, offer);
+      const response = await postData(`/enterprise/${id}/offers`, offer, user.token); // Corriger l'URL pour correspondre à la logique de votre API
       alert("Offre créée avec succès");
       onSubmit(response);  // Appelle une fonction de rappel pour gérer le succès
     } catch (error) {
+      alert("Une erreur est survenue lors de la création de l'offre.");
       console.error("Erreur lors de la création de l'offre:", error);
-
-      if (error.response) {
-        const status = error.response.status;
-        if (status === 422) {
-          const errorDetails = await error.response.json();
-          const validationErrors = errorDetails.errors || {};
-          // Gérer les erreurs de validation
-        } else {
-          const errorText = await error.response.text();
-          // Gérer d'autres codes de statut
-        }
-      } else {
-        // Gérer les erreurs sans réponse
-      }
     }
   };
 
   return (
     <div className="bg-neutral-900 text-white w-full p-8">
       <div className="mb-4 text-center">
-        <h2 className="text-2xl font-semibold">Création Offre</h2>
+        <h2 className="text-2xl font-semibold">Offre</h2>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium">
-            Nom de l'offre
-          </label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full mt-1 p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
-            placeholder="Nom de l'offre"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="description" className="block text-sm font-medium">
-            Description
-          </label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full mt-1 p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
-            rows="4"
-            placeholder="Description de l'offre"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="duration" className="block text-sm font-medium">
-            Durée (en heures)
-          </label>
-          <input
-            type="number"
-            id="duration"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            className="w-full mt-1 p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
-            placeholder="Durée de l'offre"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="price" className="block text-sm font-medium">
-            Prix
-          </label>
-          <input
-            type="text"
-            id="price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className="w-full mt-1 p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
-            placeholder="Prix de l'offre"
-            required
-          />
-        </div>
+        {['name', 'description', 'duration', 'price'].map(field => (
+          <div key={field} className="mb-4">
+            <label htmlFor={field} className="block text-sm font-medium">
+              {field.charAt(0).toUpperCase() + field.slice(1)}
+            </label>
+            <input
+              type={field === 'duration' ? 'number' : 'text'}
+              id={field}
+              value={formData[field]}
+              onChange={handleChange}
+              className="w-full mt-1 p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
+              placeholder={`Entrée pour ${field}`}
+              required
+            />
+          </div>
+        ))}
         <div className="mb-4 flex items-center">
           <input
             type="checkbox"
             id="estimate"
-            checked={estimate}
-            onChange={(e) => setEstimate(e.target.checked)}
+            checked={formData.estimate}
+            onChange={handleChange}
             className="mr-2"
           />
           <label htmlFor="estimate" className="text-sm font-medium">
@@ -132,7 +87,7 @@ export default function OfferForm({ onSubmit }) {
           <input
             type="file"
             id="image"
-            onChange={(e) => setImage(e.target.files[0])}
+            onChange={handleChange}
             className="w-full mt-1 p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
           />
         </div>

@@ -10,13 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^5.16.7",
-=======
-    "antd": "^5.20.1",
->>>>>>> 75f2160b142f09dfdd8b14fa25ea5f60fc990971
     "axios": "^1.7.3",
     "chart.js": "^4.4.3",
     "class-variance-authority": "^0.7.0",
