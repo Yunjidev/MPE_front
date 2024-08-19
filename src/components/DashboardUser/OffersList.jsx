@@ -51,13 +51,14 @@ const OffersList = () => {
 
   const deleteOffer = async (offerId) => {
     try {
-      await deleteData(`enterprise/${id}/offers/${offerId}`);
+      await deleteData(`enterprise/${id}/offer/${offerId}`);
       setOffers((prevOffers) =>
         prevOffers.filter((offer) => offer.id !== offerId)
       );
       alert("Offre supprimée avec succès");
     } catch (error) {
       console.error("Erreur lors de la suppression de l'offre:", error);
+      alert("Une erreur est survenue lors de la suppression de l'offre.");
     }
   };
 
@@ -219,12 +220,26 @@ const OffersList = () => {
             Suivant &raquo;
           </button>
         </div>
+
+        <div className="mt-4">
+          <select
+            value={currentPageSize}
+            onChange={handlePageSizeChange}
+            className="border rounded-lg dark:bg-neutral-700 dark:text-white p-2"
+          >
+            {[10, 20, 30, 40].map((size) => (
+              <option key={size} value={size}>
+                {size} offres par page
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      <div className="absolute bottom-4 right-4 flex justify-center items-center">
+      <div className="absolute bottom-4 right-4">
         <Button
           onClick={addNewOffer}
-          className="flex justify-center items-center p-4 bg-[#67FFCC] dark:bg-[#4CAF50] rounded-full shadow-lg hover:bg-[#56D6B8] dark:hover:bg-[#45A049] transition-colors duration-300 ease-in-out"
+          className="bg-gradient-to-r from-[#67FFCC] to-[#33B7A6] dark:bg-[#4CAF50] rounded-full shadow-lg hover:bg-[#56D6B8] dark:hover:bg-[#45A049] transition-colors duration-300 ease-in-out"
         >
           <FaPlus className="text-white text-xl" />
         </Button>
@@ -234,7 +249,7 @@ const OffersList = () => {
         <EditOfferForm
           offer={selectedOffer}
           onClose={() => setIsModalOpen(false)}
-          onSubmit={handleSave}  // Passer handleSave ici
+          onSubmit={handleSave}
         />
       </Modal>
     </div>
