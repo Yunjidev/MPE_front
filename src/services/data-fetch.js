@@ -21,10 +21,15 @@ export async function getData(object) {
 
 export async function postData(object, data) {
   try {
-    const response = await ky
-      .post(BASE_URL + object, { headers: setHeaders(), json: data })
-      .json();
-    return response;
+    const options = {
+      headers: setHeaders(),
+      body: data,
+    };
+    if (!(data instanceof FormData)) {
+      options.headers["Content-Type"] = "application/json";
+    }
+    const response = await ky.post(BASE_URL + object, options);
+    return response.json();
   } catch (error) {
     console.log("Error:", error);
     throw error;
@@ -33,16 +38,27 @@ export async function postData(object, data) {
 
 export async function putData(object, data) {
   try {
-    console.log("Data to PUT:", data);
-    const response = await ky
-      .put(BASE_URL + object, { headers: setHeaders(), json: data })
-      .json();
-    return response;
+    const options = {
+      headers: setHeaders(),
+      body: data,
+    };
+    if (!(data instanceof FormData)) {
+      options.headers["Content-Type"] = "application/json";
+    }
+    const response = await ky.put(BASE_URL + object, options);
+    return response.json();
   } catch (error) {
     console.log("Error:", error);
+    if (error.response) {
+      const errorText = await error.response.text();
+      console.log("Error Response Text:", errorText);
+    } else {
+      console.log("Error Message:", error.message);
+    }
     throw error;
   }
 }
+
 // Fonction pour supprimer les données
 export async function deleteData(object) {
   try {

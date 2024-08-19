@@ -1,17 +1,17 @@
 import Jumbotron from "@/components/home/jumbotron";
 import { MarqueeDemo } from "@/components/home/marqueedemo";
 import Spot from "@/components/home/spot";
-import FAQ from "@/components/FAQ/FAQ";
-import PresentationEnterprise from "@/components/home/presentationclient";
-
+import Multicard from "@/components/home/Multicard/multicardclient";
+import Stats from '@/components/home/stats';
 const HomeClient = () => {
   return (
     <>
     <Jumbotron />
     <MarqueeDemo />
     <Spot />
-    <PresentationEnterprise />
-    <FAQ />
+    <Multicard />
+    <Stats />
+
     </>
   );
 };

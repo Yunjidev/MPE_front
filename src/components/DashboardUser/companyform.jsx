@@ -1,6 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable no-unused-vars */
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   FaUser,
@@ -15,191 +13,116 @@ import { FaXTwitter, FaInstagram, FaFacebook } from "react-icons/fa6";
 import { MdOutlineAlternateEmail, MdOutlineAreaChart } from "react-icons/md";
 import { CgWebsite } from "react-icons/cg";
 import { postData, getData } from "../../services/data-fetch";
-import { UserContext } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
+import InputText from "./inputTextForm";
+import InputSelect from "./inputSelectForm";
 
-export default function RegisterCompany({ onSubmit }) {
-  const { user } = useContext(UserContext); // Utilisation du contexte utilisateur
+export default function RegisterCompany() {
+  const navigate = useNavigate();
 
-  const [name, setName] = useState(user?.name || "");
-  const [phone, setPhone] = useState(user?.phone || "");
-  const [mail, setMail] = useState(user?.mail || "");
-  const [adress, setAdress] = useState(user?.adress || "");
-  const [city, setCity] = useState(user?.city || "");
-  const [zipCode, setZipCode] = useState(user?.zipCode || "");
-  const [siretNumber, setSiretNumber] = useState(user?.siretNumber || "");
-  const [activity, setActivity] = useState("");
-  const [twitter, setTwitter] = useState(user?.twitter || "");
-  const [instagram, setInstagram] = useState(user?.instagram || "");
-  const [facebook, setFacebook] = useState(user?.facebook || "");
-  const [description, setDescription] = useState("");
-  const [region, setRegion] = useState("");
-  const [website, setWebsite] = useState(user?.website || "");
-  const [photos, setPhotos] = useState([]);
-  const [photoUrls, setPhotoUrls] = useState([]);
-  const [logo, setLogo] = useState(null);
   const [logoUrl, setLogoUrl] = useState(null);
-
+  const [photoUrls, setPhotoUrls] = useState([]);
   const [jobOptions, setJobOptions] = useState([]);
   const [regionOptions, setRegionOptions] = useState([]);
+  const [error, setError] = useState(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    mail: "",
+    adress: "",
+    city: "",
+    zip_code: "",
+    siret_number: "",
+    description: "",
+    twitter: "",
+    instagram: "",
+    facebook: "",
+    website: "",
+    Job_id: "",
+    Country_id: "",
+    logo: "",
+    photos: [],
+  });
+
   useEffect(() => {
-    const fetchJobs = async () => {
+    const fetchList = async () => {
       try {
-        const jobs = await getData("jobs");
-        setJobOptions(jobs);
+        const lists = await getData("/search");
+        setJobOptions(lists.jobs);
+        setRegionOptions(lists.countries);
       } catch (error) {
-        console.error("Failed to fetch jobs:", error);
+        console.error("Failed to fetch lists:", error);
       }
     };
-
-    const fetchRegions = async () => {
-      try {
-        const countries = await getData("countries");
-        const regions = countries.map((country) => country);
-        setRegionOptions(regions);
-      } catch (error) {
-        console.error("Failed to fetch regions:", error);
-      }
-    };
-
-    fetchJobs();
-    fetchRegions();
+    fetchList();
   }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const company = {
-      name,
-      phone,
-      mail,
-      adress,
-      city,
-      zip_code: zipCode,
-      siret_number: siretNumber,
-      Job_id: activity,
-      description,
-      Country_id: region,
-      twitter,
-      instagram,
-      facebook,
-      website,
-    };
-
-    if (logo) {
-      company.logo = logo;
-    }
-
-    photos.forEach((photo, index) => {
-      company.photos[index] = photo;
+    const formDataToSubmit = new FormData();
+    Object.keys(formData).forEach((key) => {
+      if (
+        formData[key] !== "" &&
+        formData[key] !== null &&
+        formData[key] !== undefined
+      ) {
+        if (key === "photos") {
+          formData[key].forEach((photo) => {
+            formDataToSubmit.append("photos", photo);
+          });
+        } else if (key === "logo") {
+          formDataToSubmit.append("logo", formData[key]);
+        } else {
+          formDataToSubmit.append(key, formData[key]);
+        }
+      }
     });
-
     try {
-      const response = await postData("enterprise", company);
+      const response = await postData("enterprise", formDataToSubmit);
+      console.log("Response:", response);
+      navigate(`/dashboard/user-db`);
     } catch (error) {
       console.error("Erreur lors de la soumission du formulaire:", error);
-
-      if (error.response) {
-        // Handle the server response
-        const status = error.response.status;
-        if (status === 422) {
-          // Parse and log the detailed error response
-          const errorDetails = await error.response.json();
-
-          // Extract and display validation errors if available
-          const validationErrors = errorDetails.errors || {};
-        } else {
-          // Handle other status codes
-          const errorText = await error.response.text();
-        }
-      } else {
-        // Handle errors without a response
-      }
     }
-
     alert("Entreprise enregistrée");
   };
 
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setLogo(file);
-      setLogoUrl(URL.createObjectURL(file));
-    }
+    setFormData((prevFormData) => ({ ...prevFormData, logo: file }));
+    setLogoUrl(URL.createObjectURL(file));
   };
 
   const handlePhotosChange = (e) => {
     const files = Array.from(e.target.files);
-    const newFiles = files.slice(0, 3 - photos.length);
-    setPhotos((prevPhotos) => [...prevPhotos, ...newFiles]);
-
-    const newPhotoUrls = newFiles.map((file) => URL.createObjectURL(file));
-    setPhotoUrls((prevPhotoUrls) => [...prevPhotoUrls, ...newPhotoUrls]);
-  };
-
-  const handleBlur = (e) => {
-    const { id, value } = e.target;
-
-    let errorMessage = "";
-    switch (id) {
-      case "name":
-        if (value.length < 3 || value.length > 20) {
-          errorMessage =
-            "Le nom de l'entreprise doit être compris entre 3 et 20 caractères.";
-        }
-        break;
-      case "siret":
-        if (!/^\d{14}$/.test(value)) {
-          errorMessage =
-            "Le numéro SIRET doit contenir exactement 14 chiffres.";
-        }
-        break;
-      case "contact":
-        if (!/^\+?(\d.*){10,}$/.test(value)) {
-          errorMessage = "Veuillez entrer un numéro de téléphone valide.";
-        }
-        break;
-      case "email":
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-          errorMessage = "Veuillez entrer une adresse e-mail valide.";
-        }
-        break;
-      case "address":
-        if (value.length < 5) {
-          errorMessage = "L'adresse doit contenir au moins 5 caractères.";
-        }
-        break;
-      case "city":
-        if (value.length < 2) {
-          errorMessage =
-            "Le nom de la ville doit contenir au moins 2 caractères.";
-        }
-        break;
-      case "zipCode":
-        if (!/^\d{5}$/.test(value)) {
-          errorMessage = "Le code postal doit contenir exactement 5 chiffres.";
-        }
-        break;
-      case "region":
-        if (!value) {
-          errorMessage = "Veuillez sélectionner une région.";
-        }
-        break;
-      case "job":
-        if (!value) {
-          errorMessage = "Veuillez sélectionner un secteur d'activité.";
-        }
-        break;
-      case "description":
-        if (value.trim() === "") {
-          errorMessage = "La description ne peut pas être vide.";
-        }
-        break;
-      default:
-        break;
+    if (photoUrls.length + files.length > 3) {
+      setError("Vous ne pouvez ajouter que 3 photos");
+      return;
     }
-
-    e.target.setCustomValidity(errorMessage);
-    e.target.reportValidity();
+    files.map((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const fileUrl = reader.result;
+        setPhotoUrls((prevPhotoUrls) => [...prevPhotoUrls, fileUrl]);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          photos: [...prevFormData.photos, file],
+        }));
+      };
+      reader.readAsDataURL(file);
+    });
   };
+
+  const handleDeletePhoto = (index) => {
+    event.preventDefault();
+    setPhotoUrls((prevPhotoUrls) =>
+      prevPhotoUrls.filter((_, i) => i !== index),
+    );
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      photos: prevFormData.photos.filter((_, i) => i !== index),
+    }));
+  };
+  const isDisabled = photoUrls.length >= 3;
 
   return (
     <div className="mt-12 mb-8 flex items-center justify-center bg-neutral-900">
@@ -207,7 +130,7 @@ export default function RegisterCompany({ onSubmit }) {
         <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
         <div className="bg-neutral-900 p-10 rounded-xl shadow-xl relative z-10 transform transition duration-500 ease-in-out">
           <h2 className="text-white text-center text-2xl mb-5">
-            Création d'entreprise
+            Création d&apos;entreprise
           </h2>
           <hr className="w-1/2 my-4 border-t-2 border-gray-400 mx-auto" />
           <form
@@ -241,162 +164,170 @@ export default function RegisterCompany({ onSubmit }) {
               />
             </div>
             <div className="flex flex-col lg:col-span-2 lg:grid lg:grid-cols-2 gap-5">
-              <div className="relative flex items-center">
-                <FaUser className="absolute left-3 text-gray-400" />
-                <input
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  onBlur={handleBlur}
-                  placeholder="Nom Entreprise"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
-                />
-              </div>
-              <div className="relative flex items-center justify-end">
-                <FaBarcode className="absolute left-3 text-gray-400" />
-                <input
-                  type="text"
-                  id="siret"
-                  value={siretNumber}
-                  onChange={(e) => setSiretNumber(e.target.value)}
-                  onBlur={handleBlur}
-                  placeholder="Numéro Siret"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
-                />
-              </div>
-              <div className="relative flex items-center">
-                <FaPhone className="absolute left-3 text-gray-400" />
-                <input
-                  type="text"
-                  id="contact"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  onBlur={handleBlur}
-                  placeholder="Contact"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
-                />
-              </div>
-              <div className="relative flex items-center justify-end">
-                <MdOutlineAlternateEmail className="absolute left-3 text-gray-400" />
-                <input
-                  type="email"
-                  id="email"
-                  value={mail}
-                  onChange={(e) => setMail(e.target.value)}
-                  onBlur={handleBlur}
-                  placeholder="E-mail"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
-                />
-              </div>
-              <div className="relative flex items-center">
-                <FaMapMarkerAlt className="absolute left-3 text-gray-400" />
-                <input
-                  type="text"
-                  id="address"
-                  value={adress}
-                  onChange={(e) => setAdress(e.target.value)}
-                  onBlur={handleBlur}
-                  placeholder="Adresse"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
-                />
-              </div>
-              <div className="relative flex items-center">
-                <MdOutlineAreaChart className="absolute left-3 text-gray-400" />
-                <select
-                  id="region"
-                  value={region}
-                  onChange={(e) => setRegion(e.target.value)}
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-green-400 focus:border-green-400"
-                >
-                  <option value="">Région</option>
-                  {regionOptions.map((option, index) => (
-                    <option key={option} value={index + 1}>
-                      {option.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="relative flex items-center justify-end">
-                <FaCity className="absolute left-3 text-gray-400" />
-                <input
-                  type="text"
-                  id="city"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  placeholder="Ville"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
-                />
-              </div>
-              <div className="relative flex items-center">
-                <FaBarcode className="absolute left-3 text-gray-400" />
-                <input
-                  type="text"
-                  id="zipCode"
-                  value={zipCode}
-                  onChange={(e) => setZipCode(e.target.value)}
-                  placeholder="Code Postal"
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
-                />
-              </div>
-              <div className="col-span-2 relative flex items-center">
-                <MdOutlineAreaChart className="absolute left-3 text-gray-400" />
-                <select
-                  id="job"
-                  value={activity}
-                  onChange={(e) => setActivity(e.target.value)}
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-green-400 focus:border-green-400"
-                >
-                  <option value="">Secteur d'activité</option>
-                  {jobOptions.map((option, index) => (
-                    <option key={option.id} value={index + 1}>
-                      {option.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="relative flex items-center justify-end">
-              <FaXTwitter className="absolute left-3 text-gray-400" />
-              <input
-                type="url"
-                id="twitter"
-                value={twitter}
-                onChange={(e) => setTwitter(e.target.value)}
-                placeholder="Twitter"
-                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-green-400 focus:border-green-400"
+              <InputText
+                id="name"
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    name: e.target.value,
+                  }))
+                }
+                placeholder="Nom Entreprise"
+                icon={<FaUser />}
+              />
+              <InputText
+                id="siret"
+                value={formData.siret_number}
+                onChange={(e) =>
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    siret_number: e.target.value,
+                  }))
+                }
+                placeholder="Numéro Siret"
+                icon={<FaBarcode />}
+              />
+              <InputText
+                id="contact"
+                value={formData.phone}
+                onChange={(e) =>
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    phone: e.target.value,
+                  }))
+                }
+                placeholder="Contact"
+                icon={<FaPhone />}
+              />
+              <InputText
+                id="email"
+                value={formData.mail}
+                onChange={(e) =>
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    mail: e.target.value,
+                  }))
+                }
+                placeholder="E-mail"
+                icon={<MdOutlineAlternateEmail />}
+              />
+              <InputText
+                id="address"
+                value={formData.adress}
+                onChange={(e) =>
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    adress: e.target.value,
+                  }))
+                }
+                placeholder="Adresse"
+                icon={<FaMapMarkerAlt />}
+              />
+              <InputSelect
+                id="region"
+                value={formData.Country_id}
+                onChange={(e) =>
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    Country_id: e.target.value,
+                  }))
+                }
+                placeholder="Région"
+                options={regionOptions}
+                icon={<MdOutlineAreaChart />}
+              />
+              <InputText
+                id="city"
+                value={formData.city}
+                onChange={(e) =>
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    city: e.target.value,
+                  }))
+                }
+                placeholder="Ville"
+                icon={<FaCity />}
+              />
+              <InputText
+                id="zipCode"
+                value={formData.zip_code}
+                onChange={(e) =>
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    zip_code: e.target.value,
+                  }))
+                }
+                placeholder="Code Postal"
+                icon={<FaBarcode />}
+              />
+              <InputSelect
+                id="job"
+                className="col-span-2"
+                value={formData.Job_id}
+                onChange={(e) =>
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    Job_id: e.target.value,
+                  }))
+                }
+                placeholder="Secteur d'activité"
+                options={jobOptions}
+                icon={<MdOutlineAreaChart />}
               />
             </div>
-            <div className="relative flex items-center justify-end">
-              <FaInstagram className="absolute left-3 text-gray-400" />
-              <input
-                type="url"
-                id="instagram"
-                value={instagram}
-                onChange={(e) => setInstagram(e.target.value)}
-                placeholder="Instagram"
-                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
-              />
-            </div>
-            <div className="relative flex items-center justify-end">
-              <FaFacebook className="absolute left-3 text-gray-400" />
-              <input
-                type="url"
-                id="facebook"
-                value={facebook}
-                onChange={(e) => setFacebook(e.target.value)}
-                placeholder="Facebook"
-                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
-              />
-            </div>
+            <InputText
+              id="twitter"
+              type="url"
+              value={formData.twitter}
+              onChange={(e) =>
+                setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  twitter: e.target.value,
+                }))
+              }
+              placeholder="Twitter"
+              icon={<FaXTwitter />}
+            />
+            <InputText
+              id="instagram"
+              type="url"
+              value={formData.instagram}
+              onChange={(e) =>
+                setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  instagram: e.target.value,
+                }))
+              }
+              placeholder="Instagram"
+              icon={<FaInstagram />}
+            />
+            <InputText
+              id="facebook"
+              type="url"
+              value={formData.facebook}
+              onChange={(e) =>
+                setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  facebook: e.target.value,
+                }))
+              }
+              placeholder="Facebook"
+              icon={<FaFacebook />}
+            />
             <div className="col-span-3 flex flex-col justify-center items-center">
               <div className="relative w-full">
                 <CgWebsite className="absolute left-3 top-3 text-gray-400" />
                 <input
                   type="url"
                   id="website"
-                  value={website}
-                  onChange={(e) => setWebsite(e.target.value)}
+                  value={formData.website}
+                  onChange={(e) =>
+                    setFormData((prevFormData) => ({
+                      ...prevFormData,
+                      website: e.target.value,
+                    }))
+                  }
                   placeholder="Site Web"
                   className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                 />
@@ -407,8 +338,13 @@ export default function RegisterCompany({ onSubmit }) {
                 <FaPenAlt className="absolute left-3 top-3 text-gray-400" />
                 <textarea
                   id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  value={formData.description}
+                  onChange={(e) => {
+                    setFormData((prevFormData) => ({
+                      ...prevFormData,
+                      description: e.target.value,
+                    }));
+                  }}
                   placeholder="Description"
                   className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                   rows="5"
@@ -430,15 +366,25 @@ export default function RegisterCompany({ onSubmit }) {
                 multiple
                 onChange={handlePhotosChange}
                 className="hidden"
+                disabled={isDisabled}
               />
+              {error && <p className="text-red-500">{error}</p>}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-4 w-full">
                 {photoUrls.map((url, index) => (
-                  <img
-                    key={index}
-                    src={url}
-                    alt={`Photo ${index + 1}`}
-                    className="h-40 w-40 col-span-1 object-cover rounded-lg justify-self-center"
-                  />
+                  <div key={index} className="relative">
+                    <img
+                      key={index}
+                      src={url}
+                      alt={`Photo ${index + 1}`}
+                      className="h-40 w-40 col-span-1 object-cover rounded-lg justify-self-center"
+                    />
+                    <button
+                      className="absolute top-0 right-0 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                      onClick={() => handleDeletePhoto(index)}
+                    >
+                      X
+                    </button>
+                  </div>
                 ))}
               </div>
             </div>
@@ -447,7 +393,7 @@ export default function RegisterCompany({ onSubmit }) {
             <button
               type="submit"
               onClick={handleSubmit}
-              className="flex w-full dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text items-center justify-center w-44 h-12 mr-2 border border-neutral-300 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+              className="flex w-full dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text items-center justify-center h-12 mr-2 border border-neutral-300 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
             >
               Soumettre
             </button>

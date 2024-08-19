@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
-import { useState, useContext, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 import { useModal } from "../../context/ModalContext";
@@ -17,7 +16,7 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const [user, setUser] = useAtom(userAtom);
+  const [user] = useAtom(userAtom);
   const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -43,9 +42,6 @@ const Navbar = () => {
     };
   }, []);
 
-  const handleLogout = () => {
-    setUser({ ...user, isLogged: false });
-  };
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -69,14 +65,10 @@ const Navbar = () => {
     navigate(newUserType === "client" ? "/home-client" : "/home-enterprise");
   };
 
-  // Base URL for avatars
-  const baseAvatarUrl = "http://localhost:8080/api";
-
-  // Construct avatar URL
+  // Correct avatar URL directly from profile data
   const avatarUrl = profile?.avatar
-    ? `${baseAvatarUrl}${user.avatar}`
+    ? profile.avatar
     : "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp";
-  console.log("Avatar URL:", avatarUrl);
   return (
     <>
       <div className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full max-w-full z-50 mt-4">
@@ -198,19 +190,17 @@ const Navbar = () => {
               <div
                 tabIndex="0"
                 role="button"
-                className="btn btn-ghost btn-circle avatar"
+                className="btn btn-ghost btn-circle flex items-center justify-center w-10 h-10 hover:border hover:border-[#67FFCC] rounded-full overflow-hidden"
                 onClick={toggleDropdown}
               >
                 {user.isLogged ? (
-                  <div className="w-10 rounded-full">
-                    <img
-                      className="rounded-full hover:outline hover:outline-orange-300"
-                      alt="User Avatar"
-                      src={avatarUrl} // Use computed avatar URL
-                    />
-                  </div>
+                  <img
+                    className="w-full h-full object-cover rounded-full"
+                    alt="User Avatar"
+                    src={avatarUrl} //
+                  />
                 ) : (
-                  <FaUserCircle className="w-10 h-10 dark:text-white text-black" />
+                  <FaUserCircle className="w-10 h-10 text-black dark:text-white" />
                 )}
               </div>
               <AnimatePresence>
@@ -261,6 +251,7 @@ const Navbar = () => {
                 )}
               </AnimatePresence>
             </div>
+
             {!isSelectionPage && (
               <div className="md:hidden flex items-center mr-2 lg:mr-9">
                 <button onClick={toggleMobileMenu}>

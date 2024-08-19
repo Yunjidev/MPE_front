@@ -15,7 +15,7 @@ const Jumbotron = ({ isDarkMode }) => {
                 <img src={proparticul} alt='proparticul' />
                 <p className="text-4xl font-bold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">Développez votre activité locale.</p>
                 <p className="mb-8 text-4xl font-bold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">Des professionnels près de chez vous.</p>
-                <p className='mt-8 dark:text-neutral-200 text-black'>La plateforme idéale pour connecter les petites entreprises locales avec les clients à la recherche de leurs services.</p>
+                <p className='mt-8 dark:text-white text-black'>La plateforme idéale pour connecter les petites entreprises locales avec les clients à la recherche de leurs services.</p>
 
                 <div className="flex flex-col mt-8 space-y-4 sm:flex-row sm:justify-center lg:justify-start sm:space-y-0">
                     <Link to="/about" className="flex dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text items-center justify-center w-44 h-12 mr-2 border border-neutral-300 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
