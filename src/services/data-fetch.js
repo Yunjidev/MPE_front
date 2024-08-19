@@ -21,36 +21,32 @@ export async function getData(object) {
 
 export async function postData(object, data) {
   try {
-    const response = await ky
-      .post(BASE_URL + object, { headers: setHeaders(), json: data })
-      .json();
-    return response;
+    const options = {
+      headers: setHeaders(),
+      body: data,
+    };
+    if (!(data instanceof FormData)) {
+      options.headers["Content-Type"] = "application/json";
+    }
+    const response = await ky.post(BASE_URL + object, options);
+    return response.json();
   } catch (error) {
     console.log("Error:", error);
     throw error;
   }
 }
 
-export async function putData(object, data, options = {}) {
+export async function putData(object, data) {
   try {
-    console.log("Data to PUT:", data);
-
-    // Préparer les options pour la requête
-    const requestOptions = {
-      method: 'PUT',
+    const options = {
+      headers: setHeaders(),
       body: data,
-      ...options,
     };
-
-    // Si on n'a pas déjà défini les headers, on les ajoute
-    if (!requestOptions.headers) {
-      requestOptions.headers = setHeaders();
+    if (!(data instanceof FormData)) {
+      options.headers["Content-Type"] = "application/json";
     }
-
-    // Pour FormData, ne pas inclure `Content-Type` dans les headers
-    // car `ky` le gère automatiquement
-    const response = await ky(BASE_URL + object, requestOptions).json();
-    return response;
+    const response = await ky.put(BASE_URL + object, options);
+    return response.json();
   } catch (error) {
     console.log("Error:", error);
     if (error.response) {
