@@ -13,7 +13,7 @@ const EnterpriseDetails = ({ enterprise }) => {
             <img 
               src={enterprise.logo} 
               alt="Logo" 
-              className="w-24 h-24 rounded-lg mb-2" 
+              className="w-24 h-24 rounded-full mb-2" 
             />
           ) : (
             <div className="w-24 h-24 bg-gray-700 rounded-full flex items-center justify-center mb-2">
@@ -85,6 +85,7 @@ const EnterpriseDetails = ({ enterprise }) => {
 
       <div className="flex items-center">
         <StarRating rating={Math.round(enterprise.averageRating)} />
+        <p className="ml-2 text-lg font-semibold">{enterprise.averageRating.toFixed(1)}</p>
       </div>
     </div>
   );

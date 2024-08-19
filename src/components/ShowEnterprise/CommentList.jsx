@@ -30,9 +30,10 @@ const CommentList = ({ offers }) => {
                 <p className="font-semibold">
                   {rating.user?.username || 'Utilisateur'}
                 </p>
+                <span className="text-sm text-gray-400">{offer.name}</span>
                 <div className="flex items-center">
                   <StarRating rating={parseInt(rating.note, 10)} />
-                  <span className="ml-2 text-sm text-gray-400">{offer.name}</span>
+                  <span className="ml-2 text-sm text-gray-400">{rating.note}/5</span>
                 </div>
               </div>
             </div>
