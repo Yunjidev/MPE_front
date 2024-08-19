@@ -31,18 +31,38 @@ export async function postData(object, data) {
   }
 }
 
-export async function putData(object, data) {
+export async function putData(object, data, options = {}) {
   try {
     console.log("Data to PUT:", data);
-    const response = await ky
-      .put(BASE_URL + object, { headers: setHeaders(), json: data })
-      .json();
+
+    // Préparer les options pour la requête
+    const requestOptions = {
+      method: 'PUT',
+      body: data,
+      ...options,
+    };
+
+    // Si on n'a pas déjà défini les headers, on les ajoute
+    if (!requestOptions.headers) {
+      requestOptions.headers = setHeaders();
+    }
+
+    // Pour FormData, ne pas inclure `Content-Type` dans les headers
+    // car `ky` le gère automatiquement
+    const response = await ky(BASE_URL + object, requestOptions).json();
     return response;
   } catch (error) {
     console.log("Error:", error);
+    if (error.response) {
+      const errorText = await error.response.text();
+      console.log("Error Response Text:", errorText);
+    } else {
+      console.log("Error Message:", error.message);
+    }
     throw error;
   }
 }
+
 // Fonction pour supprimer les données
 export async function deleteData(object) {
   try {

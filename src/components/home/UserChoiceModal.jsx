@@ -26,13 +26,13 @@ const UserChoiceModal = () => {
           <h2 className="text-center text-3xl font-bold mb-10 text-white">Êtes-vous particulier ou professionnel ?</h2>
           <div className="w-80 flex justify-evenly">
             <button 
-              className="flex items-center justify-center w-28 h-12 bg-gray-800 hover:bg-gradient-to-r hover:from-violet-400 hover:via-orange-400 hover:to-green-300 text-white font-bold rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out" 
+              className="flex items-center justify-center w-28 h-12 bg-gray-800 hover:bg-gradient-to-r hover:from-violet-400 hover:via-orange-400 hover:to-green-300 hover:text-black text-white font-bold rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out" 
               onClick={() => handleChoice('client')}
             >
               Particulier
             </button>
             <button 
-              className="flex items-center justify-center w-28 h-12 bg-gray-800 hover:bg-gradient-to-r hover:from-violet-400 hover:via-orange-400 hover:to-green-300 text-white font-bold rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out" 
+              className="flex items-center justify-center w-28 h-12 bg-gray-800 hover:bg-gradient-to-r hover:from-violet-400 hover:via-orange-400 hover:to-green-300 hover:text-black text-white font-bold rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out" 
               onClick={() => handleChoice('enterprise')}
             >
               Professionnel

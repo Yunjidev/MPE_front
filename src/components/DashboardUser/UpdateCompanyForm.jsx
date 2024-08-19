@@ -14,11 +14,14 @@ import {
 import { FaXTwitter, FaInstagram, FaFacebook } from "react-icons/fa6";
 import { MdOutlineAlternateEmail, MdOutlineAreaChart } from "react-icons/md";
 import { CgWebsite } from "react-icons/cg";
-import { postData, getData } from "../../services/data-fetch";
+import { putData, getData } from "../../services/data-fetch";
 import { UserContext } from "../../context/UserContext";
+import { useParams } from "react-router-dom";
 
-export default function RegisterCompany({ onSubmit }) {
-  const { user } = useContext(UserContext); // Utilisation du contexte utilisateur
+export default function UpdateCompany({ onSubmit }) {
+  const { user } = useContext(UserContext);
+  const { enterpriseId } = useParams();
+  const [companyId, setCompanyId] = useState(null);
 
   const [name, setName] = useState(user?.name || "");
   const [phone, setPhone] = useState(user?.phone || "");
@@ -41,8 +44,60 @@ export default function RegisterCompany({ onSubmit }) {
 
   const [jobOptions, setJobOptions] = useState([]);
   const [regionOptions, setRegionOptions] = useState([]);
+
   useEffect(() => {
-    const fetchJobs = async () => {
+    if (!enterpriseId) {
+      console.error("No enterprise ID provided in the URL");
+      return;
+    }
+
+    const fetchUserData = async () => {
+      const userInfo = await getData("user/profile");
+
+      if (
+        !userInfo ||
+        !userInfo.enterprises ||
+        userInfo.enterprises.length === 0
+      ) {
+        console.error("No enterprises available for this user");
+        return;
+      }
+
+      const id = parseInt(enterpriseId, 10); // Convertir en entier
+      setCompanyId(id);
+
+      try {
+        const company = await getData(`enterprise/${id}`);
+        if (!company) {
+          console.error("Company data is not available");
+          return;
+        }
+
+        setName(company.name || "");
+        setPhone(company.phone || "");
+        setMail(company.mail || "");
+        setAdress(company.adress || "");
+        setCity(company.city || "");
+        setZipCode(company.zip_code || "");
+        setSiretNumber(company.siret_number || "");
+        setActivity(company.job?.name || "");
+        setTwitter(company.twitter || "");
+        setInstagram(company.instagram || "");
+        setFacebook(company.facebook || "");
+        setDescription(company.description || "");
+        setRegion(company.country?.name || "");
+        setWebsite(company.website || "");
+        setLogoUrl(company.logo || "");
+      } catch (error) {
+        console.error("Error fetching company data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, [enterpriseId]);
+
+  useEffect(() => {
+    const fetchJobOptions = async () => {
       try {
         const jobs = await getData("jobs");
         setJobOptions(jobs);
@@ -51,65 +106,58 @@ export default function RegisterCompany({ onSubmit }) {
       }
     };
 
-    const fetchRegions = async () => {
+    const fetchRegionOptions = async () => {
       try {
         const countries = await getData("countries");
-        const regions = countries.map((country) => country);
-        setRegionOptions(regions);
+        setRegionOptions(countries);
       } catch (error) {
         console.error("Failed to fetch regions:", error);
       }
     };
 
-    fetchJobs();
-    fetchRegions();
+    fetchJobOptions();
+    fetchRegionOptions();
   }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const company = {
-      name,
-      phone,
-      mail,
-      adress,
-      city,
-      zip_code: zipCode,
-      siret_number: siretNumber,
-      Job_id: activity,
-      description,
-      Country_id: region,
-      twitter,
-      instagram,
-      facebook,
-      website,
-      photos: [],
+      name: name.trim(), // Enlevez les espaces inutiles
+      phone: phone.trim(),
+      mail: mail.trim(),
+      adress: adress.trim(),
+      city: city.trim(),
+      zip_code: zipCode.trim(),
+      siret_number: siretNumber.trim(),
+      Job_id: activity ? parseInt(activity, 10) : null,
+      description: description.trim(),
+      Country_id: region ? parseInt(region, 10) : null,
+      twitter: twitter.trim(),
+      instagram: instagram.trim(),
+      facebook: facebook.trim(),
+      website: website.trim(),
+      logo: logo ? logo : null,
     };
-  
-    if (logo) {
-      company.logo = logo;
-    }
-  
-    photos.forEach((photo, index) => {
-      company.photos[index] = photo;
-    });
-  
+
+    // Affichez les données envoyées pour débogage
+    console.log("Données envoyées au serveur:", company);
+
     try {
-      const response = await postData("enterprise", company);
+      const response = await putData(`enterprise/${companyId}`, company);
+      console.log("Mise à jour effectuée !", response);
+      alert("Entreprise mise à jour !");
+      if (onSubmit) {
+        onSubmit(response);
+      }
     } catch (error) {
-      console.error("Erreur lors de la soumission du formulaire:", error);
-  
       if (error.response) {
-        const status = error.response.status;
-        if (status === 422) {
-          const errorDetails = await error.response.json();
-          const validationErrors = errorDetails.errors || {};
-        } else {
-          const errorText = await error.response.text();
-        }
+        const errorText = await error.response.text();
+        console.error("Error Response Text:", errorText);
+      } else {
+        console.error("Error Message:", error.message);
       }
     }
-  
-    alert("Entreprise enregistrée");
   };
 
   const handleLogoChange = (e) => {
@@ -201,7 +249,7 @@ export default function RegisterCompany({ onSubmit }) {
         <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
         <div className="bg-neutral-900 p-10 rounded-xl shadow-xl relative z-10 transform transition duration-500 ease-in-out">
           <h2 className="text-white text-center text-2xl mb-5">
-            Création d'entreprise
+            Mise à jour d'entreprise
           </h2>
           <hr className="w-1/2 my-4 border-t-2 border-gray-400 mx-auto" />
           <form
@@ -301,11 +349,11 @@ export default function RegisterCompany({ onSubmit }) {
                   id="region"
                   value={region}
                   onChange={(e) => setRegion(e.target.value)}
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-green-400 focus:border-green-400"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                 >
                   <option value="">Région</option>
-                  {regionOptions.map((option, index) => (
-                    <option key={option} value={index + 1}>
+                  {regionOptions.map((option) => (
+                    <option key={option.id} value={option.id}>
                       {option.name}
                     </option>
                   ))}
@@ -339,11 +387,11 @@ export default function RegisterCompany({ onSubmit }) {
                   id="job"
                   value={activity}
                   onChange={(e) => setActivity(e.target.value)}
-                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-green-400 focus:border-green-400"
+                  className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
                 >
                   <option value="">Secteur d'activité</option>
-                  {jobOptions.map((option, index) => (
-                    <option key={option.id} value={index + 1}>
+                  {jobOptions.map((option) => (
+                    <option key={option.id} value={option.id}>
                       {option.name}
                     </option>
                   ))}
@@ -358,7 +406,7 @@ export default function RegisterCompany({ onSubmit }) {
                 value={twitter}
                 onChange={(e) => setTwitter(e.target.value)}
                 placeholder="Twitter"
-                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-gray-400 focus:outline-none focus:ring-green-400 focus:border-green-400"
+                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
               />
             </div>
             <div className="relative flex items-center justify-end">
@@ -452,6 +500,6 @@ export default function RegisterCompany({ onSubmit }) {
   );
 }
 
-RegisterCompany.propTypes = {
-  onSubmit: PropTypes.func,
+UpdateCompany.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 };

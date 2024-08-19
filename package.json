@@ -18,8 +18,10 @@
     "antd": "^5.20.1",
 >>>>>>> 75f2160b142f09dfdd8b14fa25ea5f60fc990971
     "axios": "^1.7.3",
+    "chart.js": "^4.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
     "flowbite": "^2.4.1",
     "flubber": "^0.4.2",
     "framer-motion": "^12.0.0-alpha.0",
@@ -32,7 +34,8 @@
     "prop-types": "^15.8.1",
     "ra-data-json-server": "^5.1.1",
     "react": "^18.3.1",
-    "react-admin": "^5.1.1",
+    "react-apexcharts": "^1.4.1",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.52.2",
     "react-icon-cloud": "^4.1.4",
@@ -40,6 +43,7 @@
     "react-router-dom": "^6.25.1",
     "react-table": "^7.8.0",
     "react-toastify": "^10.0.5",
+    "recharts": "^2.12.7",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7"
   },

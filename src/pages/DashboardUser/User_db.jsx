@@ -6,7 +6,7 @@ import OffersList from '@/components/DashboardUser/OffersList';
 
 const Companydb = () => {
     return (
-        <div className="bg-neutral-600 text-white p-6 rounded-lg max-w-8xl mt-12 mb-8">
+        <div className="dark:bg-neutral-900 bg-white text-white p-6 rounded-lg max-w-8xl mt-12 mb-8">
             <h2 className="text-2xl font-semibold mb-4 text-green-400">Gestion du Profil</h2>
             <hr className="w-11/12 mb-12" />
             <div className="flex flex-wrap">
