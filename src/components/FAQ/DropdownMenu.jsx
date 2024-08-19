@@ -12,7 +12,7 @@ const DropdownMenu = ({ category, items }) => {
   return (
     <div className="my-4">
       <div
-        className="flex justify-between items-center bg-black-900 py-3 px-6 rounded cursor-pointer border border-transparent hover:dark:border-orange-400 hover:border-violet-400 rounded shadow-sm dark:shadow-orange-400 shadow-violet-400"
+        className="flex justify-between items-center bg-black-900 py-3 px-6 rounded cursor-pointer border border-transparent hover:dark:border-violet-400 hover:border-violet-400 rounded shadow-sm dark:shadow-violet-400 shadow-violet-400"
         onClick={handleToggle}
         aria-expanded={isOpen}
         aria-controls="dropdown-menu-content"
@@ -26,7 +26,7 @@ const DropdownMenu = ({ category, items }) => {
           className="p-2"
           onClick={handleToggle}
         >
-          <IoIosArrowDown className={`w-6 h-6 bg-none text-violet-600 dark:text-orange-400 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+          <IoIosArrowDown className={`w-6 h-6 bg-none text-violet-600 dark:text-violet-400 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
         </button>
       </div>
       {isOpen && (
@@ -34,7 +34,7 @@ const DropdownMenu = ({ category, items }) => {
           {items.map((item, index) => (
             <div
               key={index}
-              className="bg-black-900 dark:bg-black-900 py-2 px-4 rounded shadow-sm shadow-violet-400 dark:shadow-orange-400"
+              className="bg-black-900 dark:bg-black-900 py-2 px-4 rounded shadow-sm shadow-violet-400 dark:shadow-violet-400"
             >
               <h3 className="font-bold text-black dark:text-gray-100">{item.question}</h3>
               <p className="text-black dark:text-gray-300">{item.answer}</p>

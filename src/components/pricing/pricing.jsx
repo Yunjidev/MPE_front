@@ -75,12 +75,12 @@ export default function Pricing() {
                 <div className='mt-16 justify-center gap-6 sm:grid sm:grid-cols-2 sm:space-y-0 lg:grid-cols-3'>
                     {
                         plans1.map((item, idx) => (
-                            <div key={idx} className={`relative flex-1 flex flex-col items-stretch rounded-xl border-2 mt-6 bg-transparent dark:bg-neutral-900 border-2 border-green-400 shadow-lg neon-vert hover:scale-105 transform transition duration-500 ease-in-out sm:mt-0 ${item.isMostPop ? "mt-10" : ""}`}>
+                            <div key={idx} className={`relative flex-1 flex flex-col items-stretch rounded-xl border-2 mt-6 bg-transparent dark:bg-neutral-900 border-2 border-[#67FFCC] shadow-lg neon-vert hover:scale-105 transform transition duration-500 ease-in-out sm:mt-0 ${item.isMostPop ? "mt-10" : ""}`}>
                                 {item.isMostPop ? (
                                     <span className="w-32 absolute -top-5 left-0 right-0 mx-auto px-3 py-2 rounded-full border shadow-md bg-green-400 text-center text-black text-sm font-semibold">Le + populaire</span>
                                 ) : ""}
                                 <div className="p-8 space-y-4 text-center">
-                                    <span className='text-green-500 dark:text-green-200 font-bold text-4xl flex justify-evenly items-center'>
+                                    <span className='text-[#67FFCC] dark:text-[#67FFCC] font-bold text-4xl flex justify-evenly items-center'>
                                         {item.name}
                                     </span>
                                     <div className='dark:text-white text-black text-5xl font-semibold'>
@@ -111,7 +111,7 @@ export default function Pricing() {
                                     }
                                 </ul>
                                 <div className="p-8 pt-0 flex flex-col items-center">
-                                    <Link to='/pricing' className='px-6 py-3 text-center rounded-lg w-4/5 font-semibold text-sm duration-150 text-black bg-green-400 hover:bg-green-500 active:bg-green-700'>
+                                    <Link to='/pricing' className='px-6 py-3 text-center rounded-lg w-4/5 font-semibold text-sm duration-150 text-black bg-[#67FFCC] hover:bg-green-300 active:bg-green-700'>
                                         Découvrir
                                     </Link>
                                 </div>

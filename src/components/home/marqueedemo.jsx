@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { cn } from "../../@/lib/utils";
 import Marquee from "../../@/components/magicui/marquee";
 import './spot.css';
@@ -73,7 +74,7 @@ export function MarqueeDemo() {
   return (
     <>
     <div className="flex flex-col items-center">
-    <p className="text-3xl font-bold dark:bg-gradient-to-r dark:from-green-200 dark:to-green-400 bg-gradient-to-r from-green-400 to-green-800 text-transparent bg-clip-text">Découvrez </p>
+    <p className="text-3xl font-bold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-black to-[#67FFCC] text-transparent bg-clip-text">Découvrez </p>
     <p className="text-4xl font-bold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">Nos entreprises Premium</p>
     </div>
     <div className="relative top-10 lg:top-16 flex h-auto w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-background ">
