@@ -4,6 +4,7 @@ import { getData } from '../../services/data-fetch';
 import AsyncSelect from 'react-select/async';
 import './indexsearchbarentreprises.css';
 import { toast } from "react-toastify";
+import Rating from 'react-rating-stars-component';
 
 
 
@@ -38,7 +39,11 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
             .filter(item => item.city && item.city.toLowerCase().includes(inputValue.toLowerCase()))
             .map(item => ({ label: item.city, value: item.id }));
           break;
-        // Ajoutez d'autres cas au besoin
+        case 'averageRating':
+          options = response
+            .filter(item => item.averageRating && item.averageRating.toString().startsWith(inputValue))
+            .map(item => ({ label:item.averageRating, value: item.averageRating }));
+          break;
         default:
           options = [];
       }
@@ -88,7 +93,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         return jobMatch && countryMatch && cityMatch && ratingMatch;
       }).map(entreprise => ({
         ...entreprise,
-        logo: JSON.parse(entreprise.logo || '[]') // Parsez le logo ici
+        logo: entreprise.logo  
       }));
 
       console.log('Filtrés:', filteredResponse);
@@ -112,6 +117,20 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
     setSelectedCities([]);
     setSelectedRatings([]);
     resetSearch();
+  };
+
+  // Fonction pour afficher les étoiles de notation
+  const renderRatingStars = (ratingValue) => {
+    return (
+      <Rating
+        count={5}
+        value={ratingValue}
+        size={24}
+        activeColor="#ffd700"
+        isHalf={true}
+        edit={false}
+      />
+    );
   };
 
   return (
@@ -163,13 +182,13 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
 
 
 
-<div className="checkbox-container">
-  <label className="checkbox-label">
-    Premium
-    <input type="checkbox" defaultChecked className="checkbox" />
-    <span className="checkmark"></span>
-  </label>
-</div>
+      <div className="checkbox-container">
+        <label className="checkbox-label">
+          Premium
+          <input type="checkbox" defaultChecked className="checkbox" />
+          <span className="checkmark"></span>
+        </label>
+      </div>
 
       <AsyncSelect
         cacheOptions
@@ -183,15 +202,21 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         placeholder="Notes"
         noOptionsMessage={() => "Pas de notes disponibles"}
         loadingMessage={() => "Chargement ..."}
+        formatOptionLabel={(option) => (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            {renderRatingStars(option.value)}
+            <span style={{ marginLeft: '10px' }}>{option.label}</span>
+          </div>
+        )}
       />
 
       <div className="indicator flex gap-2">
-        
+
         <button onClick={removeLastSearch} className="custom-btn">Supprimer les critères de recherche</button>
         <button onClick={performSearch} className="custom-btn perform-search"><HiSearch /></button>
       </div>
 
-      
+
 
     </div>
 

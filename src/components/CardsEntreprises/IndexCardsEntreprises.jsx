@@ -5,7 +5,7 @@ import { postData } from '../../services/data-fetch';
 
 
 const IndexCardsEntreprises = ({ entreprise, userId }) => {
-  console.log('Entreprise object:', entreprise); // Pour déboguer
+  // console.log('Entreprise object:', entreprise); // Pour déboguer
 
   const { id, name, city, zip_code, job, nextAvailableDate, logo } = entreprise;
 
