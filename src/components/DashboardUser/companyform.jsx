@@ -41,6 +41,7 @@ export default function RegisterCompany({ onSubmit }) {
 
   const [jobOptions, setJobOptions] = useState([]);
   const [regionOptions, setRegionOptions] = useState([]);
+
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -66,7 +67,7 @@ export default function RegisterCompany({ onSubmit }) {
   }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const company = {
       name,
       phone,
@@ -84,20 +85,24 @@ export default function RegisterCompany({ onSubmit }) {
       website,
       photos: [],
     };
-  
+
     if (logo) {
       company.logo = logo;
     }
-  
+
     photos.forEach((photo, index) => {
       company.photos[index] = photo;
     });
-  
+
     try {
       const response = await postData("enterprise", company);
+      if (response.ok) {
+        alert("Entreprise créée"); 
+      }
     } catch (error) {
       console.error("Erreur lors de la soumission du formulaire:", error);
-  
+      alert("Erreur lors de la soumission du formulaire");
+
       if (error.response) {
         const status = error.response.status;
         if (status === 422) {
@@ -108,8 +113,7 @@ export default function RegisterCompany({ onSubmit }) {
         }
       }
     }
-  
-    alert("Entreprise enregistrée");
+
   };
 
   const handleLogoChange = (e) => {
