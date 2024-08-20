@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { postData } from "../../services/data-fetch"; // Assurez-vous que cette fonction est bien définie
+import { useNavigate } from "react-router-dom";
 
 const ForgotPasswordForm = () => {
   const {
@@ -9,13 +10,24 @@ const ForgotPasswordForm = () => {
     formState: { errors },
   } = useForm();
   const [message, setMessage] = useState("");
+  const navigate = useNavigate(); // Initialiser useNavigate
 
   const onSubmit = async (data) => {
-    const response = await postData("forgot-password", { email: data.email });
-    setMessage(
-      response.message ||
-        "Veuillez vérifier votre email pour réinitialiser votre mot de passe."
-    );
+    try {
+      const response = await postData("forgot-password", { email: data.email });
+      setMessage(
+        response.message ||
+          "Veuillez vérifier votre email pour réinitialiser votre mot de passe."
+      );
+
+      // Afficher une alerte
+      alert("Un lien de réinitialisation a été envoyé à votre adresse e-mail.");
+
+      // Redirection vers /home
+      navigate("/home-client");
+    } catch (error) {
+      setMessage("Une erreur est survenue. Veuillez réessayer.");
+    }
   };
 
   return (

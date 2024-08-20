@@ -41,7 +41,7 @@ import AcceptCompanyPage from "./pages/DashboardAdmin/Accept_company";
 import Company from "./pages/DashboardAdmin/ValidatedCompaniesPage";
 import ManageUser from "./pages/DashboardAdmin/UsersPage";
 import DeleteAccount from "./components/DashboardUser/DeleteAccount";
-import ResetPasswordForm from "./components/DashboardUser/ResetPassword";
+import UpdatePassWord from "./components/DashboardUser/UpdatePassword";
 import ForgotPasswordForm from "./components/DashboardUser/ForgotPassword";
 
 // Protected Routes
@@ -96,10 +96,13 @@ function App() {
                         path="register-company"
                         element={<RegisterCompany />}
                       />
-                      <Route path="security" element={<ResetPasswordForm />} />
+                      <Route
+                        path="update-password"
+                        element={<UpdatePassWord />}
+                      />
                       <Route path="deleteAccount" element={<DeleteAccount />} />
                       <Route
-                        path="forgotPassword"
+                        path="forgot-password"
                         element={<ForgotPasswordForm />}
                       />
                       {/* Routes protégées pour les entrepreneurs */}

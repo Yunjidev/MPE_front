@@ -19,19 +19,26 @@ export async function getData(object) {
   }
 }
 
-export async function postData(object, data) {
+export async function postData(endpoint, data) {
   try {
     const options = {
       headers: setHeaders(),
-      body: data,
+      method: 'POST',
+      body: data instanceof FormData ? data : JSON.stringify(data),
     };
     if (!(data instanceof FormData)) {
-      options.headers["Content-Type"] = "application/json";
+      options.headers['Content-Type'] = 'application/json';
     }
-    const response = await ky.post(BASE_URL + object, options);
+
+    const response = await ky.post(BASE_URL + endpoint, options);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
     return response.json();
   } catch (error) {
-    console.log("Error:", error);
+    console.error('Error during POST request:', error);
     throw error;
   }
 }
