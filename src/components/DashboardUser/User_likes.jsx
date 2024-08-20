@@ -46,7 +46,9 @@ const LikesManagement = () => {
               <span>❤️ {enterprises[favorite.Enterprise_id]?.name}</span>
               <button
                 className="bg-white text-black px-3 rounded-lg hover:bg-gray-300"
-                onClick={() => navigate(`/enterprise/${favorite.Enterprise_id}`)} // Navigate to the enterprise detail page
+                onClick={() =>
+                  navigate(`/enterprise/${favorite.Enterprise_id}`)
+                } // Navigate to the enterprise detail page
               >
                 Voir fiche
               </button>
