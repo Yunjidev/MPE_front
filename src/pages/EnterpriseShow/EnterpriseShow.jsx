@@ -45,10 +45,10 @@ const EnterpriseShow = () => {
       <div className="flex flex-col md:flex-row">
         <PhotoGallery photos={enterprise.photos} openPopup={openPopup} />
         
-        <div className="md:w-2/3 flex flex-col justify-between p-6 rounded-lg">
+        <div className="md:w-2/3 flex flex-col ">
           <EnterpriseDetails enterprise={enterprise} />
           
-          <p className="mt-6 text-sm bg-neutral-700 p-4 rounded-lg max-w-72">
+          <p className=" text-sm bg-neutral-700 p-4 rounded-xl ">
             {enterprise.description}
           </p>
         </div>
