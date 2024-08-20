@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { HiSearch } from "react-icons/hi";
 import { getData } from '../../services/data-fetch';
-import AsyncSelect from 'react-select/async';
 import './indexsearchbarentreprises.css';
 import { toast } from "react-toastify";
 import Rating from 'react-rating-stars-component';
 
+import CitySelect from './CitySelect';
+import CountrySelect from './Countryselect';
+import JobSelect from './Jobselect';
+import PremiumCheckbox from './PremiumCheckbox';
+import RatingSelect from './RatingSelect';
 
 
 const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
@@ -63,18 +67,18 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
       const response = await getData('enterprises/validate');
 
       // Affichage des sélections actuelles pour le débogage
-      console.log('Sélections actuelles:', {
-        jobs: selectedJobs,
-        countries: selectedCountries,
-        cities: selectedCities,
-        ratings: selectedRatings
-      });
+      // console.log('Sélections actuelles:', {
+      //   jobs: selectedJobs,
+      //   countries: selectedCountries,
+      //   cities: selectedCities,
+      //   ratings: selectedRatings
+      // });
 
-      // Assurez-vous que les ID correspondent aux valeurs attendues
-      console.log('Exemple de données reçues pour les jobs:', response.map(item => item.job));
-      console.log('Exemple de données reçues pour les pays:', response.map(item => item.country));
-      console.log('Exemple de données reçues pour les villes:', response.map(item => item.city));
-      console.log('Exemple de données reçues pour les notes:', response.map(item => item.averageRating));
+      // // Assurez-vous que les ID correspondent aux valeurs attendues
+      // console.log('Exemple de données reçues pour les jobs:', response.map(item => item.job));
+      // console.log('Exemple de données reçues pour les pays:', response.map(item => item.country));
+      // console.log('Exemple de données reçues pour les villes:', response.map(item => item.city));
+      // console.log('Exemple de données reçues pour les notes:', response.map(item => item.averageRating));
 
       // Filtrage des résultats en fonction des sélections de l'utilisateur
       const filteredResponse = response.filter(entreprise => {
@@ -84,12 +88,12 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         const ratingMatch = selectedRatings.length === 0 || selectedRatings.some(rating => entreprise.averageRating && entreprise.averageRating.toString() === rating.label);
 
         // Affichage des résultats de la correspondance pour le débogage
-        console.log(`Résultats de la correspondance pour l'entreprise ${entreprise.name}:`, {
-          jobMatch,
-          countryMatch,
-          cityMatch,
-          ratingMatch
-        });
+        // console.log(`Résultats de la correspondance pour l'entreprise ${entreprise.name}:`, {
+        //   jobMatch,
+        //   countryMatch,
+        //   cityMatch,
+        //   ratingMatch
+        // });
         return jobMatch && countryMatch && cityMatch && ratingMatch;
       }).map(entreprise => ({
         ...entreprise,
@@ -134,94 +138,18 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
   };
 
   return (
-
-    <div className="join pt-8 pb-10  flex items-center justify-center">
-
-      <AsyncSelect
-        isMulti
-        cacheOptions
-        loadOptions={(inputValue) => loadOptions(inputValue, 'job')}
-        onChange={(selectedOptions) => setSelectedJobs(selectedOptions.map(option => ({ label: option.label })))}
-        defaultOptions
-        value={selectedJobs}
-        classNamePrefix="react-select-container"
-        className="react-select-container first-select"
-        placeholder="Métiers"
-        noOptionsMessage={() => "Aucun métier trouvé"}
-        loadingMessage={() => "Chargement ..."}
-      />
-
-      <AsyncSelect
-        cacheOptions
-        isMulti
-        loadOptions={(inputValue) => loadOptions(inputValue, 'country')}
-        onChange={setSelectedCountries}
-        defaultOptions
-        value={selectedCountries}
-        classNamePrefix="react-select-container"
-        className="react-select-container"
-        placeholder="Région"
-        noOptionsMessage={() => "Aucune région trouvée"}
-        loadingMessage={() => "Chargement ..."}
-      />
-
-
-      <AsyncSelect
-        cacheOptions
-        isMulti
-        loadOptions={(inputValue) => loadOptions(inputValue, 'city')}
-        onChange={setSelectedCities}
-        value={selectedCities}
-        defaultOptions
-        classNamePrefix="react-select-container"
-        className="react-select-container"
-        placeholder="Ville"
-        noOptionsMessage={() => "Aucune ville trouvée"}
-        loadingMessage={() => "Chargement ..."}
-      />
-
-
-
-      <div className="checkbox-container">
-        <label className="checkbox-label">
-          Premium
-          <input type="checkbox" defaultChecked className="checkbox" />
-          <span className="checkmark"></span>
-        </label>
-      </div>
-
-      <AsyncSelect
-        cacheOptions
-        isMulti
-        loadOptions={(inputValue) => loadOptions(inputValue, 'averageRating')}
-        onChange={setSelectedRatings}
-        value={selectedRatings}
-        defaultOptions
-        classNamePrefix="react-select-container"
-        className="react-select-container"
-        placeholder="Notes"
-        noOptionsMessage={() => "Pas de notes disponibles"}
-        loadingMessage={() => "Chargement ..."}
-        formatOptionLabel={(option) => (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            {renderRatingStars(option.value)}
-            <span style={{ marginLeft: '10px' }}>{option.label}</span>
-          </div>
-        )}
-      />
-
+    <div className="join pt-8 pb-10 flex items-center justify-center">
+      <JobSelect selectedJobs={selectedJobs} setSelectedJobs={setSelectedJobs} loadOptions={loadOptions} />
+      <CountrySelect selectedCountries={selectedCountries} setSelectedCountries={setSelectedCountries} loadOptions={loadOptions} />
+      <CitySelect selectedCities={selectedCities} setSelectedCities={setSelectedCities} loadOptions={loadOptions} />
+      <RatingSelect selectedRatings={selectedRatings} setSelectedRatings={setSelectedRatings} loadOptions={loadOptions} renderRatingStars={renderRatingStars} />
+      <PremiumCheckbox />
       <div className="indicator flex gap-2">
-
         <button onClick={removeLastSearch} className="custom-btn">Supprimer les critères de recherche</button>
         <button onClick={performSearch} className="custom-btn perform-search"><HiSearch /></button>
       </div>
-
-
-
     </div>
-
-
-
   );
 };
+
 export default IndexSearchbarEntreprises;
