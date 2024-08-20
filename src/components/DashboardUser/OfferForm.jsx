@@ -37,7 +37,7 @@ export default function OfferForm({ onSubmit }) {
     }
 
     try {
-      const response = await postData(`/enterprise/${id}/offers`, offer, user.token); // Corriger l'URL pour correspondre à la logique de votre API
+      const response = await postData(`enterprise/${id}/offers`, offer, user.token); // Corriger l'URL pour correspondre à la logique de votre API
       alert("Offre créée avec succès");
       onSubmit(response);  // Appelle une fonction de rappel pour gérer le succès
     } catch (error) {
