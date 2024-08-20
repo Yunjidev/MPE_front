@@ -43,6 +43,7 @@ import ManageUser from "./pages/DashboardAdmin/UsersPage";
 import DeleteAccount from "./components/DashboardUser/DeleteAccount";
 import UpdatePassWord from "./components/DashboardUser/UpdatePassword";
 import ForgotPasswordForm from "./components/DashboardUser/ForgotPassword";
+import ResetPassword from "./components/DashboardUser/ResetPassword";
 
 // Protected Routes
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
@@ -104,6 +105,10 @@ function App() {
                       <Route
                         path="forgot-password"
                         element={<ForgotPasswordForm />}
+                      />
+                      <Route
+                        path="reset-password/:token"
+                        element={<ResetPassword />}
                       />
                       {/* Routes protégées pour les entrepreneurs */}
                       <Route element={<EntrepreneurRoute />}>
