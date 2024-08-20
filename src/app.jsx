@@ -19,7 +19,6 @@ import SocialLinks from "./components/SocialLinks/sociallinks";
 import UserChoiceModal from "./components/home/UserChoiceModal";
 import Pricing_page from "./components/pricing_page/pricing_page";
 // Pages
-import Home from "./pages/home/home";
 import HomeClient from "./pages/home/HomeClient";
 import HomeEnterprise from "./pages/home/HomeEntreprise";
 import Team from "./pages/team/team";
@@ -73,7 +72,6 @@ function App() {
               <main className="flex-1 container mx-auto lg:w-5/6 w-full">
                 <Routes>
                   <Route path="/" element={<UserChoiceModal />} />
-                  <Route path="/home" element={<Home />} />
                   <Route path="/home-client" element={<HomeClient />} />
                   <Route path="/home-enterprise" element={<HomeEnterprise />} />
                   <Route path="/signup" element={<Signup />} />

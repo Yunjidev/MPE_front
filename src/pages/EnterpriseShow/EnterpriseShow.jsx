@@ -1,9 +1,6 @@
-/* eslint-disable no-unused-vars */
-// src/pages/EnterpriseShow.js
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getData } from '../../services/data-fetch';
-import StarRating from '../../components/ShowEnterprise/StarRatings';
 import PhotoGallery from '../../components/ShowEnterprise/PhotoGallery';
 import EnterpriseDetails from '../../components/ShowEnterprise/EnterpriseDetails';
 import OfferList from '../../components/ShowEnterprise/OfferList';
@@ -12,11 +9,8 @@ import CommentList from '../../components/ShowEnterprise/CommentList';
 const EnterpriseShow = () => {
   const { id } = useParams();
   const [enterprise, setEnterprise] = useState(null);
-
-  const openPopup = (photoUrl) => {
-    // Logic to open a popup with the photo
-    console.log("Open photo popup:", photoUrl);
-  };
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   useEffect(() => {
     const fetchEnterprise = async () => {
@@ -32,12 +26,22 @@ const EnterpriseShow = () => {
     fetchEnterprise();
   }, [id]);
 
+  const openPopup = (photo) => {
+    setSelectedPhoto(photo);
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    setSelectedPhoto(null);
+  };
+
   if (!enterprise) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 mt-12 text-white">
       <div className="flex flex-col md:flex-row">
         <PhotoGallery photos={enterprise.photos} openPopup={openPopup} />
         
@@ -69,6 +73,30 @@ const EnterpriseShow = () => {
         </h2>
         <CommentList offers={enterprise.offers} />
       </div>
+
+      {isPopupOpen && (
+  <div 
+    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    onClick={closePopup}
+  >
+    <div 
+      className="relative p-4 rounded max-w-screen-lg max-h-screen-lg flex justify-center items-center"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <img 
+        src={selectedPhoto} 
+        alt="Selected" 
+        className="object-contain max-w-full max-h-[80vh] rounded-lg" 
+      />
+      <button 
+        className="absolute top-0 right-0 mt-4 mr-6 text-white dark:text-white text-3xl"
+        onClick={closePopup}
+      >
+        &times;
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
 };
