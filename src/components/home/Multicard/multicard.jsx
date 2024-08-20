@@ -8,7 +8,7 @@ const Dashboard = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 text-white rounded-xl">
       {/* Header Card */}
-      <div className="col-span-1 md:col-span-2 bg-neutral-900 p-6 rounded-xl shadow-lg flex flex-col md:flex-row items-center">
+      <div className="col-span-1 md:col-span-2 bg-neutral-900 p-6 rounded-xl shadow-lg flex flex-col md:flex-row items-center border border-orange-400">
         <div className="flex-grow max-w-full md:max-w-[50%] pl-0 md:pl-8">
           <h1 className="text-3xl md:text-4xl mb-4 font-bold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">
             Pour les entreprises
@@ -24,7 +24,7 @@ const Dashboard = () => {
       </div>
 
       {/* Dashboard & Data */}
-      <div className="relative bg-neutral-900 p-6 rounded-xl shadow-lg flex flex-col">
+      <div className="relative bg-neutral-900 p-6 rounded-xl shadow-lg flex flex-col border border-[#67FFCC]">
         <div
           className="absolute inset-0 bg-no-repeat bg-cover"
           style={{
@@ -44,7 +44,7 @@ const Dashboard = () => {
       </div>
 
       {/* Inventory Management */}
-      <div className="relative bg-neutral-900 p-6 rounded-xl shadow-lg flex flex-col">
+      <div className="relative bg-neutral-900 p-6 rounded-xl shadow-lg flex flex-col border border-violet-400">
         <div
           className="absolute inset-0 bg-no-repeat bg-cover"
           style={{

@@ -139,13 +139,9 @@ export default function UpdateCompany({ onSubmit }) {
       website: website.trim(),
       logo: logo ? logo : null,
     };
-
-    // Affichez les données envoyées pour débogage
-    console.log("Données envoyées au serveur:", company);
-
+    
     try {
       const response = await putData(`enterprise/${companyId}`, company);
-      console.log("Mise à jour effectuée !", response);
       alert("Entreprise mise à jour !");
       if (onSubmit) {
         onSubmit(response);
