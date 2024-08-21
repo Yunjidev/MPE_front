@@ -36,11 +36,11 @@ const OfferForm = ({ offer, onSubmit, onClose }) => {
 
     // Créez une instance de FormData pour gérer l'envoi des fichiers et des autres données du formulaire
     const formDataToSend = new FormData();
-    formDataToSend.append("name", formData.name);
+    formDataToSend.append("nom", formData.name);
     formDataToSend.append("description", formData.description);
-    formDataToSend.append("duration", formData.duration);
-    formDataToSend.append("price", formData.price);
-    formDataToSend.append("estimate", formData.estimate);
+    formDataToSend.append("durée", formData.duration);
+    formDataToSend.append("prix", formData.price);
+    formDataToSend.append("estimation", formData.estimate);
 
     if (formData.image) {
       formDataToSend.append("image", formData.image); 
@@ -61,13 +61,13 @@ const OfferForm = ({ offer, onSubmit, onClose }) => {
         <h2 className="text-2xl font-semibold">{offer ? "Modifier l'offre" : "Créer une nouvelle offre"}</h2>
       </div>
       <form onSubmit={handleSubmit}>
-        {['name', 'description', 'duration', 'price'].map(field => (
+        {['le nom', 'la description', 'la durée', 'le prix'].map(field => (
           <div key={field} className="mb-4">
             <label htmlFor={field} className="block text-sm font-medium">
               {field.charAt(0).toUpperCase() + field.slice(1)}
             </label>
             <input
-              type={field === 'duration' || field === 'price' ? 'number' : 'text'}
+              type={field === 'durée' || field === 'prix' ? 'nombre' : 'texte'}
               id={field}
               value={formData[field]}
               onChange={handleChange}
