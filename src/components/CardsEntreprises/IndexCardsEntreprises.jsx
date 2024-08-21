@@ -14,6 +14,8 @@ const IndexCardsEntreprises = ({ entreprise, userId }) => {
     ? `${nextAvailableDate.date} de ${nextAvailableDate.startHour} à ${nextAvailableDate.endHour}`
     : 'Non disponible';
   
+    const jobName = entreprise.job ? entreprise.job.name : 'Métier non spécifié';
+  
   
   const handleLike = async () => {
     try {
@@ -68,7 +70,7 @@ const IndexCardsEntreprises = ({ entreprise, userId }) => {
 
             <div className="flex items-center mb-2">
               <FaWrench className="text-lg mr-2" />
-              <span className="text-sm">{job.name}</span>
+              <span className="text-sm">{jobName}</span>
             </div>
           </div>
         </div>

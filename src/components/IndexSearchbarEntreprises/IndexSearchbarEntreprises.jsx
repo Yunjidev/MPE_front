@@ -10,6 +10,7 @@ import CountrySelect from './Countryselect';
 import JobSelect from './Jobselect';
 import PremiumCheckbox from './PremiumCheckbox';
 import RatingSelect from './RatingSelect';
+import Localisation from './Localisation';
 
 
 const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
@@ -22,10 +23,26 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
 
   // Fonctions de chargement des options pour les AsyncSelect
   const loadOptions = async (inputValue, category) => {
-    console.log(`Chargement des options pour ${category} avec la valeur saisie:`, inputValue);
+    // console.log(`Chargement des options pour ${category} avec la valeur saisie:`, inputValue);
     try {
       const response = await getData(`enterprises/validate`);
-      console.log(`Réponse de l'API pour ${category}:`, response);
+      // console.log(`Réponse de l'API pour ${category}:`, response);
+      if (category === 'city') {
+        const uniqueCities = new Set();
+        const options = response
+          .filter(item => item.city && item.city.toLowerCase().includes(inputValue.toLowerCase()))
+          .filter(item => {
+            const cityLowerCase = item.city.toLowerCase();
+            if (!uniqueCities.has(cityLowerCase)) {
+              uniqueCities.add(cityLowerCase);
+              return true;
+            }
+            return false;
+          })
+          .map(item => ({ label: item.city, value: item.id }));
+        return options;
+      }
+
       let options;
       switch (category) {
         case 'job':
@@ -38,11 +55,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
             .filter(item => item.country && item.country.name && item.country.name.toLowerCase().includes(inputValue.toLowerCase()))
             .map(item => ({ label: item.country.name, value: item.id }));
           break;
-        case 'city':
-          options = response
-            .filter(item => item.city && item.city.toLowerCase().includes(inputValue.toLowerCase()))
-            .map(item => ({ label: item.city, value: item.id }));
-          break;
+        
         case 'averageRating':
           options = response
             .filter(item => item.averageRating && item.averageRating.toString().startsWith(inputValue))
@@ -51,7 +64,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         default:
           options = [];
       }
-      console.log(`Options filtrées pour ${category}:`, options);
+      // console.log(`Options filtrées pour ${category}:`, options);
       return options;
     } catch (error) {
       console.error(`Erreur lors du chargement des options pour ${category}:`, error);
@@ -100,10 +113,14 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         logo: entreprise.logo  
       }));
 
-      console.log('Filtrés:', filteredResponse);
+      // console.log('Filtrés:', filteredResponse);
       // Mise à jour des résultats de recherche
       setSearchResults(filteredResponse);
-      console.log('Recherche effectuée avec les paramètres:', filteredResponse);
+      // console.log('Recherche effectuée avec les paramètres:', filteredResponse);
+      // Si auncun resultat ne correspond à la recherche, afficher une erreur
+      if (filteredResponse.length === 0) {
+        toast.info('Aucun résultat ne correspond à votre recherche.');
+      }
     } catch (error) {
       console.error('Erreur lors de la recherche:', error);
       toast.error('Une erreur est survenue lors de la recherche.');
@@ -139,6 +156,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
 
   return (
     <div className="join pt-8 pb-10 flex items-center justify-center">
+      <Localisation setSearchResults={setSearchResults} />
       <JobSelect selectedJobs={selectedJobs} setSelectedJobs={setSelectedJobs} loadOptions={loadOptions} />
       <CountrySelect selectedCountries={selectedCountries} setSelectedCountries={setSelectedCountries} loadOptions={loadOptions} />
       <CitySelect selectedCities={selectedCities} setSelectedCities={setSelectedCities} loadOptions={loadOptions} />

@@ -2,10 +2,10 @@ import ky from "ky";
 import { BASE_URL, setHeaders } from "./config-fetch";
 
 // Fonction pour récupérer les données
-export async function getData(object) {
+export async function getData(object, timeout = 20000) {
   try {
     const response = await ky
-      .get(BASE_URL + object, { headers: setHeaders() })
+      .get(BASE_URL + object, { headers: setHeaders(), timeout: timeout })
       .json();
     return response;
   } catch (error) {
