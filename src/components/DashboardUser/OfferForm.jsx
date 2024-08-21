@@ -1,55 +1,65 @@
-import React, { useState, useContext } from "react";
-import PropTypes from "prop-types";
-import { postData } from "../../services/data-fetch";
-import { UserContext } from "../../context/UserContext";
-import { useParams } from 'react-router-dom';
+import React, { useState } from "react";
 
-export default function OfferForm({ onSubmit }) {
-  const { user } = useContext(UserContext); // Utilisation du contexte utilisateur
-  const { id } = useParams(); // Récupération de l'ID de l'entreprise
-
+const OfferForm = ({ offer, onSubmit, onClose }) => {
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    duration: 0,
-    price: "",
-    estimate: false,
-    image: null
+    name: offer ? offer.name : "",
+    description: offer ? offer.description : "",
+    duration: offer ? offer.duration : "",
+    price: offer ? offer.price : "",
+    estimate: offer ? offer.estimate : false,
+    image: null,
   });
 
   const handleChange = (e) => {
-    const { id, type, value, checked, files } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [id]: type === 'checkbox' ? checked : (type === 'file' ? files[0] : value)
-    }));
+    const { id, value, type, checked, files } = e.target;
+
+    if (type === "file") {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [id]: files[0],
+      }));
+    } else if (type === "checkbox") {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [id]: checked,
+      }));
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [id]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, description, duration, price, estimate, image } = formData;
-    const offer = { name, description, duration, price, estimate, image };
+    // Créez une instance de FormData pour gérer l'envoi des fichiers et des autres données du formulaire
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("duration", formData.duration);
+    formDataToSend.append("price", formData.price);
+    formDataToSend.append("estimate", formData.estimate);
 
-    if (typeof onSubmit !== 'function') {
-      console.error("onSubmit is not a function");
-      return;
+    if (formData.image) {
+      formDataToSend.append("image", formData.image);  // Ajouter le fichier image s'il y en a un
     }
 
     try {
-      const response = await postData(`enterprise/${id}/offers`, offer, user.token); // Corriger l'URL pour correspondre à la logique de votre API
+      await onSubmit(formDataToSend);
       alert("Offre créée avec succès");
-      onSubmit(response);  // Appelle une fonction de rappel pour gérer le succès
+      onClose();  // Fermer la modal après succès
     } catch (error) {
-      alert("Une erreur est survenue lors de la création de l'offre.");
       console.error("Erreur lors de la création de l'offre:", error);
+      alert("Une erreur est survenue lors de la création de l'offre.");
     }
   };
 
   return (
     <div className="bg-neutral-900 text-white w-full p-8">
       <div className="mb-4 text-center">
-        <h2 className="text-2xl font-semibold">Offre</h2>
+        <h2 className="text-2xl font-semibold">{offer ? "Modifier l'offre" : "Créer une nouvelle offre"}</h2>
       </div>
       <form onSubmit={handleSubmit}>
         {['name', 'description', 'duration', 'price'].map(field => (
@@ -58,7 +68,7 @@ export default function OfferForm({ onSubmit }) {
               {field.charAt(0).toUpperCase() + field.slice(1)}
             </label>
             <input
-              type={field === 'duration' ? 'number' : 'text'}
+              type={field === 'duration' || field === 'price' ? 'number' : 'text'}
               id={field}
               value={formData[field]}
               onChange={handleChange}
@@ -87,6 +97,7 @@ export default function OfferForm({ onSubmit }) {
           <input
             type="file"
             id="image"
+            accept="image/*"
             onChange={handleChange}
             className="w-full mt-1 p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
           />
@@ -96,14 +107,12 @@ export default function OfferForm({ onSubmit }) {
             type="submit"
             className="bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text font-semibold py-2 px-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
           >
-            Créer Offre
+            {offer ? "Modifier l'offre" : "Créer Offre"}
           </button>
         </div>
       </form>
     </div>
   );
-}
-
-OfferForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };
+
+export default OfferForm;

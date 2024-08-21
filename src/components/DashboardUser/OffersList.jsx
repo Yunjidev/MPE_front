@@ -4,8 +4,8 @@ import { getData, deleteData, postData } from "../../services/data-fetch";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import Button from "../Button/button";
 import Modal from "../DashboardAdmin/Modal";
-import EditOfferForm from "./OfferForm";
-import { useParams } from 'react-router-dom'; // Importer useParams
+import OfferForm from "./OfferForm"; // Importer le bon composant
+import { useParams } from 'react-router-dom';
 
 const OffersList = () => {
   const { id } = useParams();  // Récupérer l'ID de l'entreprise
@@ -32,7 +32,7 @@ const OffersList = () => {
 
       fetchOffers();
     }
-  }, [id]);  // Recharger les offres si l'ID change
+  }, [id]);
 
   useEffect(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
@@ -46,7 +46,7 @@ const OffersList = () => {
       );
     });
     setFilteredOffers(filtered);
-    setPageIndex(0); // Réinitialiser la page à 0 lors du changement de la recherche
+    setPageIndex(0);
   }, [searchQuery, offers]);
 
   const deleteOffer = async (offerId) => {
@@ -55,7 +55,6 @@ const OffersList = () => {
       setOffers((prevOffers) =>
         prevOffers.filter((offer) => offer.id !== offerId)
       );
-      alert("Offre supprimée avec succès");
     } catch (error) {
       console.error("Erreur lors de la suppression de l'offre:", error);
       alert("Une erreur est survenue lors de la suppression de l'offre.");
@@ -72,21 +71,25 @@ const OffersList = () => {
     setIsModalOpen(true);
   };
 
-  const handleSave = async (updatedOffer) => {
+  const handleSave = async (formDataToSend) => {
     try {
-      if (updatedOffer.id) {
-        // Update existing offer
+      let response;
+
+      if (formDataToSend.get('id')) {
+        // Mise à jour de l'offre existante
         setOffers((prevOffers) =>
           prevOffers.map((offer) =>
-            offer.id === updatedOffer.id ? { ...offer, ...updatedOffer } : offer
+            offer.id === formDataToSend.get('id') ? { ...offer, ...Object.fromEntries(formDataToSend) } : offer
           )
         );
       } else {
-        // Add new offer
-        const newOffer = await postData(`enterprise/${id}/offers`, updatedOffer);
-        setOffers((prevOffers) => [...prevOffers, newOffer]);
+        // Ajout d'une nouvelle offre
+        response = await postData(`enterprise/${id}/offers`, formDataToSend);
+        setOffers((prevOffers) => [...prevOffers, response]);
       }
+
       setIsModalOpen(false);
+      alert("Offre créée avec succès");
     } catch (error) {
       console.error("Erreur lors de la sauvegarde de l'offre:", error);
       alert("Une erreur est survenue lors de la sauvegarde de l'offre.");
@@ -129,7 +132,7 @@ const OffersList = () => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    page, // Utilisez `page` au lieu de `rows` pour la pagination
+    page,
     prepareRow,
     state: { pageIndex: currentPageIndex, pageSize: currentPageSize },
     gotoPage,
@@ -211,7 +214,9 @@ const OffersList = () => {
           >
             &laquo; Précédent
           </button>
-          <span className="dark:text-white text-black font-bold">Page {currentPageIndex + 1} sur {Math.ceil(filteredOffers.length / pageSize)}</span>
+          <span className="dark:text-white text-black font-bold">
+            Page {currentPageIndex + 1} sur {Math.ceil(filteredOffers.length / pageSize)}
+          </span>
           <button
             onClick={() => gotoPage(currentPageIndex + 1)}
             disabled={currentPageIndex >= Math.ceil(filteredOffers.length / pageSize) - 1}
@@ -246,7 +251,7 @@ const OffersList = () => {
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <EditOfferForm
+        <OfferForm
           offer={selectedOffer}
           onClose={() => setIsModalOpen(false)}
           onSubmit={handleSave}
