@@ -18,7 +18,6 @@ import Footer from "./components/footer/footer";
 import SocialLinks from "./components/SocialLinks/sociallinks";
 import UserChoiceModal from "./components/home/UserChoiceModal";
 import Pricing_page from "./components/pricing_page/pricing_page";
-
 // Pages
 import HomeClient from "./pages/home/HomeClient";
 import HomeEnterprise from "./pages/home/HomeEntreprise";
@@ -41,6 +40,9 @@ import User_db from "./pages/DashboardUser/User_db";
 import AcceptCompanyPage from "./pages/DashboardAdmin/Accept_company";
 import Company from "./pages/DashboardAdmin/ValidatedCompaniesPage";
 import ManageUser from "./pages/DashboardAdmin/UsersPage";
+import DeleteAccount from "./components/DashboardUser/DeleteAccount";
+import UpdatePassWord from "./components/DashboardUser/UpdatePassword";
+import ForgotPasswordForm from "./components/DashboardUser/ForgotPassword";
 
 // Protected Routes
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
@@ -79,7 +81,10 @@ function App() {
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/cookie-policies" element={<CookiePolicies />} />
                   <Route path="/FAQ" element={<FAQ />} />
-                  <Route path="/register-company" element={<RegisterCompany />} />
+                  <Route
+                    path="/register-company"
+                    element={<RegisterCompany />}
+                  />
                   <Route path="/pricing" element={<Pricing_page />} />
                   <Route path="/enterprise/:id" element={<EnterprisePage />} />
 
@@ -88,16 +93,34 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />}>
                       <Route index element={<Dashboard />} />
                       <Route path="user-db" element={<User_db />} />
-                      <Route path="register-company" element={<RegisterCompany />} />
-                      <Route path="security" element={<Team />} />
+                      <Route
+                        path="register-company"
+                        element={<RegisterCompany />}
+                      />
+                      <Route
+                        path="update-password"
+                        element={<UpdatePassWord />}
+                      />
+                      <Route path="deleteAccount" element={<DeleteAccount />} />
+                      <Route
+                        path="forgot-password"
+                        element={<ForgotPasswordForm />}
+                      />
                       {/* Routes protégées pour les entrepreneurs */}
                       <Route element={<EntrepreneurRoute />}>
+                        <Route
+                          path="enterprise/:enterpriseId/edit"
+                          element={<UpdateCompany />}
+                        />
                         <Route path="enterprise/:enterpriseId/edit" element={<UpdateCompany />} />
                         <Route path="enterprise/:id/offer" element={<OfferList />} />
                       </Route>
                       {/* Routes protégées pour les administrateurs */}
                       <Route element={<AdminRoute />}>
-                        <Route path="accept-company" element={<AcceptCompanyPage />} />
+                        <Route
+                          path="accept-company"
+                          element={<AcceptCompanyPage />}
+                        />
                         <Route path="manage-companies" element={<Company />} />
                         <Route path="manage-users" element={<ManageUser />} />
                       </Route>

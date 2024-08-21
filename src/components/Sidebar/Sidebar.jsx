@@ -15,6 +15,8 @@ import {
   FaEdit,
   FaPlusCircle,
   FaEye,
+  FaUnlockAlt,
+  FaTrashAlt,
 } from "react-icons/fa";
 import { getData } from "../../services/data-fetch"; // Adjust the import path as needed
 import "./test.css"
@@ -114,7 +116,7 @@ const Sidebar = () => {
           </div>
 
           {/* Navigation Links */}
-          <div className="border-t border-black dark:border-white my-4 mx-4">
+          <div className="border-t border-black dark:border-white flex flex-col flex-grow space-y-4">
             <ul className="pt-2 pb-4 space-y-1 lg:text-sm text-2xl">
               <li>
                 <Link
@@ -136,16 +138,49 @@ const Sidebar = () => {
                   <span className="font-semibold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">Création Entreprise</span>
                 </Link>
               </li>
-              <li>
-                <Link
-                  to={`/dashboard/security`}
-                  className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                  onClick={closeSidebar}
+                {/* Dropdown for Security */}
+                <button
+                  className="flex items-center justify-between w-full p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                  onClick={() => toggleDropdown("security")}
                 >
-                  <FaCog className="w-5 h-5 fill-current dark:text-white text-black" />
-                  <span className="font-semibold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">Gestion mot de passe</span>
-                </Link>
-              </li>
+                  <div className="flex items-center space-x-3">
+                    <FaCog className="w-5 h-5 fill-current dark:text-white text-black" />
+                    <span className="font-semibold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">
+                      Sécurité Compte
+                    </span>
+                  </div>
+                  <div>
+                    {dropdowns["security"] ? (
+                      <FaChevronUp className="w-5 h-5 fill-current dark:text-white text-black" />
+                    ) : (
+                      <FaChevronDown className="w-5 h-5 fill-current dark:text-white text-black" />
+                    )}
+                  </div>
+                </button>
+                {dropdowns["security"] && (
+                  <ul className="pl-6 mt-2 space-y-1 lg:text-sm text-2xl">
+                    <li>
+                      <Link
+                        to={`/dashboard/update-password`}
+                        className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                        onClick={closeSidebar}
+                      >
+                        <FaUnlockAlt className="w-4 h-4 fill-current dark:text-white text-black" />
+                        <span className="font-semibold dark:text-gray-100 text-black">Modification Mot de passe</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={`/dashboard/deleteAccount`}
+                        className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                        onClick={closeSidebar}
+                      >
+                        <FaTrashAlt className="w-4 h-4 fill-current dark:text-white text-black" />
+                        <span className="font-semibold dark:text-gray-100 text-black">Suppression du compte</span>
+                      </Link>
+                    </li>
+                  </ul>
+                )}
             </ul>
           </div>
 
@@ -158,7 +193,7 @@ const Sidebar = () => {
               <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
                 <FaBriefcase className="w-10 h-10 mr-2 dark:text-white text-black" />
                 <div>
-                  <h3 className="lg:text-4xl text-4xl font-bold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">Entreprise</h3>
+                  <h3 className="lg:text-2xl text-4xl font-bold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">Entreprise</h3>
                   <p className="text-xs dark:text-white text-black">Gestion des entreprises</p>
                 </div>
               </div>
