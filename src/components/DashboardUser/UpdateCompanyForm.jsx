@@ -41,6 +41,7 @@ export default function UpdateCompany({ onSubmit }) {
   const [photoUrls, setPhotoUrls] = useState([]);
   const [logo, setLogo] = useState(null);
   const [logoUrl, setLogoUrl] = useState(null);
+  const [removeLogo, setRemoveLogo] = useState(false);
 
   const [jobOptions, setJobOptions] = useState([]);
   const [regionOptions, setRegionOptions] = useState([]);
@@ -121,6 +122,11 @@ export default function UpdateCompany({ onSubmit }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    if (logo) {
+      formData.append("logo", logo);
+    }
+    formData.append("removeLogo", removeLogo ? "true" : "false");
 
     const company = {
       name: name.trim(), // Enlevez les espaces inutiles
@@ -139,13 +145,9 @@ export default function UpdateCompany({ onSubmit }) {
       website: website.trim(),
       logo: logo ? logo : null,
     };
-
-    // Affichez les données envoyées pour débogage
-    console.log("Données envoyées au serveur:", company);
-
+    
     try {
       const response = await putData(`enterprise/${companyId}`, company);
-      console.log("Mise à jour effectuée !", response);
       alert("Entreprise mise à jour !");
       if (onSubmit) {
         onSubmit(response);

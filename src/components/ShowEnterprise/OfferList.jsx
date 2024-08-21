@@ -14,7 +14,7 @@ const OfferList = ({ offers }) => {
   };
 
   return (
-    <div className="p-6 rounded-lg space-y-4">
+    <div className="rounded-lg">
       {offers.length > 0 ? (
         offers.map((offer, index) => (
           <div 

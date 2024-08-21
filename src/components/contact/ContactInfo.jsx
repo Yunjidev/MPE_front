@@ -1,5 +1,4 @@
-import React from 'react';
-
+/* eslint-disable react/no-unescaped-entities */
 const ContactInfo = () => {
   return (
     <div className="p-4">
