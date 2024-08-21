@@ -64,7 +64,7 @@ const CommentList = ({ offers }) => {
       {/* Sort Dropdown */}
       <div className="flex justify-center mb-4">
         <select
-          className="p-2 rounded bg-neutral-600"
+          className="p-2 rounded-lg border-neutral-800 bg-neutral-600"
           value={sortOrder}
           onChange={handleSortChange}
         >
@@ -97,7 +97,7 @@ const CommentList = ({ offers }) => {
         {/* Left Arrow */}
         {visibleComments > commentsPerPage && (
           <button
-            className="absolute left-0 transform rotate-180 -translate-y-1/2 bg-violet-400 p-2 rounded-full z-10 -ml-10"
+            className="absolute left-0 transform rotate-180 bg-neutral-500 p-2 rounded-full z-10 -ml-10"
             onClick={handleLeftArrowClick}
           >
             ➤
@@ -151,7 +151,7 @@ const CommentList = ({ offers }) => {
         {/* Right Arrow */}
         {visibleComments < sortedComments.length && (
           <button
-            className="absolute right-0 transform -translate-y-1/2 bg-violet-400 p-2 rounded-full z-10 -mr-10"
+            className="absolute right-0 transform bg-neutral-500 p-2 rounded-full z-10 -mr-10"
             onClick={handleRightArrowClick}
           >
             ➤

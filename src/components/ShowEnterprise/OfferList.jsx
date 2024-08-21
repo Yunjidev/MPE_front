@@ -14,8 +14,8 @@ const OfferList = ({ offers }) => {
   };
 
   return (
-    <div className="px-6 shadow-[0px_2px_20px_-5px] shadow-orange-400 bg-neutral-800 rounded-3xl">
-    <div className="divide-y">
+    <div className="px-6 shadow-[0px_0px_15px_-5px] shadow-violet-400 bg-neutral-800 rounded-3xl">
+    <div className="divide-y divide-neutral-700">
       {offers.length > 0 ? (
         offers.map((offer, index) => (
           <div 
@@ -28,7 +28,7 @@ const OfferList = ({ offers }) => {
               className="w-20 h-20 object-cover rounded-full"
             />
             <p className="text-lg font-semibold w-1/12">{offer.name}</p>
-            <p className="w-6/12">{offer.description}</p>
+            <p className="w-6/12 text-sm">{offer.description}</p>
             <p>{formatDuration(offer.duration)}</p>
             <p>{offer.price ? `${offer.price}€` : 'Prix non disponible'}</p>
 
