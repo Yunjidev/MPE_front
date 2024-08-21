@@ -42,13 +42,11 @@ const Navbar = () => {
     };
   }, []);
 
-
   useEffect(() => {
     const fetchProfileData = async () => {
       if (user.isLogged && user.id) {
         try {
           const data = await getData("user/profile");
-          console.log("Fetched profile data:", data); // Log fetched data
           setProfile(data);
         } catch (error) {
           console.error("Error fetching profile data:", error);

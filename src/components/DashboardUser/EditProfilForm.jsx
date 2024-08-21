@@ -20,7 +20,6 @@ const EditProfileForm = () => {
   // Vérifier les données utilisateur et mettre à jour le formulaire
   useEffect(() => {
     if (user) {
-      console.log("User data from atom:", user);
 
       const userData = user.user || user;
       reset({
@@ -40,7 +39,6 @@ const EditProfileForm = () => {
   }, [user, reset, setValue]);
 
   const onSubmit = async (data) => {
-    console.log("Form data submitted:", data);
 
     const userUpdate = new FormData();
     if (data.username !== user.username) userUpdate.append("username", data.username);
@@ -54,8 +52,6 @@ const EditProfileForm = () => {
     try {
       const response = await putData("user/update", userUpdate, {
       });
-
-      console.log("Response from PUT:", response);
 
       setUser((prevUser) => ({
         ...prevUser,
@@ -140,7 +136,7 @@ const EditProfileForm = () => {
         </div>
         <div className="col-span-2 flex justify-center">
           <button
-            className="flex w-full dark:bg-gradient-to-r dark:from-green-200 dark:to-green-400 bg-gradient-to-r from-green-400 to-green-800 text-transparent bg-clip-text items-center justify-center border border-gray-500 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-green-200 transition duration-300 ease-in-out"
+            className="flex w-full dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-black to-[#67FFCC] text-transparent bg-clip-text items-center justify-center border border-gray-500 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-[#67FFCC] transition duration-300 ease-in-out"
             type="submit"
           >
             Sauvegarder

@@ -6,7 +6,7 @@ import ComManagement from '../../components/DashboardUser/Company_coms';
 const Companydb = () => {
     return (
         <div className="dark:bg-neutral-900 bg-white text-white p-6 rounded-lg max-w-8xl mt-12 mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-green-400">Gestion du Profil</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-[#67FFCC]">Gestion du Profil</h2>
             <hr className="w-11/12 mb-12" />
             <div className="flex flex-wrap">
                 {/* 1ère ligne : ProfileManagement et LikesManagement */}

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { FaInstagram, FaSun, FaMoon } from 'react-icons/fa';
 import { BsTwitterX } from "react-icons/bs";
 import ParticlesDemo from '../ParticlesDemo';
-import Jumbotron from '../home/jumbotron';
 
 const SocialLinks = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);

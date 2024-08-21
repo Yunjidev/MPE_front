@@ -6,7 +6,7 @@ const Dashboard = () => {
   return (
     <div className="flex lg:flex-row">
       <Sidebar />
-      <div className="flex-1 p-4"> {/* Le contenu principal avec un espace à gauche pour la sidebar */}
+      <div className="flex-1 p-4">
         <Outlet />
       </div>
     </div>
