@@ -14,25 +14,26 @@ const OfferList = ({ offers }) => {
   };
 
   return (
-    <div className="rounded-lg">
+    <div className="px-6 shadow-[0px_2px_20px_-5px] shadow-orange-400 bg-neutral-800 rounded-3xl">
+    <div className="divide-y">
       {offers.length > 0 ? (
         offers.map((offer, index) => (
           <div 
             key={index} 
-            className="flex justify-between items-center bg-gray-700 p-4 rounded-lg"
+            className="flex justify-between items-center py-6 px-4 "
           >
             <img 
               src={offer.image} 
               alt={`Offer ${offer.name}`} 
               className="w-20 h-20 object-cover rounded-full"
             />
-            <p className="text-lg font-semibold">{offer.name}</p>
-            <p>{offer.description}</p>
+            <p className="text-lg font-semibold w-1/12">{offer.name}</p>
+            <p className="w-6/12">{offer.description}</p>
             <p>{formatDuration(offer.duration)}</p>
             <p>{offer.price ? `${offer.price}€` : 'Prix non disponible'}</p>
 
             <button 
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-neutral-700 hover:bg-green-500 text-white font-bold py-2 px-4 rounded"
               onClick={() => handleReservation(offer)}
             >
               Réserver
@@ -42,6 +43,7 @@ const OfferList = ({ offers }) => {
       ) : (
         <p>Aucune prestation disponible</p>
       )}
+    </div>
     </div>
   );
 };
