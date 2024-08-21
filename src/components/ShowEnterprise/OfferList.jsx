@@ -33,7 +33,7 @@ const OfferList = ({ offers }) => {
             <p>{offer.price ? `${offer.price}€` : 'Prix non disponible'}</p>
 
             <button 
-              className="bg-neutral-700 hover:bg-green-500 text-white font-bold py-2 px-4 rounded"
+              className="bg-neutral-700 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               onClick={() => handleReservation(offer)}
             >
               Réserver
