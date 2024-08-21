@@ -260,12 +260,12 @@ const Sidebar = () => {
                           </li>
                           <li>
                             <Link
-                              to={`/dashboard/enterprise/${enterprise.id}/services`}
+                              to={`/dashboard/enterprise/${enterprise.id}/offer`}
                               className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                               onClick={closeSidebar}
                             >
                               <FaPlusCircle className="w-4 h-4 fill-current dark:text-white text-black" />
-                              <span className="font-semibold dark:text-gray-100 text-black">Ajouts de Services</span>
+                              <span className="font-semibold dark:text-gray-100 text-black">Offres</span>
                             </Link>
                           </li>
                           <li>

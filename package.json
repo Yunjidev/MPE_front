@@ -23,6 +23,7 @@
     "ky": "^1.4.0",
     "lucide-react": "^0.424.0",
     "prop-types": "^15.8.1",
+    "ra-data-json-server": "^5.1.1",
     "react": "^18.3.1",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.3.1",
