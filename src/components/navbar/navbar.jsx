@@ -42,7 +42,6 @@ const Navbar = () => {
     };
   }, []);
 
-
   useEffect(() => {
     const fetchProfileData = async () => {
       if (user.isLogged && user.id) {

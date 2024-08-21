@@ -19,14 +19,26 @@ export async function getData(object) {
   }
 }
 
-export async function postData(object, data) {
+export async function postData(endpoint, data) {
   try {
-    const response = await ky
-      .post(BASE_URL + object, { headers: setHeaders(), json: data })
-      .json();
-    return response;
+    const options = {
+      headers: setHeaders(),
+      method: 'POST',
+      body: data instanceof FormData ? data : JSON.stringify(data),
+    };
+    if (!(data instanceof FormData)) {
+      options.headers['Content-Type'] = 'application/json';
+    }
+
+    const response = await ky.post(BASE_URL + endpoint, options);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return response.json();
   } catch (error) {
-    console.log("Error:", error);
+    console.error('Error during POST request:', error);
     throw error;
   }
 }
@@ -53,15 +65,23 @@ export async function putData(object, data, options = {}) {
     return response;
   } catch (error) {
     console.log("Error:", error);
+
+    // Check if error has response property for detailed error messages
     if (error.response) {
-      const errorText = await error.response.text();
-      console.log("Error Response Text:", errorText);
+      try {
+        const errorText = await error.response.text();
+        console.log("Error Response Text:", errorText);
+      } catch (e) {
+        console.log("Failed to get error response text:", e);
+      }
     } else {
       console.log("Error Message:", error.message);
     }
+
     throw error;
   }
 }
+
 
 // Fonction pour supprimer les données
 export async function deleteData(object) {
