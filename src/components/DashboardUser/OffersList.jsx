@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useTable, usePagination } from "react-table";
-import { getData, deleteData, postData } from "../../services/data-fetch";
+import { getData, deleteData, postData, putData } from "../../services/data-fetch";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import Button from "../Button/button";
 import Modal from "../DashboardAdmin/Modal";
-import OfferForm from "./OfferForm"; // Importer le bon composant
+import OfferForm from "./OfferForm"; 
 import { useParams } from 'react-router-dom';
 
 const OffersList = () => {
-  const { id } = useParams();  // Récupérer l'ID de l'entreprise
+  const { id } = useParams();  
   const [offers, setOffers] = useState([]);
   const [filteredOffers, setFilteredOffers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,19 +17,19 @@ const OffersList = () => {
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
 
+  // Fonction pour obtenir les offres
+  const fetchOffers = async () => {
+    try {
+      const data = await getData(`enterprise/${id}/offers`);
+      setOffers(data);
+      setFilteredOffers(data);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des offres:", error);
+    }
+  };
+
   useEffect(() => {
     if (id) {
-      // Fonction pour obtenir les offres
-      const fetchOffers = async () => {
-        try {
-          const data = await getData(`enterprise/${id}/offers`);
-          setOffers(data);
-          setFilteredOffers(data);
-        } catch (error) {
-          console.error("Erreur lors de la récupération des offres:", error);
-        }
-      };
-
       fetchOffers();
     }
   }, [id]);
@@ -73,28 +73,25 @@ const OffersList = () => {
 
   const handleSave = async (formDataToSend) => {
     try {
-      let response;
-
-      if (formDataToSend.get('id')) {
+      if (selectedOffer) {
         // Mise à jour de l'offre existante
-        setOffers((prevOffers) =>
-          prevOffers.map((offer) =>
-            offer.id === formDataToSend.get('id') ? { ...offer, ...Object.fromEntries(formDataToSend) } : offer
-          )
-        );
+        await putData(`enterprise/${id}/offer/${selectedOffer.id}`, formDataToSend);
+        alert("Offre mise à jour avec succès.");
       } else {
         // Ajout d'une nouvelle offre
-        response = await postData(`enterprise/${id}/offers`, formDataToSend);
-        setOffers((prevOffers) => [...prevOffers, response]);
+        await postData(`enterprise/${id}/offer`, formDataToSend);
+        alert("Offre créée avec succès.");
       }
-
+      
+      // Fetch à nouveau les offres après la création ou mise à jour
+      fetchOffers();
       setIsModalOpen(false);
-      alert("Offre créée avec succès");
     } catch (error) {
       console.error("Erreur lors de la sauvegarde de l'offre:", error);
       alert("Une erreur est survenue lors de la sauvegarde de l'offre.");
     }
   };
+  
 
   const columns = React.useMemo(
     () => [

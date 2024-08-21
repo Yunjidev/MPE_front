@@ -43,12 +43,11 @@ const OfferForm = ({ offer, onSubmit, onClose }) => {
     formDataToSend.append("estimate", formData.estimate);
 
     if (formData.image) {
-      formDataToSend.append("image", formData.image);  // Ajouter le fichier image s'il y en a un
+      formDataToSend.append("image", formData.image); 
     }
 
     try {
       await onSubmit(formDataToSend);
-      alert("Offre créée avec succès");
       onClose();  // Fermer la modal après succès
     } catch (error) {
       console.error("Erreur lors de la création de l'offre:", error);
