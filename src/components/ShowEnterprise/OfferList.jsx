@@ -14,34 +14,36 @@ const OfferList = ({ offers }) => {
   };
 
   return (
-    <div className="p-6 rounded-lg space-y-4">
-      {offers.length > 0 ? (
-        offers.map((offer, index) => (
-          <div 
-            key={index} 
-            className="flex justify-between items-center bg-gray-700 p-4 rounded-lg"
-          >
-            <img 
-              src={offer.image} 
-              alt={`Offer ${offer.name}`} 
-              className="w-20 h-20 object-cover rounded-full"
-            />
-            <p className="text-lg font-semibold">{offer.name}</p>
-            <p>{offer.description}</p>
-            <p>{formatDuration(offer.duration)}</p>
-            <p>{offer.price ? `${offer.price}€` : 'Prix non disponible'}</p>
-
-            <button 
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => handleReservation(offer)}
+    <div className="px-6 shadow-[0px_0px_15px_-5px] shadow-violet-400 bg-neutral-800 rounded-3xl">
+      <div className="divide-y divide-neutral-700">
+        {offers.length > 0 ? (
+          offers.map((offer, index) => (
+            <div
+              key={index}
+              className="flex justify-between items-center py-6 px-4 "
             >
-              Réserver
-            </button>
-          </div>
-        ))
-      ) : (
-        <p>Aucune prestation disponible</p>
-      )}
+              <img
+                src={offer.image}
+                alt={`Offer ${offer.name}`}
+                className="w-20 h-20 object-cover rounded-full"
+              />
+              <p className="text-lg font-semibold w-1/12">{offer.name}</p>
+              <p className="w-6/12 text-sm">{offer.description}</p>
+              <p>{formatDuration(offer.duration)}</p>
+              <p>{offer.price ? `${offer.price}€` : "Prix non disponible"}</p>
+
+              <button
+                className="bg-neutral-700 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => handleReservation(offer)}
+              >
+                Réserver
+              </button>
+            </div>
+          ))
+        ) : (
+          <p>Aucune prestation disponible</p>
+        )}
+      </div>
     </div>
   );
 };

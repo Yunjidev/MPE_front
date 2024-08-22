@@ -1,13 +1,9 @@
-import UpdateCompanyForm from "../../components/DashboardUser/UpdateCompanyForm";
+import EditEnterprise from "../../components/Enterprise/EditEnterprise";
 
 const UpdateCompany = () => {
-  const handleFormSubmit = async (formData) => {
-    console.log(formData);
-  };
-
   return (
     <div>
-      <UpdateCompanyForm onSubmit={handleFormSubmit} />
+      <EditEnterprise />
     </div>
   );
 };

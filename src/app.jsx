@@ -13,8 +13,8 @@ import ScrollToTop from "./context/Scrolltotop";
 
 // Components
 import ParticlesDemo from "./components/ParticlesDemo";
-import NavBar from "./components/navbar/navbar";
-import Footer from "./components/footer/footer";
+import NavBar from "./components/Navbar/navbar";
+import Footer from "./components/Footer/footer";
 import SocialLinks from "./components/SocialLinks/sociallinks";
 import UserChoiceModal from "./components/home/UserChoiceModal";
 import Pricing_page from "./components/pricing_page/pricing_page";
@@ -30,8 +30,8 @@ import CookieBanner from "./pages/NotificationBanner/NotificationBanner";
 import CookiePolicies from "./pages/Policies/CookiePolicies";
 
 // User Pages
-import Signup from "./components/user/signup";
-import Signin from "./components/user/signin";
+import Signup from "./components/User/signup";
+import Signin from "./components/User/signin";
 import UpdateCompany from "./pages/user/updatecompany";
 
 // Dashboard Pages
@@ -49,6 +49,7 @@ import ResetPassword from "./components/DashboardUser/ResetPassword";
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
 import EntrepreneurRoute from "./context/EntrepreneurRoute";
 import AdminRoute from "./context/AdminRoute";
+import OfferList from "./components/DashboardUser/OffersList";
 
 function App() {
   const [user, setUser] = useAtom(userAtom);
@@ -115,6 +116,14 @@ function App() {
                         <Route
                           path="enterprise/:enterpriseId/edit"
                           element={<UpdateCompany />}
+                        />
+                        <Route
+                          path="enterprise/:enterpriseId/edit"
+                          element={<UpdateCompany />}
+                        />
+                        <Route
+                          path="enterprise/:id/offer"
+                          element={<OfferList />}
                         />
                       </Route>
                       {/* Routes protégées pour les administrateurs */}
