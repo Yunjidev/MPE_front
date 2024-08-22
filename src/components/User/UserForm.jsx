@@ -76,12 +76,16 @@ export default function UserForm({ onSubmit, mode }) {
 
   return (
     <div className="relative border-form-1 group">
-      <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
-      <div className="bg-neutral-900 p-16 rounded-xl shadow-2xl w-90 relative z-10">
+      {!isEdit && (
+        <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
+      )}
+      <div
+        className={`bg-neutral-900 ${isEdit ? "p-5 h-full" : "p-16"} rounded-xl shadow-2xl w-90 relative z-10`}
+      >
         <h2 className="text-center text-3xl font-bold mb-10 text-white">
           {mode}
         </h2>
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="mb-5 space-y-5">
           {isEdit && (
             <Input.SingleUpload
               placeholder="Sélectionnez un avatar"
