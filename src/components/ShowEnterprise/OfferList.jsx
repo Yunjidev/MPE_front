@@ -49,6 +49,7 @@ const OfferList = ({ offers }) => {
         <p>Aucune prestation disponible</p>
       )}
     </div>
+
     </div>
   );
 };

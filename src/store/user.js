@@ -1,13 +1,13 @@
-import { atomWithStorage } from 'jotai/utils';
+import { atomWithStorage } from "jotai/utils";
 
 export const userAtom = atomWithStorage("user", {
-  id: null,
-  username: "",    
+  username: "",
   email: "",
-  firstname: "",   
-  lastname: "",    
+  firstname: "",
+  lastname: "",
   avatar: "",
   isAdmin: false,
-  isEntrepreneur: false,     
+  isEntrepreneur: false,
   isLogged: false,
+  enterprises: [],
 });

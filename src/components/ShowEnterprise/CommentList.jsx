@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import StarRating from './StarRatings';
-import './commentlist.css';
+import React, { useState } from "react";
+import StarRating from "./StarRatings";
+import "./commentlist.css";
 
 const CommentList = ({ offers }) => {
   const commentsPerPage = 6; 
@@ -11,7 +11,7 @@ const CommentList = ({ offers }) => {
   const allComments = offers.flatMap(offer => offer.ratings); 
 
   const filteredComments = selectedRating
-    ? allComments.filter(comment => parseInt(comment.note) === selectedRating)
+    ? allComments.filter((comment) => parseInt(comment.note) === selectedRating)
     : allComments;
 
   const sortedComments = [...filteredComments].sort((a, b) => {
@@ -19,6 +19,7 @@ const CommentList = ({ offers }) => {
       return b.note - a.note; 
     } else if (sortOrder === 'worst') {
       return a.note - b.note; 
+
     } else {
       return new Date(b.createdAt) - new Date(a.createdAt); 
     }
@@ -29,13 +30,17 @@ const CommentList = ({ offers }) => {
 
   const handleRightArrowClick = () => {
     if (visibleComments < sortedComments.length) {
-      setVisibleComments(prev => Math.min(prev + commentsPerPage, sortedComments.length));
+      setVisibleComments((prev) =>
+        Math.min(prev + commentsPerPage, sortedComments.length),
+      );
     }
   };
 
   const handleLeftArrowClick = () => {
     if (visibleComments > commentsPerPage) {
-      setVisibleComments(prev => Math.max(prev - commentsPerPage, commentsPerPage));
+      setVisibleComments((prev) =>
+        Math.max(prev - commentsPerPage, commentsPerPage),
+      );
     }
   };
 
@@ -134,6 +139,7 @@ const CommentList = ({ offers }) => {
               {rating.note}/5
             </span>
           </div>
+
         </div>
       </div>
       <div className="flex-grow">
@@ -145,7 +151,6 @@ const CommentList = ({ offers }) => {
     </div>
   ))}
 </div>
-
 
         <div className="flex lg:hidden justify-center mt-4 text-gray-500">
         Page {currentPage} / {totalPages}
