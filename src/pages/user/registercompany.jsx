@@ -1,13 +1,9 @@
-import CompanyForm from "../../components/DashboardUser/companyform";
+import CreateEnterprise from "../../components/Enterprise/CreateEnterprise";
 
 const RegisterCompany = () => {
-  const handleFormSubmit = async (formData) => {
-    console.log(formData);
-  };
-
   return (
     <div>
-      <CompanyForm onSubmit={handleFormSubmit} />
+      <CreateEnterprise />
     </div>
   );
 };
