@@ -10,10 +10,11 @@ export default function EditProfilForm() {
   const handleSubmit = async (data) => {
     try {
       const response = await putData("user/update", data);
-      setUser({
+      setUser((prevUser) => ({
+        ...prevUser,
         ...response.user,
         isLogged: true,
-      });
+      }));
       toast.success("Profil mis à jour avec succès !");
     } catch (error) {
       console.error("Error updating profile:", error);
