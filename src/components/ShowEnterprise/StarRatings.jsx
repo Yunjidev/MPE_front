@@ -7,7 +7,10 @@ const StarRating = ({ rating }) => {
       {[...Array(5)].map((star, index) => {
         index += 1;
         return (
-          <span key={index} className={index <= rating ? "text-yellow-500" : "text-gray-300"}>
+          <span
+            key={index}
+            className={index <= rating ? "text-yellow-500" : "text-gray-300"}
+          >
             &#9733;
           </span>
         );
