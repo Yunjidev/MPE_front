@@ -39,6 +39,7 @@ export async function putData(object, data) {
     return response.json();
   } catch (error) {
     let errorData = await error.responseData;
+    console.log(errorData);
     throw new Error(errorData);
   }
 }
