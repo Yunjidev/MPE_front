@@ -5,6 +5,7 @@ import { useAtom, Provider } from "jotai";
 import { ToastContainer } from "react-toastify";
 import { userAtom } from "./store/user";
 import "react-toastify/dist/ReactToastify.css";
+import { useSocketIo } from "./services/UseSocketIo";
 
 // Context Providers
 import { UserProvider } from "./context/UserContext";
@@ -51,14 +52,7 @@ import AdminRoute from "./context/AdminRoute";
 import OfferList from "./components/DashboardUser/OffersList";
 
 function App() {
-  const [user, setUser] = useAtom(userAtom);
-
-  useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-  }, [setUser]);
+  useSocketIo();
 
   return (
     <Provider>

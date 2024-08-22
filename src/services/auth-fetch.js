@@ -30,9 +30,11 @@ export async function authSignOut() {
       throw new Error("Aucun token d'authentification trouvé.");
     }
     let response = await kyInstance.post(`${BASE_URL}signout`, {});
+    console.log("response", response);
     Cookies.remove("mpe-auth"); // Supprimer le token JWT des cookies après la déconnexion
     return response;
   } catch (error) {
+    console.log("error", error);
     let errorData = await error.responseData.message;
     throw new Error(errorData);
   }
