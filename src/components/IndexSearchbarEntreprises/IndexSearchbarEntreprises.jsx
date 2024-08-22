@@ -55,11 +55,11 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
             .filter(item => item.country && item.country.name && item.country.name.toLowerCase().includes(inputValue.toLowerCase()))
             .map(item => ({ label: item.country.name, value: item.id }));
           break;
-        
+
         case 'averageRating':
           options = response
             .filter(item => item.averageRating && item.averageRating.toString().startsWith(inputValue))
-            .map(item => ({ label:item.averageRating, value: item.averageRating }));
+            .map(item => ({ label: item.averageRating, value: item.averageRating }));
           break;
         default:
           options = [];
@@ -110,7 +110,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         return jobMatch && countryMatch && cityMatch && ratingMatch;
       }).map(entreprise => ({
         ...entreprise,
-        logo: entreprise.logo  
+        logo: entreprise.logo
       }));
 
       // console.log('Filtrés:', filteredResponse);
@@ -156,7 +156,21 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
 
   return (
     <div className="join pt-8 pb-10 flex items-center justify-center">
-      <Localisation setSearchResults={setSearchResults} />
+      {/* Open the modal using document.getElementById('ID').showModal() method */}
+      <button className="btn" onClick={() => document.getElementById('my_modal_1').showModal()}>Localisation</button>
+      <dialog id="my_modal_1" className="modal">
+        <div className="modal-box">
+          
+          
+          <Localisation setSearchResults={setSearchResults} />
+          <div className="modal-action">
+            <form method="dialog">
+              
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
       <JobSelect selectedJobs={selectedJobs} setSelectedJobs={setSelectedJobs} loadOptions={loadOptions} />
       <CountrySelect selectedCountries={selectedCountries} setSelectedCountries={setSelectedCountries} loadOptions={loadOptions} />
       <CitySelect selectedCities={selectedCities} setSelectedCities={setSelectedCities} loadOptions={loadOptions} />

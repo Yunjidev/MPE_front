@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { toast } from "react-toastify";
 import { getData } from '../../services/data-fetch';
 import Switch from 'react-switch';
+import './Localisation.css';
+
+
 
 const Localisation = ({ setSearchResults, setAllEnterprises }) => {
   const [locationEnabled, setLocationEnabled] = useState(false);
   const [locationError, setLocationError] = useState(null);
   const [distance, setDistance] = useState(0);
+  const distanceSteps = [0, 1, 5, 10, 20, 30, 50, 100, 200];
 
   useEffect(() => {
     if (locationEnabled && navigator.geolocation) {
@@ -37,6 +41,14 @@ const Localisation = ({ setSearchResults, setAllEnterprises }) => {
     }
   }, [locationEnabled, distance, setSearchResults, setAllEnterprises]);
 
+  const handleDistanceChange = (value) => {
+    // Trouver le palier le plus proche de la valeur actuelle
+    const closest = distanceSteps.reduce((prev, curr) => {
+      return (Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev);
+    });
+    setDistance(closest);
+  };
+
   return (
     <div>
       <Switch
@@ -46,16 +58,19 @@ const Localisation = ({ setSearchResults, setAllEnterprises }) => {
       <label>
         Activer la géolocalisation
       </label>
-      <input
-        type="range"
-        min="0"
-        max="1500"
-        value={distance}
-        onChange={(e) => setDistance(e.target.value)}
-      />
-      <label>
-        Distance de localisation: {distance} km
-      </label>
+      <div>
+        <input
+          type="range"
+          min={0}
+          max={distanceSteps.length - 1} // Le maximum est l'index du dernier élément
+          value={distanceSteps.indexOf(distance)} // La valeur est l'index du palier actuel
+          onChange={(e) => handleDistanceChange(distanceSteps[e.target.value])}
+          className="range range-xs range-violet-400"
+        />
+        <div>
+          Distance de localisation: {distance} km
+        </div>
+      </div>
       {locationError && <div>{locationError}</div>}
       {!locationError && locationEnabled && <div>Localisation en cours...</div>}
       {!locationError && !locationEnabled && <div>Localisation désactivée</div>}

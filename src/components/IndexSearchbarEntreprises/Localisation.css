@@ -1,0 +1,13 @@
+.range-violet-400::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #A78BFA;
+  }
+  
+  .range-violet-400::-moz-range-thumb {
+    background-color: #A78BFA;
+  }
+  
+  .range-violet-400::-ms-thumb {
+    background-color: #A78BFA;
+  }
