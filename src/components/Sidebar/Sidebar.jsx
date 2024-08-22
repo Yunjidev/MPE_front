@@ -19,26 +19,15 @@ import {
   FaTrashAlt,
   FaBook,
 } from "react-icons/fa";
-import { getData } from "../../services/data-fetch"; // Adjust the import path as needed
-import "./test.css"
+import "./test.css";
+import { useAtom } from "jotai";
+import { userAtom } from "../../store/user";
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user] = useAtom(userAtom);
+  const enterprises = user?.enterprises;
   const [dropdowns, setDropdowns] = useState({});
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const data = await getData("user/profile");
-        setUser(data);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -105,7 +94,10 @@ const Sidebar = () => {
           {/* Profile Section */}
           <div className="flex items-center p-2 space-x-4 ">
             <img
-              src={user?.avatar || "https://source.unsplash.com/100x100/?portrait"}
+              src={
+                user?.avatar ||
+                "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+              }
               alt="Profile"
               className="w-12 h-12 rounded-full dark:bg-gray-500"
             />
@@ -126,7 +118,9 @@ const Sidebar = () => {
                   onClick={closeSidebar}
                 >
                   <FaTachometerAlt className="w-5 h-5 fill-current dark:text-white text-black" />
-                  <span className="font-semibold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text ">Profil Utilisateur</span>
+                  <span className="font-semibold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text ">
+                    Profil Utilisateur
+                  </span>
                 </Link>
               </li>
               <li>
@@ -136,7 +130,9 @@ const Sidebar = () => {
                   onClick={closeSidebar}
                 >
                   <FaBuilding className="w-5 h-5 fill-current dark:text-white text-black" />
-                  <span className="font-semibold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">Création Entreprise</span>
+                  <span className="font-semibold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">
+                    Création Entreprise
+                  </span>
                 </Link>
               </li>
               {/* Dropdown for Security */}
@@ -167,7 +163,9 @@ const Sidebar = () => {
                       onClick={closeSidebar}
                     >
                       <FaUnlockAlt className="w-4 h-4 fill-current dark:text-white text-black" />
-                      <span className="font-semibold dark:text-gray-100 text-black">Modification Mot de passe</span>
+                      <span className="font-semibold dark:text-gray-100 text-black">
+                        Modification Mot de passe
+                      </span>
                     </Link>
                   </li>
                   <li>
@@ -177,7 +175,9 @@ const Sidebar = () => {
                       onClick={closeSidebar}
                     >
                       <FaTrashAlt className="w-4 h-4 fill-current dark:text-white text-black" />
-                      <span className="font-semibold dark:text-gray-100 text-black">Suppression du compte</span>
+                      <span className="font-semibold dark:text-gray-100 text-black">
+                        Suppression du compte
+                      </span>
                     </Link>
                   </li>
                 </ul>
@@ -194,120 +194,142 @@ const Sidebar = () => {
               <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
                 <FaBriefcase className="w-10 h-10 mr-2 dark:text-white text-black" />
                 <div>
-                  <h3 className="lg:text-2xl text-4xl font-bold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">Entreprise</h3>
-                  <p className="text-xs dark:text-white text-black">Gestion des entreprises</p>
+                  <h3 className="lg:text-2xl text-4xl font-bold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">
+                    Entreprise
+                  </h3>
+                  <p className="text-xs dark:text-white text-black">
+                    Gestion des entreprises
+                  </p>
                 </div>
               </div>
               <ul className="pt-2 pb-4 space-y-1 lg:text-sm text-2xl">
-                {user.enterprises && user.enterprises.map((enterprise) => (
-                  <li key={enterprise.id}>
-                    <div>
-                      <button
-                        className="flex items-center justify-between w-full p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                        onClick={() => enterprise.isValidate && toggleDropdown(enterprise.id)}
-                        disabled={!enterprise.isValidate}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <FaBuilding className="w-5 h-5 fill-current dark:text-white text-black" />
-                          <span className={`font-semibold ${!enterprise.isValidate ? 'text-gray-500 dark:text-gray-400' : 'text-black dark:text-gray-100'}`}>
-                            {enterprise.name}
-                          </span>
-                          {!enterprise.isValidate && (
-                            <span className="bg-red-100 text-red-800 text-xs font-medium px-1 py-0.5 rounded dark:bg-red-700 dark:text-white">
-                              Attente Validation
+                {enterprises &&
+                  enterprises.map((enterprise) => (
+                    <li key={enterprise.id}>
+                      <div>
+                        <button
+                          className="flex items-center justify-between w-full p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                          onClick={() =>
+                            enterprise.isValidate &&
+                            toggleDropdown(enterprise.id)
+                          }
+                          disabled={!enterprise.isValidate}
+                        >
+                          <div className="flex items-center space-x-3">
+                            {enterprise.logo ? (
+                              <img
+                                src={enterprise.logo}
+                                alt="Logo de l'entreprise"
+                                className="w-5 h-5 rounded-full"
+                              />
+                            ) : (
+                              <FaBuilding className="w-5 h-5 fill-current dark:text-white text-black" />
+                            )}
+                            <span
+                              className={`font-semibold ${!enterprise.isValidate ? "text-gray-500 dark:text-gray-400" : "text-black dark:text-gray-100"}`}
+                            >
+                              {enterprise.name}
                             </span>
-                          )}
-                        </div>
-                        <div>
-                          {dropdowns[enterprise.id] ? (
-                            <FaChevronUp className="w-5 h-5 fill-current dark:text-white text-black" />
-                          ) : (
-                            <FaChevronDown className="w-5 h-5 fill-current dark:text-white text-black" />
-                          )}
-                        </div>
-                      </button>
-
-                      {enterprise.isValidate && dropdowns[enterprise.id] && (
-                        <ul className="pl-6 mt-2 space-y-1 lg:text-sm text-2xl">
-                          <li>
-                            <Link
-                              to={`/dashboard/enterprise/${enterprise.id}/statistics`}
-                              className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                              onClick={closeSidebar}
-                            >
-                              <FaChartBar className="w-4 h-4 fill-current dark:text-white text-black" />
-                              <span className="font-semibold dark:text-gray-100 text-black">Statistiques</span>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to={`/dashboard/enterprise/${enterprise.id}/planning`}
-                              className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                              onClick={closeSidebar}
-                            >
-                              <FaCalendarAlt className="w-4 h-4 fill-current dark:text-white text-black" />
-                              <span className="font-semibold dark:text-gray-100 text-black">Planning</span>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to={`/dashboard/enterprise/${enterprise.id}/edit`}
-                              className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                              onClick={closeSidebar}
-                            >
-                              <FaEdit className="w-4 h-4 fill-current dark:text-white text-black" />
-                              <span className="font-semibold dark:text-gray-100 text-black">Édition</span>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to={`/dashboard/enterprise/${enterprise.id}/offer`}
-                              className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                              onClick={closeSidebar}
-                            >
-                              <FaPlusCircle className="w-4 h-4 fill-current dark:text-white text-black" />
-                              <span className="font-semibold dark:text-gray-100 text-black">Offres</span>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to={`/enterprise/${enterprise.id}`}
-                              className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                              onClick={closeSidebar}
-                            >
-                              <FaEye className="w-4 h-4 fill-current dark:text-white text-black" />
-                              <span className="font-semibold dark:text-gray-100 text-black">Ma page entreprise</span>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to={`/enterprise/${enterprise.id}/reservations`}
-                              className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                              onClick={closeSidebar}
-                            >
-                              <FaBook className="w-4 h-4 text-black dark:text-white" />
-                              <span className="font-semibold dark:text-gray-100 text-black">Réservations</span>
-                            </Link>
-                          </li>
-                        </ul>
-                      )}
-                    </div>
-                  </li>
-                ))}
+                            {!enterprise.isValidate && (
+                              <span className="bg-red-100 text-red-800 text-xs font-medium px-1 py-0.5 rounded dark:bg-red-700 dark:text-white">
+                                Attente Validation
+                              </span>
+                            )}
+                          </div>
+                          <div>
+                            {dropdowns[enterprise.id] ? (
+                              <FaChevronUp className="w-5 h-5 fill-current dark:text-white text-black" />
+                            ) : (
+                              <FaChevronDown className="w-5 h-5 fill-current dark:text-white text-black" />
+                            )}
+                          </div>
+                        </button>
+                        {enterprise.isValidate && dropdowns[enterprise.id] && (
+                          <ul className="pl-6 mt-2 space-y-1 lg:text-sm text-2xl">
+                            <li>
+                              <Link
+                                to={`/dashboard/enterprise/${enterprise.id}/statistics`}
+                                className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                                onClick={closeSidebar}
+                              >
+                                <FaChartBar className="w-4 h-4 fill-current dark:text-white text-black" />
+                                <span className="font-semibold dark:text-gray-100 text-black">
+                                  Statistiques
+                                </span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`/dashboard/enterprise/${enterprise.id}/planning`}
+                                className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                                onClick={closeSidebar}
+                              >
+                                <FaCalendarAlt className="w-4 h-4 fill-current dark:text-white text-black" />
+                                <span className="font-semibold dark:text-gray-100 text-black">
+                                  Planning
+                                </span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`/dashboard/enterprise/${enterprise.id}/edit`}
+                                className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                                onClick={closeSidebar}
+                              >
+                                <FaEdit className="w-4 h-4 fill-current dark:text-white text-black" />
+                                <span className="font-semibold dark:text-gray-100 text-black">
+                                  Édition
+                                </span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`/dashboard/enterprise/${enterprise.id}/offer`}
+                                className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                                onClick={closeSidebar}
+                              >
+                                <FaPlusCircle className="w-4 h-4 fill-current dark:text-white text-black" />
+                                <span className="font-semibold dark:text-gray-100 text-black">
+                                  Offres
+                                </span>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to={`/enterprise/${enterprise.id}`}
+                                className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                                onClick={closeSidebar}
+                              >
+                                <FaEye className="w-4 h-4 fill-current dark:text-white text-black" />
+                                <span className="font-semibold dark:text-gray-100 text-black">
+                                  Ma page entreprise
+                                </span>
+                              </Link>
+                            </li>
+                          </ul>
+                        )}
+                      </div>
+                    </li>
+                  ))}
               </ul>
             </div>
           )}
-
           {/* Section Divider */}
-          {user && user.isEntrepreneur && <div className="border-t border-black dark:border-white my-4 mx-2"></div>}
+          {user && user.isEntrepreneur && (
+            <div className="border-t border-black dark:border-white my-4 mx-2"></div>
+          )}
 
           {user && user.isAdmin && (
             <div className="flex flex-col flex-grow space-y-4">
               <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
                 <FaUserShield className="w-10 h-10 mr-2 fill-current dark:text-white text-black" />
                 <div>
-                  <h3 className="lg:text-2xl text-4xl font-bold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">Dashboard</h3>
-                  <p className="lg:text-xs text-2xl dark:text-white text-black">Admin</p>
+                  <h3 className="lg:text-2xl text-4xl font-bold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">
+                    Dashboard
+                  </h3>
+                  <p className="lg:text-xs text-2xl dark:text-white text-black">
+                    Admin
+                  </p>
                 </div>
               </div>
               <ul className="pt-2 pb-4 space-y-1 lg:text-sm text-2xl">
@@ -318,7 +340,9 @@ const Sidebar = () => {
                     onClick={closeSidebar}
                   >
                     <FaTachometerAlt className="w-5 h-5 fill-current dark:text-white text-black" />
-                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">Tableau de bord</span>
+                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">
+                      Tableau de bord
+                    </span>
                   </Link>
                 </li>
                 <li>
@@ -328,7 +352,9 @@ const Sidebar = () => {
                     onClick={closeSidebar}
                   >
                     <FaBuilding className="w-5 h-5 fill-current dark:text-white text-black" />
-                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">Validation Entreprises</span>
+                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">
+                      Validation Entreprises
+                    </span>
                   </Link>
                 </li>
                 <li>
@@ -338,7 +364,9 @@ const Sidebar = () => {
                     onClick={closeSidebar}
                   >
                     <FaUsers className="w-5 h-5 fill-current dark:text-white text-black" />
-                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">Liste des utilisateurs</span>
+                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">
+                      Liste des utilisateurs
+                    </span>
                   </Link>
                 </li>
                 <li>
@@ -348,7 +376,9 @@ const Sidebar = () => {
                     onClick={closeSidebar}
                   >
                     <FaBuilding className="w-5 h-5 fill-current dark:text-white text-black" />
-                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">Liste des entreprises</span>
+                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">
+                      Liste des entreprises
+                    </span>
                   </Link>
                 </li>
                 <li>
@@ -358,7 +388,9 @@ const Sidebar = () => {
                     onClick={closeSidebar}
                   >
                     <FaChartBar className="w-5 h-5 fill-current dark:text-white text-black" />
-                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">Statistiques</span>
+                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">
+                      Statistiques
+                    </span>
                   </Link>
                 </li>
                 <li>
@@ -368,7 +400,9 @@ const Sidebar = () => {
                     onClick={closeSidebar}
                   >
                     <FaChartLine className="w-5 h-5 fill-current dark:text-white text-black" />
-                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">Reports</span>
+                    <span className="font-semibold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">
+                      Reports
+                    </span>
                   </Link>
                 </li>
               </ul>

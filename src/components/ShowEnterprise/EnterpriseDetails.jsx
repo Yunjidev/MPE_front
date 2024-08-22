@@ -1,8 +1,13 @@
 /* eslint-disable react/prop-types */
 // src/components/EnterpriseDetails.js
-import { IoLocationOutline, IoMailOutline, IoPhonePortraitOutline, IoBusinessOutline } from 'react-icons/io5';
-import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa';
-import StarRating from './StarRatings';
+import {
+  IoLocationOutline,
+  IoMailOutline,
+  IoPhonePortraitOutline,
+  IoBusinessOutline,
+} from "react-icons/io5";
+import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
+import StarRating from "./StarRatings";
 
 const EnterpriseDetails = ({ enterprise }) => {
   return (
@@ -10,17 +15,19 @@ const EnterpriseDetails = ({ enterprise }) => {
       <div className="flex items-start">
         <div className="flex flex-col items-center mr-6">
           {enterprise.logo ? (
-            <img 
-              src={enterprise.logo} 
-              alt="Logo" 
-              className="w-24 h-24 rounded-full" 
+            <img
+              src={enterprise.logo}
+              alt="Logo"
+              className="w-24 h-24 rounded-full"
             />
           ) : (
             <div className="w-24 h-24 bg-gray-700 rounded-full flex items-center justify-center mb-2">
               <span className="text-gray-400">Logo</span>
             </div>
           )}
-          <p className="font-semibold text-lg text-center">{enterprise.job.name}</p>
+          <p className="font-semibold text-lg text-center">
+            {enterprise.job.name}
+          </p>
         </div>
 
         <div className="flex flex-row justify-between">
@@ -32,7 +39,9 @@ const EnterpriseDetails = ({ enterprise }) => {
             </p>
             <p className="flex items-center space-x-2 mb-2">
               <IoLocationOutline className="text-xl" />
-              <span>{enterprise.adress}, {enterprise.city}</span>
+              <span>
+                {enterprise.adress}, {enterprise.city}
+              </span>
             </p>
             <p className="flex items-center space-x-2 mb-2">
               <IoBusinessOutline className="text-xl" />
@@ -50,30 +59,30 @@ const EnterpriseDetails = ({ enterprise }) => {
 
           <div className="flex flex-col space-y-4 mt-12 ml-9">
             {enterprise.instagram && (
-              <a 
-                href={enterprise.instagram} 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href={enterprise.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-xl"
               >
                 <FaInstagram />
               </a>
             )}
             {enterprise.twitter && (
-              <a 
-                href={enterprise.twitter} 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href={enterprise.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-xl"
               >
                 <FaTwitter />
               </a>
             )}
             {enterprise.facebook && (
-              <a 
-                href={enterprise.facebook} 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href={enterprise.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-xl"
               >
                 <FaFacebookF />
@@ -85,7 +94,9 @@ const EnterpriseDetails = ({ enterprise }) => {
 
       <div className="flex items-center">
         <StarRating rating={Math.round(enterprise.averageRating)} />
-        <p className="ml-2 text-lg font-semibold">{enterprise.averageRating.toFixed(1)}</p>
+        <p className="ml-2 text-lg font-semibold">
+          {enterprise.averageRating.toFixed(1)}
+        </p>
       </div>
     </div>
   );

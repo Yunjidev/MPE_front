@@ -36,7 +36,6 @@ const EditCompanyForm = ({ company, onClose, onSave }) => {
 
   useEffect(() => {
     if (company) {
-
       reset({
         name: company.name || "",
         city: company.city || "",
@@ -55,17 +54,19 @@ const EditCompanyForm = ({ company, onClose, onSave }) => {
 
   const onSubmit = async (data) => {
     const companyUpdate = {};
-  
+
     if (data.name !== company.name) companyUpdate.name = data.name;
     if (data.city !== company.city) companyUpdate.city = data.city;
-    if (data.zip_code !== company.zip_code) companyUpdate.zip_code = data.zip_code;
-    if (data.country !== company.country.name) companyUpdate.country = { name: data.country };
+    if (data.zip_code !== company.zip_code)
+      companyUpdate.zip_code = data.zip_code;
+    if (data.country !== company.country.name)
+      companyUpdate.country = { name: data.country };
     if (data.job !== company.job.name) companyUpdate.job = { name: data.job };
-  
+
     try {
       const response = await putData(`enterprise/${company.id}`, companyUpdate);
       // Supposons que `response` contient les données mises à jour
-      onSave(response);  // Passez la réponse avec les données mises à jour
+      onSave(response); // Passez la réponse avec les données mises à jour
       alert("Entreprise modifiée avec succès");
       onClose();
     } catch (error) {

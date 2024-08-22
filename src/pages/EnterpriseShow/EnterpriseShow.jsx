@@ -61,14 +61,14 @@ const EnterpriseShow = () => {
       </div>
 
       <div className="mt-8">
-        <h2 className="text-2xl font-bold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text mb-4">
+        <h2 className="text-2xl text-center font-bold dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text mb-4">
           Prestations
         </h2>
         <OfferList offers={enterprise.offers} />
       </div>
 
       <div className="mt-8">
-        <h2 className="text-2xl font-bold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text mb-4">
+        <h2 className="text-2xl text-center font-bold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 text-transparent bg-clip-text mb-4">
           Commentaires
         </h2>
         <CommentList offers={enterprise.offers} />
