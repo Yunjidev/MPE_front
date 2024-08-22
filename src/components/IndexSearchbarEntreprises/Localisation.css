@@ -13,14 +13,11 @@
 }
 
 .custom-localisation-btn {
-    padding-left: 10px;
-
-    padding-right: 15px;
-
+    
     height: 50px;
-    border-radius: 100% !important;
+    border-top-left-radius: 9999px !important;
+    border-bottom-left-radius: 9999px !important;
     background-color: #4b4b4b !important;
-
     color: #ffffff !important;
 
 }

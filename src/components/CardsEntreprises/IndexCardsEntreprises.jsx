@@ -1,8 +1,8 @@
 import React from 'react';
 import indexcards from '../../../public/assets/img/indexcards.jpg';
 import { FaCalendarDay, FaWrench, FaMapMarkerAlt } from 'react-icons/fa';
-import { postData } from '../../services/data-fetch';
 import { useNavigate } from 'react-router-dom';
+import LikeButton from './LikeButton';
 import './IndexCardsEntreprises.css';
 
 const IndexCardsEntreprises = ({ entreprise, userId }) => {
@@ -17,19 +17,6 @@ const IndexCardsEntreprises = ({ entreprise, userId }) => {
   
     const jobName = entreprise.job ? entreprise.job.name : 'Métier non spécifié';
   
-  
-  const handleLike = async () => {
-    try {
-      const likeData = {
-        User_id: userId,
-        Enterprise_id: entreprise.id
-      };
-      const response = await postData('like', likeData);
-      console.log('Like créé avec succès:', response);
-    } catch (error) {
-      console.error('Erreur lors de la création du like:', error);
-    }
-  };
   const redirectToEnterprisePage = () => {
     navigate(`/enterprise/${entreprise.id}`);
   };
@@ -37,12 +24,7 @@ const IndexCardsEntreprises = ({ entreprise, userId }) => {
   return (
     <div className="card card-compact w-auto shadow-xl relative dark:bg-[#262626] dark:text-white light:bg-[#FDE8E8] card-hover-zoom" onClick={redirectToEnterprisePage}>
       <div className="rating gap-1 absolute top-0 right-0 p-4">
-        <input
-          type="radio"
-          name="rating-3"
-          className="mask mask-heart bg-red-400"
-          onClick={handleLike}
-        />
+        <LikeButton userId={userId} enterpriseId={entreprise.id} />
       </div>
       <figure>
         {/* Utilisez la photo de l'entreprise si disponible */}

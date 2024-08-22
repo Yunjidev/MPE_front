@@ -14,16 +14,22 @@ export async function getData(object, timeout = 50000) {
 export async function postData(object, data) {
   try {
     const options = {
-      body: data,
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     };
-    if (!(data instanceof FormData)) {
-      options.headers["Content-Type"] = "application/json";
-    }
     const response = await kyInstance.post(BASE_URL + object, options);
-    return response.json();
+    return await response.json();
   } catch (error) {
-    let errorData = await error.responseData.errors;
-    throw new Error(JSON.stringify(errorData));
+    // Vérifiez si l'objet de réponse existe et contient des erreurs
+    if (error.response) {
+      const errorData = await error.response.json();
+      throw new Error(JSON.stringify(errorData.errors || errorData));
+    } else {
+      // Si l'objet de réponse n'existe pas, enregistrez le message d'erreur général
+      throw new Error(error.message);
+    }
   }
 }
 
