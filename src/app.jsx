@@ -49,6 +49,7 @@ import AuthenticatedRoute from "./context/AuthenticatedRoute";
 import EntrepreneurRoute from "./context/EntrepreneurRoute";
 import AdminRoute from "./context/AdminRoute";
 import OfferList from "./components/DashboardUser/OffersList";
+import ReservationsList from "./components/DashboardUser/ReservationsList";
 
 function App() {
   const [user, setUser] = useAtom(userAtom);
@@ -112,8 +113,8 @@ function App() {
                           path="enterprise/:enterpriseId/edit"
                           element={<UpdateCompany />}
                         />
-                        <Route path="enterprise/:enterpriseId/edit" element={<UpdateCompany />} />
                         <Route path="enterprise/:id/offer" element={<OfferList />} />
+                        <Route path="enterprise/:id/reservations" element={<ReservationsList />} />
                       </Route>
                       {/* Routes protégées pour les administrateurs */}
                       <Route element={<AdminRoute />}>

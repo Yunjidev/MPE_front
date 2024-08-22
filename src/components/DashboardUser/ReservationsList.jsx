@@ -1,119 +1,77 @@
 import React, { useState, useEffect } from "react";
 import { useTable, usePagination } from "react-table";
-import { getData, deleteData, postData, putData } from "../../services/data-fetch";
-import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
+import { getData, deleteData } from "../../services/data-fetch";
+import { FaTrash } from "react-icons/fa";
 import Button from "../Button/button";
-import Modal from "../DashboardAdmin/Modal";
-import OfferForm from "./OfferForm";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
-const OffersList = () => {
-  const { id } = useParams();
-  const [offers, setOffers] = useState([]);
-  const [filteredOffers, setFilteredOffers] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedOffer, setSelectedOffer] = useState(null);
+const ReservationsList = () => {
+  const { id } = useParams();  
+  const [reservations, setReservations] = useState([]);
+  const [filteredReservations, setFilteredReservations] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
 
-  // Fonction pour obtenir les offres
-  const fetchOffers = async () => {
+  // Fonction pour obtenir les réservations
+  const fetchReservations = async () => {
     try {
-      const data = await getData(`enterprise/${id}/offers`);
-      setOffers(data);
-      setFilteredOffers(data);
+      const data = await getData(`enterprise/${id}/reservations`);
+      setReservations(data);
+      setFilteredReservations(data);
     } catch (error) {
-      console.error("Erreur lors de la récupération des offres:", error);
+      console.error("Erreur lors de la récupération des réservations:", error);
     }
   };
 
   useEffect(() => {
     if (id) {
-      fetchOffers();
+      fetchReservations();
     }
   }, [id]);
 
   useEffect(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
-    const filtered = offers.filter((offer) => {
-      const name = offer.name ? offer.name.toLowerCase() : "";
-      const description = offer.description ? offer.description.toLowerCase() : "";
+    const filtered = reservations.filter((reservation) => {
+      const offerName = reservation.offer?.name ? reservation.offer.name.toLowerCase() : "";
+      const userName = reservation.user?.firstName ? reservation.user.firstName.toLowerCase() : "";
 
       return (
-        name.includes(lowercasedQuery) ||
-        description.includes(lowercasedQuery)
+        offerName.includes(lowercasedQuery) ||
+        userName.includes(lowercasedQuery)
       );
     });
-    setFilteredOffers(filtered);
+    setFilteredReservations(filtered);
     setPageIndex(0);
-  }, [searchQuery, offers]);
+  }, [searchQuery, reservations]);
 
-  const deleteOffer = async (offerId) => {
+  const deleteReservation = async (reservationId) => {
     try {
-      await deleteData(`enterprise/${id}/offer/${offerId}`);
-      setOffers((prevOffers) =>
-        prevOffers.filter((offer) => offer.id !== offerId)
+      await deleteData(`enterprise/${id}/reservation/${reservationId}`);
+      setReservations((prevReservations) =>
+        prevReservations.filter((reservation) => reservation.id !== reservationId)
       );
     } catch (error) {
-      console.error("Erreur lors de la suppression de l'offre:", error);
-      alert("Une erreur est survenue lors de la suppression de l'offre.");
+      console.error("Erreur lors de la suppression de la réservation:", error);
+      alert("Une erreur est survenue lors de la suppression de la réservation.");
     }
   };
-
-  const editOffer = (offer) => {
-    setSelectedOffer(offer);
-    setIsModalOpen(true);
-  };
-
-  const addNewOffer = () => {
-    setSelectedOffer(null); // Clear selection to add new
-    setIsModalOpen(true);
-  };
-
-  const handleSave = async (formDataToSend) => {
-    try {
-      if (selectedOffer) {
-        // Mise à jour de l'offre existante
-        await putData(`enterprise/${id}/offer/${selectedOffer.id}`, formDataToSend);
-        alert("Offre mise à jour avec succès.");
-      } else {
-        // Ajout d'une nouvelle offre
-        await postData(`enterprise/${id}/offer`, formDataToSend);
-        alert("Offre créée avec succès.");
-      }
-
-      // Fetch à nouveau les offres après la création ou mise à jour
-      fetchOffers();
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error("Erreur lors de la sauvegarde de l'offre:", error);
-      alert("Une erreur est survenue lors de la sauvegarde de l'offre.");
-    }
-  };
-
 
   const columns = React.useMemo(
     () => [
-      { Header: "Nom de l'offre", accessor: "name" },
-      { Header: "Description", accessor: "description" },
-      { Header: "Durée (min)", accessor: "duration" },
-      { Header: "Prix (€)", accessor: "price", Cell: ({ value }) => `${value} €` },
-      { Header: "Estimation", accessor: "estimate", Cell: ({ value }) => (value ? "Oui" : "Non") },
-      { Header: "Image", accessor: "image", Cell: ({ value }) => value ? <img src={value} alt="Offer" className="w-16 h-16 object-cover" /> : "Aucune" },
+      { Header: "Offre", accessor: "offer.name" },
+      { Header: "Client", accessor: "user.firstName" },
+      { Header: "Date", accessor: "date" },
+      { Header: "Heure de début", accessor: "start_time" },
+      { Header: "Heure de fin", accessor: "end_time" },
+      { Header: "Statut", accessor: "status" },
       {
         Header: "Actions",
         accessor: "id",
         Cell: ({ row }) => (
           <div className="flex space-x-2">
             <Button
-              onClick={() => editOffer(row.original)}
-              className="text-green-600 dark:text-green-500 hover:underline"
-            >
-              <FaEdit />
-            </Button>
-            <Button
-              onClick={() => deleteOffer(row.original.id)}
+              onClick={() => deleteReservation(row.original.id)}
               className="text-red-600 dark:text-red-500 hover:underline"
             >
               <FaTrash />
@@ -122,7 +80,7 @@ const OffersList = () => {
         ),
       },
     ],
-    [offers]
+    [reservations]
   );
 
   const {
@@ -137,9 +95,9 @@ const OffersList = () => {
   } = useTable(
     {
       columns,
-      data: filteredOffers,
+      data: filteredReservations,
       initialState: { pageIndex, pageSize },
-      pageCount: Math.ceil(filteredOffers.length / pageSize),
+      pageCount: Math.ceil(filteredReservations.length / pageSize),
     },
     usePagination
   );
@@ -212,11 +170,11 @@ const OffersList = () => {
             &laquo; Précédent
           </button>
           <span className="dark:text-white text-black font-bold">
-            Page {currentPageIndex + 1} sur {Math.ceil(filteredOffers.length / pageSize)}
+            Page {currentPageIndex + 1} sur {Math.ceil(filteredReservations.length / pageSize)}
           </span>
           <button
             onClick={() => gotoPage(currentPageIndex + 1)}
-            disabled={currentPageIndex >= Math.ceil(filteredOffers.length / pageSize) - 1}
+            disabled={currentPageIndex >= Math.ceil(filteredReservations.length / pageSize) - 1}
             className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
           >
             Suivant &raquo;
@@ -231,31 +189,14 @@ const OffersList = () => {
           >
             {[10, 20, 30, 40].map((size) => (
               <option key={size} value={size}>
-                {size} offres par page
+                {size} réservations par page
               </option>
             ))}
           </select>
         </div>
       </div>
-
-      <div className="absolute bottom-4 right-4">
-        <Button
-          onClick={addNewOffer}
-          className="bg-gradient-to-r from-[#67FFCC] to-[#33B7A6] dark:bg-[#4CAF50] rounded-full shadow-lg hover:bg-[#56D6B8] dark:hover:bg-[#45A049] transition-colors duration-300 ease-in-out"
-        >
-          <FaPlus className="text-white text-xl" />
-        </Button>
-      </div>
-
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <OfferForm
-          offer={selectedOffer}
-          onClose={() => setIsModalOpen(false)}
-          onSubmit={handleSave}
-        />
-      </Modal>
     </div>
   );
 };
 
-export default OffersList;
+export default ReservationsList;

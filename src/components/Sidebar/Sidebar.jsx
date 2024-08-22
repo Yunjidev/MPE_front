@@ -17,6 +17,7 @@ import {
   FaEye,
   FaUnlockAlt,
   FaTrashAlt,
+  FaBook,
 } from "react-icons/fa";
 import { getData } from "../../services/data-fetch"; // Adjust the import path as needed
 import "./test.css"
@@ -138,49 +139,49 @@ const Sidebar = () => {
                   <span className="font-semibold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">Création Entreprise</span>
                 </Link>
               </li>
-                {/* Dropdown for Security */}
-                <button
-                  className="flex items-center justify-between w-full p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                  onClick={() => toggleDropdown("security")}
-                >
-                  <div className="flex items-center space-x-3">
-                    <FaCog className="w-5 h-5 fill-current dark:text-white text-black" />
-                    <span className="font-semibold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">
-                      Sécurité Compte
-                    </span>
-                  </div>
-                  <div>
-                    {dropdowns["security"] ? (
-                      <FaChevronUp className="w-5 h-5 fill-current dark:text-white text-black" />
-                    ) : (
-                      <FaChevronDown className="w-5 h-5 fill-current dark:text-white text-black" />
-                    )}
-                  </div>
-                </button>
-                {dropdowns["security"] && (
-                  <ul className="pl-6 mt-2 space-y-1 lg:text-sm text-2xl">
-                    <li>
-                      <Link
-                        to={`/dashboard/update-password`}
-                        className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                        onClick={closeSidebar}
-                      >
-                        <FaUnlockAlt className="w-4 h-4 fill-current dark:text-white text-black" />
-                        <span className="font-semibold dark:text-gray-100 text-black">Modification Mot de passe</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={`/dashboard/deleteAccount`}
-                        className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                        onClick={closeSidebar}
-                      >
-                        <FaTrashAlt className="w-4 h-4 fill-current dark:text-white text-black" />
-                        <span className="font-semibold dark:text-gray-100 text-black">Suppression du compte</span>
-                      </Link>
-                    </li>
-                  </ul>
-                )}
+              {/* Dropdown for Security */}
+              <button
+                className="flex items-center justify-between w-full p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                onClick={() => toggleDropdown("security")}
+              >
+                <div className="flex items-center space-x-3">
+                  <FaCog className="w-5 h-5 fill-current dark:text-white text-black" />
+                  <span className="font-semibold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text">
+                    Sécurité Compte
+                  </span>
+                </div>
+                <div>
+                  {dropdowns["security"] ? (
+                    <FaChevronUp className="w-5 h-5 fill-current dark:text-white text-black" />
+                  ) : (
+                    <FaChevronDown className="w-5 h-5 fill-current dark:text-white text-black" />
+                  )}
+                </div>
+              </button>
+              {dropdowns["security"] && (
+                <ul className="pl-6 mt-2 space-y-1 lg:text-sm text-2xl">
+                  <li>
+                    <Link
+                      to={`/dashboard/update-password`}
+                      className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                      onClick={closeSidebar}
+                    >
+                      <FaUnlockAlt className="w-4 h-4 fill-current dark:text-white text-black" />
+                      <span className="font-semibold dark:text-gray-100 text-black">Modification Mot de passe</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to={`/dashboard/deleteAccount`}
+                      className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                      onClick={closeSidebar}
+                    >
+                      <FaTrashAlt className="w-4 h-4 fill-current dark:text-white text-black" />
+                      <span className="font-semibold dark:text-gray-100 text-black">Suppression du compte</span>
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </ul>
           </div>
 
@@ -276,6 +277,16 @@ const Sidebar = () => {
                             >
                               <FaEye className="w-4 h-4 fill-current dark:text-white text-black" />
                               <span className="font-semibold dark:text-gray-100 text-black">Ma page entreprise</span>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to={`/enterprise/${enterprise.id}/reservations`}
+                              className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                              onClick={closeSidebar}
+                            >
+                              <FaBook className="w-4 h-4 text-black dark:text-white" />
+                              <span className="font-semibold dark:text-gray-100 text-black">Réservations</span>
                             </Link>
                           </li>
                         </ul>

@@ -43,7 +43,7 @@ const OfferForm = ({ offer, onSubmit, onClose }) => {
     formDataToSend.append("estimation", formData.estimate);
 
     if (formData.image) {
-      formDataToSend.append("image", formData.image); 
+      formDataToSend.append("image", formData.image);
     }
 
     try {
