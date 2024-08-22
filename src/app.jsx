@@ -1,9 +1,6 @@
-/* eslint-disable no-unused-vars */
-import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useAtom, Provider } from "jotai";
+import { Provider } from "jotai";
 import { ToastContainer } from "react-toastify";
-import { userAtom } from "./store/user";
 import "react-toastify/dist/ReactToastify.css";
 import { useSocketIo } from "./services/UseSocketIo";
 
