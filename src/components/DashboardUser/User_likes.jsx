@@ -33,7 +33,7 @@ const LikesManagement = () => {
   }, []);
 
   return (
-    <div className="flex flex-col h-full space-around bg-neutral-800 p-6 rounded-lg">
+    <div className="flex flex-col h-full space-around bg-neutral-800 p-6 rounded-xl">
       <h3 className="text-lg font-medium mb-4">Mes entreprises favorites</h3>
       <hr className="w-full"></hr>
       <ul>
