@@ -2,11 +2,12 @@ import React from 'react';
 import indexcards from '../../../public/assets/img/indexcards.jpg';
 import { FaCalendarDay, FaWrench, FaMapMarkerAlt } from 'react-icons/fa';
 import { postData } from '../../services/data-fetch';
-
+import { useNavigate } from 'react-router-dom';
+import './IndexCardsEntreprises.css';
 
 const IndexCardsEntreprises = ({ entreprise, userId }) => {
   // console.log('Entreprise object:', entreprise); // Pour déboguer
-
+  const navigate = useNavigate();
   const { id, name, city, zip_code, job, nextAvailableDate, logo } = entreprise;
 
   // Affichez la prochaine disponibilité si elle est définie
@@ -29,10 +30,12 @@ const IndexCardsEntreprises = ({ entreprise, userId }) => {
       console.error('Erreur lors de la création du like:', error);
     }
   };
-
+  const redirectToEnterprisePage = () => {
+    navigate(`/enterprise/${entreprise.id}`);
+  };
 
   return (
-    <div className="card card-compact w-auto shadow-xl relative dark:bg-[#262626] dark:text-white light:bg-[#FDE8E8]">
+    <div className="card card-compact w-auto shadow-xl relative dark:bg-[#262626] dark:text-white light:bg-[#FDE8E8] card-hover-zoom" onClick={redirectToEnterprisePage}>
       <div className="rating gap-1 absolute top-0 right-0 p-4">
         <input
           type="radio"

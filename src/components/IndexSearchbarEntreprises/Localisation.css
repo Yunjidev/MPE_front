@@ -2,12 +2,25 @@
     -webkit-appearance: none;
     appearance: none;
     background-color: #A78BFA;
-  }
-  
-  .range-violet-400::-moz-range-thumb {
+}
+
+.range-violet-400::-moz-range-thumb {
     background-color: #A78BFA;
-  }
-  
-  .range-violet-400::-ms-thumb {
+}
+
+.range-violet-400::-ms-thumb {
     background-color: #A78BFA;
-  }
+}
+
+.custom-localisation-btn {
+    padding-left: 10px;
+
+    padding-right: 15px;
+
+    height: 50px;
+    border-radius: 100% !important;
+    background-color: #4b4b4b !important;
+
+    color: #ffffff !important;
+
+}

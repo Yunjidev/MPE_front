@@ -31,7 +31,7 @@
 
 
 .custom-btn {
-  /* ... autres propriétés ... */
+  
   background-color: #4b4b4b !important ; /* Couleur de fond pour les boutons */
   color: #ffffff !important; /* Texte blanc pour les boutons */
   margin-right: -10px; /* Ajustement pour coller les boutons entre eux */

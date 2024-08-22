@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from "react-toastify";
 import { getData } from '../../services/data-fetch';
+
 import Switch from 'react-switch';
 import './Localisation.css';
 

@@ -4,7 +4,7 @@ import { getData } from '../../services/data-fetch';
 import './indexsearchbarentreprises.css';
 import { toast } from "react-toastify";
 import Rating from 'react-rating-stars-component';
-
+import { FaMapMarkerAlt } from "react-icons/fa";
 import CitySelect from './CitySelect';
 import CountrySelect from './Countryselect';
 import JobSelect from './Jobselect';
@@ -157,7 +157,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
   return (
     <div className="join pt-8 pb-10 flex items-center justify-center">
       {/* Open the modal using document.getElementById('ID').showModal() method */}
-      <button className="btn" onClick={() => document.getElementById('my_modal_1').showModal()}>Localisation</button>
+      <button className="custom-localisation-btn" onClick={() => document.getElementById('my_modal_1').showModal()}>Localisation<FaMapMarkerAlt /></button>
       <dialog id="my_modal_1" className="modal">
         <div className="modal-box">
           
