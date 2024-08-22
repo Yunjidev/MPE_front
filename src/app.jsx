@@ -70,7 +70,7 @@ function App() {
               <NavBar />
               <ParticlesDemo />
               <CookieBanner />
-              <main className="flex-1 container mx-auto lg:w-5/6 w-full">
+              <main className="flex-1 lg:container mx-auto lg:w-5/6 w-full">
                 <Routes>
                   <Route path="/" element={<UserChoiceModal />} />
                   <Route path="/home-client" element={<HomeClient />} />
