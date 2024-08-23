@@ -22,7 +22,7 @@ export default function EditProfilForm() {
   };
 
   return (
-    <div className="flex flex-col h-full space-around p-6 rounded-lg">
+    <div className="flex flex-col h-full space-around rounded-lg">
       <UserForm onSubmit={handleSubmit} mode="Edit" initialData={user} />
     </div>
   );

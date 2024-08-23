@@ -75,14 +75,14 @@ const CommentList = ({ offers }) => {
           {[1, 2, 3, 4, 5].map((rating) => (
             <button
               key={rating}
-              className={`p-2 rounded-full ${selectedRating === rating ? 'bg-orange-400' : 'bg-neutral-500'}`}
+              className={`p-2 rounded-full ${selectedRating === rating ? 'bg-orange-400/75' : 'bg-neutral-500/25'}`}
               onClick={() => handleFilterChange(rating)}
             >
               {rating} ⭐
             </button>
           ))}
           <button
-            className={`p-2 rounded-full ${selectedRating === null ? 'bg-orange-400' : 'bg-neutral-500'}`}
+            className={`p-2 rounded-full ${selectedRating === null ? 'bg-orange-400/75' : 'bg-neutral-500/25'}`}
             onClick={() => handleFilterChange(null)}
           >
             Tous
@@ -95,7 +95,7 @@ const CommentList = ({ offers }) => {
         {/* Left Arrow */}
         {visibleComments > commentsPerPage && (
           <button
-            className="transform hide-on-small lg:self-center rotate-180 bg-neutral-500 p-2 rounded-full"
+            className="transform hide-on-small lg:self-center rotate-180 bg-neutral-500/25 p-2 rounded-full"
             onClick={handleLeftArrowClick}
           >
             ➤
@@ -158,7 +158,7 @@ const CommentList = ({ offers }) => {
 
       {visibleComments > commentsPerPage && (
           <button
-            className="transform lg:hidden lg:self-center rotate-180 bg-neutral-500 p-2 rounded-full"
+            className="transform lg:hidden lg:self-center rotate-180 bg-neutral-500/25 p-2 rounded-full"
             onClick={handleLeftArrowClick}
           >
             ➤
@@ -169,7 +169,7 @@ const CommentList = ({ offers }) => {
         {/* Right Arrow */}
         {visibleComments < sortedComments.length && (
           <button
-            className=" lg:self-center transform bg-neutral-500 p-2 rounded-full"
+            className=" lg:self-center transform bg-neutral-500/25 p-2 rounded-full"
             onClick={handleRightArrowClick}
           >
             ➤

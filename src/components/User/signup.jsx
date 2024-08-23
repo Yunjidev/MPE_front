@@ -15,14 +15,18 @@ export default function SignUp() {
 
   const handleSubmit = async (formData) => {
     try {
-      const response = await authSignInUp("signup", formData);
-      const userData = await response.json();
-      setUser({ ...userData, isLogged: true }); // Met à jour le contexte avec les nouvelles données
+      const response = await authSignInUp("signup", formData, setUser);
+      const userData = await response;
+      console.log(userData);
       navigate("/dashboard/user-db");
       toast.success("Inscription réussie");
     } catch (error) {
-      console.error("Erreur lors de l'inscription :", error.message);
-      toast.error(`Erreur lors de l'inscription : ${error.message}`);
+      const errorData = await JSON.parse(error.message);
+      console.log(errorData);
+      errorData.forEach((error) => {
+        const [, message] = Object.entries(error)[0];
+        toast.error(`${message}`);
+      });
     }
   };
 

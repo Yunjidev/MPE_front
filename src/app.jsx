@@ -1,10 +1,10 @@
-/* eslint-disable no-unused-vars */
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useAtom, Provider } from "jotai";
+import { Provider } from "jotai";
 import { ToastContainer } from "react-toastify";
-import { userAtom } from "./store/user";
 import "react-toastify/dist/ReactToastify.css";
+import { useSocketIo } from "./services/UseSocketIo";
+import { validateRefreshToken } from "./services/checkToken";
 
 // Context Providers
 import { UserProvider } from "./context/UserContext";
@@ -52,14 +52,14 @@ import OfferList from "./components/DashboardUser/OffersList";
 import ReservationsList from "./components/DashboardUser/ReservationsList";
 
 function App() {
-  const [user, setUser] = useAtom(userAtom);
+  useSocketIo();
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-  }, [setUser]);
+    const checkAuth = async () => {
+      await validateRefreshToken();
+    };
+    checkAuth();
+  }, []);
 
   return (
     <Provider>
@@ -88,7 +88,10 @@ function App() {
                   />
                   <Route path="/pricing" element={<Pricing_page />} />
                   <Route path="/enterprise/:id" element={<EnterprisePage />} />
-
+                  <Route
+                    path="forgot-password"
+                    element={<ForgotPasswordForm />}
+                  />
                   {/* Routes protégées pour les utilisateurs authentifiés */}
                   <Route element={<AuthenticatedRoute />}>
                     <Route path="/dashboard" element={<Dashboard />}>
@@ -103,10 +106,7 @@ function App() {
                         element={<UpdatePassWord />}
                       />
                       <Route path="deleteAccount" element={<DeleteAccount />} />
-                      <Route
-                        path="forgot-password"
-                        element={<ForgotPasswordForm />}
-                      />
+
                       {/* Routes protégées pour les entrepreneurs */}
                       <Route element={<EntrepreneurRoute />}>
                         <Route

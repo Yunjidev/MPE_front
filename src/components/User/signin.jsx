@@ -15,7 +15,12 @@ export default function SignIn() {
 
   const handleSubmit = async (data) => {
     try {
-      await authSignInUp("signin", data, setUser);
+      const userData = await authSignInUp("signin", data);
+      setUser({
+        ...userData.user,
+        enterprises: userData.enterprises,
+        isLogged: true,
+      });
       navigate("/dashboard/user-db");
       toast.success("Authentification réussie");
     } catch (error) {
