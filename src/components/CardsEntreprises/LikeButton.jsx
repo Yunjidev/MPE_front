@@ -31,6 +31,10 @@ const LikeButton = ({ userId, enterpriseId }) => {
 
     const handleLike = async (event) => {
         event.stopPropagation();
+        if (!userId) {
+            toast.info('Veuillez vous connecter pour liker cette entreprise.');
+            return;
+        }
         if (hasLiked) {
             toast.info('Vous avez déjà liké cette entreprise.');
             return;
