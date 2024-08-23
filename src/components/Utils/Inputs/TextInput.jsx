@@ -16,7 +16,7 @@ export default function InputText({
       <input
         type={type}
         id={id}
-        value={value}
+        value={value !== null ? value : ""}
         onChange={onChange}
         placeholder={placeholder}
         className={`${inputStyle} block ps-9 border-none w-full h-full shadow-[inset_0_6px_10px_rgba(0,0,0,0.6)] rounded-xl bg-neutral-900 text-white text-start focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400`}

@@ -7,4 +7,18 @@
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
     scrollbar-width: none;     /* Firefox */
   }
-  
+
+  @media (max-width: 1023px) {
+    .hide-on-small {
+      display: none;
+    }
+    .display-on-small {
+        display: block;
+    }
+  }
+
+  @media (min-width: 1023px) {
+    .display-on-small {
+        display: block;
+    }
+  }
