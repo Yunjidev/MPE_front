@@ -15,7 +15,8 @@ export default function SignOut() {
       toast.info("Vous êtes maintenant déconnecté !");
       navigate("/signin");
     } catch (error) {
-      toast.error(`Erreur lors de la déconnexion : ${error.message}`);
+      resetUser();
+      navigate("/signin");
     }
   };
 
