@@ -6,8 +6,10 @@ import React, { useState, useEffect } from "react";
 import { useTable, usePagination } from "react-table";
 import { getData, putData } from "../../services/data-fetch";
 import Button from "../Button/button";
+import { useSocketIo } from "../../services/UseSocketIo";
 
 const NonValidatedCompanies = () => {
+  const socket = useSocketIo();
   const [companies, setCompanies] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
@@ -27,18 +29,16 @@ const NonValidatedCompanies = () => {
 
   const validateCompany = async (companyId) => {
     try {
-      const updatedCompany = { isValidate: 'true' };
-      console.log("Company ID:", companyId);
-      console.log("Data to update:", updatedCompany);
-
-      const response = await putData(`enterprise/${companyId}`, updatedCompany);
-      console.log("Response from PUT:", response);
+      const formData = new FormData();
+      formData.append("isValidate", "true");
+      const response = await putData(`enterprise/${companyId}`, formData);
+      if (socket) {
+        socket.emit("enterpriseValidated", { id: companyId, isValidate: true });
+      }
 
       setCompanies((prevCompanies) =>
         prevCompanies.filter((company) => company.id !== companyId)
       );
-
-      alert("Entreprise validée avec succès");
     } catch (error) {
       console.error("Error validating company:", error);
     }

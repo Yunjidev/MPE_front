@@ -1,10 +1,8 @@
-/* eslint-disable no-unused-vars */
-import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useAtom, Provider } from "jotai";
+import { Provider } from "jotai";
 import { ToastContainer } from "react-toastify";
-import { userAtom } from "./store/user";
 import "react-toastify/dist/ReactToastify.css";
+import { useSocketIo } from "./services/UseSocketIo";
 
 // Context Providers
 import { UserProvider } from "./context/UserContext";
@@ -13,8 +11,8 @@ import ScrollToTop from "./context/Scrolltotop";
 
 // Components
 import ParticlesDemo from "./components/ParticlesDemo";
-import NavBar from "./components/navbar/navbar";
-import Footer from "./components/footer/footer";
+import NavBar from "./components/Navbar/navbar";
+import Footer from "./components/Footer/footer";
 import SocialLinks from "./components/SocialLinks/sociallinks";
 import UserChoiceModal from "./components/home/UserChoiceModal";
 import Pricing_page from "./components/pricing_page/pricing_page";
@@ -31,8 +29,8 @@ import CookieBanner from "./pages/NotificationBanner/NotificationBanner";
 import CookiePolicies from "./pages/Policies/CookiePolicies";
 
 // User Pages
-import Signup from "./components/user/signup";
-import Signin from "./components/user/signin";
+import Signup from "./components/User/signup";
+import Signin from "./components/User/signin";
 import UpdateCompany from "./pages/user/updatecompany";
 
 // Dashboard Pages
@@ -52,14 +50,7 @@ import AdminRoute from "./context/AdminRoute";
 import OfferList from "./components/DashboardUser/OffersList";
 
 function App() {
-  const [user, setUser] = useAtom(userAtom);
-
-  useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-  }, [setUser]);
+  useSocketIo();
 
   return (
     <Provider>
@@ -71,7 +62,7 @@ function App() {
               <NavBar />
               <ParticlesDemo />
               <CookieBanner />
-              <main className="flex-1 container mx-auto lg:w-5/6 w-full">
+              <main className="flex-1 lg:container mx-auto lg:w-5/6 w-full">
                 <Routes>
                   <Route path="/" element={<UserChoiceModal />} />
                   <Route path="/home" element={<Home />} />
@@ -114,8 +105,14 @@ function App() {
                           path="enterprise/:enterpriseId/edit"
                           element={<UpdateCompany />}
                         />
-                        <Route path="enterprise/:enterpriseId/edit" element={<UpdateCompany />} />
-                        <Route path="enterprise/:id/offer" element={<OfferList />} />
+                        <Route
+                          path="enterprise/:enterpriseId/edit"
+                          element={<UpdateCompany />}
+                        />
+                        <Route
+                          path="enterprise/:id/offer"
+                          element={<OfferList />}
+                        />
                       </Route>
                       {/* Routes protégées pour les administrateurs */}
                       <Route element={<AdminRoute />}>

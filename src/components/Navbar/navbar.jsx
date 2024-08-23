@@ -4,8 +4,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 import { useModal } from "../../context/ModalContext";
 import logo from "../../../public/assets/img/logo.png";
-import { getData } from "../../services/data-fetch";
-import SignOut from "../user/signout";
+import SignOut from "../User/signout";
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
 import { motion, AnimatePresence } from "framer-motion";
@@ -17,7 +16,6 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [user] = useAtom(userAtom);
-  const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const isSelectionPage = location.pathname === "/";
@@ -42,32 +40,16 @@ const Navbar = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      if (user.isLogged && user.id) {
-        try {
-          const data = await getData("user/profile");
-          console.log("Fetched profile data:", data); // Log fetched data
-          setProfile(data);
-        } catch (error) {
-          console.error("Error fetching profile data:", error);
-        }
-      }
-    };
-
-    fetchProfileData();
-  }, [user.id]);
-
   const handleUserTypeToggle = () => {
     const newUserType = userType === "client" ? "enterprise" : "client";
     setUserType(newUserType);
     navigate(newUserType === "client" ? "/home-client" : "/home-enterprise");
   };
 
-  // Correct avatar URL directly from profile data
-  const avatarUrl = profile?.avatar
-    ? profile.avatar
+  const avatarUrl = user?.avatar
+    ? user.avatar
     : "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp";
+
   return (
     <>
       <div className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full max-w-full z-50 mt-4">

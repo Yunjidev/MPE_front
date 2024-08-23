@@ -1,127 +1,186 @@
-import React, { useRef, useState, useEffect } from 'react';
-import StarRating from './StarRatings';
-import './commentlist.css';
+import React, { useState } from "react";
+import StarRating from "./StarRatings";
+import "./commentlist.css";
 
 const CommentList = ({ offers }) => {
-  const scrollContainerRef = useRef(null);
-  const [showLeftArrow, setShowLeftArrow] = useState(false);
-  const [showRightArrow, setShowRightArrow] = useState(true);
+  const commentsPerPage = 6; 
+  const [visibleComments, setVisibleComments] = useState(commentsPerPage); 
+  const [selectedRating, setSelectedRating] = useState(null); 
+  const [sortOrder, setSortOrder] = useState('recent'); 
 
-  // Function to scroll left or right
-  const handleScroll = (direction) => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = 300; // Adjust scroll amount as needed
-      scrollContainerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth',
-      });
+  const allComments = offers.flatMap(offer => offer.ratings); 
+
+  const filteredComments = selectedRating
+    ? allComments.filter((comment) => parseInt(comment.note) === selectedRating)
+    : allComments;
+
+  const sortedComments = [...filteredComments].sort((a, b) => {
+    if (sortOrder === 'best') {
+      return b.note - a.note; 
+    } else if (sortOrder === 'worst') {
+      return a.note - b.note; 
+
+    } else {
+      return new Date(b.createdAt) - new Date(a.createdAt); 
+    }
+  });
+
+  const totalPages = Math.ceil(sortedComments.length / commentsPerPage); 
+  const currentPage = Math.ceil(visibleComments / commentsPerPage); 
+
+  const handleRightArrowClick = () => {
+    if (visibleComments < sortedComments.length) {
+      setVisibleComments((prev) =>
+        Math.min(prev + commentsPerPage, sortedComments.length),
+      );
     }
   };
 
-  // Function to check scroll position and update arrow visibility
-  const checkScrollPosition = () => {
-    const container = scrollContainerRef.current;
-    if (container) {
-      const { scrollLeft, scrollWidth, clientWidth } = container;
-      // Check if there is space to scroll to the right
-      setShowLeftArrow(scrollLeft > 0);
-      setShowRightArrow(scrollLeft + clientWidth < scrollWidth);
+  const handleLeftArrowClick = () => {
+    if (visibleComments > commentsPerPage) {
+      setVisibleComments((prev) =>
+        Math.max(prev - commentsPerPage, commentsPerPage),
+      );
     }
   };
 
-  // Use effect to attach the scroll listener
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (container) {
-      container.addEventListener('scroll', checkScrollPosition);
-      checkScrollPosition(); // Initial check on mount
+  const handleFilterChange = (rating) => {
+    setSelectedRating(rating);
+    setVisibleComments(commentsPerPage); 
+  };
 
-      return () => {
-        container.removeEventListener('scroll', checkScrollPosition);
-      };
-    }
-  }, [offers]); // Re-run effect when offers change
-
-  // Ensure arrows are correctly displayed on component mount and when offers change
-  useEffect(() => {
-    checkScrollPosition();
-  }, [offers]);
+  const handleSortChange = (e) => {
+    setSortOrder(e.target.value);
+    setVisibleComments(commentsPerPage); 
+  };
 
   return (
-    <div className="relative">
-      {/* Left Arrow */}
-      {showLeftArrow && (
-        <button
-          className="absolute rotate-180 left-0 top-1/2 transform -translate-y-1/2 bg-orange-400 p-2 rounded-full"
-          onClick={() => handleScroll('left')}
-        >
-          ➤
-        </button>
-      )}
+    <div className="container mx-auto px-4">
+      <div className='flex flex-col lg:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-4'>
+        {/* Sort Dropdown */}
+        <div className="flex justify-center">
+          <select
+            className="p-2 rounded-lg border-neutral-800 bg-neutral-600"
+            value={sortOrder}
+            onChange={handleSortChange}
+          >
+            <option value="recent">Les plus récents</option>
+            <option value="best">Les meilleures évaluations</option>
+            <option value="worst">Les moins bonnes évaluations</option>
+          </select>
+        </div>
 
-      {/* Scrollable Container */}
-      <div
-        ref={scrollContainerRef}
-        className="flex overflow-x-scroll scrollbar-hide px-12 space-x-6"
-      >
-        {offers.flatMap((offer) =>
-          offer.ratings.map((rating, index) => (
-            <div key={index} className="bg-gray-700 p-4 w-56 h-auto rounded-lg">
-              <div className="flex items-center mb-2">
-                <div className="w-10 h-10 bg-gray-500 rounded-full mr-3 flex items-center justify-center">
-                  {rating.user?.avatar ? (
-                    <img
-                      src={rating.user.avatar}
-                      alt={`${rating.user.username}`}
-                      className="w-10 h-10 object-cover rounded-full"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src =
-                          'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp'; // Default image
-                      }}
-                    />
-                  ) : (
-                    <span className="text-white">
-                      {rating.user?.firstname?.charAt(0) || 'U'}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <p className="font-semibold">
-                    {rating.user?.username || 'Utilisateur'}
-                  </p>
-                  <span className="text-sm text-gray-400">{offer.name}</span>
-                  <div className="flex items-center">
-                    <StarRating rating={parseInt(rating.note, 10)} />
-                    <span className="ml-2 text-sm text-gray-400">
-                      {rating.note}/5
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <p className="text-sm w-48 mt-2">{rating.comment}</p>
-              <p className="text-xs text-gray-500 mt-1">
-                Posté le {new Date(rating.createdAt).toLocaleDateString()}
-              </p>
-            </div>
-          ))
+        {/* Rating Filter Buttons */}
+        <div className="flex justify-center space-x-2">
+          {[1, 2, 3, 4, 5].map((rating) => (
+            <button
+              key={rating}
+              className={`p-2 rounded-full ${selectedRating === rating ? 'bg-orange-400/75' : 'bg-neutral-500/25'}`}
+              onClick={() => handleFilterChange(rating)}
+            >
+              {rating} ⭐
+            </button>
+          ))}
+          <button
+            className={`p-2 rounded-full ${selectedRating === null ? 'bg-orange-400/75' : 'bg-neutral-500/25'}`}
+            onClick={() => handleFilterChange(null)}
+          >
+            Tous
+          </button>
+        </div>
+      </div>
+
+      {/* Comments and Navigation Arrows */}
+      <div className="flex flex-col lg:flex-row lg:justify-between items-center">
+        {/* Left Arrow */}
+        {visibleComments > commentsPerPage && (
+          <button
+            className="transform hide-on-small lg:self-center rotate-180 bg-neutral-500/25 p-2 rounded-full"
+            onClick={handleLeftArrowClick}
+          >
+            ➤
+          </button>
         )}
-        {offers.every((offer) => offer.ratings.length === 0) && (
-          <p className="text-center text-gray-400">
-            Aucun commentaire pour le moment
+
+{/* Comments Container */}
+<div className="flex flex-wrap justify-center items-stretch gap-4">
+  {sortedComments.slice(visibleComments - commentsPerPage, visibleComments).map((rating, index) => (
+    <div 
+      key={index} 
+      className="bg-neutral-700 p-4 rounded-lg w-full sm:w-[250px] flex flex-col"
+    >
+      <div className="flex items-center mb-2">
+        <div className="w-10 h-10 bg-gray-500 rounded-full mr-3 flex items-center justify-center">
+          {rating.user?.avatar ? (
+            <img
+              src={rating.user.avatar}
+              alt={`${rating.user.username}`}
+              className="w-10 h-10 object-cover rounded-full"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src =
+                  'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp'; 
+              }}
+            />
+          ) : (
+            <span className="text-white">
+              {rating.user?.firstname?.charAt(0) || 'U'}
+            </span>
+          )}
+        </div>
+        <div>
+          <p className="font-semibold">
+            {rating.user?.username || 'Utilisateur'}
           </p>
+          <span className="text-sm text-gray-400">{rating.offerName || 'Produit'}</span>
+          <div className="flex items-center">
+            <StarRating rating={parseInt(rating.note, 10)} />
+            <span className="ml-2 text-sm text-gray-400">
+              {rating.note}/5
+            </span>
+          </div>
+
+        </div>
+      </div>
+      <div className="flex-grow">
+        <p className="text-sm">{rating.comment}</p>
+      </div>
+      <p className="text-xs text-gray-500 mt-1">
+        Posté le {new Date(rating.createdAt).toLocaleDateString()}
+      </p>
+    </div>
+  ))}
+</div>
+
+        <div className="flex lg:hidden justify-center mt-4 text-gray-500">
+        Page {currentPage} / {totalPages}
+      </div>
+
+      {visibleComments > commentsPerPage && (
+          <button
+            className="transform lg:hidden lg:self-center rotate-180 bg-neutral-500/25 p-2 rounded-full"
+            onClick={handleLeftArrowClick}
+          >
+            ➤
+          </button>
+        )}
+
+      
+        {/* Right Arrow */}
+        {visibleComments < sortedComments.length && (
+          <button
+            className=" lg:self-center transform bg-neutral-500/25 p-2 rounded-full"
+            onClick={handleRightArrowClick}
+          >
+            ➤
+          </button>
         )}
       </div>
 
-      {/* Right Arrow */}
-      {showRightArrow && (
-        <button
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-orange-400 p-2 rounded-full"
-          onClick={() => handleScroll('right')}
-        >
-          ➤
-        </button>
-      )}
+      {/* Pagination */}
+      <div className="hide-on-small lg:flex justify-center mt-4 text-gray-500">
+        Page {currentPage} / {totalPages}
+      </div>
     </div>
   );
 };
