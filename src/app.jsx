@@ -1,10 +1,8 @@
-/* eslint-disable no-unused-vars */
-import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useAtom, Provider } from "jotai";
+import { Provider } from "jotai";
 import { ToastContainer } from "react-toastify";
-import { userAtom } from "./store/user";
 import "react-toastify/dist/ReactToastify.css";
+import { useSocketIo } from "./services/UseSocketIo";
 
 // Context Providers
 import { UserProvider } from "./context/UserContext";
@@ -52,14 +50,7 @@ import AdminRoute from "./context/AdminRoute";
 import OfferList from "./components/DashboardUser/OffersList";
 
 function App() {
-  const [user, setUser] = useAtom(userAtom);
-
-  useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-  }, [setUser]);
+  useSocketIo();
 
   return (
     <Provider>
@@ -71,7 +62,7 @@ function App() {
               <NavBar />
               <ParticlesDemo />
               <CookieBanner />
-              <main className="flex-1 container mx-auto lg:w-5/6 w-full">
+              <main className="flex-1 lg:container mx-auto lg:w-5/6 w-full">
                 <Routes>
                   <Route path="/" element={<UserChoiceModal />} />
                   <Route path="/home-client" element={<HomeClient />} />
