@@ -3,7 +3,7 @@
 
 const PhotoGallery = ({ photos, openPopup }) => {
   return (
-    <div className="md:w-4/5 flex flex-col space-y-4 mr-6">
+    <div className="md:w-4/5 flex flex-col space-y-4 lg:mr-6">
       {photos && photos.length > 0 ? (
         <>
           <img
