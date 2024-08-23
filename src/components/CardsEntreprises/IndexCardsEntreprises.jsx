@@ -2,7 +2,7 @@ import React from 'react';
 import indexcards from '../../../public/assets/img/indexcards.jpg';
 import { FaCalendarDay, FaWrench, FaMapMarkerAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import LikeButton from './LikeButton';
+import LikeButton from './LikesForCards/LikeButton';
 import './IndexCardsEntreprises.css';
 
 const IndexCardsEntreprises = ({ entreprise, userId }) => {

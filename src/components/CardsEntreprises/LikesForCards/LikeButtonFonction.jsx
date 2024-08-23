@@ -1,19 +1,12 @@
 import { useEffect, useState } from 'react';
-import { getData, postData } from '../../services/data-fetch';
+import { getData, postData } from '../../../services/data-fetch';
 import { toast } from "react-toastify";
-import { FaHeart } from 'react-icons/fa';
 
-const LikeButton = ({ userId, enterpriseId }) => {
+
+// Composant pour la logique
+const LikeButtonFonction = ({ userId, enterpriseId, children }) => {
     const [hasLiked, setHasLiked] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
-
-    // Styles pour l'icône de cœur
-    const heartStyles = {
-        color: hasLiked ? '#60a5fa' : (isHovered ? '#e3342f' : '#fca5a5'),
-        transform: isHovered ? 'scale(1.1)' : 'scale(1)',
-        transition: 'color 0.2s, transform 0.2s',
-        cursor: 'pointer'
-    };
 
     useEffect(() => {
         const checkIfLiked = async () => {
@@ -57,19 +50,8 @@ const LikeButton = ({ userId, enterpriseId }) => {
 
     };
 
-    return (
-        <button
-            title={hasLiked ? 'Vous avez déjà liké cette entreprise.' : 'Cliquez pour liker cette entreprise.'} // Infobulle
-            onClick={handleLike}
-            disabled={hasLiked} // Ce bouton sera désactivé si hasLiked est vrai
-        >
-            <FaHeart
-                style={heartStyles}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-            />
-        </button>
-    );
+    // Passer les props nécessaires au composant enfant
+    return children({ hasLiked, isHovered, handleLike, setIsHovered });
 };
 
-export default LikeButton;
+export default LikeButtonFonction;
