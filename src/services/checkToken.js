@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { kyInstance } from "./config-fetch";
+import { authSignInUp } from "./auth-fetch";
 
 export const validateRefreshToken = async () => {
   const refreshToken = Cookies.get("mpe-refresh");
@@ -7,13 +7,8 @@ export const validateRefreshToken = async () => {
     return { isLogged: false };
   }
   try {
-    const response = await kyInstance.post(
-      "validate-refresh-token",
-      refreshToken,
-    );
-    Cookies.set("mpe-auth", response.headers.get("Authorization"), {
-      secure: true,
-      sameSite: "strict",
+    await authSignInUp("validate-refresh-token", {
+      refreshToken: refreshToken,
     });
     return { isLogged: true };
   } catch (error) {

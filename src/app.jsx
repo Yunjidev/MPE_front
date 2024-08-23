@@ -55,11 +55,7 @@ function App() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      try {
-        await validateRefreshToken();
-      } catch (error) {
-        console.log(error);
-      }
+      await validateRefreshToken();
     };
     checkAuth();
   }, []);

@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { BASE_URL, kyInstance } from "./config-fetch";
 
-export async function authSignInUp(object, data, setUser) {
+export async function authSignInUp(object, data) {
   try {
     let response = await kyInstance.post(BASE_URL + object, {
       json: data,
@@ -16,12 +16,7 @@ export async function authSignInUp(object, data, setUser) {
       secure: true,
       sameSite: "strict",
     });
-    setUser({
-      ...userData.user,
-      enterprises: userData.enterprises,
-      isLogged: true,
-    });
-    return await response;
+    return await userData;
   } catch (error) {
     let errorData = await error.responseData;
     throw new Error(JSON.stringify(errorData));
@@ -36,7 +31,6 @@ export async function authSignOut() {
       throw new Error("Aucun token d'authentification trouvé.");
     }
     let response = await kyInstance.post(`${BASE_URL}signout`, {});
-    console.log("response", response);
     Cookies.remove("mpe-auth");
     Cookies.remove("mpe-refresh");
     return response;

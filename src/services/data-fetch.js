@@ -22,7 +22,7 @@ export async function postData(object, data) {
     const response = await kyInstance.post(BASE_URL + object, options);
     return response.json();
   } catch (error) {
-    let errorData = await error.responseData.errors;
+    let errorData = await error.responseData;
     throw new Error(JSON.stringify(errorData));
   }
 }
