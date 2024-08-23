@@ -39,7 +39,7 @@ export async function putData(object, data) {
     return response.json();
   } catch (error) {
     let errorData = await error.responseData;
-    console.log(errorData);
+    console.log(errorData.errors);
     throw new Error(errorData);
   }
 }
