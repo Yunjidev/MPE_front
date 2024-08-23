@@ -1,5 +1,5 @@
 import AsyncSelect from 'react-select/async';
-import './indexsearchbarentreprises.css';
+
 
 const CountrySelect = ({ selectedCountries, setSelectedCountries, loadOptions }) => {
     return (
