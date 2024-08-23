@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useTable, usePagination } from "react-table";
 import { getData, deleteData, postData, putData } from "../../services/data-fetch";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
@@ -7,31 +7,21 @@ import Modal from "../DashboardAdmin/Modal";
 import OfferForm from "./OfferForm";
 import { useParams } from 'react-router-dom';
 
-const OffersList = () => {
-  const { id } = useParams();
+const useOffers = (id, searchQuery) => {
   const [offers, setOffers] = useState([]);
   const [filteredOffers, setFilteredOffers] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedOffer, setSelectedOffer] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [pageSize, setPageSize] = useState(10);
-  const [pageIndex, setPageIndex] = useState(0);
-
-  // Fonction pour obtenir les offres
-  const fetchOffers = async () => {
-    try {
-      const data = await getData(`enterprise/${id}/offers`);
-      setOffers(data);
-      setFilteredOffers(data);
-    } catch (error) {
-      console.error("Erreur lors de la récupération des offres:", error);
-    }
-  };
 
   useEffect(() => {
-    if (id) {
-      fetchOffers();
-    }
+    const fetchOffers = async () => {
+      try {
+        const data = await getData(`enterprise/${id}/offers`);
+        setOffers(data);
+        setFilteredOffers(data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des offres:", error);
+      }
+    };
+    if (id) fetchOffers();
   }, [id]);
 
   useEffect(() => {
@@ -46,8 +36,42 @@ const OffersList = () => {
       );
     });
     setFilteredOffers(filtered);
-    setPageIndex(0);
   }, [searchQuery, offers]);
+
+  return { offers, filteredOffers, setOffers };
+};
+
+const Pagination = ({ currentPageIndex, pageSize, filteredOffersLength, gotoPage }) => (
+  <div className="flex items-center space-x-4">
+    <button
+      onClick={() => gotoPage(0)}
+      disabled={currentPageIndex === 0}
+      className="px-4 py-2 bg-gray-200 rounded-lg dark:bg-neutral-700 dark:text-white border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+    >
+      &laquo; Précédente
+    </button>
+    <span className="dark:text-white text-black font-bold">
+      Page {currentPageIndex + 1} sur {Math.ceil(filteredOffersLength / pageSize)}
+    </span>
+    <button
+      onClick={() => gotoPage(currentPageIndex + 1)}
+      disabled={currentPageIndex >= Math.ceil(filteredOffersLength / pageSize) - 1}
+      className="px-4 py-2 bg-gray-200 rounded-lg dark:bg-neutral-700 dark:text-white border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+    >
+      Suivante &raquo;
+    </button>
+  </div>
+);
+
+const OffersList = () => {
+  const { id } = useParams();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedOffer, setSelectedOffer] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [pageSize, setPageSize] = useState(10);
+  const [pageIndex, setPageIndex] = useState(0);
+
+  const { offers, filteredOffers, setOffers } = useOffers(id, searchQuery);
 
   const deleteOffer = async (offerId) => {
     try {
@@ -67,23 +91,20 @@ const OffersList = () => {
   };
 
   const addNewOffer = () => {
-    setSelectedOffer(null); // Clear selection to add new
+    setSelectedOffer(null);
     setIsModalOpen(true);
   };
 
   const handleSave = async (formDataToSend) => {
     try {
       if (selectedOffer) {
-        // Mise à jour de l'offre existante
         await putData(`enterprise/${id}/offer/${selectedOffer.id}`, formDataToSend);
         alert("Offre mise à jour avec succès.");
       } else {
-        // Ajout d'une nouvelle offre
         await postData(`enterprise/${id}/offer`, formDataToSend);
         alert("Offre créée avec succès.");
       }
 
-      // Fetch à nouveau les offres après la création ou mise à jour
       fetchOffers();
       setIsModalOpen(false);
     } catch (error) {
@@ -92,8 +113,7 @@ const OffersList = () => {
     }
   };
 
-
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       { Header: "Nom de l'offre", accessor: "name" },
       { Header: "Description", accessor: "description" },
@@ -148,105 +168,89 @@ const OffersList = () => {
     const newSize = Number(event.target.value);
     setPageSize(newSize);
     setTablePageSize(newSize);
-    setPageIndex(0); // Réinitialiser la page à 0
+    setPageIndex(0);
   };
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-neutral-600 dark:bg-neutral-800 border dark:border-neutral-700">
-      <div className="p-4">
+      <div className="flex justify-between items-center p-4 space-x-4">
         <input
           type="text"
           placeholder="Rechercher..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-4 py-2 mb-4 rounded-lg dark:bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
+          className="flex-grow px-3 py-1 rounded-lg dark:bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
         />
-        <div className="overflow-x-auto">
-          <table
-            {...getTableProps()}
-            className="w-full text-sm text-center text-gray-500 bg-white border border-gray-200 dark:bg-neutral-800 dark:text-gray-400"
-          >
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th
-                      {...column.getHeaderProps()}
-                      className="px-6 py-3 border-b border-gray-200 dark:border-gray-200"
-                    >
-                      {column.render("Header")}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {page.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr
-                    {...row.getRowProps()}
-                    className="border-b dark:bg-neutral-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
-                  >
-                    {row.cells.map((cell) => (
-                      <td
-                        {...cell.getCellProps()}
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {cell.render("Cell")}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="flex justify-center items-center mt-4">
-          <button
-            onClick={() => gotoPage(0)}
-            disabled={currentPageIndex === 0}
-            className="px-4 py-2 mx-1 bg-gray-200 rounded-lg mr-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
-          >
-            &laquo; Précédent
-          </button>
-          <span className="dark:text-white text-black font-bold">
-            Page {currentPageIndex + 1} sur {Math.ceil(filteredOffers.length / pageSize)}
-          </span>
-          <button
-            onClick={() => gotoPage(currentPageIndex + 1)}
-            disabled={currentPageIndex >= Math.ceil(filteredOffers.length / pageSize) - 1}
-            className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
-          >
-            Suivant &raquo;
-          </button>
-        </div>
-
-        <div className="mt-4">
-          <select
-            value={currentPageSize}
-            onChange={handlePageSizeChange}
-            className="border rounded-lg dark:bg-neutral-700 dark:text-white p-2"
-          >
-            {[10, 20, 30, 40].map((size) => (
-              <option key={size} value={size}>
-                {size} offres par page
-              </option>
-            ))}
-          </select>
-        </div>
+        <Pagination
+          currentPageIndex={currentPageIndex}
+          pageSize={pageSize}
+          filteredOffersLength={filteredOffers.length}
+          gotoPage={gotoPage}
+        />
+        <select
+          value={currentPageSize}
+          onChange={handlePageSizeChange}
+          className="border rounded-lg dark:bg-neutral-700 dark:text-white p-2"
+        >
+          {[10, 20, 30, 40].map((size) => (
+            <option key={size} value={size}>
+              {size} offres par page
+            </option>
+          ))}
+        </select>
       </div>
 
-      <div className="absolute bottom-4 right-4">
+      <div className="overflow-x-auto">
+        <table
+          {...getTableProps()}
+          className="w-full text-sm text-center text-gray-500 bg-white border border-gray-200 dark:bg-neutral-800 dark:text-gray-400"
+        >
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    {...column.getHeaderProps()}
+                    className="px-6 py-3 border-b border-gray-200 dark:border-gray-200"
+                  >
+                    {column.render("Header")}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              return (
+                <tr
+                  {...row.getRowProps()}
+                  className="border-b dark:bg-neutral-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
+                >
+                  {row.cells.map((cell) => (
+                    <td
+                      {...cell.getCellProps()}
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {cell.render("Cell")}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      
+      <div className="flex justify-center items-center mt-4 mx-auto w-40">
         <Button
           onClick={addNewOffer}
-          className="bg-gradient-to-r from-[#67FFCC] to-[#33B7A6] dark:bg-[#4CAF50] rounded-full shadow-lg hover:bg-[#56D6B8] dark:hover:bg-[#45A049] transition-colors duration-300 ease-in-out"
-        >
-          <FaPlus className="text-white text-xl" />
+        >Ajouter l'offre
+          
         </Button>
       </div>
 
+      {/* Modal pour ajouter ou modifier une offre */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <OfferForm
           offer={selectedOffer}

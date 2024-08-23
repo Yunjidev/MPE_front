@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useTable, usePagination } from "react-table";
-import { getData, deleteData } from "../../services/data-fetch";
-import { FaTrash } from "react-icons/fa";
-import Button from "../Button/button";
+import { getData, putData } from "../../services/data-fetch"; // Import de putData
+import { FaCheck, FaTimes } from "react-icons/fa"; // Import des icônes pour accepter/refuser
 import { useParams } from "react-router-dom";
+import Button from "../Button/button";
 
 const ReservationsList = () => {
   const { id } = useParams();  
@@ -13,7 +13,6 @@ const ReservationsList = () => {
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
 
-  // Fonction pour obtenir les réservations
   const fetchReservations = async () => {
     try {
       const data = await getData(`enterprise/${id}/reservations`);
@@ -45,15 +44,23 @@ const ReservationsList = () => {
     setPageIndex(0);
   }, [searchQuery, reservations]);
 
-  const deleteReservation = async (reservationId) => {
+  const acceptReservation = async (reservationId) => {
     try {
-      await deleteData(`enterprise/${id}/reservation/${reservationId}`);
-      setReservations((prevReservations) =>
-        prevReservations.filter((reservation) => reservation.id !== reservationId)
-      );
+      await putData(`enterprise/${id}/reservation/${reservationId}/accept`, {});
+      await fetchReservations(); // Rafraîchir les données
     } catch (error) {
-      console.error("Erreur lors de la suppression de la réservation:", error);
-      alert("Une erreur est survenue lors de la suppression de la réservation.");
+      console.error("Erreur lors de l'acceptation de la réservation:", error);
+      alert("Une erreur est survenue lors de l'acceptation de la réservation.");
+    }
+  };
+  
+  const declineReservation = async (reservationId) => {
+    try {
+      await putData(`enterprise/${id}/reservation/${reservationId}/decline`, {});
+      await fetchReservations(); // Rafraîchir les données
+    } catch (error) {
+      console.error("Erreur lors du refus de la réservation:", error);
+      alert("Une erreur est survenue lors du refus de la réservation.");
     }
   };
 
@@ -70,12 +77,30 @@ const ReservationsList = () => {
         accessor: "id",
         Cell: ({ row }) => (
           <div className="flex space-x-2">
-            <Button
-              onClick={() => deleteReservation(row.original.id)}
-              className="text-red-600 dark:text-red-500 hover:underline"
-            >
-              <FaTrash />
-            </Button>
+            {row.original.status !== "Accepted" && row.original.status !== "Declined" && (
+              <>
+                <Button
+                  onClick={() => acceptReservation(row.original.id)}
+                  className="text-green-600 dark:text-green-500 hover:underline"
+                  title="Accepter la réservation"
+                >
+                  <FaCheck />
+                </Button>
+                <Button
+                  onClick={() => declineReservation(row.original.id)}
+                  className="text-red-600 dark:text-red-500 hover:underline"
+                  title="Refuser la réservation"
+                >
+                  <FaTimes />
+                </Button>
+              </>
+            )}
+            {row.original.status === "Accepted" && (
+              <span className="text-green-600 font-bold">Acceptée</span>
+            )}
+            {row.original.status === "Declined" && (
+              <span className="text-red-600 font-bold">Refusée</span>
+            )}
           </div>
         ),
       },

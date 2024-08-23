@@ -61,7 +61,7 @@ const OfferForm = ({ offer, onSubmit, onClose }) => {
         <h2 className="text-2xl font-semibold">{offer ? "Modifier l'offre" : "Créer une nouvelle offre"}</h2>
       </div>
       <form onSubmit={handleSubmit}>
-        {['le nom', 'la description', 'la durée', 'le prix'].map(field => (
+        {['nom', 'description', 'durée', 'prix'].map(field => (
           <div key={field} className="mb-4">
             <label htmlFor={field} className="block text-sm font-medium">
               {field.charAt(0).toUpperCase() + field.slice(1)}
