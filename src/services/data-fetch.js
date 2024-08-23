@@ -6,7 +6,7 @@ export async function getData(object, timeout = 50000) {
     const response = await kyInstance.get(BASE_URL + object , { timeout }).json();
     return response;
   } catch (error) {
-    let errorData = await error.responseData.message;
+    const errorData = error.response ? await error.response.json() : error.message;
     throw new Error(errorData);
   }
 }
