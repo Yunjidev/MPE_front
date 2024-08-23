@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Provider } from "jotai";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -132,6 +132,7 @@ function App() {
                       </Route>
                     </Route>
                   </Route>
+                  <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </main>
               <Footer />
