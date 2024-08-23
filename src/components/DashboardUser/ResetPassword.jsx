@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { postData } from "../../services/data-fetch";
@@ -12,8 +12,8 @@ const ResetPassword = () => {
     formState: { errors },
   } = useForm();
   const [message, setMessage] = useState("");
+  const [countdown, setCountdown] = useState(5);
 
-  // Récupérer les valeurs des champs pour la validation de correspondance
   const newPassword = watch("newPassword");
   const confirmPassword = watch("confirmPassword");
 
@@ -34,12 +34,25 @@ const ResetPassword = () => {
 
       alert("Votre mot de passe a été réinitialisé avec succès.");
 
-      // Redirection vers /home-client
-      window.location.href = "/home-client";
+      const interval = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+      }, 1000);
+
+      setTimeout(() => {
+        window.location.href = "/home-client";
+      }, 5000);
+
+      return () => clearInterval(interval);
     } catch (error) {
       setMessage("Une erreur est survenue. Veuillez réessayer.");
     }
   };
+
+  useEffect(() => {
+    if (countdown === 0) {
+      window.location.href = "/home-client";
+    }
+  }, [countdown]);
 
   return (
     <div className="flex flex-col h-full space-around bg-neutral-800 p-6 rounded-lg">
@@ -91,7 +104,14 @@ const ResetPassword = () => {
             Réinitialiser le Mot de Passe
           </button>
         </div>
-        {message && <p className="text-center text-white mt-4">{message}</p>}
+        {message && (
+          <div>
+            <p className="text-center text-white mt-4">{message}</p>
+            <p className="text-center text-white mt-2">
+              Redirection dans {countdown} secondes...
+            </p>
+          </div>
+        )}
       </form>
     </div>
   );

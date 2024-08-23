@@ -79,6 +79,10 @@ function App() {
                   />
                   <Route path="/pricing" element={<Pricing_page />} />
                   <Route path="/enterprise/:id" element={<EnterprisePage />} />
+                  <Route
+                    path="forgot-password"
+                    element={<ForgotPasswordForm />}
+                  />
 
                   {/* Routes protégées pour les utilisateurs authentifiés */}
                   <Route element={<AuthenticatedRoute />}>
@@ -94,10 +98,6 @@ function App() {
                         element={<UpdatePassWord />}
                       />
                       <Route path="deleteAccount" element={<DeleteAccount />} />
-                      <Route
-                        path="forgot-password"
-                        element={<ForgotPasswordForm />}
-                      />
                       <Route
                         path="reset-password/:token"
                         element={<ResetPassword />}
