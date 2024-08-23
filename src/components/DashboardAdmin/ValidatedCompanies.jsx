@@ -27,6 +27,7 @@ const ValidatedCompanies = () => {
     const fetchCompanies = async () => {
       try {
         const data = await getData("enterprises/validate");
+        console.log(data);
         setCompanies(data);
         setFilteredCompanies(data);
       } catch (error) {
@@ -46,6 +47,8 @@ const ValidatedCompanies = () => {
       const country = company.country.name ? company.country.name.toLowerCase() : "";
       const activity = company.job.name ? company.job.name.toLowerCase() : "";
       const siretNumber = company.siret_number ? company.siret_number.toLowerCase() : "";
+      const username = company.entrepreneur.username ? company.entrepreneur.username.toLowerCase() : "";
+      const averageRating = company.averageRating ? company.averageRating.toString().toLowerCase() : "";
 
       return (
         name.includes(lowercasedQuery) ||
@@ -53,6 +56,8 @@ const ValidatedCompanies = () => {
         zipCode.includes(lowercasedQuery) ||
         country.includes(lowercasedQuery) ||
         activity.includes(lowercasedQuery) ||
+        username.includes(lowercasedQuery) ||
+        averageRating.includes(lowercasedQuery) ||
         siretNumber.includes(lowercasedQuery)
       );
     });
@@ -105,6 +110,8 @@ const ValidatedCompanies = () => {
       { Header: "CP", accessor: "zip_code" },
       { Header: "Région", accessor: "country.name" },
       { Header: "Métier", accessor: "job.name" },
+      { Header: "Pseudo", accessor: "entrepreneur.username" },
+      { Header: "Note moyenne", accessor: "averageRating" },
       {
         Header: "Actions",
         accessor: "id",
