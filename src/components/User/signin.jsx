@@ -24,7 +24,8 @@ export default function SignIn() {
       navigate("/dashboard/user-db");
       toast.success("Authentification réussie");
     } catch (error) {
-      toast.error(error.message);
+      const errorData = await JSON.parse(error.message);
+      toast.error(errorData.errors);
     }
   };
 

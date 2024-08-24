@@ -25,7 +25,7 @@ export const kyInstance = ky.create({
     ],
     afterResponse: [
       async (request, options, response) => {
-        if (response.status === 401) {
+        if (response.status === 401 && Cookies.get("mpe-auth")) {
           const refreshToken = Cookies.get("mpe-refresh");
           if (refreshToken) {
             try {
