@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { postData } from "../../services/data-fetch"; // Assurez-vous que cette fonction est bien définie
+import { postData } from "../../services/data-fetch";
 import { useNavigate } from "react-router-dom";
 
 const ForgotPasswordForm = () => {
@@ -10,23 +10,28 @@ const ForgotPasswordForm = () => {
     formState: { errors },
   } = useForm();
   const [message, setMessage] = useState("");
-  const navigate = useNavigate(); // Initialiser useNavigate
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     try {
       const response = await postData("forgot-password", { email: data.email });
+
+      // Assurez-vous que `response.message` existe bien pour éviter des erreurs potentielles
       setMessage(
         response.message ||
           "Veuillez vérifier votre email pour réinitialiser votre mot de passe."
       );
 
-      // Afficher une alerte
+      // Affichage de l'alerte
       alert("Un lien de réinitialisation a été envoyé à votre adresse e-mail.");
 
-      // Redirection vers /home
+      // Redirection vers /home-client après succès
       navigate("/home-client");
     } catch (error) {
-      setMessage("Une erreur est survenue. Veuillez réessayer.");
+      // Gestion d'erreur améliorée pour afficher le message exact si disponible
+      const errorMessage =
+        error.message || "Une erreur est survenue. Veuillez réessayer.";
+      setMessage(errorMessage);
     }
   };
 
@@ -44,12 +49,20 @@ const ForgotPasswordForm = () => {
           <input
             id="email"
             type="email"
-            {...register("email", { required: "L'email est requis." })}
+            {...register("email", {
+              required: "L'email est requis.",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Veuillez entrer un email valide.",
+              },
+            })}
             placeholder="Email"
             className="w-full pl-3 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-300"
           />
           {errors.email && (
-            <span className="text-red-500 text-sm">{errors.email.message}</span>
+            <span className="text-red-500 text-sm absolute -bottom-5">
+              {errors.email.message}
+            </span>
           )}
         </div>
         <div className="flex justify-center">

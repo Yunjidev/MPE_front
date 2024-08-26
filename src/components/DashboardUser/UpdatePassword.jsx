@@ -2,31 +2,31 @@ import React, { useState, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { putData } from "../../services/data-fetch";
 import { FaLock, FaKey } from "react-icons/fa";
-import { useForm, Controller } from "react-hook-form";
-import Cookies from "js-cookie";
+import { useForm } from "react-hook-form";
 
-export default function UpdatePassword({ onSubmit }) {
+export default function UpdatePassword() {
   const { user } = useContext(UserContext);
   const {
+    register,
     handleSubmit,
-    control,
     formState: { errors },
   } = useForm();
+
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
   const onSubmitHandler = async (data) => {
-    const { currentPassword, newPassword, confirmPassword } = data;
+    const { password, confirmPassword } = data;
 
-    if (newPassword !== confirmPassword) {
-      setError("Les nouveaux mots de passe ne correspondent pas.");
+    // Vérifier que les deux mots de passe sont identiques
+    if (password !== confirmPassword) {
+      setError("Les mots de passe ne correspondent pas.");
       return;
     }
 
     try {
       const response = await putData("user/update", {
-        oldPassword: currentPassword.trim(),
-        newPassword: newPassword.trim(),
+        password: password.trim(),
       });
 
       if (response.error) {
@@ -36,9 +36,6 @@ export default function UpdatePassword({ onSubmit }) {
       } else {
         setSuccess("Mot de passe mis à jour avec succès !");
         setError(null);
-        if (onSubmit) {
-          onSubmit(response);
-        }
       }
     } catch (error) {
       setError("Erreur lors du changement de mot de passe.");
@@ -47,10 +44,10 @@ export default function UpdatePassword({ onSubmit }) {
   };
 
   return (
-    <div className="mt-12 mb-6 flex items-center justify-center bg-neutral-900">
-      <div className="relative border-form-1 group max-w-8xl w-full">
-        <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
-        <div className="bg-neutral-900 p-10 rounded-xl shadow-xl relative z-10 transform transition duration-500 ease-in-out">
+    <div className="mt-12 mb-6 flex items-center justify-center bg-neutral-900 rounded-xl">
+      <div className="relative border-form-1 group max-w-8xl w-full ">
+        <div className="absolute -top-1 -left-1 -right-1 -bottom-1 "></div>
+        <div className="bg-neutral-900 p-10 rounded-xl relative z-10 transform transition duration-500 ease-in-out">
           <h2 className="text-white text-center text-2xl mb-5">
             Changer le mot de passe
           </h2>
@@ -61,75 +58,36 @@ export default function UpdatePassword({ onSubmit }) {
           >
             <div className="relative flex items-center">
               <FaLock className="absolute left-3 text-gray-400" />
-              <Controller
-                name="currentPassword"
-                control={control}
-                rules={{ required: "Mot de passe actuel requis" }}
-                render={({ field }) => (
-                  <input
-                    type="password"
-                    {...field}
-                    placeholder="Mot de passe actuel"
-                    className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
-                  />
-                )}
+              <input
+                type="password"
+                {...register("password", {
+                  required: "Le mot de passe est requis",
+                })}
+                placeholder="Nouveau mot de passe"
+                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
               />
-              {errors.currentPassword && (
+              {errors.password && (
                 <span className="text-red-500 text-sm absolute right-3">
-                  {errors.currentPassword.message}
+                  {errors.password.message}
                 </span>
               )}
             </div>
 
             <div className="relative flex items-center">
               <FaKey className="absolute left-3 text-gray-400" />
-              <Controller
-                name="newPassword"
-                control={control}
-                rules={{ required: "Nouveau mot de passe requis" }}
-                render={({ field }) => (
-                  <input
-                    type="password"
-                    {...field}
-                    placeholder="Nouveau mot de passe"
-                    className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
-                  />
-                )}
-              />
-              {errors.newPassword && (
-                <span className="text-red-500 text-sm absolute right-3">
-                  {errors.newPassword.message}
-                </span>
-              )}
-            </div>
-
-            <div className="relative flex items-center">
-              <FaKey className="absolute left-3 text-gray-400" />
-              <Controller
-                name="confirmPassword"
-                control={control}
-                rules={{ required: "Confirmation du mot de passe requise" }}
-                render={({ field }) => (
-                  <input
-                    type="password"
-                    {...field}
-                    placeholder="Confirmer le nouveau mot de passe"
-                    className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
-                  />
-                )}
+              <input
+                type="password"
+                {...register("confirmPassword", {
+                  required: "La confirmation du mot de passe est requise",
+                })}
+                placeholder="Confirmer le nouveau mot de passe"
+                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
               />
               {errors.confirmPassword && (
                 <span className="text-red-500 text-sm absolute right-3">
                   {errors.confirmPassword.message}
                 </span>
               )}
-              {errors.confirmPassword &&
-                errors.confirmPassword.message ===
-                  "Les mots de passe ne correspondent pas" && (
-                  <span className="text-red-500 text-sm absolute right-3">
-                    Les mots de passe ne correspondent pas
-                  </span>
-                )}
             </div>
 
             <div className="flex justify-center">
@@ -140,6 +98,14 @@ export default function UpdatePassword({ onSubmit }) {
                 Changer le mot de passe
               </button>
             </div>
+
+            {/* Afficher les messages d'erreur et de succès */}
+            {error && (
+              <div className="text-red-500 text-center mt-4">{error}</div>
+            )}
+            {success && (
+              <div className="text-green-500 text-center mt-4">{success}</div>
+            )}
           </form>
         </div>
       </div>
