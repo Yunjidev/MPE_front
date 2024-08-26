@@ -105,10 +105,7 @@ function App() {
                         element={<UpdatePassWord />}
                       />
                       <Route path="deleteAccount" element={<DeleteAccount />} />
-                      <Route
-                        path="reset-password/:token"
-                        element={<ResetPassword />}
-                      />
+
                       {/* Routes protégées pour les entrepreneurs */}
                       <Route element={<EntrepreneurRoute />}>
                         <Route
