@@ -8,7 +8,7 @@ const ParticlesDemo = ({ isDarkMode }) => {
 
   return (
     <Particles
-      className={"inset-0 -z-10 bg-red-100 dark:bg-neutral-800 fixed"}
+      className={"inset-0 -z-10 bg-orange-50 dark:bg-neutral-800 fixed"}
       quantity={200}
       ease={80}
       color={particleColor}
