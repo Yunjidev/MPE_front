@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./test.css";
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
+import { enterprisesAtom } from "../../store/enterprises";
 import EnterpriseSideBar from "./EnterpriseSideBar";
 import UserSideBar from "./UserSideBar";
 import AdminSideBar from "./AdminSideBar";
@@ -19,6 +20,7 @@ const adminColorStyle =
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [user] = useAtom(userAtom);
+  const [enterprises] = useAtom(enterprisesAtom);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -36,12 +38,13 @@ const Sidebar = () => {
         setIsSidebarOpen(false);
       }
     };
+    console.log("Atom updated", enterprises);
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isSidebarOpen]);
+  }, [isSidebarOpen, enterprises]);
 
   return (
     <>
@@ -71,11 +74,12 @@ const Sidebar = () => {
             onClick={closeSidebar}
           />
 
-          <EnterpriseSideBar
-            user={user}
-            colorStyle={enterpriseColorStyle}
-            onClick={closeSidebar}
-          />
+          {user.isEntrepreneur && (
+            <EnterpriseSideBar
+              colorStyle={enterpriseColorStyle}
+              onClick={closeSidebar}
+            />
+          )}
 
           <AdminSideBar
             user={user}
