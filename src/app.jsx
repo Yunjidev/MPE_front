@@ -3,8 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Provider } from "jotai";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSocketIo } from "./services/UseSocketIo";
 import { validateRefreshToken } from "./services/checkToken";
+import { useSocketIo } from "./services/UseSocketIo";
 
 // Context Providers
 import { UserProvider } from "./context/UserContext";

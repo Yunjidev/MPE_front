@@ -11,6 +11,7 @@ import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import Button from "../Button/button";
 import Modal from "./Modal";
 import EditCompanyForm from "../DashboardEnterprise/EditCompanyForm";
+import { toast } from "react-toastify";
 
 const ValidatedCompanies = () => {
   const [companies, setCompanies] = useState([]);
@@ -43,9 +44,13 @@ const ValidatedCompanies = () => {
       const name = company.name ? company.name.toLowerCase() : "";
       const city = company.city ? company.city.toLowerCase() : "";
       const zipCode = company.zip_code ? company.zip_code.toLowerCase() : "";
-      const country = company.country.name ? company.country.name.toLowerCase() : "";
+      const country = company.country.name
+        ? company.country.name.toLowerCase()
+        : "";
       const activity = company.job.name ? company.job.name.toLowerCase() : "";
-      const siretNumber = company.siret_number ? company.siret_number.toLowerCase() : "";
+      const siretNumber = company.siret_number
+        ? company.siret_number.toLowerCase()
+        : "";
 
       return (
         name.includes(lowercasedQuery) ||
@@ -64,12 +69,12 @@ const ValidatedCompanies = () => {
     try {
       await deleteData(`enterprise/${companyId}`);
       setCompanies((prevCompanies) =>
-        prevCompanies.filter((company) => company.id !== companyId)
+        prevCompanies.filter((company) => company.id !== companyId),
       );
       setFilteredCompanies((prevCompanies) =>
-        prevCompanies.filter((company) => company.id !== companyId)
+        prevCompanies.filter((company) => company.id !== companyId),
       );
-      alert("Entreprise supprimée avec succès");
+      toast.success("Entreprise supprimée avec succès");
     } catch (error) {
       console.error("Error deleting company:", error);
     }
@@ -87,13 +92,17 @@ const ValidatedCompanies = () => {
   const handleSave = (updatedCompany) => {
     setCompanies((prevCompanies) =>
       prevCompanies.map((company) =>
-        company.id === updatedCompany.id ? { ...company, ...updatedCompany } : company
-      )
+        company.id === updatedCompany.id
+          ? { ...company, ...updatedCompany }
+          : company,
+      ),
     );
     setFilteredCompanies((prevCompanies) =>
       prevCompanies.map((company) =>
-        company.id === updatedCompany.id ? { ...company, ...updatedCompany } : company
-      )
+        company.id === updatedCompany.id
+          ? { ...company, ...updatedCompany }
+          : company,
+      ),
     );
     setIsModalOpen(false);
   };
@@ -132,7 +141,7 @@ const ValidatedCompanies = () => {
         ),
       },
     ],
-    [filteredCompanies]
+    [filteredCompanies],
   );
 
   const {
@@ -151,7 +160,7 @@ const ValidatedCompanies = () => {
       initialState: { pageIndex, pageSize },
       pageCount: Math.ceil(filteredCompanies.length / pageSize),
     },
-    usePagination
+    usePagination,
   );
 
   const handlePageSizeChange = (event) => {
@@ -221,10 +230,16 @@ const ValidatedCompanies = () => {
           >
             &laquo; Précédent
           </button>
-          <span className="dark:text-white text-black font-bold">Page {currentPageIndex + 1} sur {Math.ceil(filteredCompanies.length / pageSize)}</span>
+          <span className="dark:text-white text-black font-bold">
+            Page {currentPageIndex + 1} sur{" "}
+            {Math.ceil(filteredCompanies.length / pageSize)}
+          </span>
           <button
             onClick={() => gotoPage(currentPageIndex + 1)}
-            disabled={currentPageIndex >= Math.ceil(filteredCompanies.length / pageSize) - 1}
+            disabled={
+              currentPageIndex >=
+              Math.ceil(filteredCompanies.length / pageSize) - 1
+            }
             className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
           >
             Suivant &raquo;
