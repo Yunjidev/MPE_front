@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useTable, usePagination } from "react-table";
-import { getData, putData } from "../../services/data-fetch"; // Import de putData
-import { FaCheck, FaTimes } from "react-icons/fa"; // Import des icônes pour accepter/refuser
+import { getData, putData } from "../../services/data-fetch";
+import { FaCheck, FaTimes } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import Button from "../Button/button";
 
@@ -44,23 +44,21 @@ const ReservationsList = () => {
     setPageIndex(0);
   }, [searchQuery, reservations]);
 
-  const acceptReservation = async (reservationId) => {
+  const updateReservationStatus = async (reservationId, newStatus) => {
     try {
-      await putData(`enterprise/${id}/reservation/${reservationId}/accept`, {});
-      await fetchReservations(); // Rafraîchir les données
+      await putData(`enterprise/${id}/reservation/${reservationId}`, { status: newStatus });
+
+      // Mettre à jour l'état des réservations localement sans refetch
+      setReservations((prevReservations) =>
+        prevReservations.map((reservation) =>
+          reservation.id === reservationId
+            ? { ...reservation, status: newStatus }
+            : reservation
+        )
+      );
     } catch (error) {
-      console.error("Erreur lors de l'acceptation de la réservation:", error);
-      alert("Une erreur est survenue lors de l'acceptation de la réservation.");
-    }
-  };
-  
-  const declineReservation = async (reservationId) => {
-    try {
-      await putData(`enterprise/${id}/reservation/${reservationId}/decline`, {});
-      await fetchReservations(); // Rafraîchir les données
-    } catch (error) {
-      console.error("Erreur lors du refus de la réservation:", error);
-      alert("Une erreur est survenue lors du refus de la réservation.");
+      console.error(`Erreur lors de la mise à jour du statut de la réservation:`, error);
+      alert(`Une erreur est survenue lors de la mise à jour du statut.`);
     }
   };
 
@@ -77,17 +75,17 @@ const ReservationsList = () => {
         accessor: "id",
         Cell: ({ row }) => (
           <div className="flex space-x-2">
-            {row.original.status !== "Accepted" && row.original.status !== "Declined" && (
+            {row.original.status === "Pending" && (
               <>
                 <Button
-                  onClick={() => acceptReservation(row.original.id)}
+                  onClick={() => updateReservationStatus(row.original.id, "Accepted")}
                   className="text-green-600 dark:text-green-500 hover:underline"
                   title="Accepter la réservation"
                 >
                   <FaCheck />
                 </Button>
                 <Button
-                  onClick={() => declineReservation(row.original.id)}
+                  onClick={() => updateReservationStatus(row.original.id, "Refused")}
                   className="text-red-600 dark:text-red-500 hover:underline"
                   title="Refuser la réservation"
                 >
@@ -98,7 +96,7 @@ const ReservationsList = () => {
             {row.original.status === "Accepted" && (
               <span className="text-green-600 font-bold">Acceptée</span>
             )}
-            {row.original.status === "Declined" && (
+            {row.original.status === "Refused" && (
               <span className="text-red-600 font-bold">Refusée</span>
             )}
           </div>
