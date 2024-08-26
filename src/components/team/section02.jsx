@@ -12,13 +12,13 @@ export default function Section02() {
             <span className="text-gray-500">Formation & équipe</span>
             <span className="block h-1 bg-orange-500 transform scale-x-0 origin-bottom-right transition-transform duration-150 ease-out hover:scale-x-100 origin-bottom-left absolute bottom-0 left-0"></span>
           </h3>
-          <p className="tracking-wide text-sm md:text-base font-semibold lg:text-lg pb-4 dark:text-gray-300 text-gray-700">
+          <p className="tracking-wide text-sm md:text-base lg:text-lg pb-4 dark:text-gray-300 text-gray-700">
             Notre équipe est composée de plusieurs développeurs passionnés et hautement qualifiés. Chaque membre de notre équipe apporte une expertise unique dans des domaines variés et sur plusieurs langages de programmation.
           </p>
-          <p className="tracking-wide text-sm md:text-base font-semibold lg:text-lg pb-4 dark:text-gray-300 text-gray-700">
+          <p className="tracking-wide text-sm md:text-base lg:text-lg pb-4 dark:text-gray-300 text-gray-700">
             Nos développeurs ont bénéficié de formations rigoureuses et reconnues, notamment <a href="https://www.thehackingproject.org/" target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:underline">The Hacking Project</a>. Cette formation intensive et collaborative nous a permis d'acquérir des compétences pointues en développement web, tout en nous plongeant dans des projets concrets et réalistes. Grâce à cette formation, nous sommes parfaitement outillés pour relever les défis techniques les plus exigeants.
           </p>
-          <p className="tracking-wide text-sm md:text-base font-semibold lg:text-lg pb-4 mb-8 dark:text-gray-300 text-gray-700">
+          <p className="tracking-wide text-sm md:text-base lg:text-lg pb-4 mb-8 dark:text-gray-300 text-gray-700">
             Cette diversité nous permet de travailler sur une large gamme de projets, offrant des solutions complètes et adaptées aux besoins spécifiques de nos clients. La collaboration et le partage de connaissances sont au cœur de notre approche, garantissant ainsi la réalisation de produits numériques de haute qualité et innovants.
           </p>
         </div>
