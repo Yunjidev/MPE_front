@@ -44,10 +44,10 @@ export default function UpdatePassword() {
   };
 
   return (
-    <div className="mt-12 mb-6 flex items-center justify-center bg-neutral-900">
-      <div className="relative border-form-1 group max-w-8xl w-full">
-        <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
-        <div className="bg-neutral-900 p-10 rounded-xl shadow-xl relative z-10 transform transition duration-500 ease-in-out">
+    <div className="mt-12 mb-6 flex items-center justify-center bg-neutral-900 rounded-xl">
+      <div className="relative border-form-1 group max-w-8xl w-full ">
+        <div className="absolute -top-1 -left-1 -right-1 -bottom-1 "></div>
+        <div className="bg-neutral-900 p-10 rounded-xl relative z-10 transform transition duration-500 ease-in-out">
           <h2 className="text-white text-center text-2xl mb-5">
             Changer le mot de passe
           </h2>
