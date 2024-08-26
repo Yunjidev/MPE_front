@@ -1,22 +1,19 @@
-import { jwtDecode as realJwtDecode } from "jwt-decode";
-import realCookies from "js-cookie";
+import Cookies from "js-cookie";
+import { authSignInUp } from "./auth-fetch";
 
-export default function checkTokenExpiration(dependencies = { jwtDecode: realJwtDecode, Cookies: realCookies }) {
-  let token = dependencies.Cookies.get("mpe-auth");
-  if (token) {
-    token = token.replace("Bearer ", ""); // remove "Bearer " from the token
-    try {
-      const decodedToken = dependencies.jwtDecode(token); // Use dependency injection
-      const dateNow = new Date();
-
-      if (decodedToken.exp < dateNow.getTime() / 1000) {
-        return { isValid: false, reason: "expired" };
-      }
-    } catch (e) {
-      return { isValid: false, reason: "invalid" };
-    }
-    return { isValid: true };
-  } else {
-    return { isValid: false, reason: "notFound" };
+export const validateRefreshToken = async () => {
+  const refreshToken = Cookies.get("mpe-refresh");
+  if (!refreshToken) {
+    return { isLogged: false };
   }
-}
+  try {
+    await authSignInUp("validate-refresh-token", {
+      refreshToken: refreshToken,
+    });
+    return { isLogged: true };
+  } catch (error) {
+    Cookies.remove("mpe-refresh");
+    Cookies.remove("mpe-auth");
+    localStorage.removeItem("user");
+  }
+};

@@ -1,41 +1,41 @@
 import Cookies from "js-cookie";
 import { BASE_URL, kyInstance } from "./config-fetch";
 
-export async function authSignInUp(object, data, setUser) {
+export async function authSignInUp(object, data) {
   try {
     let response = await kyInstance.post(BASE_URL + object, {
       json: data,
     });
-    console.log("Authorization", response.headers.get("Authorization"));
-    Cookies.set("mpe-auth", response.headers.get("Authorization"));
-    const userData = await response.json();
-    console.log("userData", userData);
-    setUser({
-      ...userData.user,
-      enterprises: userData.enterprises,
-      isLogged: true,
+    Cookies.set("mpe-auth", response.headers.get("Authorization"), {
+      secure: true,
+      sameSite: "strict",
     });
-    return await response;
+    const userData = await response.json();
+    const refreshToken = userData.refreshToken;
+    Cookies.set("mpe-refresh", refreshToken, {
+      secure: true,
+      sameSite: "strict",
+    });
+    return await userData;
   } catch (error) {
-    let errorData = await error.responseData.errors;
+    let errorData = await error.responseData;
     throw new Error(JSON.stringify(errorData));
   }
 }
 
 export async function authSignOut() {
   try {
-    const token = Cookies.get("mpe-auth");
-    // Récupérer le token JWT depuis les cookies
-    if (!token) {
+    const accessToken = Cookies.get("mpe-auth");
+    const refreshToken = Cookies.get("mpe-refresh");
+    if (!accessToken || !refreshToken) {
       throw new Error("Aucun token d'authentification trouvé.");
     }
     let response = await kyInstance.post(`${BASE_URL}signout`, {});
-    console.log("response", response);
-    Cookies.remove("mpe-auth"); // Supprimer le token JWT des cookies après la déconnexion
+    Cookies.remove("mpe-auth");
+    Cookies.remove("mpe-refresh");
     return response;
   } catch (error) {
-    console.log("error", error);
-    let errorData = await error.responseData.message;
+    const errorData = await error.responseData.errors;
     throw new Error(errorData);
   }
 }

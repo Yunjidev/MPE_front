@@ -53,7 +53,7 @@ const Navbar = () => {
   return (
     <>
       <div className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full max-w-full z-50 mt-4">
-        <div className="navbar flex justify-between items-center backdrop-filter backdrop-blur-lg bg-[#F8D7DA] bg-opacity-30 dark:bg-[#232323] dark:bg-opacity-30 dark:text-white border border-neutral-200 font-semibold mx-auto w-5/6 h-16 rounded-xl neon-nav">
+        <div className="navbar flex justify-between items-center backdrop-filter backdrop-blur-lg bg-orange-100 bg-opacity-30 dark:bg-[#232323] dark:bg-opacity-30 dark:text-white border border-neutral-200 font-semibold mx-auto w-5/6 h-16 rounded-xl neon-nav">
           <div className="flex items-center">
             <Link to="/">
               <img
