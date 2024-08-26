@@ -48,7 +48,7 @@ const Sidebar = () => {
       {/* Hamburger Button */}
       <button
         type="button"
-        className="fixed top-24 left-4 lg:hidden inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        className="fixed top-24 left-6 lg:hidden inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
         onClick={toggleSidebar}
         aria-expanded={isSidebarOpen}
         aria-controls="sidebar"
@@ -60,7 +60,7 @@ const Sidebar = () => {
       {/* Sidebar */}
       <aside
         id="sidebar"
-        className={`sticky top-[4em] left-0 h-full text-white transition-transform lg:translate-x-0 ${isSidebarOpen ? "sidebar open" : "sidebar"} text-3xl`}
+        className={`sticky top-24 left-2 h-full text-white transition-transform lg:translate-x-0 ${isSidebarOpen ? "sidebar open" : "sidebar"} text-3xl`}
       >
         <div className="flex flex-col h-full p-3 space-y-2 dark:bg-neutral-900 rounded-lg dark:text-gray-200 overflow-auto ">
           <UserSideBar
