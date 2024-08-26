@@ -81,8 +81,8 @@ const UsersList = () => {
   const columns = React.useMemo(
     () => [
       { Header: "Pseudo", accessor: "username" },
-      { Header: "Prénom", accessor: "firstname" },
       { Header: "Nom", accessor: "lastname" },
+      { Header: "Prénom", accessor: "firstname" },
       { Header: "Email", accessor: "email" },
       { Header: "Admin", accessor: "isAdmin", Cell: ({ value }) => (value ? "Oui" : "Non") },
       { Header: "Entrepreneur", accessor: "isEntrepreneur", Cell: ({ value }) => (value ? "Oui" : "Non") },

@@ -65,10 +65,10 @@ const FAQ = () => {
 
   return (
     <div className="flex flex-col items-center py-12 px-4 bg-black-100 dark:bg-black-900">
-      <p className="text-6xl bg-gradient-to-r from-violet-400 to-violet-800 text-transparent bg-clip-text mb-8 bg-gradient-to-r from-black to-violet-400 dark:bg-gradient-to-r dark:from-white dark:to-violet-400">
+      <p className="text-5xl bg-gradient-to-r from-violet-400 to-violet-800 text-transparent bg-clip-text mb-8 bg-gradient-to-r from-black to-violet-400 dark:bg-gradient-to-r dark:from-white dark:to-violet-400">
         Des Questions ?
       </p>
-      <p className="text-2xl font-semibold text-gray-900 dark:text-white mb-8">
+      <p className="lg:text-2xl text-xl text-center font-semibold text-gray-900 dark:text-white mb-8">
         La FAQ est là pour ça. Si tu ne trouves pas ta réponse, contacte nous !
       </p>
       <div className="w-full max-w-4xl space-y-6">

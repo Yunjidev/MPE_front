@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
+import { toast } from "react-toastify";
 import Button from "../Button/button";
 import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
 import Input from "../Utils/Inputs/Input";
@@ -68,7 +69,7 @@ export default function UserForm({ onSubmit, mode }) {
     }
 
     if (isInscription && confirmPassword !== formData.password) {
-      alert("Les mots de passe ne correspondent pas !");
+      toast.error("Les mots de passe ne correspondent pas !");
       return;
     }
     onSubmit(formData);
@@ -80,7 +81,9 @@ export default function UserForm({ onSubmit, mode }) {
         <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
       )}
       <div
-        className={` ${isEdit ? "p-5 h-full bg-neutral-800" : "bg-neutral-900 p-16"} rounded-xl shadow-2xl w-90 relative z-10`}
+        className={` ${
+          isEdit ? "p-5 h-full bg-neutral-800" : "bg-neutral-900 p-16"
+        } rounded-xl shadow-2xl w-90 relative z-10`}
       >
         <h2 className="text-center text-3xl font-bold mb-10 text-white">
           {mode}
@@ -144,7 +147,10 @@ export default function UserForm({ onSubmit, mode }) {
           {mode}
         </Button>
         {mode === "Connexion" && (
-          <a className="text-blue-500 hover:text-blue-800 text-sm" href="#">
+          <a
+            className="text-blue-500 hover:text-blue-800 text-sm"
+            href="http://localhost:5173/forgot-password"
+          >
             Mot de passe oublié ?
           </a>
         )}
