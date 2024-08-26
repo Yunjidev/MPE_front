@@ -24,15 +24,8 @@ export async function postData(object, data) {
     const response = await kyInstance.post(BASE_URL + object, options);
     return response.json();
   } catch (error) {
-    if (error.response && error.response.json) {
-      const errorData = await error.response.json();
-      if (errorData.errors) {
-        throw new Error(JSON.stringify(errorData.errors));
-      }
-      throw new Error(errorData.message || "Une erreur est survenue.");
-    } else {
-      throw new Error("Une erreur inattendue s'est produite.");
-    }
+    let errorData = await error.responseData;
+    throw new Error(JSON.stringify(errorData));
   }
 }
 
@@ -49,7 +42,7 @@ export async function putData(object, data) {
     return response.json();
   } catch (error) {
     let errorData = await error.responseData;
-    console.log(errorData);
+    console.log(errorData.errors);
     throw new Error(errorData);
   }
 }

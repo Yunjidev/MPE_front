@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
+import { toast } from "react-toastify";
 import Button from "../Button/button";
 import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
 import Input from "../Utils/Inputs/Input";
@@ -68,7 +69,7 @@ export default function UserForm({ onSubmit, mode }) {
     }
 
     if (isInscription && confirmPassword !== formData.password) {
-      alert("Les mots de passe ne correspondent pas !");
+      toast.error("Les mots de passe ne correspondent pas !");
       return;
     }
     onSubmit(formData);
