@@ -17,16 +17,24 @@ export default function SignUp() {
     try {
       const response = await authSignInUp("signup", formData, setUser);
       const userData = await response;
-      console.log(userData);
+      setUser({
+        ...userData.user,
+        enterprises: userData.enterprises,
+        isLogged: true,
+      });
       navigate("/dashboard/user-db");
       toast.success("Inscription réussie");
     } catch (error) {
       const errorData = await JSON.parse(error.message);
-      console.log(errorData);
-      errorData.forEach((error) => {
-        const [, message] = Object.entries(error)[0];
-        toast.error(`${message}`);
-      });
+      console.log(errorData.errors);
+      if (Array.isArray(errorData.errors)) {
+        errorData.errors.forEach((error) => {
+          const [, message] = Object.entries(error)[0];
+          toast.error(`${message}`);
+        });
+      } else {
+        toast.error(errorData.errors);
+      }
     }
   };
 
