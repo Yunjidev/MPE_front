@@ -110,22 +110,21 @@ const PricingPage = () => {
     return (
         <>
             <div className="mx-auto">
-                <h1 className="text-4xl font-bold text-center mt-14 dark:text-white gradient-text-orange">Notre formule premium</h1>
+                <h1 className="text-5xl text-center font-semibold mt-14 dark:text-white gradient-text-orange">Notre formule premium</h1>
 
-                <div className="mx-auto flex flex-col text-center lg:text-start justify-around lg:flex-row items-center py-8 lg:py-16">
-                    <img src="public/assets/img/logo.png" alt="Image 1" className="lg:w-6/12 w-8/12" />
-                    <div className="md:ml-8 mt-4 md:mt-0">
-                        <p className="lg:text-2xl md:text-xl lg:mx-6 font-semibold dark:text-white">
+                <div className="mx-auto flex flex-col text-center lg:text-start justify-around lg:flex-row items-center py-6 ">
+                    <div className="md:ml-8 md:mt-0">
+                        <p className="lg:text-2xl md:text-xl text-center lg:mx-6 dark:text-white">
                             Profitez de toutes les fonctionnalités proposées par MPE à un tarif avantageux pour une durée choisie.
                         </p>
                     </div>
                 </div>
 
-                <div className="mx-auto flex flex-col lg:flex-row justify-start items-center py-8 lg:py-16">
+                <div className="mx-auto flex flex-col lg:flex-row justify-start items-center py-8 lg:py-12">
                     <img src="public/assets/img/decouvrez.png" alt="Image 2" className="lg:w-5/12 w-full mt-8 lg:mt-0 lg:mr-8 order-first lg:order-last rounded-lg" />
                     <div className="mt-4 text-center lg:text-start md:mt-0 flex flex-col ">
-                        <h1 className="text-4xl text-center lg:text-start mb-12 lg:ml-6 font-bold dark:text-white gradient-text-violet">Mise en avant de votre entreprise</h1>
-                        <p className="lg:text-2xl md:text-xl lg:mx-6 font-semibold dark:text-white">
+                        <h1 className="text-4xl text-center lg:text-start mb-12 lg:ml-6 font-semibold dark:text-white gradient-text-violet">Mise en avant de votre entreprise</h1>
+                        <p className="lg:text-2xl md:text-xl lg:mx-6 dark:text-white">
                             Augmentez votre chiffre d’affaires en apparaissant dans les premiers résultats de recherche d’un utilisateur. Votre entreprise sera également affichée sur la page d’accueil.
                         </p>
                     </div>
@@ -135,7 +134,7 @@ const PricingPage = () => {
                     <img src="public/assets/img/vector.png" alt="Image 3" className="w-1/2 rounded-lg hide-on-small" />
                     <img src="src/assets/calendarpres.png" alt="Image 3" className="mr-16 w-full rounded-lg block lg:hidden" />
                     <div className="md:ml-8 text-center lg:text-start lg:mt-4 md:mt-0 lg:w-1/2">
-                        <p className="lg:text-3xl md:text-xl lg:mx-6 font-semibold dark:text-white">
+                        <p className="lg:text-2xl md:text-xl lg:mx-6 dark:text-white">
                             Profitez de toutes les fonctionnalités proposées par MPE à un tarif avantageux pour une durée choisie.
                         </p>
                     </div>
@@ -145,7 +144,7 @@ const PricingPage = () => {
                     <img src="public/assets/img/decouvrez.png" alt="Image 4" className="w-10/12 lg:w-5/12 mt-8 lg:mt-0 lg:mr-8 order-first lg:order-last rounded-lg" />
                     <div className="mt-4 md:mt-0 text-center lg:text-start flex flex-col lg:items-start lg:text-left">
                         <h1 className="text-4xl mb-12 lg:ml-6 font-bold dark:text-white gradient-text-green">Organisez l’activité de votre entreprise</h1>
-                        <p className="lg:text-2xl md:text-xl lg:mx-6 font-semibold dark:text-white">
+                        <p className="lg:text-2xl md:text-xl lg:mx-6 dark:text-white">
                             Le dashboard administrateur mit à votre disposition permet d’avoir un regard précis sur le nombre de passage de clients sur votre page, les rendez-vous, demande de contact,...
                         </p>
                     </div>

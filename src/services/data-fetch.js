@@ -14,11 +14,13 @@ export async function getData(object, timeout = 50000) {
 export async function postData(object, data) {
   try {
     const options = {
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      body: data,
+      headers: {},
     };
+    if (!(data instanceof FormData)) {
+      options.headers["Content-Type"] = "application/json";
+      options.body = JSON.stringify(data);
+    }
     const response = await kyInstance.post(BASE_URL + object, options);
     return await response.json();
   } catch (error) {
@@ -30,19 +32,29 @@ export async function postData(object, data) {
 export async function putData(object, data) {
   try {
     const options = {
-      body: data,
+      headers: {},  // Initialiser headers pour éviter des erreurs
+      body: data instanceof FormData ? data : JSON.stringify(data),
     };
+
     if (!(data instanceof FormData)) {
       options.headers["Content-Type"] = "application/json";
     }
+
     const response = await kyInstance.put(BASE_URL + object, options);
     return response.json();
   } catch (error) {
-    let errorData = await error.responseData;
+    let errorData;
+    try {
+      errorData = await error.response.json();
+    } catch (parsingError) {
+      errorData = { errors: "Erreur lors de la requête." };
+    }
+
     console.log(errorData.errors);
-    throw new Error(errorData);
+    throw new Error(errorData.errors || "Une erreur est survenue.");
   }
 }
+
 
 // Fonction pour supprimer les données
 export async function deleteData(object) {
