@@ -75,7 +75,7 @@ export default function Pricing() {
                 <div className='mt-16 justify-center gap-6 sm:grid sm:grid-cols-2 sm:space-y-0 lg:grid-cols-3'>
                     {
                         plans1.map((item, idx) => (
-                            <div key={idx} className={`relative flex-1 flex flex-col items-stretch rounded-xl border-2 mt-6 bg-transparent dark:bg-neutral-900 border-2 border-green-400 shadow-lg neon-vert hover:scale-105 transform transition duration-500 ease-in-out sm:mt-0 ${item.isMostPop ? "mt-10" : ""}`}>
+                            <div key={idx} className={`relative flex-1 flex flex-col items-stretch rounded-xl border-2 mt-6 bg-transparent dark:bg-neutral-900/75 border-2 border-[#67FFCC] shadow-lg neon-vert hover:scale-105 transform transition duration-500 ease-in-out sm:mt-0 ${item.isMostPop ? "mt-10" : ""}`}>
                                 {item.isMostPop ? (
                                     <span className="w-32 absolute -top-5 left-0 right-0 mx-auto px-3 py-2 rounded-full border shadow-md bg-green-400 text-center text-black text-sm font-semibold">Le + populaire</span>
                                 ) : ""}
@@ -121,7 +121,7 @@ export default function Pricing() {
 
                     {
                         plans2.map((item, idx) => (
-                            <div key={idx} className={`relative flex-1 flex flex-col items-stretch rounded-xl border-2 mt-6 dark:bg-neutral-900 border-4 border-orange-400 shadow-lg neon-orange hover:scale-105 transform transition duration-500 ease-in-out sm:mt-0 ${item.isMostPop ? "mt-10" : ""}`}>
+                            <div key={idx} className={`relative flex-1 flex flex-col items-stretch rounded-xl border-2 mt-6 dark:bg-neutral-900/75 border-4 border-orange-400 shadow-lg neon-orange hover:scale-105 transform transition duration-500 ease-in-out sm:mt-0 ${item.isMostPop ? "mt-10" : ""}`}>
                                 {item.isMostPop ? (
                                     <span className="w-32 absolute -top-5 left-0 right-0 mx-auto px-3 py-2 rounded-full border shadow-md bg-orange-400 text-center text-black text-sm font-semibold">Le + populaire</span>
                                 ) : ""}
@@ -167,7 +167,7 @@ export default function Pricing() {
 
                     {
                         plans3.map((item, idx) => (
-                            <div key={idx} className={`relative flex-1 flex flex-col items-stretch rounded-xl border-2 mt-6 dark:bg-neutral-900 border-2 border-violet-400 shadow-lg neon-violet hover:scale-105 transform transition duration-500 ease-in-out sm:mt-0 ${item.isMostPop ? "mt-10" : ""}`}>
+                            <div key={idx} className={`relative flex-1 flex flex-col items-stretch rounded-xl border-2 mt-6 dark:bg-neutral-900/75 border-2 border-violet-400 shadow-lg neon-violet hover:scale-105 transform transition duration-500 ease-in-out sm:mt-0 ${item.isMostPop ? "mt-10" : ""}`}>
                                 {item.isMostPop ? (
                                     <span className="w-32 absolute -top-5 left-0 right-0 mx-auto px-3 py-2 rounded-full border shadow-md bg-orange-400 text-center text-black text-sm font-semibold">Le + populaire</span>
                                 ) : ""}

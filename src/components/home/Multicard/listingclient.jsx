@@ -14,7 +14,7 @@ const requirements = [
 const ListingClient = () => {
   return (
     <div className="p-6">
-      <ul className="max-w-lg space-y-2 text-gray-300 list-inside dark:text-white">
+      <ul className="max-w-lg space-y-2 dark:text-white text-black list-inside">
         {requirements.map((item, index) => (
           <li key={index} className="flex items-center text-lg">
             <svg
