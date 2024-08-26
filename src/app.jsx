@@ -48,7 +48,7 @@ import ForgotPasswordForm from "./components/DashboardUser/ForgotPassword";
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
 import EntrepreneurRoute from "./context/EntrepreneurRoute";
 import AdminRoute from "./context/AdminRoute";
-import OfferList from "./components/DashboardUser/OffersList";
+import OfferList from "./components/DashboardEnterprise/OffersList";
 
 function App() {
   useSocketIo();

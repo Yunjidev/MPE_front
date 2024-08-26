@@ -1,3 +1,6 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/jsx-key */
 import React, { useState, useEffect } from "react";
 import { useTable, usePagination } from "react-table";
 import { getData, deleteData, postData, putData } from "../../services/data-fetch";
@@ -6,6 +9,13 @@ import Button from "../Button/button";
 import Modal from "../DashboardAdmin/Modal";
 import OfferForm from "./OfferForm"; 
 import { useParams } from 'react-router-dom';
+
+// Function to decode HTML entities
+const decodeHtml = (html) => {
+  const txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
+};
 
 const OffersList = () => {
   const { id } = useParams();  
@@ -20,11 +30,12 @@ const OffersList = () => {
   // Fonction pour obtenir les offres
   const fetchOffers = async () => {
     try {
-      const data = await getData(`enterprise/${id}/offers`);
-      setOffers(data);
-      setFilteredOffers(data);
+      const data = await getData(`enterprise/${id}`);
+      setOffers(data.offers || []);
+      setFilteredOffers(data.offers || []);
     } catch (error) {
       console.error("Erreur lors de la récupération des offres:", error);
+      console.error("Error during setup:", error.message);
     }
   };
 
@@ -91,16 +102,15 @@ const OffersList = () => {
       alert("Une erreur est survenue lors de la sauvegarde de l'offre.");
     }
   };
-  
 
   const columns = React.useMemo(
     () => [
       { Header: "Nom de l'offre", accessor: "name" },
-      { Header: "Description", accessor: "description" },
+      { Header: "Description", accessor: "description", Cell: ({ value }) => <div dangerouslySetInnerHTML={{ __html: decodeHtml(value) }} /> },
       { Header: "Durée (min)", accessor: "duration" },
       { Header: "Prix (€)", accessor: "price", Cell: ({ value }) => `${value} €` },
       { Header: "Estimation", accessor: "estimate", Cell: ({ value }) => (value ? "Oui" : "Non") },
-      { Header: "Image", accessor: "image", Cell: ({ value }) => value ? <img src={value} alt="Offer" className="w-16 h-16 object-cover" /> : "Aucune" },
+      { Header: "Image", accessor: "image", Cell: ({ value }) => value ? <img src={value} alt="Offer" className="w-16 h-16 object-cover rounded-full" /> : "Aucune" },
       {
         Header: "Actions",
         accessor: "id",
