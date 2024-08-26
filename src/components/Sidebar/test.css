@@ -10,14 +10,14 @@
         height: 100%;
         background-color: #1f2937;
         /* Couleur de fond de la sidebar */
-        transform: translateX(-100%);
+        transform: translateX(-200%);
         transition: transform 0.3s ease;
         position: fixed;
     }
 
-    #sidebar.open {
+    /* #sidebar.open {
         transform: translateX(0);
-    }
+    } */
 
 
 }

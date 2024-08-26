@@ -1,32 +1,46 @@
 import { useEffect } from "react";
 import { useAtom } from "jotai";
-import { userAtom } from "../store/user";
+import { enterprisesAtom } from "../store/enterprises";
 import { io } from "socket.io-client";
 
+export const initSocket = () => {
+  const socket = io("http://localhost:8080", {
+    withCredentials: true,
+    transports: ["websocket", "polling"],
+  });
+  return socket;
+};
+
 export function useSocketIo() {
-  const [, setUser] = useAtom(userAtom);
+  const [, setEnterprises] = useAtom(enterprisesAtom);
 
   useEffect(() => {
-    const socket = io("http://localhost:8080", {
-      withCredentials: true,
-      transports: ["websocket", "polling"],
-    });
+    const socket = initSocket();
 
-    socket.on("enterpriseValidated", (data) => {
-      setUser((prev) => {
-        const updatedEnterprise = prev.enterprises.map((enterprise) =>
+    const handleEnterpriseValidated = (data) => {
+      setEnterprises((prev) =>
+        prev.map((enterprise) =>
           enterprise.id === data.id
             ? { ...enterprise, isValidate: data.isValidate === "true" }
             : enterprise,
-        );
-        const newState = { ...prev, enterprises: updatedEnterprise };
-        return newState;
-      });
-    });
+        ),
+      );
+    };
+    const handleEnterpriseDeleted = (data) => {
+      setEnterprises((prev) =>
+        prev.filter((enterprise) => enterprise.id !== data.enterprises),
+      );
+    };
+
+    socket.on("enterpriseValidated", handleEnterpriseValidated);
+    socket.on("enterpriseDeleted", handleEnterpriseDeleted);
+
     return () => {
       socket.off("enterpriseValidated");
+      socket.off("enterpriseDeleted");
       socket.disconnect();
     };
-  }, [setUser]);
+  }, [setEnterprises]);
+
   return null;
 }

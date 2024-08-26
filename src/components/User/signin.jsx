@@ -6,21 +6,23 @@ import UserForm from "./UserForm";
 //ATOM
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
+import { enterprisesAtom } from "../../store/enterprises";
 //Toast
 import { toast } from "react-toastify";
 
 export default function SignIn() {
   const navigate = useNavigate();
   const [, setUser] = useAtom(userAtom);
+  const [, setEnterprises] = useAtom(enterprisesAtom);
 
   const handleSubmit = async (data) => {
     try {
       const userData = await authSignInUp("signin", data);
       setUser({
         ...userData.user,
-        enterprises: userData.enterprises,
         isLogged: true,
       });
+      setEnterprises(userData.enterprises);
       navigate("/dashboard/user-db");
       toast.success("Authentification réussie");
     } catch (error) {
