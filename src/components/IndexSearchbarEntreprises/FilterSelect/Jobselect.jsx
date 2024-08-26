@@ -1,5 +1,5 @@
 import AsyncSelect from 'react-select/async';
-import './indexsearchbarentreprises.css';
+
 
 const JobSelect = ({ selectedJobs, setSelectedJobs, loadOptions }) => {
     return (

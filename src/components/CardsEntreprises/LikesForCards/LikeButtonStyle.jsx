@@ -5,7 +5,7 @@ const LikeButtonStyle = ({ hasLiked, isHovered, handleLike, setIsHovered }) => {
     // Styles pour l'icône de cœur
     const heartStyles = {
         color: hasLiked ? '#60a5fa' : (isHovered ? '#e3342f' : '#fca5a5'),
-        transform: isHovered ? 'scale(1.5)' : 'scale(1)',
+        transform: isHovered ? 'scale(2)' : 'scale(1)',
         transition: 'color 0.2s, transform 0.2s',
         cursor: 'pointer'
     };

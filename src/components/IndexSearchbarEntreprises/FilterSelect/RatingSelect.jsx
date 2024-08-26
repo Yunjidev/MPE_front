@@ -1,5 +1,5 @@
 import AsyncSelect from 'react-select/async';
-import './indexsearchbarentreprises.css';
+
 
 const RatingSelect = ({ selectedRatings, setSelectedRatings, loadOptions, renderRatingStars }) => {
     return (

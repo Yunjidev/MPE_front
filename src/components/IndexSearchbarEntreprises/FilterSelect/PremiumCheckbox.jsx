@@ -1,4 +1,4 @@
-import './indexsearchbarentreprises.css';
+import '../../IndexSearchbarEntreprises/';
 
 const PremiumCheckbox = () => {
     return (
