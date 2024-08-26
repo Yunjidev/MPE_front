@@ -1,25 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useTable, usePagination } from "react-table";
-import { getData, putData } from "../../services/data-fetch";
-import { FaCheck, FaTimes } from "react-icons/fa";
+import { getData, putData, deleteData } from "../../services/data-fetch";
+import { FaCheck, FaTimes, FaTrash } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import Button from "../Button/button";
 
 const ReservationsList = () => {
-  const { id } = useParams();  
+  const { id } = useParams();
   const [reservations, setReservations] = useState([]);
   const [filteredReservations, setFilteredReservations] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
 
+  // Fonction pour récupérer les réservations
   const fetchReservations = async () => {
     try {
-      const data = await getData(`enterprise/${id}/reservations`);
+      const data = await getData(`/api/enterprise/${id}/reservations`);
       setReservations(data);
       setFilteredReservations(data);
     } catch (error) {
       console.error("Erreur lors de la récupération des réservations:", error);
+      alert("Une erreur est survenue lors de la récupération des réservations.");
     }
   };
 
@@ -29,6 +31,7 @@ const ReservationsList = () => {
     }
   }, [id]);
 
+  // Filtrage des réservations
   useEffect(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
     const filtered = reservations.filter((reservation) => {
@@ -41,28 +44,35 @@ const ReservationsList = () => {
       );
     });
     setFilteredReservations(filtered);
-    setPageIndex(0);
+    setPageIndex(0); // Réinitialiser la page à 0 lors du filtrage
   }, [searchQuery, reservations]);
 
-  const updateReservationStatus = async (reservationId, newStatus) => {
+  // Fonction pour mettre à jour le statut d'une réservation
+  const updateReservationStatus = async (reservationId, status) => {
     try {
-      await putData(`enterprise/${id}/reservation/${reservationId}`, { status: newStatus });
-
-      // Mettre à jour l'état des réservations localement sans refetch
-      setReservations((prevReservations) =>
-        prevReservations.map((reservation) =>
-          reservation.id === reservationId
-            ? { ...reservation, status: newStatus }
-            : reservation
-        )
-      );
+      await putData(`/api/reservation/${reservationId}`, { status });
+      fetchReservations(); // Rafraîchir les données après la mise à jour
     } catch (error) {
       console.error(`Erreur lors de la mise à jour du statut de la réservation:`, error);
-      alert(`Une erreur est survenue lors de la mise à jour du statut.`);
+      alert(`Une erreur est survenue lors de la mise à jour du statut: ${error.message || 'Erreur inconnue'}`);
     }
   };
 
-  const columns = React.useMemo(
+  // Fonction pour supprimer une réservation
+  const deleteReservation = async (reservationId) => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer cette réservation ?")) {
+      try {
+        await deleteData(`/api/enterprise/reservation/${reservationId}`);
+        fetchReservations(); // Rafraîchir les données après la suppression
+      } catch (error) {
+        console.error(`Erreur lors de la suppression de la réservation:`, error);
+        alert(`Une erreur est survenue lors de la suppression de la réservation: ${error.message || 'Erreur inconnue'}`);
+      }
+    }
+  };
+
+  // Définition des colonnes de la table
+  const columns = useMemo(
     () => [
       { Header: "Offre", accessor: "offer.name" },
       { Header: "Client", accessor: "user.firstName" },
@@ -75,7 +85,7 @@ const ReservationsList = () => {
         accessor: "id",
         Cell: ({ row }) => (
           <div className="flex space-x-2">
-            {row.original.status === "Pending" && (
+            {row.original.status !== "Accepted" && row.original.status !== "Declined" && (
               <>
                 <Button
                   onClick={() => updateReservationStatus(row.original.id, "Accepted")}
@@ -85,7 +95,7 @@ const ReservationsList = () => {
                   <FaCheck />
                 </Button>
                 <Button
-                  onClick={() => updateReservationStatus(row.original.id, "Refused")}
+                  onClick={() => updateReservationStatus(row.original.id, "Declined")}
                   className="text-red-600 dark:text-red-500 hover:underline"
                   title="Refuser la réservation"
                 >
@@ -96,8 +106,17 @@ const ReservationsList = () => {
             {row.original.status === "Accepted" && (
               <span className="text-green-600 font-bold">Acceptée</span>
             )}
-            {row.original.status === "Refused" && (
+            {row.original.status === "Declined" && (
               <span className="text-red-600 font-bold">Refusée</span>
+            )}
+            {row.original.status !== "Cancelled" && (
+              <Button
+                onClick={() => deleteReservation(row.original.id)}
+                className="text-red-600 dark:text-red-500 hover:underline"
+                title="Supprimer la réservation"
+              >
+                <FaTrash />
+              </Button>
             )}
           </div>
         ),
@@ -106,6 +125,7 @@ const ReservationsList = () => {
     [reservations]
   );
 
+  // Configuration de la table avec pagination
   const {
     getTableProps,
     getTableBodyProps,
@@ -125,6 +145,7 @@ const ReservationsList = () => {
     usePagination
   );
 
+  // Gestion du changement de taille de page
   const handlePageSizeChange = (event) => {
     const newSize = Number(event.target.value);
     setPageSize(newSize);
@@ -134,63 +155,21 @@ const ReservationsList = () => {
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-neutral-600 dark:bg-neutral-800 border dark:border-neutral-700">
-      <div className="p-4">
+      <div className="flex justify-between items-center p-4 space-x-4">
         <input
           type="text"
           placeholder="Rechercher..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-4 py-2 mb-4 rounded-lg dark:bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
+          className="w-1/3 px-3 py-1 rounded-lg dark:bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
         />
-        <div className="overflow-x-auto">
-          <table
-            {...getTableProps()}
-            className="w-full text-sm text-center text-gray-500 bg-white border border-gray-200 dark:bg-neutral-800 dark:text-gray-400"
-          >
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th
-                      {...column.getHeaderProps()}
-                      className="px-6 py-3 border-b border-gray-200 dark:border-gray-200"
-                    >
-                      {column.render("Header")}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {page.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr
-                    {...row.getRowProps()}
-                    className="border-b dark:bg-neutral-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
-                  >
-                    {row.cells.map((cell) => (
-                      <td
-                        {...cell.getCellProps()}
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {cell.render("Cell")}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="flex justify-center items-center mt-4">
+        <div className="flex justify-center items-center space-x-4">
           <button
             onClick={() => gotoPage(0)}
             disabled={currentPageIndex === 0}
-            className="px-4 py-2 mx-1 bg-gray-200 rounded-lg mr-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+            className="px-4 py-2 bg-gray-200 rounded-lg dark:bg-neutral-700 dark:text-white border hover:border-[#67FFCC] transition duration-300 ease-in-out"
           >
-            &laquo; Précédent
+            &laquo; Précédente
           </button>
           <span className="dark:text-white text-black font-bold">
             Page {currentPageIndex + 1} sur {Math.ceil(filteredReservations.length / pageSize)}
@@ -198,25 +177,64 @@ const ReservationsList = () => {
           <button
             onClick={() => gotoPage(currentPageIndex + 1)}
             disabled={currentPageIndex >= Math.ceil(filteredReservations.length / pageSize) - 1}
-            className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+            className="px-4 py-2 bg-gray-200 rounded-lg dark:bg-neutral-700 dark:text-white border hover:border-[#67FFCC] transition duration-300 ease-in-out"
           >
-            Suivant &raquo;
+            Suivante &raquo;
           </button>
         </div>
+        <select
+          value={currentPageSize}
+          onChange={handlePageSizeChange}
+          className="border rounded-lg dark:bg-neutral-700 dark:text-white p-2"
+        >
+          {[10, 20, 30, 40].map((size) => (
+            <option key={size} value={size}>
+              {size} réservations par page
+            </option>
+          ))}
+        </select>
+      </div>
 
-        <div className="mt-4">
-          <select
-            value={currentPageSize}
-            onChange={handlePageSizeChange}
-            className="border rounded-lg dark:bg-neutral-700 dark:text-white p-2"
-          >
-            {[10, 20, 30, 40].map((size) => (
-              <option key={size} value={size}>
-                {size} réservations par page
-              </option>
+      <div className="overflow-x-auto">
+        <table
+          {...getTableProps()}
+          className="w-full text-sm text-center text-gray-500 bg-white border border-gray-200 dark:bg-neutral-800 dark:text-gray-400"
+        >
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    {...column.getHeaderProps()}
+                    className="px-6 py-3 border-b border-gray-200 dark:border-gray-200"
+                  >
+                    {column.render("Header")}
+                  </th>
+                ))}
+              </tr>
             ))}
-          </select>
-        </div>
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              return (
+                <tr
+                  {...row.getRowProps()}
+                  className="border-b dark:bg-neutral-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
+                >
+                  {row.cells.map((cell) => (
+                    <td
+                      {...cell.getCellProps()}
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {cell.render("Cell")}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );

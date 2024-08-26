@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useTable, usePagination } from "react-table";
 import { getData, deleteData, postData, putData } from "../../services/data-fetch";
-import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import Button from "../Button/button";
 import Modal from "../DashboardAdmin/Modal";
 import OfferForm from "./OfferForm";
@@ -42,7 +42,7 @@ const useOffers = (id, searchQuery) => {
 };
 
 const Pagination = ({ currentPageIndex, pageSize, filteredOffersLength, gotoPage }) => (
-  <div className="flex items-center space-x-4">
+  <div className="flex justify-center items-center space-x-4 w-full">
     <button
       onClick={() => gotoPage(0)}
       disabled={currentPageIndex === 0}
@@ -179,7 +179,7 @@ const OffersList = () => {
           placeholder="Rechercher..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="flex-grow px-3 py-1 rounded-lg dark:bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
+          className="w-1/3 px-3 py-1 rounded-lg dark:bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
         />
         <Pagination
           currentPageIndex={currentPageIndex}
@@ -242,10 +242,10 @@ const OffersList = () => {
         </table>
       </div>
       
-      <div className="flex justify-center items-center mt-4 mx-auto w-40">
+      <div className="flex justify-center items-center mt-2 mb-3 mx-auto w-40">
         <Button
           onClick={addNewOffer}
-        >Ajouter l'offre
+        >Ajouter une offre
           
         </Button>
       </div>
