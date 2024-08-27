@@ -1,10 +1,16 @@
-import { useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import { Provider } from "jotai";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSocketIo } from "./services/UseSocketIo";
 import { validateRefreshToken } from "./services/checkToken";
+import { useSocketIo } from "./services/UseSocketIo";
 
 // Context Providers
 import { UserProvider } from "./context/UserContext";
@@ -43,7 +49,8 @@ import Company from "./pages/DashboardAdmin/ValidatedCompaniesPage";
 import ManageUser from "./pages/DashboardAdmin/UsersPage";
 import DeleteAccount from "./components/DashboardUser/DeleteAccount";
 import UpdatePassWord from "./components/DashboardUser/UpdatePassword";
-import ForgotPasswordForm from "./components/DashboardUser/ForgotPassword";
+import ForgotPasswordForm from "./pages/user/ForgotPassword.jsx";
+import ResetPassword from "./pages/user/ResetPassword";
 
 // Protected Routes
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
@@ -65,86 +72,80 @@ function App() {
     <Provider>
       <UserProvider>
         <ModalProvider>
+          {/* BrowserRouter doit encapsuler tout le rendu */}
           <BrowserRouter>
             <ScrollToTop />
-            <div className="flex flex-col min-h-screen">
-              <NavBar />
-              <ParticlesDemo />
-              <CookieBanner />
-              <main className="flex-1 lg:container mx-auto lg:w-5/6 w-full">
-                <Routes>
-                  <Route path="/" element={<UserChoiceModal />} />
-                  <Route path="/home" element={<Home />} />
-                  <Route path="/home-client" element={<HomeClient />} />
-                  <Route path="/home-enterprise" element={<HomeEnterprise />} />
-                  <Route path="/signup" element={<Signup />} />
-                  <Route path="/signin" element={<Signin />} />
-                  <Route path="/about" element={<Team />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/cookie-policies" element={<CookiePolicies />} />
-                  <Route path="/FAQ" element={<FAQ />} />
-                  <Route
-                    path="/register-company"
-                    element={<RegisterCompany />}
-                  />
-                  <Route path="/pricing" element={<Pricing_page />} />
-                  <Route path="/enterprise/:id" element={<EnterprisePage />} />
-                  <Route
-                    path="forgot-password"
-                    element={<ForgotPasswordForm />}
-                  />
-                  {/* Routes protégées pour les utilisateurs authentifiés */}
-                  <Route element={<AuthenticatedRoute />}>
-                    <Route path="/dashboard" element={<Dashboard />}>
-                      <Route index element={<Dashboard />} />
-                      <Route path="user-db" element={<User_db />} />
-                      <Route
-                        path="register-company"
-                        element={<RegisterCompany />}
-                      />
-                      <Route
-                        path="update-password"
-                        element={<UpdatePassWord />}
-                      />
-                      <Route path="deleteAccount" element={<DeleteAccount />} />
-
-                      {/* Routes protégées pour les entrepreneurs */}
-                      <Route element={<EntrepreneurRoute />}>
-                        <Route
-                          path="enterprise/:enterpriseId/edit"
-                          element={<UpdateCompany />}
-                        />
-                        <Route
-                          path="enterprise/:enterpriseId/edit"
-                          element={<UpdateCompany />}
-                        />
-                        <Route
-                          path="enterprise/:id/offer"
-                          element={<OfferList />}
-                        />
-                      </Route>
-                      {/* Routes protégées pour les administrateurs */}
-                      <Route element={<AdminRoute />}>
-                        <Route
-                          path="accept-company"
-                          element={<AcceptCompanyPage />}
-                        />
-                        <Route path="manage-companies" element={<Company />} />
-                        <Route path="manage-users" element={<ManageUser />} />
-                      </Route>
-                    </Route>
-                  </Route>
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
-              </main>
-              <Footer />
-              <SocialLinks />
-            </div>
+            <AppContent /> {/* Déplacement du contenu principal ici */}
             <ToastContainer />
           </BrowserRouter>
         </ModalProvider>
       </UserProvider>
     </Provider>
+  );
+}
+
+function AppContent() {
+  const location = useLocation();
+  const [isDashboardRoute, setIsDashboardRoute] = useState(false);
+
+  // Utilise useEffect pour surveiller les changements de route
+  useEffect(() => {
+    // Vérifie si la route commence par '/dashboard'
+    setIsDashboardRoute(location.pathname.startsWith("/dashboard"));
+  }, [location.pathname]); // Dépendance : déclenche lorsque location.pathname change
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <NavBar />
+      <ParticlesDemo />
+      <CookieBanner />
+      <main
+        className={isDashboardRoute ? "" : "flex-1 lg:container mx-auto w-full"}
+      >
+        <Routes>
+          <Route path="/" element={<UserChoiceModal />} />
+          <Route path="/home-client" element={<HomeClient />} />
+          <Route path="/home-enterprise" element={<HomeEnterprise />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/about" element={<Team />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/cookie-policies" element={<CookiePolicies />} />
+          <Route path="/FAQ" element={<FAQ />} />
+          <Route path="/pricing" element={<Pricing_page />} />
+          <Route path="/enterprise/:id" element={<EnterprisePage />} />
+          <Route path="forgot-password" element={<ForgotPasswordForm />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+          {/* Routes protégées pour les utilisateurs authentifiés */}
+          <Route element={<AuthenticatedRoute />}>
+            <Route path="/dashboard" element={<Dashboard />}>
+              <Route index element={<Dashboard />} />
+              <Route path="user-db" element={<User_db />} />
+              <Route path="register-company" element={<RegisterCompany />} />
+              <Route path="update-password" element={<UpdatePassWord />} />
+              <Route path="deleteAccount" element={<DeleteAccount />} />
+              {/* Routes protégées pour les entrepreneurs */}
+              <Route element={<EntrepreneurRoute />}>
+                <Route
+                  path="enterprise/:enterpriseId/edit"
+                  element={<UpdateCompany />}
+                />
+                <Route path="enterprise/:id/offer" element={<OfferList />} />
+              </Route>
+              {/* Routes protégées pour les administrateurs */}
+              <Route element={<AdminRoute />}>
+                <Route path="accept-company" element={<AcceptCompanyPage />} />
+                <Route path="manage-companies" element={<Company />} />
+                <Route path="manage-users" element={<ManageUser />} />
+              </Route>
+            </Route>
+          </Route>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+      <Footer />
+      <SocialLinks />
+    </div>
   );
 }
 
