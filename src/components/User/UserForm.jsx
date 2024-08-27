@@ -83,7 +83,7 @@ export default function UserForm({ onSubmit, mode }) {
       <div
         className={` ${
           isEdit ? "p-5 h-full bg-neutral-800" : "bg-neutral-900 p-16"
-        } rounded-xl shadow-2xl w-90 relative z-10`}
+        } rounded-xl w-90 relative z-10`}
       >
         <h2 className="text-center text-3xl font-bold mb-10 text-white">
           {mode}
