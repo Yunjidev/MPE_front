@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import { Provider } from "jotai";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -43,7 +49,8 @@ import Company from "./pages/DashboardAdmin/ValidatedCompaniesPage";
 import ManageUser from "./pages/DashboardAdmin/UsersPage";
 import DeleteAccount from "./components/DashboardUser/DeleteAccount";
 import UpdatePassWord from "./components/DashboardUser/UpdatePassword";
-import ForgotPasswordForm from "./components/DashboardUser/ForgotPassword";
+import ForgotPasswordForm from "./pages/user/ForgotPassword.jsx";
+import ResetPassword from "./pages/user/ResetPassword";
 
 // Protected Routes
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
@@ -84,7 +91,7 @@ function AppContent() {
   // Utilise useEffect pour surveiller les changements de route
   useEffect(() => {
     // Vérifie si la route commence par '/dashboard'
-    setIsDashboardRoute(location.pathname.startsWith('/dashboard'));
+    setIsDashboardRoute(location.pathname.startsWith("/dashboard"));
   }, [location.pathname]); // Dépendance : déclenche lorsque location.pathname change
 
   return (
@@ -92,7 +99,9 @@ function AppContent() {
       <NavBar />
       <ParticlesDemo />
       <CookieBanner />
-      <main className={isDashboardRoute ? '' : 'flex-1 lg:container mx-auto w-full'}>
+      <main
+        className={isDashboardRoute ? "" : "flex-1 lg:container mx-auto w-full"}
+      >
         <Routes>
           <Route path="/" element={<UserChoiceModal />} />
           <Route path="/home-client" element={<HomeClient />} />
@@ -107,6 +116,7 @@ function AppContent() {
           <Route path="/pricing" element={<Pricing_page />} />
           <Route path="/enterprise/:id" element={<EnterprisePage />} />
           <Route path="forgot-password" element={<ForgotPasswordForm />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           {/* Routes protégées pour les utilisateurs authentifiés */}
           <Route element={<AuthenticatedRoute />}>
             <Route path="/dashboard" element={<Dashboard />}>
@@ -117,7 +127,10 @@ function AppContent() {
               <Route path="deleteAccount" element={<DeleteAccount />} />
               {/* Routes protégées pour les entrepreneurs */}
               <Route element={<EntrepreneurRoute />}>
-                <Route path="enterprise/:enterpriseId/edit" element={<UpdateCompany />} />
+                <Route
+                  path="enterprise/:enterpriseId/edit"
+                  element={<UpdateCompany />}
+                />
                 <Route path="enterprise/:id/offer" element={<OfferList />} />
               </Route>
               {/* Routes protégées pour les administrateurs */}

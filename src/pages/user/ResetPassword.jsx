@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { postData } from "../../services/data-fetch";
 
 const ResetPassword = () => {
-  const { token } = useParams();
+  const { token } = useParams(); // Récupération du token depuis l'URL
   const {
     register,
     handleSubmit,
@@ -55,7 +55,7 @@ const ResetPassword = () => {
   }, [countdown]);
 
   return (
-    <div className="flex flex-col h-full space-around bg-neutral-800 p-6 rounded-lg">
+    <div className="flex flex-col h-full space-around bg-neutral-800 p-6 rounded-lg mt-8">
       <h2 className="text-white text-center text-2xl mb-5">
         Réinitialiser le Mot de Passe
       </h2>
