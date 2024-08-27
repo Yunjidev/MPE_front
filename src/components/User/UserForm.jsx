@@ -81,6 +81,7 @@ export default function UserForm({ onSubmit, mode }) {
         <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
       )}
       <div
+
         className={` ${isEdit ? "p-5 h-full bg-neutral-800" : "bg-neutral-900 p-16"
           } rounded-xl shadow-2xl w-90 relative z-10`}
       >
