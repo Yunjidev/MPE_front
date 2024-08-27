@@ -42,13 +42,14 @@ import Company from "./pages/DashboardAdmin/ValidatedCompaniesPage";
 import ManageUser from "./pages/DashboardAdmin/UsersPage";
 import DeleteAccount from "./components/DashboardUser/DeleteAccount";
 import UpdatePassWord from "./components/DashboardUser/UpdatePassword";
-import ForgotPasswordForm from "./components/DashboardUser/ForgotPassword";
+import ForgotPasswordForm from "./pages/user/ForgotPassword";
 
 // Protected Routes
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
 import EntrepreneurRoute from "./context/EntrepreneurRoute";
 import AdminRoute from "./context/AdminRoute";
 import OfferList from "./components/DashboardEnterprise/OffersList";
+import ResetPassword from "./pages/user/ResetPassword";
 
 function App() {
   useSocketIo();
@@ -90,6 +91,10 @@ function App() {
                   <Route
                     path="forgot-password"
                     element={<ForgotPasswordForm />}
+                  />
+                  <Route
+                    path="/reset-password/:token"
+                    element={<ResetPassword />}
                   />
                   {/* Routes protégées pour les utilisateurs authentifiés */}
                   <Route element={<AuthenticatedRoute />}>
