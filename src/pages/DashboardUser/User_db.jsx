@@ -1,7 +1,7 @@
 import EditProfilForm from "../../components/User/EditProfilForm";
 import LikesManagement from "../../components/DashboardUser/User_likes";
 import UserAgenda from "@/components/DashboardUser/User_agenda";
-import ComManagement from "../../components/DashboardUser/Company_coms";
+// import ComManagement from "../../components/DashboardUser/Company_coms";
 
 const Companydb = () => {
   return (
@@ -22,9 +22,9 @@ const Companydb = () => {
         <div className="w-full">
           <UserAgenda />
         </div>
-        <div className="w-full">
+        {/* <div className="w-full">
           <ComManagement />
-        </div>
+        </div> */}
       </div>
     </div>
   );

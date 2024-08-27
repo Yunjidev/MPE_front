@@ -44,12 +44,12 @@ const EnterpriseShow = () => {
     <div className="p-6 mt-12 text-white">
       <div className="flex flex-col md:flex-row">
         <PhotoGallery photos={enterprise.photos} openPopup={openPopup} />
-        
+
         <div className="md:w-2/3 flex flex-col ">
           <EnterpriseDetails enterprise={enterprise} />
-          
+
           {/* Affichage de la description avec dangerouslySetInnerHTML */}
-          <p 
+          <p
             className="text-sm bg-neutral-700 p-4 rounded-xl"
             dangerouslySetInnerHTML={{ __html: enterprise.description }}
           />
@@ -77,20 +77,20 @@ const EnterpriseShow = () => {
       </div>
 
       {isPopupOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={closePopup}
         >
-          <div 
+          <div
             className="relative p-4 rounded max-w-screen-lg max-h-screen-lg flex justify-center items-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <img 
-              src={selectedPhoto} 
-              alt="Selected" 
-              className="object-contain max-w-full max-h-[80vh] rounded-lg" 
+            <img
+              src={selectedPhoto}
+              alt="Selected"
+              className="object-contain max-w-full max-h-[80vh] rounded-lg"
             />
-            <button 
+            <button
               className="absolute top-0 right-0 mt-4 mr-6 text-white dark:text-white text-3xl"
               onClick={closePopup}
             >
