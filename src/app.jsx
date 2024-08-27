@@ -50,7 +50,7 @@ import DeleteAccount from "./components/DashboardUser/DeleteAccount";
 import UpdatePassWord from "./components/DashboardUser/UpdatePassword";
 import ForgotPasswordForm from "./pages/user/ForgotPassword.jsx";
 import ResetPassword from "./pages/user/ResetPassword";
-
+import AdminDashboard from "./pages/DashboardAdmin/Admin_db";
 // Protected Routes
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
 import EntrepreneurRoute from "./context/EntrepreneurRoute";
@@ -136,6 +136,7 @@ function AppContent() {
                 <Route path="accept-company" element={<AcceptCompanyPage />} />
                 <Route path="manage-companies" element={<Company />} />
                 <Route path="manage-users" element={<ManageUser />} />
+                <Route path="admin-db" element={<AdminDashboard />} />
               </Route>
             </Route>
           </Route>
