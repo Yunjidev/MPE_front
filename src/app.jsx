@@ -105,6 +105,7 @@ function AppContent() {
           <Route path="/pricing" element={<Pricing_page />} />
           <Route path="/enterprise/:id" element={<EnterprisePage />} />
           <Route path="forgot-password" element={<ForgotPasswordForm />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           {/* Routes protégées pour les utilisateurs authentifiés */}
           <Route element={<AuthenticatedRoute />}>
             <Route path="/dashboard" element={<Dashboard />}>
