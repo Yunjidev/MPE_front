@@ -221,10 +221,10 @@ function AppContent() {
               <SocialLinks />
             </div>
             <ToastContainer />
-          </BrowserRouter>
-        </ModalProvider>
-      </UserProvider>
-    </Provider>
+          </BrowserRouter >
+        </ModalProvider >
+      </UserProvider >
+    </Provider >
   );
 }
 
