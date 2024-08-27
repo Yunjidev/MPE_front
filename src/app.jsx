@@ -101,6 +101,7 @@ function AppContent() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/about" element={<Team />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/searchentreprise" element={<SearchEntreprise />} />
           <Route path="/cookie-policies" element={<CookiePolicies />} />
           <Route path="/FAQ" element={<FAQ />} />
           <Route path="/pricing" element={<Pricing_page />} />
