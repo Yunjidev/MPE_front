@@ -19,9 +19,9 @@ const UserAgenda = () => {
   }, []);
 
   return (
-    <div className="lg:px-6 px-3 py-1 shadow-[0px_0px_15px_-5px] shadow-violet-400 bg-neutral-800 rounded-3xl">
+    <div className="lg:px-6 px-3 py-1 bg-neutral-800 rounded-3xl">
 
-      <h2>User Reservations</h2>
+      <h2>Rendez-vous :</h2>
       {reservations.length > 0 ? (
         <div className="flex divide-y divide-neutral-700 flex-col lg:justify-between items-center py-3 px-2 lg:py-4 lg:px-2">
           {reservations.map((reservation) => (
@@ -35,7 +35,7 @@ const UserAgenda = () => {
           ))}
         </div>
       ) : (
-        <p>No reservations found</p>
+        <p>Aucun rendez-vous trouvés</p>
       )}
 
     </div>
