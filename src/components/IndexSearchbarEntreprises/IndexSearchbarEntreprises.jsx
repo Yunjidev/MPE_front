@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { getData } from '../../services/data-fetch';
 import './indexsearchbarentreprises.css';
 import { toast } from "react-toastify";
-import { TfiTarget } from "react-icons/tfi";
+// import { TfiTarget } from "react-icons/tfi";
 import CitySelect from './FilterSelect/CitySelect';
 import CountrySelect from './FilterSelect/Countryselect';
 import JobSelect from './FilterSelect/Jobselect';
 import PremiumCheckbox from './FilterSelect/PremiumCheckbox';
 import RatingSelect from './FilterSelect/RatingSelect';
 import { renderRatingStars } from './FilterSelect/RatingSelect';
-import Localisation from './LocalisationFilter/Localisation';
+// import Localisation from './LocalisationFilter/Localisation';
 import { HiSearch } from "react-icons/hi";
 
 
@@ -153,7 +153,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
   return (
     <div className="join pt-8 pb-10 flex flex-wrap items-center justify-center">
       {/* Open the modal using document.getElementById('ID').showModal() method */}
-      <button className="custom-localisation-btn flex items-center justify-center" onClick={() => document.getElementById('my_modal_1').showModal()}>
+      {/* <button className="custom-localisation-btn flex items-center justify-center" onClick={() => document.getElementById('my_modal_1').showModal()}>
         <TfiTarget className="ml-4" />
         <span>Au tour de moi</span>
       </button>
@@ -166,7 +166,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
             </form>
           </div>
         </div>
-      </dialog>
+      </dialog> */}
       <JobSelect
         selectedJobs={selectedJobs}
         setSelectedJobs={setSelectedJobs}
