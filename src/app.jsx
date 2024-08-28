@@ -56,6 +56,7 @@ import AuthenticatedRoute from "./context/AuthenticatedRoute";
 import EntrepreneurRoute from "./context/EntrepreneurRoute";
 import AdminRoute from "./context/AdminRoute";
 import OfferList from "./components/DashboardEnterprise/OffersList";
+import ReservationsList from "./components/DashboardEnterprise/ReservationsList";
 
 function App() {
   useSocketIo();
@@ -130,6 +131,7 @@ function AppContent() {
                   element={<UpdateCompany />}
                 />
                 <Route path="enterprise/:id/offer" element={<OfferList />} />
+                <Route path="enterprise/:id/reservations" element={<ReservationsList />} />
               </Route>
               {/* Routes protégées pour les administrateurs */}
               <Route element={<AdminRoute />}>

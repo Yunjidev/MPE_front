@@ -7,6 +7,7 @@ import {
   FaPlusCircle,
   FaEye,
   FaBuilding,
+  FaBook,
 } from "react-icons/fa";
 import { useAtom } from "jotai";
 import { enterprisesAtom } from "../../store/enterprises";
@@ -57,6 +58,11 @@ export default function EnterpriseSideBar({
                         to: `/dashboard/enterprise/${enterprise.id}/offer`,
                         icon: <FaPlusCircle className={`${iconStyle} mr-3`} />,
                         label: "Offres",
+                      },
+                      {
+                        to: `/dashboard/enterprise/${enterprise.id}/reservations`,
+                        icon: <FaBook className={`${iconStyle} mr-3`} />,
+                        label: "Réservations",
                       },
                       {
                         to: `/enterprise/${enterprise.id}`,
