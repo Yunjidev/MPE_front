@@ -6,7 +6,7 @@ export async function getData(object, timeout = 50000) {
     const response = await kyInstance.get(BASE_URL + object , { timeout }).json();
     return response;
   } catch (error) {
-    const errorData = error.response ? await error.response.json() : error.message;
+    let errorData = await error.responseData.message;
     throw new Error(errorData);
   }
 }
@@ -22,7 +22,7 @@ export async function postData(object, data) {
       options.body = JSON.stringify(data);
     }
     const response = await kyInstance.post(BASE_URL + object, options);
-    return await response.json();
+    return response.json();
   } catch (error) {
     let errorData = await error.responseData;
     throw new Error(JSON.stringify(errorData));
