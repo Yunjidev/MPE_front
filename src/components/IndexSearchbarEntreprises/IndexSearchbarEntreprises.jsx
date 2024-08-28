@@ -151,7 +151,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
 
 
   return (
-    <div className="join pt-8 pb-10 flex items-center justify-center">
+    <div className="join pt-8 pb-10 flex flex-wrap items-center justify-center">
       {/* Open the modal using document.getElementById('ID').showModal() method */}
       <button className="custom-localisation-btn flex items-center justify-center" onClick={() => document.getElementById('my_modal_1').showModal()}>
         <TfiTarget className="ml-4" />
@@ -159,12 +159,9 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
       </button>
       <dialog id="my_modal_1" className="modal">
         <div className="modal-box">
-
-
           <Localisation setSearchResults={setSearchResults} />
           <div className="modal-action">
             <form method="dialog">
-
               <button className="btn">Close</button>
             </form>
           </div>
@@ -186,7 +183,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         selectedRatings={selectedRatings}
         setSelectedRatings={setSelectedRatings}
         loadOptions={loadOptions}
-        renderRatingStars={renderRatingStars} // Passer la fonction en tant que prop
+        renderRatingStars={renderRatingStars}
       />
       <PremiumCheckbox />
       <div className="indicator flex gap-2">

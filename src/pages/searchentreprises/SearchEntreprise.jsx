@@ -33,9 +33,11 @@ const SearchEntreprise = () => {
   return (
     <section className='py-14'>
       <div className="font-sans flex flex-col items-center justify-center min-h-screen">
-        <h1 className="text-5xl dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">Recherchez vos entreprises</h1>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">
+          Recherchez vos entreprises
+        </h1>
         <IndexSearchbarEntreprises setSearchResults={setEntreprises} resetSearch={resetSearchResults} />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8 md:gap-12 lg:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-10">
           {entreprises.map((entreprise) => (
             <IndexCardsEntreprises key={entreprise.id} entreprise={entreprise} userId={userId} />
           ))}
