@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { postData } from "../../services/data-fetch";
-import EnterpriseForm from "./EnterpriseForm";
+import EnterpriseForm from "./Form/EnterpriseForm";
 import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
