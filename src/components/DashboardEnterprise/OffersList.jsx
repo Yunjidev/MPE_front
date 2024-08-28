@@ -1,14 +1,16 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/jsx-key */
 import React, { useState, useEffect } from "react";
 import { useTable, usePagination } from "react-table";
-import { getData, deleteData, postData, putData } from "../../services/data-fetch";
+import {
+  getData,
+  deleteData,
+  postData,
+  putData,
+} from "../../services/data-fetch";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import Button from "../Button/button";
 import Modal from "../DashboardAdmin/Modal";
-import OfferForm from "./OfferForm"; 
-import { useParams } from 'react-router-dom';
+import OfferForm from "./OfferForm";
+import { useParams } from "react-router-dom";
 
 // Function to decode HTML entities
 const decodeHtml = (html) => {
@@ -18,7 +20,7 @@ const decodeHtml = (html) => {
 };
 
 const OffersList = () => {
-  const { id } = useParams();  
+  const { id } = useParams();
   const [offers, setOffers] = useState([]);
   const [filteredOffers, setFilteredOffers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,11 +51,12 @@ const OffersList = () => {
     const lowercasedQuery = searchQuery.toLowerCase();
     const filtered = offers.filter((offer) => {
       const name = offer.name ? offer.name.toLowerCase() : "";
-      const description = offer.description ? offer.description.toLowerCase() : "";
+      const description = offer.description
+        ? offer.description.toLowerCase()
+        : "";
 
       return (
-        name.includes(lowercasedQuery) ||
-        description.includes(lowercasedQuery)
+        name.includes(lowercasedQuery) || description.includes(lowercasedQuery)
       );
     });
     setFilteredOffers(filtered);
@@ -64,7 +67,7 @@ const OffersList = () => {
     try {
       await deleteData(`enterprise/${id}/offer/${offerId}`);
       setOffers((prevOffers) =>
-        prevOffers.filter((offer) => offer.id !== offerId)
+        prevOffers.filter((offer) => offer.id !== offerId),
       );
     } catch (error) {
       console.error("Erreur lors de la suppression de l'offre:", error);
@@ -86,14 +89,17 @@ const OffersList = () => {
     try {
       if (selectedOffer) {
         // Mise à jour de l'offre existante
-        await putData(`enterprise/${id}/offer/${selectedOffer.id}`, formDataToSend);
+        await putData(
+          `enterprise/${id}/offer/${selectedOffer.id}`,
+          formDataToSend,
+        );
         alert("Offre mise à jour avec succès.");
       } else {
         // Ajout d'une nouvelle offre
         await postData(`enterprise/${id}/offer`, formDataToSend);
         alert("Offre créée avec succès.");
       }
-      
+
       // Fetch à nouveau les offres après la création ou mise à jour
       fetchOffers();
       setIsModalOpen(false);
@@ -106,11 +112,38 @@ const OffersList = () => {
   const columns = React.useMemo(
     () => [
       { Header: "Nom de l'offre", accessor: "name" },
-      { Header: "Description", accessor: "description", Cell: ({ value }) => <div dangerouslySetInnerHTML={{ __html: decodeHtml(value) }} /> },
+      {
+        Header: "Description",
+        accessor: "description",
+        Cell: ({ value }) => (
+          <div dangerouslySetInnerHTML={{ __html: decodeHtml(value) }} />
+        ),
+      },
       { Header: "Durée (min)", accessor: "duration" },
-      { Header: "Prix (€)", accessor: "price", Cell: ({ value }) => `${value} €` },
-      { Header: "Estimation", accessor: "estimate", Cell: ({ value }) => (value ? "Oui" : "Non") },
-      { Header: "Image", accessor: "image", Cell: ({ value }) => value ? <img src={value} alt="Offer" className="w-16 h-16 object-cover rounded-full" /> : "Aucune" },
+      {
+        Header: "Prix (€)",
+        accessor: "price",
+        Cell: ({ value }) => `${value} €`,
+      },
+      {
+        Header: "Estimation",
+        accessor: "estimate",
+        Cell: ({ value }) => (value ? "Oui" : "Non"),
+      },
+      {
+        Header: "Image",
+        accessor: "image",
+        Cell: ({ value }) =>
+          value ? (
+            <img
+              src={value}
+              alt="Offer"
+              className="w-16 h-16 object-cover rounded-full"
+            />
+          ) : (
+            "Aucune"
+          ),
+      },
       {
         Header: "Actions",
         accessor: "id",
@@ -132,7 +165,7 @@ const OffersList = () => {
         ),
       },
     ],
-    [offers]
+    [offers],
   );
 
   const {
@@ -151,7 +184,7 @@ const OffersList = () => {
       initialState: { pageIndex, pageSize },
       pageCount: Math.ceil(filteredOffers.length / pageSize),
     },
-    usePagination
+    usePagination,
   );
 
   const handlePageSizeChange = (event) => {
@@ -222,11 +255,15 @@ const OffersList = () => {
             &laquo; Précédent
           </button>
           <span className="dark:text-white text-black font-bold">
-            Page {currentPageIndex + 1} sur {Math.ceil(filteredOffers.length / pageSize)}
+            Page {currentPageIndex + 1} sur{" "}
+            {Math.ceil(filteredOffers.length / pageSize)}
           </span>
           <button
             onClick={() => gotoPage(currentPageIndex + 1)}
-            disabled={currentPageIndex >= Math.ceil(filteredOffers.length / pageSize) - 1}
+            disabled={
+              currentPageIndex >=
+              Math.ceil(filteredOffers.length / pageSize) - 1
+            }
             className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
           >
             Suivant &raquo;

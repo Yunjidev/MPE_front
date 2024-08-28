@@ -1,11 +1,11 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { FaPenAlt } from "react-icons/fa";
-import { getData } from "../../services/data-fetch";
-import Input from "../Utils/Inputs/Input";
-import SocialMedia from "./Form/Social";
-import Basic from "./Form/Basic";
-import ContactEnterprise from "./Form/ContactEnterprise";
+import { getData } from "../../../services/data-fetch";
+import Input from "../../Utils/Inputs/Input";
+import SocialMedia from "./Social";
+import Basic from "./Basic";
+import ContactEnterprise from "./ContactEnterprise";
 
 export default function EnterpriseForm({
   title,
