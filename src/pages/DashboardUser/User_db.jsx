@@ -10,16 +10,16 @@ const Companydb = () => {
         Gestion du Profil
       </h2>
       <hr className=" mb-12" />
-      <div className="flex flex-wrap">
+      <div className="lg:flex lg:flex-wrap">
         {/* 1ère ligne : ProfileManagement et LikesManagement */}
-        <div className="lg:w-1/2 px-2 mb-4">
+        <div className="lg:w-1/2 sm:w-full px-2 mb-4">
           <EditProfilForm />
         </div>
-        <div className="lg:w-1/2 px-2 mb-4">
+        <div className="lg:w-1/2 sm:w-full px-2 mb-4">
           <LikesManagement />
         </div>
         {/* 2ème ligne : AgendaManagement */}
-        <div className="w-full">
+        <div className="lg:w-full md:w-full">
           <UserAgenda />
         </div>
         {/* <div className="w-full">
