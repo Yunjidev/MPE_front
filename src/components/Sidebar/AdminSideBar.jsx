@@ -19,7 +19,7 @@ export default function AdminSideBar({
   // Nav Items
   const navItems = [
     {
-      to: "/dashboard/admin-overview",
+      to: "/dashboard/admin-db",
       icon: <FaTachometerAlt className={iconstyle} />,
       label: "Tableau de bord",
     },
