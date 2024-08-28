@@ -6,8 +6,9 @@ import {
   FaEdit,
   FaPlusCircle,
   FaEye,
-  FaBuilding,
+  FaBuilding  
 } from "react-icons/fa";
+import { MdOutlineQueryStats } from "react-icons/md";
 import { useAtom } from "jotai";
 import { enterprisesAtom } from "../../store/enterprises";
 import { useSocketIo } from "../../services/UseSocketIo";
@@ -57,6 +58,11 @@ export default function EnterpriseSideBar({
                         to: `/dashboard/enterprise/${enterprise.id}/offer`,
                         icon: <FaPlusCircle className={`${iconStyle} mr-3`} />,
                         label: "Offres",
+                      },
+                      {
+                        to: `/dashboard/enterprise/${enterprise.id}/stats`,
+                        icon: <MdOutlineQueryStats className={`${iconStyle} mr-3`} />,
+                        label: "Statistiques",
                       },
                       {
                         to: `/enterprise/${enterprise.id}`,
