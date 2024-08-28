@@ -5,7 +5,7 @@ import UserAgenda from "@/components/DashboardUser/User_agenda";
 
 const Companydb = () => {
   return (
-    <div className="dark:bg-neutral-900 w-full bg-white text-white p-6 rounded-lg w-full lg:mt-6 mt-16 mb-8">
+    <div className="dark:bg-neutral-900 w-11/12 bg-white text-white p-6 rounded-lg w-full lg:mt-6 mt-16 mb-8 mx-auto">
       <h2 className="text-2xl font-semibold mb-4 text-[#67FFCC]">
         Gestion du Profil
       </h2>
