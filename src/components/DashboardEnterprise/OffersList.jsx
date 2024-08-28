@@ -14,7 +14,6 @@ const decodeHtml = (html) => {
 
 const OffersList = () => {
   const { id } = useParams();
-  const { id } = useParams();
   const [offers, setOffers] = useState([]);
   const [filteredOffers, setFilteredOffers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
