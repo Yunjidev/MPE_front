@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { getData, putData } from "../../services/data-fetch";
-import EnterpriseForm from "./EnterpriseForm";
+import EnterpriseForm from "./Form/EnterpriseForm";
 import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
@@ -13,7 +13,6 @@ export default function EditEnterprise() {
   const { enterpriseId } = useParams();
   const [enterprise, setEnterprise] = useState(null);
   const memoizedEnterprise = useMemo(() => enterprise, [enterprise]);
-
   useEffect(() => {
     const fetchEnterprise = async () => {
       try {

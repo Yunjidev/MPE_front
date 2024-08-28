@@ -1,0 +1,33 @@
+import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
+import { putData } from "../../services/data-fetch";
+import { toast } from "react-toastify";
+import DisponibilityForm from "./Form/DisponibilityForm";
+
+export default function EditDisponibility({ enterprise }) {
+  const { id } = useParams();
+  if (!enterprise) return null;
+  const disponibility = enterprise.availabilityDates;
+  console.log(disponibility);
+
+  const handleSubmit = async (data) => {
+    event.preventDefault();
+    try {
+      await putData(`enterprise/${id}/disponibility`, data);
+      toast.success("Disponibilité modifiée");
+    } catch (error) {
+      const errorData = await JSON.parse(error.message);
+      toast.error(errorData.errors);
+    }
+  };
+
+  return (
+    <div>
+      <DisponibilityForm onSubmit={handleSubmit} initialData={disponibility} />
+    </div>
+  );
+}
+
+EditDisponibility.propTypes = {
+  enterprise: PropTypes.object,
+};

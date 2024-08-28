@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { postData } from "../../services/data-fetch";
@@ -29,7 +29,8 @@ const ResetPassword = () => {
       });
 
       setMessage(
-        response.message || "Votre mot de passe a été réinitialisé avec succès."
+        response.message ||
+          "Votre mot de passe a été réinitialisé avec succès.",
       );
 
       alert("Votre mot de passe a été réinitialisé avec succès.");
