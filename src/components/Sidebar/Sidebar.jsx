@@ -38,7 +38,6 @@ const Sidebar = () => {
         setIsSidebarOpen(false);
       }
     };
-    console.log("Atom updated", enterprises);
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {

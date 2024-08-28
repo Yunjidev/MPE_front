@@ -32,7 +32,7 @@ export async function postData(object, data) {
 export async function putData(object, data, options = {}) {
   try {
     const options = {
-      headers: {},  // Initialiser headers pour éviter des erreurs
+      headers: {}, // Initialiser headers pour éviter des erreurs
       body: data instanceof FormData ? data : JSON.stringify(data),
     };
 
@@ -54,7 +54,6 @@ export async function putData(object, data, options = {}) {
     throw new Error(errorData.errors || "Une erreur est survenue.");
   }
 }
-
 
 // Fonction pour supprimer les données
 export async function deleteData(object) {
