@@ -73,7 +73,7 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         }
       }
 
-      console.log(`Options filtrées pour ${category}:`, options);
+      // console.log(`Options filtrées pour ${category}:`, options);
       return options;
     } catch (error) {
       console.error(`Erreur lors du chargement des options pour ${category}:`, error);
