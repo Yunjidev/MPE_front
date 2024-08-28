@@ -14,6 +14,7 @@ const decodeHtml = (html) => {
 
 const OffersList = () => {
   const { id } = useParams();
+  const { id } = useParams();
   const [offers, setOffers] = useState([]);
   const [filteredOffers, setFilteredOffers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,11 +43,12 @@ const OffersList = () => {
     const lowercasedQuery = searchQuery.toLowerCase();
     const filtered = offers.filter((offer) => {
       const name = offer.name ? offer.name.toLowerCase() : "";
-      const description = offer.description ? offer.description.toLowerCase() : "";
+      const description = offer.description
+        ? offer.description.toLowerCase()
+        : "";
 
       return (
-        name.includes(lowercasedQuery) ||
-        description.includes(lowercasedQuery)
+        name.includes(lowercasedQuery) || description.includes(lowercasedQuery)
       );
     });
     setFilteredOffers(filtered);
@@ -57,7 +59,7 @@ const OffersList = () => {
     try {
       await deleteData(`enterprise/${id}/offer/${offerId}`);
       setOffers((prevOffers) =>
-        prevOffers.filter((offer) => offer.id !== offerId)
+        prevOffers.filter((offer) => offer.id !== offerId),
       );
     } catch (error) {
       console.error("Erreur lors de la suppression de l'offre:", error);

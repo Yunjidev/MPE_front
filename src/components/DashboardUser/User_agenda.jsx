@@ -115,8 +115,7 @@ const ReservationItem = ({ reservation, onCancel }) => {
         <p className="mr-12">{formatTimeWithoutSeconds(reservation.start_time)}</p>
         <h3 className="w-3/12">{reservation.offer.name}</h3>
       </div>
-
-
+  
       <p className="w-4/12">
         {showFullDescription ? reservation.offer.description : truncatedDescription}
         {reservation.offer.description.length > 40 && (
@@ -126,16 +125,18 @@ const ReservationItem = ({ reservation, onCancel }) => {
         )}
       </p>
       <p>{translateStatus(reservation.status)}</p>
-
-      <div className={ reservation.status !== "pending" ? "flex flex-row mr-16 items-center w-9/12 lg:w-1/12" : "flex flex-row items-center -mr-4 w-9/12 lg:w-1/12"}>
+  
+      <div className="flex flex-row items-center w-9/12 lg:w-1/12">
         <p className="mr-5">{formatDuration(reservation.offer.duration)}</p>
         <p className="mr-5">●</p>
         <p>{reservation.offer.price} €</p>
-        </div>
-
-        {/* Bouton bin pour annuler */}
+      </div>
+  
+      {/* Placeholder pour le bouton annuler, même si le bouton n'est pas affiché */}
+      <div className="w-16 flex-shrink-0 flex justify-end">
         {reservation.status !== "done" && reservation.status !== "cancelled" && (
           <button onClick={() => cancelReservation(reservation.id, reservation.status)} className="bin-button">
+            {/* SVG du bouton */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -182,9 +183,10 @@ const ReservationItem = ({ reservation, onCancel }) => {
             </svg>
           </button>
         )}
-      
+      </div>
     </div>
   );
+  
 };
 
 export default UserAgenda;
