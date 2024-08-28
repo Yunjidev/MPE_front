@@ -58,7 +58,7 @@ const UserAgenda = () => {
           ))}
         </div>
       ) : (
-        <p>Aucune réservation trouvée</p>
+        <p className="flex justify-center">Aucune réservation trouvée</p>
       )}
     </div>
   );
