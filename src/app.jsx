@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -6,6 +5,7 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Provider } from "jotai";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -50,6 +50,7 @@ import DeleteAccount from "./components/DashboardUser/DeleteAccount";
 import UpdatePassWord from "./components/DashboardUser/UpdatePassword";
 import ForgotPasswordForm from "./pages/user/ForgotPassword.jsx";
 import ResetPassword from "./pages/user/ResetPassword";
+import Planning from "./pages/user/Planning";
 
 // Protected Routes
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
@@ -130,6 +131,7 @@ function AppContent() {
                   element={<UpdateCompany />}
                 />
                 <Route path="enterprise/:id/offer" element={<OfferList />} />
+                <Route path="enterprise/:id/planning" element={<Planning />} />
               </Route>
               {/* Routes protégées pour les administrateurs */}
               <Route element={<AdminRoute />}>
@@ -139,7 +141,6 @@ function AppContent() {
               </Route>
             </Route>
           </Route>
-          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
       <Footer />

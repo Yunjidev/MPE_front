@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { postData } from "../../services/data-fetch";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ const ForgotPasswordForm = () => {
       // Assurez-vous que `response.message` existe bien pour éviter des erreurs potentielles
       setMessage(
         response.message ||
-          "Veuillez vérifier votre email pour réinitialiser votre mot de passe."
+          "Veuillez vérifier votre email pour réinitialiser votre mot de passe.",
       );
 
       // Affichage de l'alerte
