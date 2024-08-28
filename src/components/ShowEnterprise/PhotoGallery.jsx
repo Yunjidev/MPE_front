@@ -9,7 +9,7 @@ const PhotoGallery = ({ photos, openPopup }) => {
           <img
             src={photos[0]}
             alt="Photo principale"
-            className="w-full h-auto rounded-md cursor-pointer"
+            className="w-full h-auto max-w-[84%] max-h-[80%] rounded-md cursor-pointer"
             onClick={() => openPopup(photos[0])}
           />
           <div className="flex w-full gap-4 grid-cols-2 pr-4">
@@ -17,7 +17,7 @@ const PhotoGallery = ({ photos, openPopup }) => {
               <img
                 src={photos[1]}
                 alt="Photo secondaire 1"
-                className="w-5/12 h-auto rounded-md cursor-pointer"
+                className="w-5/12 h-auto max-w-[50%] max-h-[100%] rounded-md cursor-pointer"
                 onClick={() => openPopup(photos[1])}
               />
             )}
@@ -25,7 +25,7 @@ const PhotoGallery = ({ photos, openPopup }) => {
               <img
                 src={photos[2]}
                 alt="Photo secondaire 2"
-                className="w-7/12 h-auto rounded-md cursor-pointer"
+                className="w-5/12 h-auto max-w-[50%] max-h-[100%] rounded-md cursor-pointer"
                 onClick={() => openPopup(photos[2])}
               />
             )}
