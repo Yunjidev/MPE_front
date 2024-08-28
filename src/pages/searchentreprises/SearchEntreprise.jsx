@@ -11,7 +11,6 @@ const SearchEntreprise = () => {
   const [user] = useAtom(userAtom);
   const userId = user.id;
 
-  // Déplacez la définition de fetchEntreprises ici pour la rendre accessible
   const fetchEntreprises = async () => {
     try {
       let response = await getData("enterprises/validate");

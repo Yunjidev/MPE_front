@@ -33,9 +33,26 @@ const Localisation = ({ setSearchResults, setAllEnterprises }) => {
         }
       };
 
-      const error = () => {
-        toast.error("Impossible de récupérer votre position.");
-        setLocationError("Impossible de récupérer votre position.");
+      const error = (err) => {
+        console.error('Erreur de géolocalisation:', err);
+        switch(err.code) {
+          case err.PERMISSION_DENIED:
+            toast.error("L'utilisateur a refusé la demande de géolocalisation.");
+            setLocationError("L'utilisateur a refusé la demande de géolocalisation.");
+            break;
+          case err.POSITION_UNAVAILABLE:
+            toast.error("Les informations de localisation ne sont pas disponibles.");
+            setLocationError("Les informations de localisation ne sont pas disponibles.");
+            break;
+          case err.TIMEOUT:
+            toast.error("La demande de géolocalisation a expiré.");
+            setLocationError("La demande de géolocalisation a expiré.");
+            break;
+          default:
+            toast.error("Une erreur inconnue est survenue.");
+            setLocationError("Une erreur inconnue est survenue.");
+            break;
+        }
       };
 
       navigator.geolocation.getCurrentPosition(success, error);

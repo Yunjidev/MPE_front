@@ -26,10 +26,10 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
 
   // Fonctions de chargement des options pour les AsyncSelect
   const loadOptions = async (inputValue, category) => {
-    console.log(`Chargement des options pour ${category} avec la valeur saisie:`, inputValue);
+    // console.log(`Chargement des options pour ${category} avec la valeur saisie:`, inputValue);
     try {
       const response = await getData(`enterprises/validate`);
-      console.log(`Réponse de l'API pour ${category}:`, response);
+      // console.log(`Réponse de l'API pour ${category}:`, response);
       let options;
 
       switch (category) {
@@ -89,18 +89,18 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
       const response = await getData('enterprises/validate');
 
       // Affichage des sélections actuelles pour le débogage
-      console.log('Sélections actuelles:', {
-        jobs: selectedJobs,
-        countries: selectedCountries,
-        cities: selectedCities,
-        ratings: selectedRatings
-      });
+      // console.log('Sélections actuelles:', {
+      //   jobs: selectedJobs,
+      //   countries: selectedCountries,
+      //   cities: selectedCities,
+      //   ratings: selectedRatings
+      // });
 
       // Assurez-vous que les ID correspondent aux valeurs attendues
-      console.log('Exemple de données reçues pour les jobs:', response.map(item => item.job));
-      console.log('Exemple de données reçues pour les pays:', response.map(item => item.country));
-      console.log('Exemple de données reçues pour les villes:', response.map(item => item.city));
-      console.log('Exemple de données reçues pour les notes:', response.map(item => item.averageRating));
+      // console.log('Exemple de données reçues pour les jobs:', response.map(item => item.job));
+      // console.log('Exemple de données reçues pour les pays:', response.map(item => item.country));
+      // console.log('Exemple de données reçues pour les villes:', response.map(item => item.city));
+      // console.log('Exemple de données reçues pour les notes:', response.map(item => item.averageRating));
 
       // Filtrage des résultats en fonction des sélections de l'utilisateur
       const filteredResponse = response.filter(entreprise => {
@@ -108,25 +108,25 @@ const IndexSearchbarEntreprises = ({ setSearchResults, resetSearch }) => {
         const countryMatch = selectedCountries.length === 0 || selectedCountries.some(country => entreprise.country && entreprise.country.name === country.label);
         const cityMatch = selectedCities.length === 0 || selectedCities.some(city => entreprise.city === city.label);
         const ratingMatch = selectedRatings.length === 0 || selectedRatings.some(rating => entreprise.averageRating && parseFloat(entreprise.averageRating.toFixed(2)) === parseFloat(rating.label));
-        console.log('Notes moyennes après conversion:', response.map(item => item.averageRating.toFixed(2)));
-        console.log('Étiquettes des notes sélectionnées:', selectedRatings.map(rating => rating.label));
+        // console.log('Notes moyennes après conversion:', response.map(item => item.averageRating.toFixed(2)));
+        // console.log('Étiquettes des notes sélectionnées:', selectedRatings.map(rating => rating.label));
         // Affichage des résultats de la correspondance pour le débogage
-        console.log(`Résultats de la correspondance pour l'entreprise ${entreprise.name}:`, {
-          jobMatch,
-          countryMatch,
-          cityMatch,
-          ratingMatch
-        });
+        // console.log(`Résultats de la correspondance pour l'entreprise ${entreprise.name}:`, {
+        //   jobMatch,
+        //   countryMatch,
+        //   cityMatch,
+        //   ratingMatch
+        // });
         return jobMatch && countryMatch && cityMatch && ratingMatch;
       }).map(entreprise => ({
         ...entreprise,
         logo: entreprise.logo
       }));
 
-      console.log('Filtrés:', filteredResponse);
+      // console.log('Filtrés:', filteredResponse);
       // Mise à jour des résultats de recherche
       setSearchResults(filteredResponse);
-      console.log('Recherche effectuée avec les paramètres:', filteredResponse);
+      // console.log('Recherche effectuée avec les paramètres:', filteredResponse);
       // Si auncun resultat ne correspond à la recherche, afficher une erreur
       if (filteredResponse.length === 0) {
         toast.info('Aucun résultat ne correspond à votre recherche.');
