@@ -26,12 +26,12 @@ const IndexCardsEntreprises = ({ entreprise, userId }) => {
       <div className="rating gap-1 absolute top-0 right-0 p-4">
         <LikeButton userId={userId} enterpriseId={entreprise.id} />
       </div>
-      <figure>
+      <figure className="h-48 w-full">
         {/* Utilisez la photo de l'entreprise si disponible */}
         <img
           src={logo || indexcards}
           alt={name}
-          className="rounded-3xl"
+          className="rounded-3xl w-full h-full object-cover"
           onError={(e) => e.target.src = indexcards}
         />
       </figure>
