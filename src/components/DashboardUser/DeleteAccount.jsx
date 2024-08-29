@@ -1,11 +1,10 @@
-import React from "react";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { deleteData } from "../../services/data-fetch";
 
 const DeleteAccount = () => {
   const handleDeleteAccount = async () => {
     const confirmation = window.confirm(
-      "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
+      "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
     );
     if (confirmation) {
       try {
@@ -16,7 +15,7 @@ const DeleteAccount = () => {
       } catch (error) {
         console.error("Erreur lors de la suppression du compte:", error);
         alert(
-          "Une erreur est survenue lors de la suppression de votre compte."
+          "Une erreur est survenue lors de la suppression de votre compte.",
         );
       }
     }

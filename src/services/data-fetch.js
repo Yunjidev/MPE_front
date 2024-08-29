@@ -32,7 +32,7 @@ export async function postData(object, data) {
 export async function putData(object, data) {
   try {
     const options = {
-      headers: {},  // Initialiser headers pour éviter des erreurs
+      headers: {}, // Initialiser headers pour éviter des erreurs
       body: data instanceof FormData ? data : JSON.stringify(data),
     };
 
@@ -43,18 +43,10 @@ export async function putData(object, data) {
     const response = await kyInstance.put(BASE_URL + object, options);
     return response.json();
   } catch (error) {
-    let errorData;
-    try {
-      errorData = await error.response.json();
-    } catch (parsingError) {
-      errorData = { errors: "Erreur lors de la requête." };
-    }
-
-    console.log(errorData.errors);
-    throw new Error(errorData.errors || "Une erreur est survenue.");
+    let errorData = await error.responseData;
+    throw new Error(JSON.stringify(errorData));
   }
 }
-
 
 // Fonction pour supprimer les données
 export async function deleteData(object) {

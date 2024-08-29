@@ -26,7 +26,6 @@ export default function SignUp() {
       toast.success("Inscription réussie");
     } catch (error) {
       const errorData = await JSON.parse(error.message);
-      console.log(errorData.errors);
       if (Array.isArray(errorData.errors)) {
         errorData.errors.forEach((error) => {
           const [, message] = Object.entries(error)[0];
