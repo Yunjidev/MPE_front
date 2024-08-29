@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getData, putData } from "../../services/data-fetch";
 import './user_agenda.css';
+import { CiCalendar } from "react-icons/ci";
+import { CiClock2 } from "react-icons/ci";
 
 const UserAgenda = () => {
   const [reservations, setReservations] = useState([]);
@@ -108,15 +110,16 @@ const ReservationItem = ({ reservation, onCancel }) => {
   };
 
   return (
-    <div className="flex w-full py-5 justify-between items-center">
+    <div className="flex w-full flex-col lg:flex-row py-5 justify-between items-center">
       <div className="flex flex-row justify-start w-full lg:w-4/12 items-center">
-        <p className="mr-2">Le {new Date(reservation.date).toLocaleDateString()}</p>
-        <p className="mr-2">à</p>
+        <p className="mr-1"><CiCalendar /></p>
+        <p className="mr-4"> {new Date(reservation.date).toLocaleDateString()}</p>
+        <p className="mr-1"><CiClock2 /></p>
         <p className="mr-12">{formatTimeWithoutSeconds(reservation.start_time)}</p>
-        <h3 className="w-3/12">{reservation.offer.name}</h3>
+        <h3 className="w-3/12 font-bold">{reservation.offer.name}</h3>
       </div>
   
-      <p className="w-4/12">
+      <p className="lg:w-4/12 lg:mt-0 mt-4 w-full">
         {showFullDescription ? reservation.offer.description : truncatedDescription}
         {reservation.offer.description.length > 40 && (
           <button onClick={toggleDescription} className="text-blue-500 ml-2">
@@ -124,9 +127,10 @@ const ReservationItem = ({ reservation, onCancel }) => {
           </button>
         )}
       </p>
+      
       <p>{translateStatus(reservation.status)}</p>
   
-      <div className="flex flex-row items-center w-9/12 lg:w-1/12">
+      <div className="flex flex-row justify-center items-center w-full lg:w-1/12">
         <p className="mr-5">{formatDuration(reservation.offer.duration)}</p>
         <p className="mr-5">●</p>
         <p>{reservation.offer.price} €</p>
