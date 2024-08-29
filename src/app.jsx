@@ -100,7 +100,7 @@ function AppContent() {
       <ParticlesDemo />
       <CookieBanner />
       <main
-        className={isDashboardRoute ? "" : "flex-1 lg:container mx-auto w-full"}
+        className={isDashboardRoute ? "" : "flex-1 lg:container mx-auto 2xl:w-5/6 w-full "}
       >
         <Routes>
           <Route path="/" element={<UserChoiceModal />} />

@@ -28,6 +28,13 @@ const EnterpriseDetails = ({ enterprise }) => {
           <p className="font-semibold text-lg text-center">
             {enterprise.job.name}
           </p>
+
+          <div className="flex items-center">
+            <StarRating rating={Math.round(enterprise.averageRating)} />
+            <p className="ml-2 text-lg font-semibold">
+              {enterprise.averageRating.toFixed(1)}
+            </p>
+          </div>
         </div>
 
         <div className="flex flex-row justify-between">
@@ -92,12 +99,7 @@ const EnterpriseDetails = ({ enterprise }) => {
         </div>
       </div>
 
-      <div className="flex items-center">
-        <StarRating rating={Math.round(enterprise.averageRating)} />
-        <p className="ml-2 text-lg font-semibold">
-          {enterprise.averageRating.toFixed(1)}
-        </p>
-      </div>
+
     </div>
   );
 };
