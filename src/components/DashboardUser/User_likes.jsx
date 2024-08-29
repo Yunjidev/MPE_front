@@ -34,7 +34,7 @@ const LikesManagement = () => {
 
   return (
     <div className="flex flex-col h-full space-around bg-neutral-800 p-6 rounded-xl">
-      <h3 className="text-lg font-medium mb-4">Mes entreprises favorites</h3>
+      <h3 className="text-lg font-medium mb-4 flex justify-center">Mes entreprises favorites</h3>
       <hr className="w-full"></hr>
       <ul>
         {favorites.length > 0 ? (
@@ -55,7 +55,7 @@ const LikesManagement = () => {
             </li>
           ))
         ) : (
-          <li className="text-white">Vous n'avez pas encore de favoris.</li>
+          <li className="text-white flex justify-center">Vous n'avez pas encore de favoris.</li>
         )}
       </ul>
     </div>
