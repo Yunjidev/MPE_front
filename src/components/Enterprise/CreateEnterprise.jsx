@@ -3,29 +3,29 @@ import { postData } from "../../services/data-fetch";
 import EnterpriseForm from "./Form/EnterpriseForm";
 import { toast } from "react-toastify";
 import { useAtom } from "jotai";
-import { userAtom } from "../../store/user";
+import { enterprisesAtom } from "../../store/enterprises";
 
 export default function CreateEnterprise() {
-  const [user, setUser] = useAtom(userAtom);
   const navigate = useNavigate();
+  const [, setEnterprise] = useAtom(enterprisesAtom);
 
   const handleSubmit = async (formData) => {
     try {
       const response = await postData("enterprise", formData);
-      const updateAtom = {
-        ...user,
-        enterprises: [...user.enterprises, response.enterprise],
-      };
-      setUser(updateAtom);
+      setEnterprise((prev) => [...prev, response.enterprise]);
+
       navigate(`/dashboard/user-db`);
       toast.success("Entreprise créée");
     } catch (error) {
       const errorData = await JSON.parse(error.message);
-      console.log(errorData);
-      errorData.forEach((error) => {
-        const [, message] = Object.entries(error)[0];
-        toast.error(`${message}`);
-      });
+      if (Array.isArray(errorData.errors)) {
+        errorData.errors.forEach((error) => {
+          const [, message] = Object.entries(error)[0];
+          toast.error(`${message}`);
+        });
+      } else {
+        toast.error(errorData.errors);
+      }
     }
   };
 
