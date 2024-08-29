@@ -9,8 +9,12 @@ import {
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 import StarRating from "./StarRatings";
 import LikeButton from "../CardsEntreprises/LikesForCards/LikeButton";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 
 const EnterpriseDetails = ({ enterprise }) => {
+  const { user } = useContext(UserContext);
+
   return (
     <div className="w-full flex flex-col justify-between p-6 rounded-lg">
       <div className="flex items-start">
@@ -99,7 +103,7 @@ const EnterpriseDetails = ({ enterprise }) => {
           </div>
         </div>
       </div>
-      <LikeButton />
+      <LikeButton userId={user.id} enterpriseId={enterprise.id} />{" "}
     </div>
   );
 };
