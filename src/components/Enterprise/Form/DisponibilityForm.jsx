@@ -4,20 +4,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import Input from "../../Utils/Inputs/Input";
+import { daysOfWeek } from "../../Utils/Format/Time";
 
 export default function DisponibilityForm({ onSubmit }) {
   const [days, setDays] = useState([]);
   const [start_hour, setStartHour] = useState("");
   const [end_hour, setEndHour] = useState("");
-  const weekDays = [
-    "Lundi",
-    "Mardi",
-    "Mercredi",
-    "Jeudi",
-    "Vendredi",
-    "Samedi",
-    "Dimanche",
-  ];
+  const weekDays = daysOfWeek;
 
   const handleCheckboxChange = (day) => {
     const newDays = [...days];
@@ -61,6 +54,7 @@ export default function DisponibilityForm({ onSubmit }) {
         showTimeSelectOnly
         timeIntervals={15}
         timeFormat="HH:mm"
+        dateFormat="HH:mm"
       />
       <label htmlFor="endHour">Heure de fin</label>
       <DatePicker
@@ -69,6 +63,7 @@ export default function DisponibilityForm({ onSubmit }) {
         showTimeSelect
         showTimeSelectOnly
         timeIntervals={15}
+        timeFormat="HH:mm"
         dateFormat="HH:mm"
       />
       <button type="submit" className="mt-5">
