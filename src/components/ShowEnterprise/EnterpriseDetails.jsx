@@ -8,6 +8,7 @@ import {
 } from "react-icons/io5";
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 import StarRating from "./StarRatings";
+import LikeButton from "../CardsEntreprises/LikesForCards/LikeButton";
 
 const EnterpriseDetails = ({ enterprise }) => {
   return (
@@ -98,8 +99,7 @@ const EnterpriseDetails = ({ enterprise }) => {
           </div>
         </div>
       </div>
-
-
+      <LikeButton />
     </div>
   );
 };
