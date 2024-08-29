@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getData, putData } from "../../services/data-fetch";
 import './user_agenda.css';
-import { CiCalendar } from "react-icons/ci";
-import { CiClock2 } from "react-icons/ci";
+import { CiCalendar, CiClock2 } from "react-icons/ci";
+import { FaHourglassStart, FaCheck, FaTimes, FaBan, FaCheckCircle } from "react-icons/fa"; // Ajoutez ces importations
 
 const UserAgenda = () => {
   const [reservations, setReservations] = useState([]);
@@ -22,17 +22,14 @@ const UserAgenda = () => {
   }, []);
 
   const cancelReservation = async (reservationId, currentStatus) => {
-    // Vérifiez si le statut actuel est "done"
     if (currentStatus === "done") {
       alert("Vous ne pouvez pas annuler une réservation déjà terminée.");
       return;
     }
   
     try {
-      // Envoyez la requête PUT seulement si le statut n'est pas "done"
       await putData(`https://votre-backend.com/api/reservations/${reservationId}`, { status: "cancelled" });
       
-      // Mettez à jour l'état des réservations après l'annulation réussie
       setReservations(prevReservations =>
         prevReservations.map(reservation =>
           reservation.id === reservationId
@@ -73,14 +70,33 @@ const ReservationItem = ({ reservation, onCancel }) => {
     switch (status) {
       case "pending":
         return "En attente";
-      case "confirmed":
-        return "Confirmée";
+      case "accepted":
+        return "Acceptée";
       case "cancelled":
         return "Annulée";
+      case "rejected":
+        return "Rejetée";
       case "done":
         return "Terminée";
       default:
         return status;
+    }
+  };
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case "pending":
+        return <FaHourglassStart className="text-yellow-500" />;
+      case "accepted":
+        return <FaCheck className="text-green-500" />;
+      case "cancelled":
+        return <FaTimes className="text-red-500" />;
+      case "rejected":
+        return <FaBan className="text-gray-500" />;
+      case "done":
+        return <FaCheckCircle className="text-blue-500" />;
+      default:
+        return null;
     }
   };
 
@@ -128,7 +144,7 @@ const ReservationItem = ({ reservation, onCancel }) => {
         )}
       </p>
       
-      <p>{translateStatus(reservation.status)}</p>
+      <p className="flex items-center">{getStatusIcon(reservation.status)} <span className="ml-2">{translateStatus(reservation.status)}</span></p>
   
       <div className="flex flex-row justify-center items-center w-full lg:w-1/12">
         <p className="mr-5">{formatDuration(reservation.offer.duration)}</p>
@@ -136,9 +152,8 @@ const ReservationItem = ({ reservation, onCancel }) => {
         <p>{reservation.offer.price} €</p>
       </div>
   
-      {/* Placeholder pour le bouton annuler, même si le bouton n'est pas affiché */}
       <div className="w-16 flex-shrink-0 flex justify-end">
-        {reservation.status !== "done" && reservation.status !== "cancelled" && (
+        {reservation.status !== "done" && reservation.status !== "cancelled" && reservation.status !== "rejected" && (
           <button onClick={() => cancelReservation(reservation.id, reservation.status)} className="bin-button">
             {/* SVG du bouton */}
             <svg
@@ -190,7 +205,6 @@ const ReservationItem = ({ reservation, onCancel }) => {
       </div>
     </div>
   );
-  
 };
 
 export default UserAgenda;
