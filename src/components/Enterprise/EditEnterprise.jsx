@@ -2,16 +2,16 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { getData, putData } from "../../services/data-fetch";
-import EnterpriseForm from "./EnterpriseForm";
+import EnterpriseForm from "./Form/EnterpriseForm";
 import { toast } from "react-toastify";
 import { useAtom } from "jotai";
-import { userAtom } from "../../store/user";
+import { enterprisesAtom } from "../../store/enterprises";
 
 export default function EditEnterprise() {
-  const [user, setUser] = useAtom(userAtom);
   const navigate = useNavigate();
   const { enterpriseId } = useParams();
   const [enterprise, setEnterprise] = useState(null);
+  const [enterprises, setEnterprises] = useAtom(enterprisesAtom);
   const memoizedEnterprise = useMemo(() => enterprise, [enterprise]);
 
   useEffect(() => {
@@ -31,28 +31,28 @@ export default function EditEnterprise() {
     async (formData) => {
       try {
         const response = await putData(`enterprise/${enterpriseId}`, formData);
-        const updatedEnterprise = user.enterprises.map((enterprise) => {
-          if (response.enterprise.id === enterprise.id) {
-            return { ...enterprise, ...response.enterprise };
-          }
-          return enterprise;
-        });
-        setUser((prevUser) => ({
-          ...prevUser,
-          enterprises: updatedEnterprise,
-        }));
+        const updatedEnterprises = enterprises.map((enterprise) =>
+          enterprise.id === response.enterprise.id
+            ? response.enterprise
+            : enterprise,
+        );
+        setEnterprises(updatedEnterprises);
+
         navigate(`/enterprise/${enterpriseId}`);
         toast.success("Entreprise enregistrée");
       } catch (error) {
         const errorData = await JSON.parse(error.message);
-        console.log(errorData);
-        errorData.forEach((error) => {
-          const [, message] = Object.entries(error)[0];
-          toast.error(`${message}`);
-        });
+        if (Array.isArray(errorData.errors)) {
+          errorData.errors.forEach((error) => {
+            const [, message] = Object.entries(error)[0];
+            toast.error(`${message}`);
+          });
+        } else {
+          toast.error(errorData.errors);
+        }
       }
     },
-    [enterpriseId, navigate, user, setUser],
+    [enterpriseId, navigate, enterprises, setEnterprises],
   );
 
   return (
