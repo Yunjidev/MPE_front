@@ -12,8 +12,7 @@ export default function CreateEnterprise() {
   const handleSubmit = async (formData) => {
     try {
       const response = await postData("enterprise", formData);
-      console.log(response);
-      setEnterprise(response);
+      setEnterprise((prev) => [...prev, response.enterprise]);
 
       navigate(`/dashboard/user-db`);
       toast.success("Entreprise créée");

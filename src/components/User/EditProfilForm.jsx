@@ -17,7 +17,15 @@ export default function EditProfilForm() {
       }));
       toast.success("Profil mis à jour avec succès !");
     } catch (error) {
-      console.error("Error updating profile:", error);
+      const errorData = await JSON.parse(error.message);
+      if (Array.isArray(errorData.errors)) {
+        errorData.errors.forEach((error) => {
+          const [, message] = Object.entries(error)[0];
+          toast.error(`${message}`);
+        });
+      } else {
+        toast.error(errorData.errors);
+      }
     }
   };
 
