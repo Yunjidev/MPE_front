@@ -1,34 +1,31 @@
-import moment from "moment";
+import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { daysOfWeek } from "./Time";
+
+dayjs.extend(isBetween);
+dayjs.extend(customParseFormat);
 
 export const slotStyleGetter = (date, formattedDisponibilites) => {
   const style = {
     backgroundColor: "",
   };
 
-  const dayOfWeekTranslation = {
-    Sunday: "Dimanche",
-    Monday: "Lundi",
-    Tuesday: "Mardi",
-    Wednesday: "Mercredi",
-    Thursday: "Jeudi",
-    Friday: "Vendredi",
-    Saturday: "Samedi",
-  };
-
-  const dayOfWeekInEnglish = moment(date).format("dddd");
-  const dayOfWeek = dayOfWeekTranslation[dayOfWeekInEnglish];
-  const currentTime = moment(date);
+  const dayOfWeek = daysOfWeek[dayjs(date).day()];
+  const currentTime = dayjs(date);
 
   const isAvailable = formattedDisponibilites[dayOfWeek]?.some((range) => {
-    const start = moment(currentTime).set({
-      hour: range.start.hour(),
-      minute: range.start.minute(),
-    });
-    const end = moment(currentTime).set({
-      hour: range.end.hour(),
-      minute: range.end.minute(),
-    });
-    return currentTime.isBetween(start, end, null, "[]");
+    const start = dayjs(currentTime)
+      .hour(range.start.hour())
+      .minute(range.start.minute())
+      .second(0);
+    const end = dayjs(currentTime)
+      .hour(range.end.hour())
+      .minute(range.end.minute())
+      .second(0);
+    const result =
+      currentTime.isSameOrAfter(start) && currentTime.isSameOrBefore(end);
+    return result;
   });
 
   if (!isAvailable) {
@@ -65,4 +62,20 @@ export const eventStyleGetter = (event) => {
   return {
     style: style,
   };
+};
+
+export const translateMessage = {
+  allDay: "Toute la journ�e",
+  previous: "Pr�c�dent",
+  next: "Suivant",
+  today: "Aujourd'hui",
+  month: "Mois",
+  week: "Semaine",
+  day: "Jour",
+  agenda: "Agenda",
+  date: "Date",
+  time: "Heure",
+  event: "�v�nement",
+  noEventsInRange: "Aucun �v�nement dans cette p�riode.",
+  showMore: (total) => `+ ${total} �v�nement(s) suppl�mentaire(s)`,
 };

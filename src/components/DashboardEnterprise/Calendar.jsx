@@ -1,8 +1,10 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment from "moment";
+import { Calendar } from "react-big-calendar";
 import "moment/locale/fr";
+import dayjs from "dayjs";
+import "dayjs/locale/fr";
+import { dayjsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import {
   formatDisponibility,
@@ -12,11 +14,12 @@ import {
 import {
   slotStyleGetter,
   eventStyleGetter,
+  translateMessage,
 } from "../Utils/Format/CalendarForm";
 
 // Setup the localizer for proper date formatting
-moment.locale("fr");
-const localizer = momentLocalizer(moment);
+dayjs.locale("fr");
+const localizer = dayjsLocalizer(dayjs);
 
 const CustomCalendar = ({
   disponibilities,
@@ -24,6 +27,7 @@ const CustomCalendar = ({
   reservations,
 }) => {
   const [events, setEvents] = useState([]);
+  const messages = translateMessage;
   const slotStyle = (date) =>
     slotStyleGetter(date, formatDisponibility(disponibilities));
 
@@ -61,6 +65,7 @@ const CustomCalendar = ({
         eventPropGetter={eventStyleGetter}
         slotPropGetter={slotStyle}
         onEventDrop={handleEventDrop}
+        messages={messages}
         draggableAccessor={() => true}
       />
     </div>

@@ -1,10 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Provider } from "jotai";
 import { ToastContainer } from "react-toastify";
@@ -101,7 +95,11 @@ function AppContent() {
       <ParticlesDemo />
       <CookieBanner />
       <main
-        className={isDashboardRoute ? "" : "flex-1 lg:container mx-auto 2xl:w-5/6 w-full "}
+        className={
+          isDashboardRoute
+            ? ""
+            : "flex-1 lg:container mx-auto 2xl:w-5/6 w-full "
+        }
       >
         <Routes>
           <Route path="/" element={<UserChoiceModal />} />
