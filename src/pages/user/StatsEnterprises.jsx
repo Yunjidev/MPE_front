@@ -5,6 +5,7 @@ import LengthReservation from "../../components/Enterprise/ComponentsForStats/Le
 import AverageRating from "../../components/Enterprise/ComponentsForStats/AverageRating";
 import Comments from "../../components/Enterprise/ComponentsForStats/Comments";
 import GraphForView from "../../components/Enterprise/ComponentsForStats/GraphForView";
+import CommentsList from "../../components/Enterprise/ComponentsForStats/CommentsList";
 
 
 export default function StatsEnterprises() {
@@ -23,6 +24,9 @@ export default function StatsEnterprises() {
       </div>
       <div className="w-full mt-8">
         <GraphForView />
+      </div>
+      <div className="w-full mt-8">
+        <CommentsList />
       </div>
     </div>
   );
