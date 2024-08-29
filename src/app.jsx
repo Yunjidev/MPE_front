@@ -5,7 +5,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { validateRefreshToken } from "./services/checkToken";
 import { useSocketIo } from "./services/UseSocketIo";
-import "moment/locale/fr";
 
 // Context Providers
 import { UserProvider } from "./context/UserContext";
