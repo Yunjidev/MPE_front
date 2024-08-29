@@ -30,6 +30,7 @@ import HomeClient from "./pages/home/HomeClient";
 import HomeEnterprise from "./pages/home/HomeEntreprise";
 import Team from "./pages/team/team";
 import Contact from "./pages/contact/contact";
+import SearchEntreprise from "./pages/searchentreprises/SearchEntreprise";
 import FAQ from "./pages/FAQ/FAQ";
 import RegisterCompany from "./pages/user/registercompany";
 import EnterprisePage from "./pages/EnterpriseShow/EnterpriseShow";
@@ -111,6 +112,7 @@ function AppContent() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/about" element={<Team />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/searchentreprise" element={<SearchEntreprise />} />
           <Route path="/cookie-policies" element={<CookiePolicies />} />
           <Route path="/FAQ" element={<FAQ />} />
           <Route path="/pricing" element={<Pricing_page />} />

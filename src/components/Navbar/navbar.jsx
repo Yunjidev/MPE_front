@@ -74,12 +74,12 @@ const Navbar = () => {
                   >
                     Accueil
                   </Link>
-                  <a
-                    href="#"
+                  <Link
+                    to="/searchentreprise"
                     className="hover:text-neutral-600 hover:dark:text-neutral-300"
                   >
                     Recherche
-                  </a>
+                  </Link>
                   <Link
                     to="/faq"
                     className="hover:text-neutral-600 hover:dark:text-neutral-300"
@@ -101,12 +101,12 @@ const Navbar = () => {
                   >
                     Accueil
                   </Link>
-                  <a
-                    href="#"
+                  <Link
+                    to="/searchentreprise"
                     className="hover:text-neutral-600 hover:dark:text-neutral-300"
                   >
                     Recherche
-                  </a>
+                  </Link>
                   <Link
                     to="/pricing"
                     className="hover:text-neutral-600 hover:dark:text-neutral-300"

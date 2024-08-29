@@ -1,9 +1,9 @@
 import { BASE_URL, kyInstance } from "./config-fetch";
 
 // Fonction pour récupérer les données
-export async function getData(object) {
+export async function getData(object, timeout = 50000) {
   try {
-    const response = await kyInstance.get(BASE_URL + object).json();
+    const response = await kyInstance.get(BASE_URL + object , { timeout }).json();
     return response;
   } catch (error) {
     let errorData = await error.responseData.message;

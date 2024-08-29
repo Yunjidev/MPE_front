@@ -1,0 +1,14 @@
+.card-hover-zoom:hover {
+    transform: scale(1.05);
+    /* Ajustez la valeur pour contrôler le niveau de zoom */
+    transition: transform 0.2s ease-in-out;
+    /* Animation douce */
+}
+
+ 
+  
+ 
+  
+ 
+  
+  
