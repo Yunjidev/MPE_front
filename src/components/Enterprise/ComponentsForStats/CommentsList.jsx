@@ -1,12 +1,22 @@
+import React from "react";
 import { FaStar } from "react-icons/fa";
-
-const commentsData = [
-  { username: "User1", comment: "Très bon service!", rating: 4.5 },
-  { username: "User2", comment: "Satisfait de la qualité.", rating: 4.0 },
-  { username: "User3", comment: "Peut mieux faire.", rating: 3.0 },
-];
+import { useEnterpriseData } from "./useEnterpriseData";
 
 export default function CommentsList() {
+  const data = useEnterpriseData();
+
+  if (!data) {
+    return <div>Chargement...</div>;
+  }
+
+  const commentsData = data.offers.flatMap(offer => 
+    offer.ratings.map(rating => ({
+      username: rating.user.username,
+      comment: rating.comment,
+      rating: parseFloat(rating.note)
+    }))
+  );
+
   return (
     <div className="bg-black text-white p-6 rounded-lg shadow-md w-full">
       <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-white to-[#67FFCC] dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] text-transparent bg-clip-text">
@@ -16,7 +26,7 @@ export default function CommentsList() {
         <thead>
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-              Username
+              Clients
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
               Commentaires
@@ -37,7 +47,7 @@ export default function CommentsList() {
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-white flex items-center">
                 <FaStar className="text-yellow-400 mr-2" />
-                {comment.rating}
+                {comment.rating}/5
               </td>
             </tr>
           ))}
