@@ -133,7 +133,10 @@ function AppContent() {
                 />
                 <Route path="enterprise/:id/offer" element={<OfferList />} />
                 <Route path="enterprise/:id/planning" element={<Planning />} />
-                <Route path="enterprise/:id/stats" element={<StatsEnterprises />} />
+                <Route
+                  path="enterprise/:id/stats"
+                  element={<StatsEnterprises />}
+                />
               </Route>
               {/* Routes protégées pour les administrateurs */}
               <Route element={<AdminRoute />}>
