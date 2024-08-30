@@ -70,10 +70,13 @@ export function formatIndisponibility(indisponibility) {
       .second(0);
 
     return {
-      title: `Indisponible du ${startDateTime.format("DD/MM/YYYY HH:mm")} au ${endDateTime.format("DD/MM/YYYY HH:mm")}`,
+      title: `Indisponible`,
       start: startDateTime.toDate(),
       end: endDateTime.toDate(),
       type: "indisponibility",
+      data: {
+        user: date.user,
+      },
     };
   });
 }

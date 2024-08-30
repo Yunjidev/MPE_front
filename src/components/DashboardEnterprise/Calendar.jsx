@@ -16,6 +16,7 @@ import {
   eventStyleGetter,
   translateMessage,
 } from "../Utils/Format/CalendarForm";
+import "./calendar.css";
 
 // Setup the localizer for proper date formatting
 dayjs.locale("fr");
@@ -51,6 +52,7 @@ const CustomCalendar = ({
     const updatedEvents = events.map((e) =>
       e.id === event.id ? { ...e, start, end } : e,
     );
+    console.log(updatedEvents);
     setEvents(updatedEvents);
   };
 
@@ -67,6 +69,8 @@ const CustomCalendar = ({
         onEventDrop={handleEventDrop}
         messages={messages}
         draggableAccessor={() => true}
+        timeslots={1}
+        step={60}
       />
     </div>
   );
