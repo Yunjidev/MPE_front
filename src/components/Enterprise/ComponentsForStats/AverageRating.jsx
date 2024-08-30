@@ -48,7 +48,7 @@ export default function AverageRating() {
           Note Globale
         </h2>
         <p className="text-xl bg-gradient-to-r from-orange-400 to-orange-800 dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 text-transparent bg-clip-text">
-          {averageRating}
+          {averageRating}/5
         </p>
       </div>
     </div>

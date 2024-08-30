@@ -1,12 +1,44 @@
+import React, { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
-
-const commentsData = [
-  { username: "User1", comment: "Très bon service!", rating: 4.5 },
-  { username: "User2", comment: "Satisfait de la qualité.", rating: 4.0 },
-  { username: "User3", comment: "Peut mieux faire.", rating: 3.0 },
-];
+import { getData } from "../../../services/data-fetch";
+import { useAtom } from "jotai";
+import { userAtom } from "../../../store/user";
+import { enterprisesAtom } from "../../../store/enterprises";
 
 export default function CommentsList() {
+  const [commentsData, setCommentsData] = useState([]);
+  const [user] = useAtom(userAtom);
+  const [enterprises] = useAtom(enterprisesAtom);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const enterpriseId = enterprises.length > 0 ? enterprises[0].id : undefined;
+        console.log('Enterprise ID:', enterpriseId);
+
+        if (!enterpriseId) {
+          throw new Error('Enterprise ID is undefined');
+        }
+
+        let response = await getData(`enterprise/${enterpriseId}`);
+        console.log('Données récupérées:', response); // Vérifier les données récupérées
+
+        // Extraire les commentaires et les notes des offres
+        const commentsData = response.offers.flatMap(offer => 
+          offer.ratings.map(rating => ({
+            username: rating.user.username,
+            comment: rating.comment,
+            rating: parseFloat(rating.note)
+          }))
+        );
+        setCommentsData(commentsData);
+      } catch (error) {
+        console.error('Error fetching comments data:', error);
+      }
+    };
+    fetchData();
+  }, [user.id, enterprises]);
+
   return (
     <div className="bg-black text-white p-6 rounded-lg shadow-md w-full">
       <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-white to-[#67FFCC] dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] text-transparent bg-clip-text">
@@ -16,7 +48,7 @@ export default function CommentsList() {
         <thead>
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-              Username
+              Clients
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
               Commentaires
@@ -37,7 +69,7 @@ export default function CommentsList() {
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-white flex items-center">
                 <FaStar className="text-yellow-400 mr-2" />
-                {comment.rating}
+                {comment.rating}/5
               </td>
             </tr>
           ))}
