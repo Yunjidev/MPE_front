@@ -3,30 +3,42 @@ import { FaStar } from "react-icons/fa";
 import { getData } from "../../../services/data-fetch";
 import { useAtom } from "jotai";
 import { userAtom } from "../../../store/user";
+import { enterprisesAtom } from "../../../store/enterprises";
 
 export default function AverageRating() {
-  const [entreprise, setEntreprise] = useState(null);
+  const [averageRating, setAverageRating] = useState(null);
   const [user] = useAtom(userAtom);
-  const userId = user.id;
+  const [enterprises] = useAtom(enterprisesAtom);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await getData("enterprises/validate");
-        console.log('Données récupérées:', response); // Vérifier les données récupérées
+        // console.log('User ID:', user.id);
+        // console.log('Enterprises:', enterprises);
 
-        // Filtrer pour trouver l'entreprise correspondant à l'utilisateur connecté
-        const userEntreprise = response.find(ent => ent.entrepreneur.id === userId);
-        setEntreprise(userEntreprise);
+        // Utiliser le premier élément de enterprisesAtom
+        const enterpriseId = enterprises.length > 0 ? enterprises[0].id : undefined;
+        console.log('Enterprise ID:', enterpriseId);
+
+        if (!enterpriseId) {
+          throw new Error('Enterprise ID is undefined');
+        }
+
+        let response = await getData(`enterprise/${enterpriseId}`);
+        // console.log('Données récupérées:', response); // Vérifier les données récupérées
+
+        setAverageRating(response.averageRating);
       } catch (error) {
-        console.error('Error fetching entreprises:', error);
+        console.error('Error fetching average rating:', error);
       }
     };
     fetchData();
-  }, [userId]);
+  }, [user.id, enterprises]);
 
-
-  const averageRating = entreprise.averageRating;
+  // Vérifier si l'averageRating a été récupéré
+  if (averageRating === null) {
+    return <div>Chargement...</div>;
+  }
 
   return (
     <div className="bg-orange-100 bg-opacity-30 dark:bg-black text-black dark:text-white shadow-md rounded-lg p-6 flex items-center space-x-4 w-64">
