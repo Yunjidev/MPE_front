@@ -9,11 +9,12 @@ export default function CommentsList() {
     return <div>Chargement...</div>;
   }
 
-  const commentsData = data.offers.flatMap(offer => 
+  const commentsData = data.offers.flatMap(offer =>
     offer.ratings.map(rating => ({
       username: rating.user.username,
       comment: rating.comment,
-      rating: parseFloat(rating.note)
+      rating: parseFloat(rating.note),
+      offerName: offer.name
     }))
   );
 
@@ -26,6 +27,9 @@ export default function CommentsList() {
         <thead>
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+              Offre
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
               Clients
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
@@ -34,11 +38,15 @@ export default function CommentsList() {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
               Note
             </th>
+
           </tr>
         </thead>
         <tbody className="bg-black divide-y divide-gray-700">
           {commentsData.map((comment, index) => (
             <tr key={index}>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
+                {comment.offerName}
+              </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
                 {comment.username}
               </td>
@@ -49,6 +57,7 @@ export default function CommentsList() {
                 <FaStar className="text-yellow-400 mr-2" />
                 {comment.rating}/5
               </td>
+              
             </tr>
           ))}
         </tbody>
