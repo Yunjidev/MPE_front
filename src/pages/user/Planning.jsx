@@ -30,7 +30,7 @@ export default function Planning() {
   }
 
   return (
-    <div>
+    <div className="mt-10">
       <CustomCalendar
         reservations={enterprise?.offers?.reservations || []}
         indisponibilities={enterprise?.indisponibilities || []}
