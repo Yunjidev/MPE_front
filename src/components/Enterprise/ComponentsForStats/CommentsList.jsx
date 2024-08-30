@@ -1,43 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FaStar } from "react-icons/fa";
-import { getData } from "../../../services/data-fetch";
-import { useAtom } from "jotai";
-import { userAtom } from "../../../store/user";
-import { enterprisesAtom } from "../../../store/enterprises";
+import { useEnterpriseData } from "./useEnterpriseData";
 
 export default function CommentsList() {
-  const [commentsData, setCommentsData] = useState([]);
-  const [user] = useAtom(userAtom);
-  const [enterprises] = useAtom(enterprisesAtom);
+  const data = useEnterpriseData();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const enterpriseId = enterprises.length > 0 ? enterprises[0].id : undefined;
-        console.log('Enterprise ID:', enterpriseId);
+  if (!data) {
+    return <div>Chargement...</div>;
+  }
 
-        if (!enterpriseId) {
-          throw new Error('Enterprise ID is undefined');
-        }
-
-        let response = await getData(`enterprise/${enterpriseId}`);
-        console.log('Données récupérées:', response); // Vérifier les données récupérées
-
-        // Extraire les commentaires et les notes des offres
-        const commentsData = response.offers.flatMap(offer => 
-          offer.ratings.map(rating => ({
-            username: rating.user.username,
-            comment: rating.comment,
-            rating: parseFloat(rating.note)
-          }))
-        );
-        setCommentsData(commentsData);
-      } catch (error) {
-        console.error('Error fetching comments data:', error);
-      }
-    };
-    fetchData();
-  }, [user.id, enterprises]);
+  const commentsData = data.offers.flatMap(offer => 
+    offer.ratings.map(rating => ({
+      username: rating.user.username,
+      comment: rating.comment,
+      rating: parseFloat(rating.note)
+    }))
+  );
 
   return (
     <div className="bg-black text-white p-6 rounded-lg shadow-md w-full">
