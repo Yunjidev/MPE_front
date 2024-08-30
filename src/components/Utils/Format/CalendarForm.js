@@ -29,8 +29,7 @@ export const slotStyleGetter = (date, formattedDisponibilites) => {
   });
 
   if (!isAvailable) {
-    style.backgroundColor = "#cccccc";
-    style.opacity = "0.5";
+    style.backgroundColor = "rgba(255, 255, 255, 0.5)";
   }
 
   return {
@@ -41,19 +40,20 @@ export const slotStyleGetter = (date, formattedDisponibilites) => {
 export const eventStyleGetter = (event) => {
   let style = {
     backgroundColor: "",
-    borderRadius: "0px",
     opacity: "0.7",
     color: "black",
     border: "0px",
-    display: "block",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   };
 
   switch (event.type) {
     case "reservation":
-      style.backgroundColor = "#9ecae1";
+      style.backgroundColor = "#a78bfa";
       break;
     case "indisponibility":
-      style.backgroundColor = "#fb9a99";
+      style.backgroundColor = "#fb923c";
       break;
     default:
       style.backgroundColor = "#cccccc";
@@ -65,8 +65,8 @@ export const eventStyleGetter = (event) => {
 };
 
 export const translateMessage = {
-  allDay: "Toute la journ�e",
-  previous: "Pr�c�dent",
+  allDay: "Toute la journée",
+  previous: "Précédent",
   next: "Suivant",
   today: "Aujourd'hui",
   month: "Mois",
