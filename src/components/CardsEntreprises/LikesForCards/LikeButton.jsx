@@ -1,10 +1,9 @@
 import LikeButtonFonction from './LikeButtonFonction';
 import LikeButtonStyle from './LikeButtonStyle';
 
-
-const LikeButton = ({ userId, enterpriseId }) => {
+const LikeButton = ({ userId, enterpriseId, onUnlike }) => {
     return (
-        <LikeButtonFonction userId={userId} enterpriseId={enterpriseId}>
+        <LikeButtonFonction userId={userId} enterpriseId={enterpriseId} onUnlike={onUnlike}>
             {({ hasLiked, isHovered, handleLike, setIsHovered }) => (
                 <LikeButtonStyle
                     hasLiked={hasLiked}
