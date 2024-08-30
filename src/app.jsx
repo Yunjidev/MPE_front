@@ -1,11 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Provider } from "jotai";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -29,6 +23,7 @@ import HomeClient from "./pages/home/HomeClient";
 import HomeEnterprise from "./pages/home/HomeEntreprise";
 import Team from "./pages/team/team";
 import Contact from "./pages/contact/contact";
+import SearchEntreprise from "./pages/searchentreprises/SearchEntreprise";
 import FAQ from "./pages/FAQ/FAQ";
 import RegisterCompany from "./pages/user/registercompany";
 import EnterprisePage from "./pages/EnterpriseShow/EnterpriseShow";
@@ -50,7 +45,9 @@ import DeleteAccount from "./components/DashboardUser/DeleteAccount";
 import UpdatePassWord from "./components/DashboardUser/UpdatePassword";
 import ForgotPasswordForm from "./pages/user/ForgotPassword.jsx";
 import ResetPassword from "./pages/user/ResetPassword";
-import AdminDashboard from "./pages/DashboardAdmin/Admin_db";
+import Planning from "./pages/user/Planning";
+import StatsEnterprises from "./pages/user/StatsEnterprises";
+
 // Protected Routes
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
 import EntrepreneurRoute from "./context/EntrepreneurRoute";
@@ -99,7 +96,11 @@ function AppContent() {
       <ParticlesDemo />
       <CookieBanner />
       <main
-        className={isDashboardRoute ? "" : "flex-1 lg:container mx-auto w-full"}
+        className={
+          isDashboardRoute
+            ? ""
+            : "flex-1 lg:container mx-auto 2xl:w-5/6 w-full "
+        }
       >
         <Routes>
           <Route path="/" element={<UserChoiceModal />} />
@@ -109,6 +110,7 @@ function AppContent() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/about" element={<Team />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/searchentreprise" element={<SearchEntreprise />} />
           <Route path="/cookie-policies" element={<CookiePolicies />} />
           <Route path="/FAQ" element={<FAQ />} />
           <Route path="/pricing" element={<Pricing_page />} />
@@ -130,17 +132,20 @@ function AppContent() {
                   element={<UpdateCompany />}
                 />
                 <Route path="enterprise/:id/offer" element={<OfferList />} />
+                <Route path="enterprise/:id/planning" element={<Planning />} />
+                <Route
+                  path="enterprise/:id/stats"
+                  element={<StatsEnterprises />}
+                />
               </Route>
               {/* Routes protégées pour les administrateurs */}
               <Route element={<AdminRoute />}>
                 <Route path="accept-company" element={<AcceptCompanyPage />} />
                 <Route path="manage-companies" element={<Company />} />
                 <Route path="manage-users" element={<ManageUser />} />
-                <Route path="admin-db" element={<AdminDashboard />} />
               </Route>
             </Route>
           </Route>
-          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
       <Footer />

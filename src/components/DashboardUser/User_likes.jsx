@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { getData } from "../../services/data-fetch";
 import { useNavigate } from "react-router-dom";
+import LikeButton from "../CardsEntreprises/LikesForCards/LikeButton";
 
 const LikesManagement = () => {
   const [favorites, setFavorites] = useState([]);
@@ -43,7 +44,7 @@ const LikesManagement = () => {
               key={favorite.id}
               className="flex justify-between items-center bg-neutral-800 p-2 rounded-lg"
             >
-              <span>❤️ {enterprises[favorite.Enterprise_id]?.name}</span>
+              <span>  <LikeButton userId={favorite.User_id} enterpriseId={favorite.Enterprise_id} /> {enterprises[favorite.Enterprise_id]?.name}</span>
               <button
                 className="bg-white text-black px-3 rounded-lg hover:bg-gray-300"
                 onClick={() =>

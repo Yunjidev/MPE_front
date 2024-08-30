@@ -8,8 +8,13 @@ import {
 } from "react-icons/io5";
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 import StarRating from "./StarRatings";
+import LikeButton from "../CardsEntreprises/LikesForCards/LikeButton";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 
 const EnterpriseDetails = ({ enterprise }) => {
+  const { user } = useContext(UserContext);
+
   return (
     <div className="w-full flex flex-col justify-between p-6 rounded-lg">
       <div className="flex items-start">
@@ -28,6 +33,13 @@ const EnterpriseDetails = ({ enterprise }) => {
           <p className="font-semibold text-lg text-center">
             {enterprise.job.name}
           </p>
+
+          <div className="flex items-center">
+            <StarRating rating={Math.round(enterprise.averageRating)} />
+            <p className="ml-2 text-lg font-semibold">
+              {enterprise.averageRating.toFixed(1)}
+            </p>
+          </div>
         </div>
 
         <div className="flex flex-row justify-between">
@@ -91,13 +103,7 @@ const EnterpriseDetails = ({ enterprise }) => {
           </div>
         </div>
       </div>
-
-      <div className="flex items-center">
-        <StarRating rating={Math.round(enterprise.averageRating)} />
-        <p className="ml-2 text-lg font-semibold">
-          {enterprise.averageRating.toFixed(1)}
-        </p>
-      </div>
+      <LikeButton userId={user.id} enterpriseId={enterprise.id} />{" "}
     </div>
   );
 };
