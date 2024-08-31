@@ -1,4 +1,3 @@
-import React from "react";
 import { FaCalendarCheck } from "react-icons/fa";
 import { useEnterpriseData } from "./useEnterpriseData";
 

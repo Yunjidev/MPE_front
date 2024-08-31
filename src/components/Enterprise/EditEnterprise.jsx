@@ -1,5 +1,6 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
-import { useParams } from "react-router-dom";
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getData, putData } from "../../services/data-fetch";
 import EnterpriseForm from "./Form/EnterpriseForm";
@@ -7,18 +8,16 @@ import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { enterprisesAtom } from "../../store/enterprises";
 
-export default function EditEnterprise() {
+export default function EditEnterprise({ enterpriseId, onSave, onClose }) {
   const navigate = useNavigate();
-  const { enterpriseId } = useParams();
   const [enterprise, setEnterprise] = useState(null);
   const [enterprises, setEnterprises] = useAtom(enterprisesAtom);
-  const memoizedEnterprise = useMemo(() => enterprise, [enterprise]);
 
   useEffect(() => {
     const fetchEnterprise = async () => {
       try {
-        const enterprise = await getData(`enterprise/${enterpriseId}`);
-        setEnterprise(enterprise);
+        const data = await getData(`enterprise/${enterpriseId}`);
+        setEnterprise(data);
       } catch (error) {
         console.error("Error fetching enterprise data:", error);
       }
@@ -34,12 +33,13 @@ export default function EditEnterprise() {
         const updatedEnterprises = enterprises.map((enterprise) =>
           enterprise.id === response.enterprise.id
             ? response.enterprise
-            : enterprise,
+            : enterprise
         );
         setEnterprises(updatedEnterprises);
 
-        navigate(`/enterprise/${enterpriseId}`);
+        if (onSave) onSave(response.enterprise);
         toast.success("Entreprise enregistrée");
+        if (onClose) onClose();
       } catch (error) {
         const errorData = await JSON.parse(error.message);
         if (Array.isArray(errorData.errors)) {
@@ -52,7 +52,7 @@ export default function EditEnterprise() {
         }
       }
     },
-    [enterpriseId, navigate, enterprises, setEnterprises],
+    [enterpriseId, enterprises, setEnterprises, onSave, onClose]
   );
 
   return (
@@ -60,7 +60,7 @@ export default function EditEnterprise() {
       <EnterpriseForm
         title="Mise à jour d'entreprise"
         onSubmit={handleSubmit}
-        initialData={memoizedEnterprise}
+        initialData={enterprise}
         isEditMode={true}
       />
     </>

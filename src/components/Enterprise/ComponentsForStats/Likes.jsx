@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaHeart } from "react-icons/fa";
 import { getData } from "../../../services/data-fetch";
 import { useAtom } from "jotai";
