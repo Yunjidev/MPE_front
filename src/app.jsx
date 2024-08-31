@@ -46,7 +46,7 @@ import UpdatePassWord from "./components/DashboardUser/UpdatePassword";
 import ForgotPasswordForm from "./pages/user/ForgotPassword.jsx";
 import ResetPassword from "./pages/user/ResetPassword";
 import Planning from "./pages/user/Planning";
-import StatsEnterprises from "./pages/user/StatsEnterprises";
+import StatsEnterprises from "./pages/DashboardEnterprise/StatsEnterprises";
 
 // Protected Routes
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
@@ -134,7 +134,7 @@ function AppContent() {
                 <Route path="enterprise/:id/offer" element={<OfferList />} />
                 <Route path="enterprise/:id/planning" element={<Planning />} />
                 <Route
-                  path="enterprise/:id/stats"
+                  path="enterprise/:id/dashboard"
                   element={<StatsEnterprises />}
                 />
               </Route>

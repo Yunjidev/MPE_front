@@ -66,7 +66,7 @@ export default function SingleUpload({
       />
       {logoUrl && (
         <button
-          className="absolute top-0 right-0 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          className="absolute top-32 left-64 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
           onClick={handleDelete}
         >
           X

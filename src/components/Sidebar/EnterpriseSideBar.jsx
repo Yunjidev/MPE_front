@@ -3,12 +3,9 @@ import Dropdown from "./Dropdown";
 import {
   FaBriefcase,
   FaCalendarAlt,
-  FaEdit,
-  FaPlusCircle,
-  FaEye,
   FaBuilding  
 } from "react-icons/fa";
-import { MdOutlineQueryStats } from "react-icons/md";
+import { MdDashboard } from "react-icons/md";
 import { useAtom } from "jotai";
 import { enterprisesAtom } from "../../store/enterprises";
 import { useSocketIo } from "../../services/UseSocketIo";
@@ -45,29 +42,14 @@ export default function EnterpriseSideBar({
                   <Dropdown
                     dropdownItems={[
                       {
+                        to: `/dashboard/enterprise/${enterprise.id}/dashboard`,
+                        icon: <MdDashboard className={`${iconStyle} mr-3`} />,
+                        label: "Tableau de Bord",
+                      },
+                      {
                         to: `/dashboard/enterprise/${enterprise.id}/planning`,
                         icon: <FaCalendarAlt className={`${iconStyle} mr-3`} />,
                         label: "Planning",
-                      },
-                      {
-                        to: `/dashboard/enterprise/${enterprise.id}/edit`,
-                        icon: <FaEdit className={`${iconStyle} mr-3`} />,
-                        label: "Édition",
-                      },
-                      {
-                        to: `/dashboard/enterprise/${enterprise.id}/offer`,
-                        icon: <FaPlusCircle className={`${iconStyle} mr-3`} />,
-                        label: "Offres",
-                      },
-                      {
-                        to: `/dashboard/enterprise/${enterprise.id}/stats`,
-                        icon: <MdOutlineQueryStats className={`${iconStyle} mr-3`} />,
-                        label: "Statistiques",
-                      },
-                      {
-                        to: `/enterprise/${enterprise.id}`,
-                        icon: <FaEye className={`${iconStyle} mr-3`} />,
-                        label: "Ma page entreprise",
                       },
                     ]}
                     label={enterprise.name}
