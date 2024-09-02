@@ -5,7 +5,7 @@ const UsagePolicies = () => {
             <h1 className="dark:text-orange-800 text-3xl font-bold mb-6">Conditions Générales d'Utilisation</h1>
 
             <p className="dark:text-white text-gray-700 mb-4">
-                Les présentes conditions générales d'utilisation (ci-après les « CGU ») régissent l'accès et l'utilisation du site internet MPE (ci-après le « Site »). En accédant ou en utilisant ce site, vous acceptez d'être lié par ces CGU.
+                Les présentes conditions générales d'utilisation (ci-après les « CGU ») régissent l'accès et l'utilisation du site internet Ma Petite Entreprise (ci-après le « Site »). En accédant ou en utilisant ce site, vous acceptez d'être lié par ces CGU.
             </p>
 
             <h2 className="dark:text-orange-800 text-xl font-semibold mt-6">1. Objet</h2>
@@ -25,25 +25,25 @@ const UsagePolicies = () => {
 
             <h2 className="dark:text-orange-800 text-xl font-semibold mt-6">4. Utilisation du Site</h2>
             <p className="dark:text-white text-gray-700 mb-4">
-                Vous vous engagez à utiliser le Site de manière conforme à la loi, aux règlements en vigueur et aux présentes CGU. Vous vous engagez notamment à ne pas utiliser le Site à des fins illicites ou non autorisées.
+                Vous vous engagez à utiliser le site de manière conforme à la loi, aux règlements en vigueur et aux présentes CGU. Vous vous engagez notamment à ne pas utiliser le site à des fins illicites ou non autorisées.
             </p>
 
             <h2 className="dark:text-orange-800 text-xl font-semibold mt-6">5. Contenu publié par les utilisateurs</h2>
             <p className="dark:text-white text-gray-700 mb-4">
-                En publiant du contenu sur le Site, vous garantissez que vous disposez de tous les droits nécessaires pour le faire et que ce contenu n'enfreint aucune loi ou règlement en vigueur. Vous accordez à [Nom de votre site] une licence non exclusive, gratuite, mondiale et perpétuelle pour utiliser, reproduire, distribuer et afficher le contenu que vous publiez sur le Site.
+                En publiant du contenu sur le site, vous garantissez que vous disposez de tous les droits nécessaires pour le faire et que ce contenu n'enfreint aucune loi ou règlement en vigueur. Vous accordez à Ma Petite Entreprise une licence non exclusive, gratuite, mondiale et perpétuelle pour utiliser, reproduire, distribuer et afficher le contenu que vous publiez sur le site.
             </p>
 
             <h2 className="dark:text-orange-800 text-xl font-semibold mt-6">6. Responsabilité</h2>
             <p className="dark:text-white text-gray-700 mb-4">
-                [Nom de votre site] décline toute responsabilité en cas de dommage direct ou indirect résultant de l'utilisation ou de l'impossibilité d'utiliser le Site, y compris les virus qui pourraient contaminer l'équipement informatique de l'utilisateur.
+                Ma Petite Entreprise décline toute responsabilité en cas de dommage direct ou indirect résultant de l'utilisation ou de l'impossibilité d'utiliser le Site, y compris les virus qui pourraient contaminer l'équipement informatique de l'utilisateur.
             </p>
             <p className="dark:text-white text-gray-700 mb-4">
-                Le Site peut contenir des liens vers d'autres sites internet qui ne sont pas sous le contrôle de [Nom de votre site]. Nous ne sommes pas responsables du contenu de ces sites externes.
+                Le site peut contenir des liens vers d'autres sites internet qui ne sont pas sous le contrôle de Ma Petite Entreprise. Nous ne sommes pas responsables du contenu de ces sites externes.
             </p>
 
             <h2 className="dark:text-orange-800 text-xl font-semibold mt-6">7. Modification des CGU</h2>
             <p className="dark:text-white text-gray-700 mb-4">
-                [Nom de votre site] se réserve le droit de modifier à tout moment les présentes CGU. Les utilisateurs seront informés de ces modifications par tout moyen jugé opportun par [Nom de votre site]. En continuant à utiliser le Site après la mise en ligne des nouvelles CGU, vous acceptez d'être lié par celles-ci.
+                Ma Petite Entreprise se réserve le droit de modifier à tout moment les présentes CGU. Les utilisateurs seront informés de ces modifications par tout moyen jugé opportun par Ma Petite Entreprise. En continuant à utiliser le Site après la mise en ligne des nouvelles CGU, vous acceptez d'être lié par celles-ci.
             </p>
 
             <h2 className="dark:text-orange-800 text-xl font-semibold mt-6">8. Droit applicable et juridiction compétente</h2>
@@ -53,7 +53,7 @@ const UsagePolicies = () => {
 
             <h2 className="dark:text-orange-800 text-xl font-semibold mt-6">9. Contact</h2>
             <p className="dark:text-white text-gray-700 mb-4">
-                Pour toute question concernant ces CGU, veuillez nous contacter à l'adresse suivante : <a href="mailto:contact@votresite.com" className="text-blue-500 hover:underline">contact@votresite.com</a>.
+                Pour toute question concernant ces CGU, veuillez nous contacter à l'adresse suivante : <a href="mpe@mail.com" className="text-blue-500 hover:underline">mpe@mail.com</a>.
             </p>
         </div>
     );

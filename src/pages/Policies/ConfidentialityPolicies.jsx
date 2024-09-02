@@ -5,7 +5,7 @@ const ConfidentialityPolicies = () => {
             <h1 className="dark:text-orange-800 text-3xl font-bold mb-6">Politique de Confidentialité</h1>
 
             <p className="dark:text-white text-gray-700 mb-4">
-                La présente politique de confidentialité a pour but de vous informer sur la manière dont nous collectons, utilisons et protégeons vos données personnelles lorsque vous utilisez notre site internet [Nom de votre site].
+                La présente politique de confidentialité a pour but de vous informer sur la manière dont nous collectons, utilisons et protégeons vos données personnelles lorsque vous utilisez notre site internet MPE.
             </p>
 
             <h2 className="dark:text-orange-800 text-xl font-semibold mt-6">1. Données collectées</h2>
@@ -40,9 +40,6 @@ const ConfidentialityPolicies = () => {
                 </li>
                 <li className="dark:text-white text-gray-700 mb-2">
                     Améliorer notre site et nos services grâce à des analyses de l'utilisation et du comportement des utilisateurs.
-                </li>
-                <li className="dark:text-white text-gray-700 mb-2">
-                    Envoyer des informations marketing et promotionnelles, sous réserve de votre consentement préalable.
                 </li>
                 <li className="dark:text-white text-gray-700 mb-2">
                     Respecter nos obligations légales, résoudre les litiges et faire appliquer nos accords.
@@ -95,7 +92,7 @@ const ConfidentialityPolicies = () => {
                 </li>
             </ul>
             <p className="dark:text-white text-gray-700 mb-4">
-                Pour exercer ces droits, vous pouvez nous contacter à l'adresse suivante : [Adresse email de contact].
+                Pour exercer ces droits, vous pouvez nous contacter à l'adresse suivante : mpe@mail.com.
             </p>
 
             <h2 className="dark:text-orange-800 text-xl font-semibold mt-6">6. Durée de conservation des données</h2>
@@ -110,7 +107,7 @@ const ConfidentialityPolicies = () => {
 
             <h2 className="dark:text-orange-800 text-xl font-semibold mt-6">8. Contact</h2>
             <p className="dark:text-white text-gray-700 mb-4">
-                Si vous avez des questions ou des préoccupations concernant cette politique de confidentialité ou notre traitement de vos données personnelles, veuillez nous contacter à l'adresse suivante : <a href="mailto:contact@votresite.com" className="text-blue-500 hover:underline">contact@votresite.com</a>.
+                Si vous avez des questions ou des préoccupations concernant cette politique de confidentialité ou notre traitement de vos données personnelles, veuillez nous contacter à l'adresse suivante : <a href="mailto:mpe@mail.com" className="text-blue-500 hover:underline">mpe@mail.com</a>.
             </p>
         </div>
     );
