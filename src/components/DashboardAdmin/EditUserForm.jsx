@@ -50,17 +50,17 @@ const EditUserForm = ({ user, onClose, onSave }) => {
     try {
       const response = await putData(`admin/user/${user.id}`, userUpdate);
       onSave({ ...user, ...userUpdate }); // Passez l'utilisateur mis à jour ici
-      alert("User updated successfully");
+      alert("Utilisateur mis à jour avec succès");
       onClose();
     } catch (error) {
-      console.error("Error updating user:", error);
-      alert("Failed to update user");
+      console.error("Erreur lors de la mise à jour de l'utilisateur:", error);
+      alert("Échec de la mise à jour de l'utilisateur");
     }
   };
 
   return (
     <div className="flex flex-col h-full space-around bg-neutral-800 p-6 rounded-lg">
-      <h2 className="dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-black to-[#67FFCC] font-bold text-transparent bg-clip-text text-center text-2xl mb-5">Edition Utilisateur</h2>
+      <h2 className="dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-black to-[#67FFCC] font-bold text-transparent bg-clip-text text-center text-2xl mb-5">Édition Utilisateur</h2>
       <hr className="w-1/2 my-4 border-t-2 border-gray-400 mx-auto" />
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -73,7 +73,7 @@ const EditUserForm = ({ user, onClose, onSave }) => {
               id="username"
               type="text"
               {...register("username", { required: true })}
-              placeholder="Username"
+              placeholder="Nom d'utilisateur"
               className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
             />
           </div>
@@ -83,7 +83,7 @@ const EditUserForm = ({ user, onClose, onSave }) => {
               id="firstname"
               type="text"
               {...register("firstname", { required: true })}
-              placeholder="First Name"
+              placeholder="Prénom"
               className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
             />
           </div>
@@ -93,7 +93,7 @@ const EditUserForm = ({ user, onClose, onSave }) => {
               id="lastname"
               type="text"
               {...register("lastname", { required: true })}
-              placeholder="Last Name"
+              placeholder="Nom"
               className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
             />
           </div>
@@ -103,7 +103,7 @@ const EditUserForm = ({ user, onClose, onSave }) => {
               id="email"
               type="email"
               {...register("email", { required: true })}
-              placeholder="Email"
+              placeholder="Adresse e-mail"
               className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
             />
           </div>

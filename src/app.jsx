@@ -1,10 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Provider } from "jotai";
 import { ToastContainer } from "react-toastify";
@@ -52,6 +46,7 @@ import UpdatePassWord from "./components/DashboardUser/UpdatePassword";
 import ForgotPasswordForm from "./pages/user/ForgotPassword.jsx";
 import ResetPassword from "./pages/user/ResetPassword";
 import Planning from "./pages/user/Planning";
+import StatsEnterprises from "./pages/DashboardEnterprise/StatsEnterprises";
 
 // Protected Routes
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
@@ -101,7 +96,11 @@ function AppContent() {
       <ParticlesDemo />
       <CookieBanner />
       <main
-        className={isDashboardRoute ? "" : "flex-1 lg:container mx-auto 2xl:w-5/6 w-full "}
+        className={
+          isDashboardRoute
+            ? ""
+            : "flex-1 lg:container mx-auto 2xl:w-5/6 w-full "
+        }
       >
         <Routes>
           <Route path="/" element={<UserChoiceModal />} />
@@ -134,6 +133,10 @@ function AppContent() {
                 />
                 <Route path="enterprise/:id/offer" element={<OfferList />} />
                 <Route path="enterprise/:id/planning" element={<Planning />} />
+                <Route
+                  path="enterprise/:id/dashboard"
+                  element={<StatsEnterprises />}
+                />
               </Route>
               {/* Routes protégées pour les administrateurs */}
               <Route element={<AdminRoute />}>
