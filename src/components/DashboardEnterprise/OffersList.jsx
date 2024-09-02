@@ -77,15 +77,21 @@ const OffersList = () => {
   const handleSave = async (formDataToSend) => {
     try {
       if (selectedOffer) {
-        await putData(`enterprise/${id}/offer/${selectedOffer.id}`, formDataToSend);
+        // Modification d'une offre existante
+        await putData(`enterprise/${id}/offer/${selectedOffer.id}`, formDataToSend, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
         alert("Offre mise à jour avec succès.");
       } else {
-        await postData(`enterprise/${id}/offer`, formDataToSend);
+        // Création d'une nouvelle offre
+        await postData(`enterprise/${id}/offer`, formDataToSend, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
         alert("Offre créée avec succès.");
       }
-      
-      fetchOffers();
-      setIsModalOpen(false);
+  
+      fetchOffers(); // Rafraîchissement des offres
+      setIsModalOpen(false); // Fermeture de la modal
     } catch (error) {
       console.error("Erreur lors de la sauvegarde de l'offre:", error);
       alert("Une erreur est survenue lors de la sauvegarde de l'offre.");
@@ -114,7 +120,7 @@ const OffersList = () => {
           placeholder="Rechercher..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full md:w-1/3 px-4 py-2 rounded-lg dark:bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
+          className="w-full md:w-1/4 px-4 py-2 rounded-lg dark:bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
         />
         <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
           <button
@@ -152,15 +158,24 @@ const OffersList = () => {
       <ul className="space-y-4">
         {paginatedOffers.map((offer) => (
           <li key={offer.id} className="p-4 bg-gray-100 dark:bg-neutral-700 rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center">
-            <div className="md:flex-1">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">{offer.name}</h3>
-              <p className="text-sm text-gray-700 dark:text-gray-400">
-                {decodeHtml(offer.description)}
-              </p>
-              <div className="text-sm text-gray-600 dark:text-gray-300">
-                <p>Durée : {offer.duration} min</p>
-                <p>Prix : {offer.price} €</p>
-                <p>Estimation : {offer.estimate ? "Oui" : "Non"}</p>
+            <div className="flex items-start md:flex-1">
+              {offer.image && (
+                <img
+                  src={offer.image}
+                  alt={offer.name}
+                  className="w-32 h-32 object-cover rounded-lg mr-4"
+                />
+              )}
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">{offer.name}</h3>
+                <p className="text-sm text-gray-700 dark:text-gray-400">
+                  {decodeHtml(offer.description)}
+                </p>
+                <div className="text-sm text-gray-600 dark:text-gray-300">
+                  <p>Durée : {offer.duration} min</p>
+                  <p>Prix : {offer.price} €</p>
+                  <p>Estimation : {offer.estimate ? "Oui" : "Non"}</p>
+                </div>
               </div>
             </div>
             <div className="flex space-x-2 mt-2 md:mt-0">
@@ -185,23 +200,25 @@ const OffersList = () => {
       <div className="flex justify-center mt-6">
         <button
           onClick={addNewOffer}
-          className="mx-auto flex items-center justify-center bg-gray-800 hover:bg-gradient-to-r hover:from-violet-400 hover:via-orange-400 hover:to-green-300 hover:text-black text-white font-bold rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out py-3 px-4"
+          className="mx-auto flex items-center justify-center bg-gray-800 hover:bg-gradient-to-r hover:from-violet-400 hover:via-orange-400 hover:to-[#67FFCC] text-white py-2 px-4 rounded-lg transition-colors duration-300 ease-in-out"
         >
-          <FaPlus className="mr-3 text-white text-base" />
-          Ajouter une offre
+          <FaPlus className="mr-2" /> Ajouter une offre
         </button>
       </div>
 
-      {/* Modal pour formulaire d'offre */}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <OfferForm
-          offer={selectedOffer}
+      {/* Modal pour l'ajout/modification d'offres */}
+      {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          onSubmit={handleSave}
-        />
-      </Modal>
+          title={selectedOffer ? "Modifier l'offre" : "Ajouter une nouvelle offre"}
+        >
+          <OfferForm offer={selectedOffer} onSave={handleSave} onClose={() => setIsModalOpen(false)} />
+        </Modal>
+      )}
     </div>
   );
 };
 
 export default OffersList;
+
