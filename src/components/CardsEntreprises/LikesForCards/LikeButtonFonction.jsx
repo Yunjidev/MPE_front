@@ -3,7 +3,7 @@ import { getData, postData, deleteData } from "../../../services/data-fetch";
 import { toast } from "react-toastify";
 
 // Composant pour la logique
-const LikeButtonFonction = ({ userId, enterpriseId, children }) => {
+const LikeButtonFonction = ({ userId, enterpriseId, children, onUnlike }) => {
   const [hasLiked, setHasLiked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -58,6 +58,7 @@ const LikeButtonFonction = ({ userId, enterpriseId, children }) => {
       await deleteData(`enterprise/${enterpriseId}/like`);
       toast.success("Like supprimé avec succès.");
       setHasLiked(false);
+      if (onUnlike) onUnlike(enterpriseId); // Appelle la fonction de suppression
     } catch (error) {
       toast.error("Une erreur est survenue lors de la suppression du like.");
       console.error("Erreur lors de la suppression du like:", error);

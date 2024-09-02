@@ -1,13 +1,13 @@
 import { BASE_URL, kyInstance } from "./config-fetch";
 
 // Fonction pour récupérer les données
-export async function getData(object, timeout = 50000) {
+export async function getData(object) {
   try {
-    const response = await kyInstance.get(BASE_URL + object , { timeout }).json();
+    const response = await kyInstance.get(BASE_URL + object).json();
     return response;
   } catch (error) {
-    let errorData = await error.responseData.message;
-    throw new Error(errorData);
+    let errorData = await error.responseData;
+    throw new Error(JSON.stringify(errorData));
   }
 }
 
@@ -54,7 +54,7 @@ export async function deleteData(object) {
     await kyInstance.delete(BASE_URL + object);
     return null;
   } catch (error) {
-    console.log("Error:", error);
-    throw error;
+    let errorData = await error.responseData;
+    throw new Error(JSON.stringify(errorData));
   }
 }

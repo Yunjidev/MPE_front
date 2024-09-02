@@ -1,7 +1,12 @@
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import moment from "moment";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 
-moment.locale("fr");
+dayjs.extend(duration);
+dayjs.extend(timezone);
+dayjs.extend(utc);
 
 export const daysOfWeek = [
   "Dimanche",
@@ -14,15 +19,6 @@ export const daysOfWeek = [
 ];
 
 export const formatDisponibility = (disponibilities) => {
-  const daysOfWeek = [
-    "Dimanche",
-    "Lundi",
-    "Mardi",
-    "Mercredi",
-    "Jeudi",
-    "Vendredi",
-    "Samedi",
-  ];
   const formattedDisponibilities = {};
 
   daysOfWeek.forEach((day) => {
@@ -31,8 +27,8 @@ export const formatDisponibility = (disponibilities) => {
 
   disponibilities.forEach((dispo) => {
     formattedDisponibilities[dispo.day].push({
-      start: moment(dispo.start_hour, "HH:mm"),
-      end: moment(dispo.end_hour, "HH:mm"),
+      start: dayjs(dispo.start_hour, "HH:mm"),
+      end: dayjs(dispo.end_hour, "HH:mm"),
     });
   });
 
@@ -42,14 +38,14 @@ export const formatDisponibility = (disponibilities) => {
 export function formatReservations(reservations) {
   if (!reservations) return [];
   return reservations.map((reservation) => {
-    const startDateTime = moment(reservation.date).set({
-      hour: parseInt(reservation.start_time.split(":")[0]),
-      minute: parseInt(reservation.start_time.split(":")[1]),
-    });
-    const endDateTime = moment(reservation.date).set({
-      hour: parseInt(reservation.end_time.split(":")[0]),
-      minute: parseInt(reservation.end_time.split(":")[1]),
-    });
+    const startDateTime = dayjs(reservation.date)
+      .hour(parseInt(reservation.start_time.split(":")[0]))
+      .minute(parseInt(reservation.start_time.split(":")[1]))
+      .second(0);
+    const endDateTime = dayjs(reservation.date)
+      .hour(parseInt(reservation.end_time.split(":")[0]))
+      .minute(parseInt(reservation.end_time.split(":")[1]))
+      .second(0);
 
     return {
       title: `${reservation.offer.name} - ${startDateTime.format("HH:mm")} � ${endDateTime.format("HH:mm")}`,
@@ -64,20 +60,23 @@ export function formatReservations(reservations) {
 export function formatIndisponibility(indisponibility) {
   if (!indisponibility) return [];
   return indisponibility.map((date) => {
-    const startDateTime = moment(date.start_date).set({
-      hour: parseInt(date.start_hour.split(":")[0]),
-      minute: parseInt(date.start_hour.split(":")[1]),
-    });
-    const endDateTime = moment(date.end_date).set({
-      hour: parseInt(date.end_hour.split(":")[0]),
-      minute: parseInt(date.end_hour.split(":")[1]),
-    });
+    const startDateTime = dayjs(date.start_date)
+      .hour(parseInt(date.start_hour.split(":")[0]))
+      .minute(parseInt(date.start_hour.split(":")[1]))
+      .second(0);
+    const endDateTime = dayjs(date.end_date)
+      .hour(parseInt(date.end_hour.split(":")[0]))
+      .minute(parseInt(date.end_hour.split(":")[1]))
+      .second(0);
 
     return {
-      title: `Indisponible du ${startDateTime.format("DD/MM/YYYY HH:mm")} au ${endDateTime.format("DD/MM/YYYY HH:mm")}`,
+      title: `Indisponible`,
       start: startDateTime.toDate(),
       end: endDateTime.toDate(),
       type: "indisponibility",
+      data: {
+        user: date.user,
+      },
     };
   });
 }
