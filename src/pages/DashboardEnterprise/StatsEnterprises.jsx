@@ -134,7 +134,7 @@ export default function StatsEnterprises() {
           onClick={handleCloseOffersList}
         >
           <div
-            className="bg-neutral-800 p-6 rounded-lg shadow-lg relative"
+            className="bg-neutral-800 p-6 w-11/12 rounded-lg shadow-lg relative"
             onClick={(e) => e.stopPropagation()}
           >
             <FaTimes
