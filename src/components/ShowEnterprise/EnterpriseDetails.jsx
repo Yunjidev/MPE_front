@@ -48,6 +48,7 @@ const EnterpriseDetails = ({ enterprise }) => {
               <span className="text-2xl font-bold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">
                 {enterprise.name}
               </span>
+              <LikeButton userId={user.id} enterpriseId={enterprise.id} />{" "}
             </p>
             <p className="flex items-center space-x-2 mb-2">
               <IoLocationOutline className="text-xl" />
@@ -103,7 +104,7 @@ const EnterpriseDetails = ({ enterprise }) => {
           </div>
         </div>
       </div>
-      <LikeButton userId={user.id} enterpriseId={enterprise.id} />{" "}
+
     </div>
   );
 };
