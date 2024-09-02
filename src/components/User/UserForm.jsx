@@ -17,7 +17,7 @@ export default function UserForm({ onSubmit, mode }) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const isConnexion = mode === "Connexion";
   const isInscription = mode === "Inscription";
-  const isEdit = mode === "Edit";
+  const isEdit = mode === "Edition";
 
   useEffect(() => {
     if (isEdit) {
@@ -144,7 +144,9 @@ export default function UserForm({ onSubmit, mode }) {
           )}
         </form>
         <Button type="submit" onClick={handleSubmit}>
-          {mode}
+          {isEdit ? (
+            <p>Sauvegarder</p>):(
+            {mode})}
         </Button>
         {mode === "Connexion" && (
           <a
