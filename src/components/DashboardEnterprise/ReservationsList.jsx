@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { getData, putData } from "../../services/data-fetch";
 import { FaCheck, FaTimes } from "react-icons/fa";
+import {
+  IoCalendarOutline,
+  IoTimeOutline,
+  IoPersonOutline,
+  IoCheckmarkCircleOutline,
+  IoCloseCircleOutline,
+} from "react-icons/io5";
 import { useParams } from "react-router-dom";
 import Button from "../Button/button";
 
@@ -34,8 +41,12 @@ const ReservationsList = () => {
   useEffect(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
     const filtered = reservations.filter((reservation) => {
-      const offerName = reservation.offer?.name ? reservation.offer.name.toLowerCase() : "";
-      const userName = reservation.user?.firstName ? reservation.user.firstName.toLowerCase() : "";
+      const offerName = reservation.offer?.name
+        ? reservation.offer.name.toLowerCase()
+        : "";
+      const userName = reservation.user?.firstName
+        ? reservation.user.firstName.toLowerCase()
+        : "";
 
       return offerName.includes(lowercasedQuery) || userName.includes(lowercasedQuery);
     });
@@ -49,7 +60,10 @@ const ReservationsList = () => {
       await putData(`reservation/${reservationId}`, { status: status.toLowerCase() });
       fetchReservations(); // Rafraîchir les données après la mise à jour
     } catch (error) {
-      console.error("Erreur lors de la mise à jour du statut de la réservation:", error);
+      console.error(
+        "Erreur lors de la mise à jour du statut de la réservation:",
+        error
+      );
       alert(`Une erreur est survenue lors de la mise à jour du statut: ${error.message || 'Erreur inconnue'}`);
     }
   };
@@ -110,41 +124,72 @@ const ReservationsList = () => {
         </select>
       </div>
 
-      {/* Liste des réservations paginées */}
+      {/* Liste des réservations paginées avec les détails en ligne */}
       <ul className="space-y-4">
         {paginatedReservations.map((reservation) => (
-          <li key={reservation.id} className="p-4 bg-gray-100 dark:bg-neutral-700 rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center">
-            <div className="md:flex-1">
+          <li
+            key={reservation.id}
+            className="p-4 bg-gray-100 dark:bg-neutral-700 rounded-lg flex flex-col md:flex-row justify-between items-center"
+          >
+            {/* Détails de la réservation sur une seule ligne */}
+            <div className="flex flex-wrap items-center space-x-6">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                {reservation.offer?.name || 'Offre non disponible'}
+                {reservation.offer?.name || "Offre non disponible"}
               </h3>
-              <p className="text-sm text-gray-700 dark:text-gray-400">
-                Client : {reservation.user?.firstName || 'Inconnu'} {reservation.user?.lastName || ''}
+              <p className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-400">
+                <IoPersonOutline className="text-xl" />
+                <span>
+                  {reservation.user?.firstName || "Inconnu"}{" "}
+                  {reservation.user?.lastName || ""}
+                </span>
               </p>
-              <p className="text-sm text-gray-700 dark:text-gray-400">Date : {reservation.date}</p>
-              <p className="text-sm text-gray-700 dark:text-gray-400">Heure de début : {reservation.start_time}</p>
-              <p className="text-sm text-gray-700 dark:text-gray-400">Heure de fin : {reservation.end_time}</p>
-              <p className="text-sm text-gray-700 dark:text-gray-400">Statut : {reservation.status}</p>
+              <p className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-400">
+                <IoCalendarOutline className="text-xl" />
+                <span>{reservation.date}</span>
+              </p>
+              <p className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-400">
+                <IoTimeOutline className="text-xl" />
+                <span>
+                  De {reservation.start_time} à {reservation.end_time}
+                </span>
+              </p>
+              <p className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-400">
+                <IoCheckmarkCircleOutline
+                  className={`text-xl ${
+                    reservation.status === "accepted"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                />
+                <span>{reservation.status}</span>
+              </p>
             </div>
+
+            {/* Boutons d'action */}
             <div className="flex space-x-2 mt-2 md:mt-0">
-              {reservation.status !== "accepted" && reservation.status !== "rejected" && (
-                <>
-                  <Button
-                    onClick={() => updateReservationStatus(reservation.id, "accepted")}
-                    className="text-green-600 dark:text-green-500 hover:underline"
-                    title="Accepter la réservation"
-                  >
-                    <FaCheck />
-                  </Button>
-                  <Button
-                    onClick={() => updateReservationStatus(reservation.id, "rejected")}
-                    className="text-red-600 dark:text-red-500 hover:underline"
-                    title="Refuser la réservation"
-                  >
-                    <FaTimes />
-                  </Button>
-                </>
-              )}
+              {reservation.status !== "accepted" &&
+                reservation.status !== "rejected" && (
+                  <>
+                    <Button
+                      onClick={() =>
+                        updateReservationStatus(reservation.id, "accepted")
+                      }
+                      className="text-green-600 dark:text-green-500 hover:underline"
+                      title="Accepter la réservation"
+                    >
+                      <FaCheck />
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        updateReservationStatus(reservation.id, "rejected")
+                      }
+                      className="text-red-600 dark:text-red-500 hover:underline"
+                      title="Refuser la réservation"
+                    >
+                      <FaTimes />
+                    </Button>
+                  </>
+                )}
               {reservation.status === "accepted" && (
                 <span className="text-green-600 font-bold">Acceptée</span>
               )}
