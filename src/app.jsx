@@ -29,6 +29,9 @@ import RegisterCompany from "./pages/user/registercompany";
 import EnterprisePage from "./pages/EnterpriseShow/EnterpriseShow";
 import CookieBanner from "./pages/NotificationBanner/NotificationBanner";
 import CookiePolicies from "./pages/Policies/CookiePolicies";
+import LegalNotices from "./pages/Policies/LegalNotices";
+import ConfidentialityPolicies from "./pages/Policies/ConfidentialityPolicies";
+import UsagePolicies from "./pages/Policies/UsagePolicies";
 
 // User Pages
 import Signup from "./components/User/signup";
@@ -112,6 +115,9 @@ function AppContent() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/searchentreprise" element={<SearchEntreprise />} />
           <Route path="/cookie-policies" element={<CookiePolicies />} />
+          <Route path="/legal-notices" element={<LegalNotices />} />
+          <Route path="/condifentiality-policies" element={<ConfidentialityPolicies />} />
+          <Route path="/usage-policies" element={<UsagePolicies />} />
           <Route path="/FAQ" element={<FAQ />} />
           <Route path="/pricing" element={<Pricing_page />} />
           <Route path="/enterprise/:id" element={<EnterprisePage />} />
