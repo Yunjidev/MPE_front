@@ -1,0 +1,23 @@
+.range-violet-400::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #A78BFA;
+}
+
+.range-violet-400::-moz-range-thumb {
+    background-color: #A78BFA;
+}
+
+.range-violet-400::-ms-thumb {
+    background-color: #A78BFA;
+}
+
+.custom-localisation-btn {
+    
+    height: 50px;
+    border-top-left-radius: 9999px !important;
+    border-bottom-left-radius: 9999px !important;
+    background-color: #4b4b4b !important;
+    color: #ffffff !important;
+
+}

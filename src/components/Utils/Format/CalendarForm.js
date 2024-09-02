@@ -1,83 +1,59 @@
-export const CustomPropGetter = (date, disponibilities) => {
-  const daysOfWeek = [
-    "Dimanche",
-    "Lundi ",
-    "Mardi",
-    "Mercredi",
-    "Jeudi",
-    "Vendredi",
-    "Samedi",
-  ];
-  console.log("date", date);
-  console.log("disponibilities", disponibilities);
-  const dayOfWeek = daysOfWeek[date.getDay()];
-  const minutesOfDay = date.getHours() * 60 + date.getMinutes();
-  const dayDisponibilities = disponibilities.filter(
-    (dispo) => dispo.day === dayOfWeek,
-  );
+import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { daysOfWeek } from "./Time";
 
-  const unavailableRanges = [];
-  let previousEndTime = 0;
+dayjs.extend(isBetween);
+dayjs.extend(customParseFormat);
 
-  dayDisponibilities.forEach((dispo) => {
-    const startTime = dispo.start_hour
-      .split(":")
-      .reduce((acc, time) => 60 * acc + +time, 0);
-    const endTime = dispo.end_hour
-      .split(":")
-      .reduce((acc, time) => 60 * acc + +time, 0);
+export const slotStyleGetter = (date, formattedDisponibilites) => {
+  const style = {
+    backgroundColor: "",
+  };
 
-    if (previousEndTime < startTime) {
-      unavailableRanges.push({
-        start: previousEndTime,
-        end: startTime,
-      });
-    }
+  const dayOfWeek = daysOfWeek[dayjs(date).day()];
+  const currentTime = dayjs(date);
 
-    previousEndTime = endTime;
+  const isAvailable = formattedDisponibilites[dayOfWeek]?.some((range) => {
+    const start = dayjs(currentTime)
+      .hour(range.start.hour())
+      .minute(range.start.minute())
+      .second(0);
+    const end = dayjs(currentTime)
+      .hour(range.end.hour())
+      .minute(range.end.minute())
+      .second(0);
+    const result =
+      currentTime.isSameOrAfter(start) && currentTime.isSameOrBefore(end);
+    return result;
   });
 
-  if (previousEndTime < 1440) {
-    unavailableRanges.push({
-      start: previousEndTime,
-      end: 1440,
-    });
+  if (!isAvailable) {
+    style.backgroundColor = "rgba(255, 255, 255, 0.5)";
   }
 
-  const isInUnavailableRange = unavailableRanges.some((range) => {
-    return minutesOfDay >= range.start && minutesOfDay < range.end;
-  });
-
-  if (isInUnavailableRange) {
-    return {
-      className: "rbc-off-range-bg",
-      style: {
-        backgroundColor: "red",
-        opacity: "0.7",
-        pointerEvents: "none",
-      },
-    };
-  }
-
-  return {};
+  return {
+    style: style,
+  };
 };
 
 export const eventStyleGetter = (event) => {
   let style = {
     backgroundColor: "",
-    borderRadius: "0px",
     opacity: "0.7",
     color: "black",
     border: "0px",
-    display: "block",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   };
 
   switch (event.type) {
-    case "réservation":
-      style.backgroundColor = "#9ecae1";
+    case "reservation":
+      style.backgroundColor = "#a78bfa";
       break;
-    case "indisponibilité":
-      style.backgroundColor = "#fb9a99";
+    case "indisponibility":
+      style.backgroundColor = "#fb923c";
       break;
     default:
       style.backgroundColor = "#cccccc";
@@ -86,4 +62,20 @@ export const eventStyleGetter = (event) => {
   return {
     style: style,
   };
+};
+
+export const translateMessage = {
+  allDay: "Toute la journée",
+  previous: "Précédent",
+  next: "Suivant",
+  today: "Aujourd'hui",
+  month: "Mois",
+  week: "Semaine",
+  day: "Jour",
+  agenda: "Agenda",
+  date: "Date",
+  time: "Heure",
+  event: "�v�nement",
+  noEventsInRange: "Aucun �v�nement dans cette p�riode.",
+  showMore: (total) => `+ ${total} �v�nement(s) suppl�mentaire(s)`,
 };

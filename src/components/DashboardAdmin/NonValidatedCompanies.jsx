@@ -5,8 +5,8 @@
 import React, { useState, useEffect } from "react";
 import { useTable, usePagination } from "react-table";
 import { getData, putData } from "../../services/data-fetch";
-import Button from "../Button/button";
 import { useSocketIo } from "../../services/UseSocketIo";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa"; // Import des icônes
 
 const NonValidatedCompanies = () => {
   const socket = useSocketIo();
@@ -44,6 +44,23 @@ const NonValidatedCompanies = () => {
     }
   };
 
+  const rejectCompany = async (companyId) => {
+    try {
+      const formData = new FormData();
+      formData.append("isValidate", "false");
+      const response = await putData(`enterprise/${companyId}`, formData);
+      if (socket) {
+        socket.emit("enterpriseRejected", { id: companyId, isValidate: false });
+      }
+
+      setCompanies((prevCompanies) =>
+        prevCompanies.filter((company) => company.id !== companyId)
+      );
+    } catch (error) {
+      console.error("Error rejecting company:", error);
+    }
+  };
+
   const columns = React.useMemo(
     () => [
       { Header: "Nom", accessor: "name" },
@@ -59,12 +76,22 @@ const NonValidatedCompanies = () => {
         Header: "Actions",
         accessor: "id",
         Cell: ({ value }) => (
-          <Button
-            onClick={() => validateCompany(value)}
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            Valider
-          </Button>
+          <div className="flex justify-around">
+            <button
+              onClick={() => validateCompany(value)}
+              className="text-green-600 dark:text-green-400 hover:scale-110 transition-transform"
+              title="Valider l'entreprise"
+            >
+              <FaCheckCircle size={20} />
+            </button>
+            <button
+              onClick={() => rejectCompany(value)}
+              className="text-red-600 dark:text-red-400 hover:scale-110 transition-transform"
+              title="Refuser l'entreprise"
+            >
+              <FaTimesCircle size={20} />
+            </button>
+          </div>
         ),
       },
     ],
@@ -129,10 +156,7 @@ const NonValidatedCompanies = () => {
             {page.map((row) => {
               prepareRow(row);
               return (
-                <tr
-                  {...row.getRowProps()}
-                  className="border-b dark:bg-neutral-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
-                >
+                <tr key={row.id} {...row.getRowProps()}>
                   {row.cells.map((cell) => (
                     <td
                       {...cell.getCellProps()}

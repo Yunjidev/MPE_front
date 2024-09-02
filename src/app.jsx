@@ -1,10 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Provider } from "jotai";
 import { ToastContainer } from "react-toastify";
@@ -30,11 +24,15 @@ import HomeClient from "./pages/home/HomeClient";
 import HomeEnterprise from "./pages/home/HomeEntreprise";
 import Team from "./pages/team/team";
 import Contact from "./pages/contact/contact";
+import SearchEntreprise from "./pages/searchentreprises/SearchEntreprise";
 import FAQ from "./pages/FAQ/FAQ";
 import RegisterCompany from "./pages/user/registercompany";
 import EnterprisePage from "./pages/EnterpriseShow/EnterpriseShow";
 import CookieBanner from "./pages/NotificationBanner/NotificationBanner";
 import CookiePolicies from "./pages/Policies/CookiePolicies";
+import LegalNotices from "./pages/Policies/LegalNotices";
+import ConfidentialityPolicies from "./pages/Policies/ConfidentialityPolicies";
+import UsagePolicies from "./pages/Policies/UsagePolicies";
 
 // User Pages
 import Signup from "./components/User/signup";
@@ -52,6 +50,7 @@ import UpdatePassWord from "./components/DashboardUser/UpdatePassword";
 import ForgotPasswordForm from "./pages/user/ForgotPassword.jsx";
 import ResetPassword from "./pages/user/ResetPassword";
 import Planning from "./pages/user/Planning";
+import StatsEnterprises from "./pages/DashboardEnterprise/StatsEnterprises";
 
 // Protected Routes
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
@@ -101,7 +100,11 @@ function AppContent() {
       <ParticlesDemo />
       <CookieBanner />
       <main
-        className={isDashboardRoute ? "" : "flex-1 lg:container mx-auto w-full"}
+        className={
+          isDashboardRoute
+            ? ""
+            : "flex-1 lg:container mx-auto 2xl:w-5/6 w-full "
+        }
       >
         <Routes>
           <Route path="/" element={<UserChoiceModal />} />
@@ -111,7 +114,11 @@ function AppContent() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/about" element={<Team />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/searchentreprise" element={<SearchEntreprise />} />
           <Route path="/cookie-policies" element={<CookiePolicies />} />
+          <Route path="/legal-notices" element={<LegalNotices />} />
+          <Route path="/condifentiality-policies" element={<ConfidentialityPolicies />} />
+          <Route path="/usage-policies" element={<UsagePolicies />} />
           <Route path="/FAQ" element={<FAQ />} />
           <Route path="/pricing" element={<Pricing_page />} />
           <Route path="/enterprise/:id" element={<EnterprisePage />} />
@@ -133,6 +140,10 @@ function AppContent() {
                 />
                 <Route path="enterprise/:id/offer" element={<OfferList />} />
                 <Route path="enterprise/:id/planning" element={<Planning />} />
+                <Route
+                  path="enterprise/:id/dashboard"
+                  element={<StatsEnterprises />}
+                />
               </Route>
               {/* Routes protégées pour les administrateurs */}
               <Route element={<AdminRoute />}>

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 
 const OfferForm = ({ offer, onSubmit, onClose }) => {
   const [formData, setFormData] = useState({
@@ -43,7 +44,7 @@ const OfferForm = ({ offer, onSubmit, onClose }) => {
     formDataToSend.append("estimate", formData.estimate);
 
     if (formData.image) {
-      formDataToSend.append("image", formData.image); 
+      formDataToSend.append("image", formData.image);
     }
 
     try {
