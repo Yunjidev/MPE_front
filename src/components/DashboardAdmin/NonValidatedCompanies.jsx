@@ -1,12 +1,8 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/jsx-key */
 import React, { useState, useEffect } from "react";
 import { useTable, usePagination } from "react-table";
 import { getData, putData } from "../../services/data-fetch";
 import { useSocketIo } from "../../services/UseSocketIo";
-import { FaCheckCircle, FaTimesCircle } from "react-icons/fa"; // Import des icônes
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 
 const NonValidatedCompanies = () => {
   const socket = useSocketIo();
@@ -79,14 +75,14 @@ const NonValidatedCompanies = () => {
           <div className="flex justify-around">
             <button
               onClick={() => validateCompany(value)}
-              className="text-green-600 dark:text-green-400 hover:scale-110 transition-transform"
+              className="text-green-600 dark:text-green-400 hover:scale-110 transition-transform mx-2"
               title="Valider l'entreprise"
             >
               <FaCheckCircle size={20} />
             </button>
             <button
               onClick={() => rejectCompany(value)}
-              className="text-red-600 dark:text-red-400 hover:scale-110 transition-transform"
+              className="text-red-600 dark:text-red-400 hover:scale-110 transition-transform mx-2"
               title="Refuser l'entreprise"
             >
               <FaTimesCircle size={20} />
@@ -102,7 +98,7 @@ const NonValidatedCompanies = () => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    page, // Use `page` instead of `rows` for pagination
+    page,
     prepareRow,
     state: { pageIndex: currentPageIndex, pageSize: currentPageSize },
     gotoPage,
@@ -121,7 +117,7 @@ const NonValidatedCompanies = () => {
     const newSize = Number(event.target.value);
     setPageSize(newSize);
     setTablePageSize(newSize);
-    setPageIndex(0); // Reset page to 0
+    setPageIndex(0);
   };
 
   return (
@@ -133,7 +129,9 @@ const NonValidatedCompanies = () => {
           className="w-full px-4 py-2 mb-4 rounded-lg dark:bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
         />
       </div>
-      <div className="overflow-x-auto">
+
+      {/* Tableau pour les grands écrans */}
+      <div className="hidden md:block overflow-x-auto">
         <table
           {...getTableProps()}
           className="w-full text-sm text-center text-gray-500 bg-white border border-gray-200 dark:bg-neutral-800 dark:text-gray-400"
@@ -172,13 +170,41 @@ const NonValidatedCompanies = () => {
         </table>
       </div>
 
+      {/* Affichage en colonne pour les petits écrans */}
+      <div className="block md:hidden">
+        {page.map((row) => {
+          prepareRow(row);
+          return (
+            <div
+              key={row.id}
+              className="mb-4 p-4 rounded-lg shadow-md bg-white dark:bg-neutral-800"
+            >
+              {row.cells.map((cell) => (
+                <div
+                  key={cell.column.id}
+                  className="flex justify-between border-b border-gray-200 dark:border-neutral-600 py-2 mb-2"
+                >
+                  <span className="font-bold text-gray-700 dark:text-gray-300 mr-2">
+                    {cell.column.Header}
+                  </span>
+                  <span className="text-gray-900 dark:text-white ml-2">
+                    {cell.render("Cell")}
+                  </span>
+                </div>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Pagination */}
       <div className="flex justify-center items-center mt-4">
         <button
           onClick={() => gotoPage(0)}
           disabled={currentPageIndex === 0}
           className="px-4 py-2 mx-1 bg-gray-200 rounded-lg mr-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
         >
-          &laquo; Précédent
+          « Précédent
         </button>
         <span className="dark:text-white text-black font-bold">
           Page {currentPageIndex + 1} sur{" "}
@@ -191,7 +217,7 @@ const NonValidatedCompanies = () => {
           }
           className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
         >
-          Suivant &raquo;
+          Suivant »
         </button>
       </div>
     </div>
