@@ -198,8 +198,8 @@ const OffersList = () => {
   };
 
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-neutral-600 dark:bg-neutral-800 border dark:border-neutral-700">
-      <div className="p-4">
+    <div className="shadow-md sm:rounded-lg w-full bg-neutral-600 dark:bg-neutral-800 border dark:border-neutral-700">
+      <div className="p-4 w-full">
         <input
           type="text"
           placeholder="Rechercher..."
