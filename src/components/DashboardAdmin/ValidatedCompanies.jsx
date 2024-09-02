@@ -49,9 +49,15 @@ const ValidatedCompanies = () => {
         ? company.country.name.toLowerCase()
         : "";
       const activity = company.job.name ? company.job.name.toLowerCase() : "";
-      const siretNumber = company.siret_number ? company.siret_number.toLowerCase() : "";
-      const username = company.entrepreneur.username ? company.entrepreneur.username.toLowerCase() : "";
-      const averageRating = company.averageRating ? company.averageRating.toString().toLowerCase() : "";
+      const siretNumber = company.siret_number
+        ? company.siret_number.toLowerCase()
+        : "";
+      const username = company.entrepreneur.username
+        ? company.entrepreneur.username.toLowerCase()
+        : "";
+      const averageRating = company.averageRating
+        ? company.averageRating.toString().toLowerCase()
+        : "";
 
       return (
         name.includes(lowercasedQuery) ||
@@ -72,10 +78,10 @@ const ValidatedCompanies = () => {
     try {
       await deleteData(`enterprise/${companyId}`);
       setCompanies((prevCompanies) =>
-        prevCompanies.filter((company) => company.id !== companyId),
+        prevCompanies.filter((company) => company.id !== companyId)
       );
       setFilteredCompanies((prevCompanies) =>
-        prevCompanies.filter((company) => company.id !== companyId),
+        prevCompanies.filter((company) => company.id !== companyId)
       );
       toast.success("Entreprise supprimée avec succès");
     } catch (error) {
@@ -97,15 +103,15 @@ const ValidatedCompanies = () => {
       prevCompanies.map((company) =>
         company.id === updatedCompany.id
           ? { ...company, ...updatedCompany }
-          : company,
-      ),
+          : company
+      )
     );
     setFilteredCompanies((prevCompanies) =>
       prevCompanies.map((company) =>
         company.id === updatedCompany.id
           ? { ...company, ...updatedCompany }
-          : company,
-      ),
+          : company
+      )
     );
     setIsModalOpen(false);
   };
@@ -146,7 +152,7 @@ const ValidatedCompanies = () => {
         ),
       },
     ],
-    [filteredCompanies],
+    [filteredCompanies]
   );
 
   const {
@@ -165,7 +171,7 @@ const ValidatedCompanies = () => {
       initialState: { pageIndex, pageSize },
       pageCount: Math.ceil(filteredCompanies.length / pageSize),
     },
-    usePagination,
+    usePagination
   );
 
   const handlePageSizeChange = (event) => {
@@ -185,71 +191,101 @@ const ValidatedCompanies = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full px-4 py-2 mb-4 rounded-lg dark:bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
         />
-        <div className="overflow-x-auto">
-          <table
-            {...getTableProps()}
-            className="w-full text-sm text-center text-gray-500 bg-white border border-gray-200 dark:bg-neutral-800 dark:text-gray-400"
-          >
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th
-                      {...column.getHeaderProps()}
-                      className="px-6 py-3 border-b border-gray-200 dark:border-gray-200"
+      </div>
+
+      {/* Tableau pour les grands écrans */}
+      <div className="hidden md:block overflow-x-auto">
+        <table
+          {...getTableProps()}
+          className="w-full text-sm text-center text-gray-500 bg-white border border-gray-200 dark:bg-neutral-800 dark:text-gray-400"
+        >
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    {...column.getHeaderProps()}
+                    className="px-6 py-3 border-b border-gray-200 dark:border-gray-200"
+                  >
+                    {column.render("Header")}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              return (
+                <tr
+                  {...row.getRowProps()}
+                  className="border-b dark:bg-neutral-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
+                >
+                  {row.cells.map((cell) => (
+                    <td
+                      {...cell.getCellProps()}
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      {column.render("Header")}
-                    </th>
+                      {cell.render("Cell")}
+                    </td>
                   ))}
                 </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {page.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr
-                    {...row.getRowProps()}
-                    className="border-b dark:bg-neutral-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
-                  >
-                    {row.cells.map((cell) => (
-                      <td
-                        {...cell.getCellProps()}
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {cell.render("Cell")}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
 
-        <div className="flex justify-center items-center mt-4">
-          <button
-            onClick={() => gotoPage(0)}
-            disabled={currentPageIndex === 0}
-            className="px-4 py-2 mx-1 bg-gray-200 rounded-lg mr-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
-          >
-            &laquo; Précédent
-          </button>
-          <span className="dark:text-white text-black font-bold">
-            Page {currentPageIndex + 1} sur{" "}
-            {Math.ceil(filteredCompanies.length / pageSize)}
-          </span>
-          <button
-            onClick={() => gotoPage(currentPageIndex + 1)}
-            disabled={
-              currentPageIndex >=
-              Math.ceil(filteredCompanies.length / pageSize) - 1
-            }
-            className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
-          >
-            Suivant &raquo;
-          </button>
-        </div>
+      {/* Affichage en cartes pour les petits écrans */}
+      <div className="block md:hidden">
+        {page.map((row) => {
+          prepareRow(row);
+          return (
+            <div
+              key={row.id}
+              className="mb-4 p-4 rounded-lg shadow-md bg-white dark:bg-neutral-800"
+            >
+              {row.cells.map((cell) => (
+                <div
+                  key={cell.column.id}
+                  className="flex justify-between border-b border-gray-200 dark:border-neutral-600 py-2"
+                >
+                  <span className="font-bold text-gray-700 dark:text-gray-300">
+                    {cell.column.Header}
+                  </span>
+                  <span className="text-gray-900 dark:text-white">
+                    {cell.render("Cell")}
+                  </span>
+                </div>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-center items-center mt-4">
+        <button
+          onClick={() => gotoPage(0)}
+          disabled={currentPageIndex === 0}
+          className="px-4 py-2 mx-1 bg-gray-200 rounded-lg mr-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+        >
+          &laquo; Précédent
+        </button>
+        <span className="dark:text-white text-black font-bold">
+          Page {currentPageIndex + 1} sur{" "}
+          {Math.ceil(filteredCompanies.length / pageSize)}
+        </span>
+        <button
+          onClick={() => gotoPage(currentPageIndex + 1)}
+          disabled={
+            currentPageIndex >=
+            Math.ceil(filteredCompanies.length / pageSize) - 1
+          }
+          className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+        >
+          Suivant &raquo;
+        </button>
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
