@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Button from "../Button/button"; // Assurez-vous que ce composant Button existe
+import Button from "../Button/secondaryButton"; // Assurez-vous que ce composant Button existe
 
 export default function ContactForm() {
   const [email, setEmail] = useState("");

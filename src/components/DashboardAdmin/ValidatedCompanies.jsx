@@ -8,7 +8,7 @@ import { useTable, usePagination } from "react-table";
 import { useNavigate } from "react-router-dom";
 import { getData, deleteData } from "../../services/data-fetch";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
-import Button from "../Button/button";
+import Button from "../Button/secondaryButton";
 import Modal from "./Modal";
 import EditCompanyForm from "../DashboardEnterprise/EditCompanyForm";
 import { toast } from "react-toastify";

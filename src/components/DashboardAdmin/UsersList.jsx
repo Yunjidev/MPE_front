@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import { useTable, usePagination } from "react-table";
 import { getData, deleteData } from "../../services/data-fetch";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import Button from "../Button/button";
+import Button from "../Button/secondaryButton";
 import Modal from "./Modal";
 import EditUserForm from "./EditUserForm";
 

@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
 import { toast } from "react-toastify";
-import Button from "../Button/button";
+import Button from "../Button/secondaryButton";
 import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
 import Input from "../Utils/Inputs/Input";
 import Inscription from "./Form/Inscription";
 import Edit from "./Form/Edit";
+
+const className="w-11/12 mx-auto"
 
 export default function UserForm({ onSubmit, mode }) {
   const [user] = useAtom(userAtom);
@@ -109,9 +111,9 @@ export default function UserForm({ onSubmit, mode }) {
               />
             </div>
           ) : (
-            <Inscription fomData={formData} onChange={handleInputChange} />
+            <Inscription fomData={formData} onChange={handleInputChange} className={className}/>
           )}
-          {isEdit && <Edit fomData={formData} onChange={handleInputChange} />}
+          {isEdit && <Edit fomData={formData} onChange={handleInputChange} className={className} />}
           {(isConnexion || isInscription) && (
             <Input.Text
               id="password"

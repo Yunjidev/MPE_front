@@ -10,7 +10,7 @@ import {
   putData,
 } from "../../services/data-fetch";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
-import Button from "../Button/button";
+import Button from "../Button/secondaryButton";
 import Modal from "../DashboardAdmin/Modal";
 import OfferForm from "./OfferForm";
 import { useParams } from "react-router-dom";

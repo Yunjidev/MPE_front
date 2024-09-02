@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-export default function Button({ type = "button", onClick, children }) {
+export default function secondaryButton({ type = "button", onClick, children }) {
   return (
     <button
       type={type}
@@ -12,7 +12,7 @@ export default function Button({ type = "button", onClick, children }) {
   );
 }
 
-Button.propTypes = {
+secondaryButton.propTypes = {
   type: PropTypes.oneOf(["button", "submit", "reset"]),
   onClick: PropTypes.func,
   children: PropTypes.node.isRequired,
