@@ -2,7 +2,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
-import { useTable, usePagination } from "react-table";
 import {
   getData,
   deleteData,
@@ -15,7 +14,7 @@ import Modal from "../DashboardAdmin/Modal";
 import OfferForm from "./OfferForm";
 import { useParams } from "react-router-dom";
 
-// Function to decode HTML entities
+// Fonction pour décoder les entités HTML
 const decodeHtml = (html) => {
   const txt = document.createElement("textarea");
   txt.innerHTML = html;
@@ -32,7 +31,7 @@ const OffersList = () => {
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
 
-  // Fonction pour obtenir les offres
+  // Récupération des offres
   const fetchOffers = async () => {
     try {
       const data = await getData(`enterprise/${id}`);
@@ -40,7 +39,6 @@ const OffersList = () => {
       setFilteredOffers(data.offers || []);
     } catch (error) {
       console.error("Erreur lors de la récupération des offres:", error);
-      console.error("Error during setup:", error.message);
     }
   };
 
@@ -54,13 +52,9 @@ const OffersList = () => {
     const lowercasedQuery = searchQuery.toLowerCase();
     const filtered = offers.filter((offer) => {
       const name = offer.name ? offer.name.toLowerCase() : "";
-      const description = offer.description
-        ? offer.description.toLowerCase()
-        : "";
+      const description = offer.description ? offer.description.toLowerCase() : "";
 
-      return (
-        name.includes(lowercasedQuery) || description.includes(lowercasedQuery)
-      );
+      return name.includes(lowercasedQuery) || description.includes(lowercasedQuery);
     });
     setFilteredOffers(filtered);
     setPageIndex(0);
@@ -69,9 +63,7 @@ const OffersList = () => {
   const deleteOffer = async (offerId) => {
     try {
       await deleteData(`enterprise/${id}/offer/${offerId}`);
-      setOffers((prevOffers) =>
-        prevOffers.filter((offer) => offer.id !== offerId),
-      );
+      setOffers((prevOffers) => prevOffers.filter((offer) => offer.id !== offerId));
     } catch (error) {
       console.error("Erreur lors de la suppression de l'offre:", error);
       alert("Une erreur est survenue lors de la suppression de l'offre.");
@@ -84,26 +76,20 @@ const OffersList = () => {
   };
 
   const addNewOffer = () => {
-    setSelectedOffer(null); // Clear selection to add new
+    setSelectedOffer(null);
     setIsModalOpen(true);
   };
 
   const handleSave = async (formDataToSend) => {
     try {
       if (selectedOffer) {
-        // Mise à jour de l'offre existante
-        await putData(
-          `enterprise/${id}/offer/${selectedOffer.id}`,
-          formDataToSend,
-        );
+        await putData(`enterprise/${id}/offer/${selectedOffer.id}`, formDataToSend);
         alert("Offre mise à jour avec succès.");
       } else {
-        // Ajout d'une nouvelle offre
         await postData(`enterprise/${id}/offer`, formDataToSend);
         alert("Offre créée avec succès.");
       }
 
-      // Fetch à nouveau les offres après la création ou mise à jour
       fetchOffers();
       setIsModalOpen(false);
     } catch (error) {
@@ -112,94 +98,9 @@ const OffersList = () => {
     }
   };
 
-  const columns = React.useMemo(
-    () => [
-      { Header: "Nom de l'offre", accessor: "name" },
-      {
-        Header: "Description",
-        accessor: "description",
-        Cell: ({ value }) => (
-          <div dangerouslySetInnerHTML={{ __html: decodeHtml(value) }} />
-        ),
-      },
-      { Header: "Durée (min)", accessor: "duration" },
-      {
-        Header: "Prix (€)",
-        accessor: "price",
-        Cell: ({ value }) => `${value} €`,
-      },
-      {
-        Header: "Estimation",
-        accessor: "estimate",
-        Cell: ({ value }) => (value ? "Oui" : "Non"),
-      },
-      {
-        Header: "Image",
-        accessor: "image",
-        Cell: ({ value }) =>
-          value ? (
-            <img
-              src={value}
-              alt="Offer"
-              className="w-16 h-16 object-cover rounded-full"
-            />
-          ) : (
-            "Aucune"
-          ),
-      },
-      {
-        Header: "Actions",
-        accessor: "id",
-        Cell: ({ row }) => (
-          <div className="flex space-x-2">
-            <Button
-              onClick={() => editOffer(row.original)}
-              className="text-green-600 dark:text-green-500 hover:underline"
-            >
-              <FaEdit />
-            </Button>
-            <Button
-              onClick={() => deleteOffer(row.original.id)}
-              className="text-red-600 dark:text-red-500 hover:underline"
-            >
-              <FaTrash />
-            </Button>
-          </div>
-        ),
-      },
-    ],
-    [offers],
-  );
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    page,
-    prepareRow,
-    state: { pageIndex: currentPageIndex, pageSize: currentPageSize },
-    gotoPage,
-    setPageSize: setTablePageSize,
-  } = useTable(
-    {
-      columns,
-      data: filteredOffers,
-      initialState: { pageIndex, pageSize },
-      pageCount: Math.ceil(filteredOffers.length / pageSize),
-    },
-    usePagination,
-  );
-
-  const handlePageSizeChange = (event) => {
-    const newSize = Number(event.target.value);
-    setPageSize(newSize);
-    setTablePageSize(newSize);
-    setPageIndex(0); // Réinitialiser la page à 0
-  };
-
   return (
-    <div className="shadow-md sm:rounded-lg w-full bg-neutral-600 dark:bg-neutral-800 border dark:border-neutral-700">
-      <div className="p-4 w-full">
+    <div className=" w-full bg-neutral-600 dark:bg-neutral-800">
+      <div className="p-4">
         <input
           type="text"
           placeholder="Rechercher..."
@@ -207,66 +108,75 @@ const OffersList = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full px-4 py-2 mb-4 rounded-lg dark:bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
         />
-        <div className="overflow-x-auto">
-          <table
-            {...getTableProps()}
-            className="w-full text-sm text-center text-gray-500 bg-white border border-gray-200 dark:bg-neutral-800 dark:text-gray-400"
-          >
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th
-                      {...column.getHeaderProps()}
-                      className="px-6 py-3 border-b border-gray-200 dark:border-gray-200"
-                    >
-                      {column.render("Header")}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {page.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr
-                    {...row.getRowProps()}
-                    className="border-b dark:bg-neutral-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
-                  >
-                    {row.cells.map((cell) => (
-                      <td
-                        {...cell.getCellProps()}
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {cell.render("Cell")}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div className="overflow-y-auto max-h-96">
+          {filteredOffers.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize).map((offer) => (
+            <div
+              key={offer.id}
+              className="flex items-center justify-between border-b dark:bg-neutral-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 p-4"
+            >
+              <div className="flex-1 flex items-center space-x-4">
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">{offer.name}</h3>
+                </div>
+                <div className="flex-1">
+                  <div
+                    className="text-sm text-gray-700 dark:text-gray-400"
+                    dangerouslySetInnerHTML={{ __html: decodeHtml(offer.description) }}
+                  />
+                </div>
+                <div className="flex-1 text-sm text-gray-700 dark:text-gray-400">
+                  Durée : {offer.duration} min
+                </div>
+                <div className="flex-1 text-sm text-gray-700 dark:text-gray-400">
+                  Prix : {offer.price} €
+                </div>
+                <div className="flex-1 text-sm text-gray-700 dark:text-gray-400">
+                  Estimation : {offer.estimate ? "Oui" : "Non"}
+                </div>
+                <div className="flex-1">
+                  {offer.image ? (
+                    <img
+                      src={offer.image}
+                      alt="Offer"
+                      className="w-16 h-16 object-cover rounded-full"
+                    />
+                  ) : (
+                    <span className="text-sm text-gray-700 dark:text-gray-400">Aucune image</span>
+                  )}
+                </div>
+              </div>
+              <div className="flex space-x-2">
+                <Button
+                  onClick={() => editOffer(offer)}
+                  className="text-green-600 dark:text-green-500 hover:underline"
+                >
+                  <FaEdit />
+                </Button>
+                <Button
+                  onClick={() => deleteOffer(offer.id)}
+                  className="text-red-600 dark:text-red-500 hover:underline"
+                >
+                  <FaTrash />
+                </Button>
+              </div>
+            </div>
+          ))}
         </div>
 
         <div className="flex justify-center items-center mt-4">
           <button
-            onClick={() => gotoPage(0)}
-            disabled={currentPageIndex === 0}
+            onClick={() => setPageIndex(0)}
+            disabled={pageIndex === 0}
             className="px-4 py-2 mx-1 bg-gray-200 rounded-lg mr-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
           >
             &laquo; Précédent
           </button>
           <span className="dark:text-white text-black font-bold">
-            Page {currentPageIndex + 1} sur{" "}
-            {Math.ceil(filteredOffers.length / pageSize)}
+            Page {pageIndex + 1} sur {Math.ceil(filteredOffers.length / pageSize)}
           </span>
           <button
-            onClick={() => gotoPage(currentPageIndex + 1)}
-            disabled={
-              currentPageIndex >=
-              Math.ceil(filteredOffers.length / pageSize) - 1
-            }
+            onClick={() => setPageIndex(pageIndex + 1)}
+            disabled={pageIndex >= Math.ceil(filteredOffers.length / pageSize) - 1}
             className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
           >
             Suivant &raquo;
@@ -275,8 +185,8 @@ const OffersList = () => {
 
         <div className="mt-4">
           <select
-            value={currentPageSize}
-            onChange={handlePageSizeChange}
+            value={pageSize}
+            onChange={(e) => setPageSize(Number(e.target.value))}
             className="border rounded-lg dark:bg-neutral-700 dark:text-white p-2"
           >
             {[10, 20, 30, 40].map((size) => (
