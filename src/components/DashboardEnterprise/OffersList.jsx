@@ -44,7 +44,6 @@ const OffersList = () => {
     const filtered = offers.filter((offer) => {
       const name = offer.name ? offer.name.toLowerCase() : "";
       const description = offer.description ? offer.description.toLowerCase() : "";
-      const description = offer.description ? offer.description.toLowerCase() : "";
 
       return name.includes(lowercasedQuery) || description.includes(lowercasedQuery);
     });
