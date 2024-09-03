@@ -181,18 +181,26 @@ const OffersList = () => {
               </div>
             </div>
             <div className="flex space-x-2 mt-2 md:mt-0">
-              <Button
-                onClick={() => editOffer(offer)}
-                className="text-green-600 dark:text-green-500 hover:underline"
-              >
-                <FaEdit />
-              </Button>
-              <Button
-                onClick={() => deleteOffer(offer.id)}
-                className="text-red-600 dark:text-red-500 hover:underline"
-              >
-                <FaTrash />
-              </Button>
+              {/* Boutons d'action avec le nouveau style */}
+              <div className="flex space-x-4 mt-4">
+            {/* Bouton Editer */}
+            <button
+              onClick={() => editOffer(offer)}
+              className="flex dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text items-center justify-center w-32 h-10 border border-neutral-300 font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+            >
+              <FaEdit className="text-gray-800 dark:text-gray-100 w-6 h-6 mr-2" />
+              <p>Editer</p>
+            </button>
+
+            {/* Bouton Supprimer */}
+            <button
+              onClick={() => deleteOffer(offer.id)}
+              className="flex dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text items-center justify-center w-32 h-10 border border-neutral-300 font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+            >
+              <FaTrash className="text-gray-800 dark:text-gray-100 w-6 h-6 mr-2" />
+              <p>Supprimer</p>
+            </button>
+          </div>
             </div>
           </li>
         ))}
