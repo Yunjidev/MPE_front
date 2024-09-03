@@ -4,7 +4,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-key */
 import React, { useState, useEffect } from "react";
-import { useTable, usePagination } from "react-table";
 import { useNavigate } from "react-router-dom";
 import { getData, deleteData } from "../../services/data-fetch";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
@@ -116,68 +115,12 @@ const ValidatedCompanies = () => {
     setIsModalOpen(false);
   };
 
-  const columns = React.useMemo(
-    () => [
-      { Header: "Nom", accessor: "name" },
-      { Header: "Ville", accessor: "city" },
-      { Header: "CP", accessor: "zip_code" },
-      { Header: "Région", accessor: "country.name" },
-      { Header: "Métier", accessor: "job.name" },
-      { Header: "Pseudo", accessor: "entrepreneur.username" },
-      { Header: "Note moyenne", accessor: "averageRating" },
-      {
-        Header: "Actions",
-        accessor: "id",
-        Cell: ({ row }) => (
-          <div className="flex space-x-2">
-            <Button
-              onClick={() => viewCompany(row.original.id)}
-              className="text-blue-600 dark:text-blue-500 hover:underline"
-            >
-              <FaEye />
-            </Button>
-            <Button
-              onClick={() => editCompany(row.original)}
-              className="text-green-600 dark:text-green-500 hover:underline"
-            >
-              <FaEdit />
-            </Button>
-            <Button
-              onClick={() => deleteCompany(row.original.id)}
-              className="text-red-600 dark:text-red-500 hover:underline"
-            >
-              <FaTrash />
-            </Button>
-          </div>
-        ),
-      },
-    ],
-    [filteredCompanies]
-  );
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    page, // Use `page` for pagination
-    prepareRow,
-    state: { pageIndex: currentPageIndex, pageSize: currentPageSize },
-    gotoPage,
-    setPageSize: setTablePageSize,
-  } = useTable(
-    {
-      columns,
-      data: filteredCompanies,
-      initialState: { pageIndex, pageSize },
-      pageCount: Math.ceil(filteredCompanies.length / pageSize),
-    },
-    usePagination
-  );
+  // Pagination
+  const pageCount = Math.ceil(filteredCompanies.length / pageSize);
 
   const handlePageSizeChange = (event) => {
     const newSize = Number(event.target.value);
     setPageSize(newSize);
-    setTablePageSize(newSize);
     setPageIndex(0); // Reset to page 0
   };
 
@@ -193,95 +136,100 @@ const ValidatedCompanies = () => {
         />
       </div>
 
-      {/* Tableau pour les grands écrans */}
-      <div className="hidden md:block overflow-x-auto">
-        <table
-          {...getTableProps()}
-          className="w-full text-sm text-center text-gray-500 bg-white border border-gray-200 dark:bg-neutral-800 dark:text-gray-400"
-        >
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps()}
-                    className="px-6 py-3 border-b border-gray-200 dark:border-gray-200"
-                  >
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-              prepareRow(row);
-              return (
-                <tr
-                  {...row.getRowProps()}
-                  className="border-b dark:bg-neutral-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
-                >
-                  {row.cells.map((cell) => (
-                    <td
-                      {...cell.getCellProps()}
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      {cell.render("Cell")}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Affichage en cartes pour les petits écrans */}
-      <div className="block md:hidden">
-        {page.map((row) => {
-          prepareRow(row);
-          return (
+      {/* Affichage en cartes horizontales tout le temps avec colonnes */}
+      <div className="flex flex-col">
+        {filteredCompanies
+          .slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)
+          .map((company) => (
             <div
-              key={row.id}
-              className="mb-4 p-4 rounded-lg shadow-md bg-white dark:bg-neutral-800"
+              key={company.id}
+              className="mb-4 p-4 rounded-lg shadow-md bg-white dark:bg-neutral-800 flex items-start"
             >
-              {row.cells.map((cell) => (
-                <div
-                  key={cell.column.id}
-                  className="flex justify-between border-b border-gray-200 dark:border-neutral-600 py-2 mb-2"
-                >
-                  <span className="font-bold text-gray-700 dark:text-gray-300">
-                    {cell.column.Header}
-                  </span>
-                  <span className="text-gray-900 dark:text-white">
-                    {cell.render("Cell")}
-                  </span>
+              <div className="flex-grow">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="font-bold text-gray-900 dark:text-white">
+                    Nom:
+                  </div>
+                  <div className="text-gray-900 dark:text-white">
+                    {company.name}
+                  </div>
+                  <div className="font-bold text-gray-900 dark:text-white">
+                    Ville:
+                  </div>
+                  <div className="text-gray-900 dark:text-white">
+                    {company.city}
+                  </div>
+                  <div className="font-bold text-gray-900 dark:text-white">
+                    CP:
+                  </div>
+                  <div className="text-gray-900 dark:text-white">
+                    {company.zip_code}
+                  </div>
+                  <div className="font-bold text-gray-900 dark:text-white">
+                    Région:
+                  </div>
+                  <div className="text-gray-900 dark:text-white">
+                    {company.country.name}
+                  </div>
+                  <div className="font-bold text-gray-900 dark:text-white">
+                    Métier:
+                  </div>
+                  <div className="text-gray-900 dark:text-white">
+                    {company.job.name}
+                  </div>
+                  <div className="font-bold text-gray-900 dark:text-white">
+                    Pseudo:
+                  </div>
+                  <div className="text-gray-900 dark:text-white">
+                    {company.entrepreneur.username}
+                  </div>
+                  <div className="font-bold text-gray-900 dark:text-white">
+                    Note moyenne:
+                  </div>
+                  <div className="text-gray-900 dark:text-white">
+                    {company.averageRating}
+                  </div>
                 </div>
-              ))}
+              </div>
+              <div className="ml-4 flex flex-col justify-between">
+                <Button
+                  onClick={() => viewCompany(company.id)}
+                  className="text-blue-600 dark:text-blue-500 hover:underline mb-2"
+                >
+                  <FaEye />
+                </Button>
+                <Button
+                  onClick={() => editCompany(company)}
+                  className="text-green-600 dark:text-green-500 hover:underline mb-2"
+                >
+                  <FaEdit />
+                </Button>
+                <Button
+                  onClick={() => deleteCompany(company.id)}
+                  className="text-red-600 dark:text-red-500 hover:underline"
+                >
+                  <FaTrash />
+                </Button>
+              </div>
             </div>
-          );
-        })}
+          ))}
       </div>
 
       {/* Pagination */}
       <div className="flex justify-center items-center mt-4">
         <button
-          onClick={() => gotoPage(0)}
-          disabled={currentPageIndex === 0}
+          onClick={() => setPageIndex(0)}
+          disabled={pageIndex === 0}
           className="px-4 py-2 mx-1 bg-gray-200 rounded-lg mr-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
         >
           &laquo; Précédent
         </button>
         <span className="dark:text-white text-black font-bold">
-          Page {currentPageIndex + 1} sur{" "}
-          {Math.ceil(filteredCompanies.length / pageSize)}
+          Page {pageIndex + 1} sur {pageCount}
         </span>
         <button
-          onClick={() => gotoPage(currentPageIndex + 1)}
-          disabled={
-            currentPageIndex >=
-            Math.ceil(filteredCompanies.length / pageSize) - 1
-          }
+          onClick={() => setPageIndex(pageIndex + 1)}
+          disabled={pageIndex >= pageCount - 1}
           className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
         >
           Suivant &raquo;

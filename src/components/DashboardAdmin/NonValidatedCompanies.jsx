@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useTable, usePagination } from "react-table";
 import { getData, putData } from "../../services/data-fetch";
 import { useSocketIo } from "../../services/UseSocketIo";
-import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import {
+  FaCheckCircle,
+  FaTimesCircle,
+  FaPhone,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaCity,
+  FaBuilding,
+  FaBriefcase,
+} from "react-icons/fa";
 
 const NonValidatedCompanies = () => {
   const socket = useSocketIo();
@@ -27,7 +35,7 @@ const NonValidatedCompanies = () => {
     try {
       const formData = new FormData();
       formData.append("isValidate", "true");
-      const response = await putData(`enterprise/${companyId}`, formData);
+      await putData(`enterprise/${companyId}`, formData);
       if (socket) {
         socket.emit("enterpriseValidated", { id: companyId, isValidate: true });
       }
@@ -44,7 +52,7 @@ const NonValidatedCompanies = () => {
     try {
       const formData = new FormData();
       formData.append("isValidate", "false");
-      const response = await putData(`enterprise/${companyId}`, formData);
+      await putData(`enterprise/${companyId}`, formData);
       if (socket) {
         socket.emit("enterpriseRejected", { id: companyId, isValidate: false });
       }
@@ -57,69 +65,6 @@ const NonValidatedCompanies = () => {
     }
   };
 
-  const columns = React.useMemo(
-    () => [
-      { Header: "Nom", accessor: "name" },
-      { Header: "Téléphone", accessor: "phone" },
-      { Header: "Mail", accessor: "mail" },
-      { Header: "Adresse", accessor: "adress" },
-      { Header: "Ville", accessor: "city" },
-      { Header: "CP", accessor: "zip_code" },
-      { Header: "Siret", accessor: "siret_number" },
-      { Header: "Région", accessor: "country.name" },
-      { Header: "Métier", accessor: "job.name" },
-      {
-        Header: "Actions",
-        accessor: "id",
-        Cell: ({ value }) => (
-          <div className="flex justify-around">
-            <button
-              onClick={() => validateCompany(value)}
-              className="text-green-600 dark:text-green-400 hover:scale-110 transition-transform mx-2"
-              title="Valider l'entreprise"
-            >
-              <FaCheckCircle size={20} />
-            </button>
-            <button
-              onClick={() => rejectCompany(value)}
-              className="text-red-600 dark:text-red-400 hover:scale-110 transition-transform mx-2"
-              title="Refuser l'entreprise"
-            >
-              <FaTimesCircle size={20} />
-            </button>
-          </div>
-        ),
-      },
-    ],
-    [companies]
-  );
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    page,
-    prepareRow,
-    state: { pageIndex: currentPageIndex, pageSize: currentPageSize },
-    gotoPage,
-    setPageSize: setTablePageSize,
-  } = useTable(
-    {
-      columns,
-      data: companies,
-      initialState: { pageIndex, pageSize },
-      pageCount: Math.ceil(companies.length / pageSize),
-    },
-    usePagination
-  );
-
-  const handlePageSizeChange = (event) => {
-    const newSize = Number(event.target.value);
-    setPageSize(newSize);
-    setTablePageSize(newSize);
-    setPageIndex(0);
-  };
-
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-neutral-600 dark:bg-neutral-800 border dark:border-neutral-700 p-4">
       <div className="p-4">
@@ -130,92 +75,95 @@ const NonValidatedCompanies = () => {
         />
       </div>
 
-      {/* Tableau pour les grands écrans */}
-      <div className="hidden md:block overflow-x-auto">
-        <table
-          {...getTableProps()}
-          className="w-full text-sm text-center text-gray-500 bg-white border border-gray-200 dark:bg-neutral-800 dark:text-gray-400"
-        >
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-neutral-700 dark:text-gray-400">
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps()}
-                    className="px-6 py-3 border-b border-gray-200 dark:border-gray-200"
-                  >
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-              prepareRow(row);
-              return (
-                <tr key={row.id} {...row.getRowProps()}>
-                  {row.cells.map((cell) => (
-                    <td
-                      {...cell.getCellProps()}
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      {cell.render("Cell")}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Affichage en colonne pour les petits écrans */}
-      <div className="block md:hidden">
-        {page.map((row) => {
-          prepareRow(row);
-          return (
+      {/* Affichage des entreprises sous forme de cartes */}
+      <div className="grid grid-cols-1 gap-4">
+        {companies
+          .slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)
+          .map((company) => (
             <div
-              key={row.id}
-              className="mb-4 p-4 rounded-lg shadow-md bg-white dark:bg-neutral-800"
+              key={company.id}
+              className="p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-md"
             >
-              {row.cells.map((cell) => (
-                <div
-                  key={cell.column.id}
-                  className="flex justify-between border-b border-gray-200 dark:border-neutral-600 py-2 mb-2"
-                >
-                  <span className="font-bold text-gray-700 dark:text-gray-300 mr-2">
-                    {cell.column.Header}
-                  </span>
-                  <span className="text-gray-900 dark:text-white ml-2">
-                    {cell.render("Cell")}
-                  </span>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                {company.name}
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
+                {/* Téléphone et Mail */}
+                <div className="flex-1 max-w-[120px]">
+                  <div className="flex items-center text-gray-600 dark:text-gray-300 mb-1 text-xs">
+                    <FaPhone className="mr-1 text-sm" /> {company.phone}
+                  </div>
+                  <div className="flex items-center text-gray-600 dark:text-gray-300 text-xs">
+                    <FaEnvelope className="mr-1 text-sm" /> {company.mail}
+                  </div>
                 </div>
-              ))}
+
+                {/* Adresse, Ville et Code Postal */}
+                <div className="flex-1 max-w-[120px]">
+                  <div className="flex items-center text-gray-600 dark:text-gray-300 mb-1 text-xs">
+                    <FaMapMarkerAlt className="mr-1 text-sm" /> {company.adress}
+                  </div>
+                  <div className="flex items-center text-gray-600 dark:text-gray-300 mb-1 text-xs">
+                    <FaCity className="mr-1 text-sm" /> {company.city},{" "}
+                    {company.zip_code}
+                  </div>
+                </div>
+
+                {/* Siret et Métier */}
+                <div className="flex-1 max-w-[120px]">
+                  <div className="flex items-center text-gray-600 dark:text-gray-300 mb-1 text-xs">
+                    <FaBuilding className="mr-1 text-sm" />{" "}
+                    {company.siret_number}
+                  </div>
+                  <div className="flex items-center text-gray-600 dark:text-gray-300 text-xs">
+                    <FaBriefcase className="mr-1 text-sm" /> {company.job.name}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-center md:justify-end mt-4">
+                <button
+                  onClick={() => validateCompany(company.id)}
+                  className="text-green-600 dark:text-green-400 hover:scale-110 transition-transform mx-1 text-xs md:text-sm"
+                  title="Valider l'entreprise"
+                >
+                  <FaCheckCircle size={16} />
+                </button>
+                <button
+                  onClick={() => rejectCompany(company.id)}
+                  className="text-red-600 dark:text-red-400 hover:scale-110 transition-transform mx-1 text-xs md:text-sm"
+                  title="Refuser l'entreprise"
+                >
+                  <FaTimesCircle size={16} />
+                </button>
+              </div>
             </div>
-          );
-        })}
+          ))}
       </div>
 
       {/* Pagination */}
       <div className="flex justify-center items-center mt-4">
         <button
-          onClick={() => gotoPage(0)}
-          disabled={currentPageIndex === 0}
-          className="px-4 py-2 mx-1 bg-gray-200 rounded-lg mr-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+          onClick={() => setPageIndex(pageIndex > 0 ? pageIndex - 1 : 0)}
+          disabled={pageIndex === 0}
+          className="px-3 py-1 mx-1 bg-gray-200 rounded-lg mr-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out text-xs"
         >
           « Précédent
         </button>
-        <span className="dark:text-white text-black font-bold">
-          Page {currentPageIndex + 1} sur{" "}
-          {Math.ceil(companies.length / pageSize)}
+        <span className="dark:text-white text-black font-bold text-xs">
+          Page {pageIndex + 1} sur {Math.ceil(companies.length / pageSize)}
         </span>
         <button
-          onClick={() => gotoPage(currentPageIndex + 1)}
-          disabled={
-            currentPageIndex >= Math.ceil(companies.length / pageSize) - 1
+          onClick={() =>
+            setPageIndex(
+              pageIndex < Math.ceil(companies.length / pageSize) - 1
+                ? pageIndex + 1
+                : pageIndex
+            )
           }
-          className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+          disabled={pageIndex >= Math.ceil(companies.length / pageSize) - 1}
+          className="px-3 py-1 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out text-xs"
         >
           Suivant »
         </button>
