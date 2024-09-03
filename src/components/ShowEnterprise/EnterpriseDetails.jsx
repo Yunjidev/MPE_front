@@ -8,12 +8,17 @@ import {
 } from "react-icons/io5";
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 import StarRating from "./StarRatings";
+import LikeButton from "../CardsEntreprises/LikesForCards/LikeButton";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 
 const EnterpriseDetails = ({ enterprise }) => {
+  const { user } = useContext(UserContext);
+
   return (
     <div className="w-full flex flex-col justify-between p-6 rounded-lg">
-      <div className="flex items-start">
-        <div className="flex flex-col items-center mr-6">
+      <div className="flex items-start text-black dark:text-white">
+        <div className="flex flex-col items-center mr-6 ">
           {enterprise.logo ? (
             <img
               src={enterprise.logo}
@@ -28,14 +33,22 @@ const EnterpriseDetails = ({ enterprise }) => {
           <p className="font-semibold text-lg text-center">
             {enterprise.job.name}
           </p>
+
+          <div className="flex items-center">
+            <StarRating rating={Math.round(enterprise.averageRating)} />
+            <p className="ml-2 text-lg font-semibold">
+              {enterprise.averageRating.toFixed(1)}
+            </p>
+          </div>
         </div>
 
         <div className="flex flex-row justify-between">
           <div className="flex flex-col mb-4">
             <p className="flex items-center space-x-2 mb-2">
-              <span className="text-2xl font-bold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">
+              <span className="text-2xl font-bold dark:bg-gradient-to-r dark:from-emerald-200 dark:to-emerald-500 bg-gradient-to-r from-emerald-400 to-emerald-600 text-transparent bg-clip-text">
                 {enterprise.name}
               </span>
+              <LikeButton userId={user.id} enterpriseId={enterprise.id} />{" "}
             </p>
             <p className="flex items-center space-x-2 mb-2">
               <IoLocationOutline className="text-xl" />
@@ -92,12 +105,6 @@ const EnterpriseDetails = ({ enterprise }) => {
         </div>
       </div>
 
-      <div className="flex items-center">
-        <StarRating rating={Math.round(enterprise.averageRating)} />
-        <p className="ml-2 text-lg font-semibold">
-          {enterprise.averageRating.toFixed(1)}
-        </p>
-      </div>
     </div>
   );
 };

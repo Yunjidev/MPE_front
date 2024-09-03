@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { getData } from "../../services/data-fetch";
 import { useNavigate } from "react-router-dom";
+import LikeButton from "../CardsEntreprises/LikesForCards/LikeButton";
 
 const LikesManagement = () => {
   const [favorites, setFavorites] = useState([]);
@@ -32,6 +33,12 @@ const LikesManagement = () => {
     fetchFavorites();
   }, []);
 
+  const removeFavorite = (enterpriseId) => {
+    setFavorites((prevFavorites) =>
+      prevFavorites.filter((fav) => fav.Enterprise_id !== enterpriseId)
+    );
+  };
+
   return (
     <div className="flex flex-col h-full space-around bg-neutral-800 p-6 rounded-xl">
       <h3 className="text-lg font-medium mb-4">Mes entreprises favorites</h3>
@@ -43,7 +50,13 @@ const LikesManagement = () => {
               key={favorite.id}
               className="flex justify-between items-center bg-neutral-800 p-2 rounded-lg"
             >
-              <span>❤️ {enterprises[favorite.Enterprise_id]?.name}</span>
+              <span>  <LikeButton
+                userId={favorite.User_id}
+                enterpriseId={favorite.Enterprise_id}
+                onUnlike={removeFavorite} // Passe la fonction de suppression ici
+              />
+                {enterprises[favorite.Enterprise_id]?.name}
+              </span>
               <button
                 className="bg-white text-black px-3 rounded-lg hover:bg-gray-300"
                 onClick={() =>

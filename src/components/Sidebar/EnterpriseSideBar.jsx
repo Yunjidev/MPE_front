@@ -9,6 +9,7 @@ import {
   FaBuilding,
   FaBook,
 } from "react-icons/fa";
+import { MdDashboard } from "react-icons/md";
 import { useAtom } from "jotai";
 import { enterprisesAtom } from "../../store/enterprises";
 import { useSocketIo } from "../../services/UseSocketIo";
@@ -44,6 +45,11 @@ export default function EnterpriseSideBar({
                 <div>
                   <Dropdown
                     dropdownItems={[
+                      {
+                        to: `/dashboard/enterprise/${enterprise.id}/dashboard`,
+                        icon: <MdDashboard className={`${iconStyle} mr-3`} />,
+                        label: "Tableau de Bord",
+                      },
                       {
                         to: `/dashboard/enterprise/${enterprise.id}/planning`,
                         icon: <FaCalendarAlt className={`${iconStyle} mr-3`} />,

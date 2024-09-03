@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 
 const OfferForm = ({ offer, onSubmit, onClose }) => {
   const [formData, setFormData] = useState({

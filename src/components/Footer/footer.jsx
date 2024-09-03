@@ -40,9 +40,9 @@ const Footer = () => {
             <BsEnvelope size={24} />
           </a>
         </div>
-        <Link to="/conditions" className="font-semibold hover:text-orange-500">Conditions générales de vente</Link>
-        <Link to="/privacy" className="font-semibold mr-2 hover:text-orange-500">Politique de confidentialité</Link>
-        <Link to="/legal" className="font-semibold mr-9 hover:text-orange-500">Mentions légales</Link>
+        <Link to="/usage-policies" className="font-semibold hover:text-orange-500">Conditions générales d'utilisation</Link>
+        <Link to="condifentiality-policies" className="font-semibold mr-2 hover:text-orange-500">Politique de confidentialité</Link>
+        <Link to="/legal-notices" className="font-semibold mr-9 hover:text-orange-500">Mentions légales</Link>
       </div>
     </footer>
   );

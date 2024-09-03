@@ -23,8 +23,8 @@ const OfferList = ({ offers }) => {
   };
 
   return (
-    <div className="lg:px-6 px-3 py-1 shadow-[0px_0px_15px_-5px] shadow-violet-400 bg-neutral-800 rounded-3xl">
-      <div className="divide-y divide-neutral-700">
+    <div className="lg:px-6 px-3 py-1 dark:shadow-[0px_0px_15px_-5px] dark:shadow-violet-400 border dark:border-none border-orange-300 dark:bg-neutral-800 bg-white/25 rounded-3xl">
+      <div className="divide-y dark:divide-neutral-700 divide-neutral-400">
         {offers.length > 0 ? (
           offers.map((offer, index) => (
             <div

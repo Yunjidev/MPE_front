@@ -6,7 +6,9 @@ import { toast } from "react-toastify";
 const AuthenticatedRoute = () => {
   const [user] = useAtom(userAtom);
 
-  if (user) {
+  console.log("AuthenticatedRoute: user =", user);
+
+  if (user && user.isLogged) {
     return <Outlet />;
   } else {
     toast.error("Vous devez être connecté pour accéder à cette page.");

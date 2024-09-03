@@ -44,10 +44,9 @@ const OffersList = () => {
     const filtered = offers.filter((offer) => {
       const name = offer.name ? offer.name.toLowerCase() : "";
       const description = offer.description ? offer.description.toLowerCase() : "";
+      const description = offer.description ? offer.description.toLowerCase() : "";
 
-      return (
-        name.includes(lowercasedQuery) || description.includes(lowercasedQuery)
-      );
+      return name.includes(lowercasedQuery) || description.includes(lowercasedQuery);
     });
     setFilteredOffers(filtered);
     setPageIndex(0); // Réinitialiser la page à 0 lors du filtrage
@@ -56,9 +55,7 @@ const OffersList = () => {
   const deleteOffer = async (offerId) => {
     try {
       await deleteData(`enterprise/${id}/offer/${offerId}`);
-      setOffers((prevOffers) =>
-        prevOffers.filter((offer) => offer.id !== offerId),
-      );
+      setOffers((prevOffers) => prevOffers.filter((offer) => offer.id !== offerId));
     } catch (error) {
       console.error("Erreur lors de la suppression de l'offre:", error);
       alert("Une erreur est survenue lors de la suppression de l'offre.");
@@ -71,7 +68,7 @@ const OffersList = () => {
   };
 
   const addNewOffer = () => {
-    setSelectedOffer(null); // Clear selection to add new
+    setSelectedOffer(null);
     setIsModalOpen(true);
   };
 
@@ -132,6 +129,7 @@ const OffersList = () => {
             &laquo; Précédente
           </button>
           <span className="dark:text-white text-black font-bold">
+            Page {pageIndex + 1} sur {Math.ceil(filteredOffers.length / pageSize)}
             Page {pageIndex + 1} sur {Math.ceil(filteredOffers.length / pageSize)}
           </span>
           <button

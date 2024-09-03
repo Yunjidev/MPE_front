@@ -1,23 +1,23 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
-import { useParams } from "react-router-dom";
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getData, putData } from "../../services/data-fetch";
 import EnterpriseForm from "./Form/EnterpriseForm";
 import { toast } from "react-toastify";
 import { useAtom } from "jotai";
-import { userAtom } from "../../store/user";
+import { enterprisesAtom } from "../../store/enterprises";
 
-export default function EditEnterprise() {
-  const [user, setUser] = useAtom(userAtom);
+export default function EditEnterprise({ enterpriseId, onSave, onClose }) {
   const navigate = useNavigate();
-  const { enterpriseId } = useParams();
   const [enterprise, setEnterprise] = useState(null);
-  const memoizedEnterprise = useMemo(() => enterprise, [enterprise]);
+  const [enterprises, setEnterprises] = useAtom(enterprisesAtom);
+
   useEffect(() => {
     const fetchEnterprise = async () => {
       try {
-        const enterprise = await getData(`enterprise/${enterpriseId}`);
-        setEnterprise(enterprise);
+        const data = await getData(`enterprise/${enterpriseId}`);
+        setEnterprise(data);
       } catch (error) {
         console.error("Error fetching enterprise data:", error);
       }
@@ -30,28 +30,29 @@ export default function EditEnterprise() {
     async (formData) => {
       try {
         const response = await putData(`enterprise/${enterpriseId}`, formData);
-        const updatedEnterprise = user.enterprises.map((enterprise) => {
-          if (response.enterprise.id === enterprise.id) {
-            return { ...enterprise, ...response.enterprise };
-          }
-          return enterprise;
-        });
-        setUser((prevUser) => ({
-          ...prevUser,
-          enterprises: updatedEnterprise,
-        }));
-        navigate(`/enterprise/${enterpriseId}`);
+        const updatedEnterprises = enterprises.map((enterprise) =>
+          enterprise.id === response.enterprise.id
+            ? response.enterprise
+            : enterprise
+        );
+        setEnterprises(updatedEnterprises);
+
+        if (onSave) onSave(response.enterprise);
         toast.success("Entreprise enregistrée");
+        if (onClose) onClose();
       } catch (error) {
         const errorData = await JSON.parse(error.message);
-        console.log(errorData);
-        errorData.forEach((error) => {
-          const [, message] = Object.entries(error)[0];
-          toast.error(`${message}`);
-        });
+        if (Array.isArray(errorData.errors)) {
+          errorData.errors.forEach((error) => {
+            const [, message] = Object.entries(error)[0];
+            toast.error(`${message}`);
+          });
+        } else {
+          toast.error(errorData.errors);
+        }
       }
     },
-    [enterpriseId, navigate, user, setUser],
+    [enterpriseId, enterprises, setEnterprises, onSave, onClose]
   );
 
   return (
@@ -59,7 +60,7 @@ export default function EditEnterprise() {
       <EnterpriseForm
         title="Mise à jour d'entreprise"
         onSubmit={handleSubmit}
-        initialData={memoizedEnterprise}
+        initialData={enterprise}
         isEditMode={true}
       />
     </>
