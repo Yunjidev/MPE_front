@@ -65,13 +65,17 @@ const CreateJobForm = () => {
   const onUpdateJob = async (data) => {
     try {
       console.log(`Updating job: ${selectedJob.id} with data:`, data); // Ajout de console.log
-      const formData = new FormData();
-      formData.append("name", data.jobTitle);
+      const updatedFormData = new FormData();
+      updatedFormData.append("name", data.jobTitle);
       if (formData.photo) {
-        formData.append("picture", formData.photo);
+        updatedFormData.append("picture", formData.photo);
+      } else if (selectedJob.picture) {
+        updatedFormData.append("picture", selectedJob.picture);
       }
 
-      const jobResponse = await putData(`admin/job/${selectedJob.id}`, formData);
+      console.log('FormData:', updatedFormData.get("name"), updatedFormData.get("picture")); // Ajout de console.log
+
+      const jobResponse = await putData(`admin/job/${selectedJob.id}`, updatedFormData);
 
       if (jobResponse) {
         toast.success("Métier modifié avec succès !");
@@ -86,6 +90,7 @@ const CreateJobForm = () => {
       toast.error("Erreur lors de la modification du métier.");
     }
   };
+
 
   const onDeleteJob = async () => {
     try {
