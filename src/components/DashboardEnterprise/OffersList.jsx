@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { getData, deleteData, postData, putData } from "../../services/data-fetch";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
+import { IoTimeOutline, IoPricetagOutline, IoInformationCircleOutline } from "react-icons/io5"; // Import des icônes
 import Button from "../Button/button";
 import Modal from "../DashboardAdmin/Modal";
 import OfferForm from "./OfferForm";
@@ -157,25 +158,29 @@ const OffersList = () => {
       {/* Liste des offres paginées */}
       <ul className="space-y-4">
         {paginatedOffers.map((offer) => (
-          <li key={offer.id} className="p-4 bg-gray-100 dark:bg-neutral-700 rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center">
-            <div className="flex items-start md:flex-1">
+          <li key={offer.id} className="p-4 bg-gray-100 dark:bg-neutral-700 rounded-lg flex flex-col md:flex-row justify-between items-center">
+            <div className="flex items-center space-x-6 md:flex-1">
               {offer.image && (
                 <img
                   src={offer.image}
                   alt={offer.name}
-                  className="w-32 h-32 object-cover rounded-lg mr-4"
+                  className="w-32 h-32 object-cover rounded-lg"
                 />
               )}
-              <div>
+              <div className="flex flex-wrap items-center space-x-6">
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white">{offer.name}</h3>
-                <p className="text-sm text-gray-700 dark:text-gray-400">
-                  {decodeHtml(offer.description)}
+                <p className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-400">
+                  <IoTimeOutline className="text-xl" />
+                  <span>Durée : {offer.duration} min</span>
                 </p>
-                <div className="text-sm text-gray-600 dark:text-gray-300">
-                  <p>Durée : {offer.duration} min</p>
-                  <p>Prix : {offer.price} €</p>
-                  <p>Estimation : {offer.estimate ? "Oui" : "Non"}</p>
-                </div>
+                <p className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-400">
+                  <IoPricetagOutline className="text-xl" />
+                  <span>Prix : {offer.price} €</span>
+                </p>
+                <p className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-400">
+                  <IoInformationCircleOutline className="text-xl" />
+                  <span>Estimation : {offer.estimate ? <span> Oui</span> : <span> Non</span>}</span>
+                </p>
               </div>
             </div>
             <div className="flex space-x-2 mt-2 md:mt-0">
@@ -221,4 +226,3 @@ const OffersList = () => {
 };
 
 export default OffersList;
-

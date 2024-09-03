@@ -7,6 +7,7 @@ import {
   IoPersonOutline,
   IoCheckmarkCircleOutline,
   IoCloseCircleOutline,
+  IoEllipseOutline, // Import de l'icône "pending"
 } from "react-icons/io5";
 import { useParams } from "react-router-dom";
 import Button from "../Button/button";
@@ -19,7 +20,6 @@ const ReservationsList = () => {
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
 
-  // Fonction pour récupérer les réservations
   const fetchReservations = async () => {
     try {
       const data = await getData(`enterprise/${id}/reservations`);
@@ -37,7 +37,6 @@ const ReservationsList = () => {
     }
   }, [id]);
 
-  // Filtrage des réservations
   useEffect(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
     const filtered = reservations.filter((reservation) => {
@@ -54,7 +53,6 @@ const ReservationsList = () => {
     setPageIndex(0); // Réinitialiser la page à 0 lors du filtrage
   }, [searchQuery, reservations]);
 
-  // Fonction pour mettre à jour le statut d'une réservation
   const updateReservationStatus = async (reservationId, status) => {
     try {
       await putData(`reservation/${reservationId}`, { status: status.toLowerCase() });
@@ -68,7 +66,6 @@ const ReservationsList = () => {
     }
   };
 
-  // Pagination
   const paginatedReservations = useMemo(() => {
     const start = pageIndex * pageSize;
     const end = start + pageSize;
@@ -153,16 +150,7 @@ const ReservationsList = () => {
                   De {reservation.start_time} à {reservation.end_time}
                 </span>
               </p>
-              <p className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-400">
-                <IoCheckmarkCircleOutline
-                  className={`text-xl ${
-                    reservation.status === "accepted"
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                />
-                <span>{reservation.status}</span>
-              </p>
+              
             </div>
 
             {/* Boutons d'action */}
@@ -191,10 +179,10 @@ const ReservationsList = () => {
                   </>
                 )}
               {reservation.status === "accepted" && (
-                <span className="text-green-600 font-bold">Acceptée</span>
+                <IoCheckmarkCircleOutline className="text-xl text-green-600" />
               )}
               {reservation.status === "rejected" && (
-                <span className="text-red-600 font-bold">Refusée</span>
+                <IoCloseCircleOutline className="text-xl text-red-600" />
               )}
             </div>
           </li>
