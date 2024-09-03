@@ -7,6 +7,7 @@ import {
   FaUsers,
   FaChartBar,
   FaChartLine,
+  FaPenFancy,
 } from "react-icons/fa";
 
 export default function AdminSideBar({
@@ -47,6 +48,17 @@ export default function AdminSideBar({
       to: "/dashboard/reports",
       icon: <FaChartLine className={iconstyle} />,
       label: "Reports",
+    },
+    {
+      to: "/dashboard/jobsandcountrycreate",
+      icon: <FaPenFancy className={iconstyle} />,
+      label: (
+        <>
+          Gestion des jobs
+          <br />
+          et des régions
+        </>
+      ),
     },
   ];
 
