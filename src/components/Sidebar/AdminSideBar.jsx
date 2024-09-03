@@ -52,7 +52,13 @@ export default function AdminSideBar({
     {
       to: "/dashboard/jobsandcountrycreate",
       icon: <FaPenFancy className={iconstyle} />,
-      label: "Create Jobs and Country",
+      label: (
+        <>
+          Gestion des jobs
+          <br />
+          et des régions
+        </>
+      ),
     },
   ];
 
