@@ -62,8 +62,9 @@ const CreateRegionForm = () => {
     try {
       console.log(`Deleting region: ${selectedRegion.id}`); // Ajout de console.log
       const regionResponse = await deleteData(`admin/country/${selectedRegion.id}`);
+      console.log('Delete response:', regionResponse); // Ajout de console.log
 
-      if (regionResponse) {
+      if (regionResponse && regionResponse.message === "Region supprimée") {
         toast.success("Région supprimée avec succès !");
         reset();
         setRegions(regions.filter(region => region.id !== selectedRegion.id));
@@ -149,3 +150,4 @@ const CreateRegionForm = () => {
 };
 
 export default CreateRegionForm;
+
