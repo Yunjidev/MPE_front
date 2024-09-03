@@ -248,7 +248,7 @@ const ValidatedCompanies = () => {
               {row.cells.map((cell) => (
                 <div
                   key={cell.column.id}
-                  className="flex justify-between border-b border-gray-200 dark:border-neutral-600 py-2"
+                  className="flex justify-between border-b border-gray-200 dark:border-neutral-600 py-2 mb-2"
                 >
                   <span className="font-bold text-gray-700 dark:text-gray-300">
                     {cell.column.Header}
