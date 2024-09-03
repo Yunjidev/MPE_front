@@ -41,7 +41,7 @@ const EnterpriseShow = () => {
   }
 
   return (
-    <div className="p-6 mt-12 text-white">
+    <div className="p-6 mt-12 dark:text-white">
       <div className="flex flex-col md:flex-row">
         <PhotoGallery photos={enterprise.photos} openPopup={openPopup} />
 
@@ -50,7 +50,7 @@ const EnterpriseShow = () => {
 
           {/* Affichage de la description avec dangerouslySetInnerHTML */}
           <p
-            className="text-sm bg-neutral-700 p-4 rounded-xl"
+            className="text-sm dark:bg-neutral-700 bg-orange-300/25 p-4 rounded-xl"
             dangerouslySetInnerHTML={{ __html: enterprise.description }}
           />
         </div>
