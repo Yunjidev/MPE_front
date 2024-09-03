@@ -161,7 +161,7 @@ const OffersList = () => {
                 <img
                   src={offer.image}
                   alt={offer.name}
-                  className="w-32 h-32 object-cover rounded-lg"
+                  className="w-20 h-20 object-cover rounded-lg"
                 />
               )}
               <div className="flex flex-wrap items-center space-x-6">
@@ -182,7 +182,7 @@ const OffersList = () => {
             </div>
             <div className="flex space-x-2 mt-2 md:mt-0">
               {/* Boutons d'action avec le nouveau style */}
-              <div className="flex space-x-4 mt-4">
+          <div className="flex space-x-4 mt-4">
             {/* Bouton Editer */}
             <button
               onClick={() => editOffer(offer)}
@@ -208,13 +208,16 @@ const OffersList = () => {
 
       {/* Bouton Ajouter une offre centré en bas */}
       <div className="flex justify-center mt-6">
-        <button
-          onClick={addNewOffer}
-          className="mx-auto flex items-center justify-center bg-gray-800 hover:bg-gradient-to-r hover:from-violet-400 hover:via-orange-400 hover:to-[#67FFCC] text-white py-2 px-4 rounded-lg transition-colors duration-300 ease-in-out"
-        >
-          <FaPlus className="mr-2" /> Ajouter une offre
-        </button>
-      </div>
+  <button
+    onClick={addNewOffer}
+    className="flex items-center justify-center bg-gradient-to-r from-[#67FFCC] to-[#FFFFFF] text-transparent bg-clip-text w-full md:w-auto h-10 border border-neutral-300 font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+  >
+    <FaPlus className="text-gray-800 dark:text-gray-100 w-6 h-6 mr-2" />
+    <p className="text-transparent bg-clip-text bg-gradient-to-r from-[#67FFCC] to-[#FFFFFF]">
+      Ajouter une offre
+    </p>
+  </button>
+</div>
 
       {/* Modal pour l'ajout/modification d'offres */}
       {isModalOpen && (

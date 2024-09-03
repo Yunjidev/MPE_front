@@ -7,7 +7,7 @@ import {
   IoPersonOutline,
   IoCheckmarkCircleOutline,
   IoCloseCircleOutline,
-  IoEllipseOutline, // Import de l'icône "pending"
+  IoEllipseOutline, // Icône pour "pending"
 } from "react-icons/io5";
 import { useParams } from "react-router-dom";
 import Button from "../Button/button";
@@ -78,6 +78,23 @@ const ReservationsList = () => {
     setPageIndex(0); // Réinitialiser la page à 0
   };
 
+  const getStatusDetails = (status) => {
+    switch (status) {
+      case "pending":
+        return { icon: <IoEllipseOutline className="text-yellow-500" />, text: "En attente" };
+      case "accepted":
+        return { icon: <IoCheckmarkCircleOutline className="text-green-600" />, text: "Acceptée" };
+      case "rejected":
+        return { icon: <IoCloseCircleOutline className="text-red-600" />, text: "Rejetée" };
+      case "cancelled":
+        return { icon: <IoCloseCircleOutline className="text-gray-600" />, text: "Annulée" };
+      case "done":
+        return { icon: <IoCheckmarkCircleOutline className="text-blue-600" />, text: "Terminée" };
+      default:
+        return { icon: <IoEllipseOutline className="text-gray-500" />, text: status };
+    }
+  };
+
   return (
     <div className="relative bg-neutral-600 dark:bg-neutral-800 border dark:border-neutral-700 p-4 rounded-lg">
       {/* Barre de recherche, Pagination et Sélecteur de taille de page en haut */}
@@ -123,70 +140,71 @@ const ReservationsList = () => {
 
       {/* Liste des réservations paginées avec les détails en ligne */}
       <ul className="space-y-4">
-        {paginatedReservations.map((reservation) => (
-          <li
-            key={reservation.id}
-            className="p-4 bg-gray-100 dark:bg-neutral-700 rounded-lg flex flex-col md:flex-row justify-between items-center"
-          >
-            {/* Détails de la réservation sur une seule ligne */}
-            <div className="flex flex-wrap items-center space-x-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                {reservation.offer?.name || "Offre non disponible"}
-              </h3>
-              <p className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-400">
-                <IoPersonOutline className="text-xl" />
-                <span>
-                  {reservation.user?.firstName || "Inconnu"}{" "}
-                  {reservation.user?.lastName || ""}
-                </span>
-              </p>
-              <p className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-400">
-                <IoCalendarOutline className="text-xl" />
-                <span>{reservation.date}</span>
-              </p>
-              <p className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-400">
-                <IoTimeOutline className="text-xl" />
-                <span>
-                  De {reservation.start_time} à {reservation.end_time}
-                </span>
-              </p>
-              
-            </div>
+        {paginatedReservations.map((reservation) => {
+          const { icon, text } = getStatusDetails(reservation.status);
+          return (
+            <li
+              key={reservation.id}
+              className="p-4 bg-gray-100 dark:bg-neutral-700 rounded-lg flex flex-col md:flex-row justify-between items-center"
+            >
+              {/* Détails de la réservation sur une seule ligne */}
+              <div className="flex flex-wrap items-center space-x-6">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                  {reservation.offer?.name || "Offre non disponible"}
+                </h3>
+                <p className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-400">
+                  <IoPersonOutline className="text-xl" />
+                  <span>
+                    {reservation.user?.firstName || "Inconnu"}{" "}
+                    {reservation.user?.lastName || ""}
+                  </span>
+                </p>
+                <p className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-400">
+                  <IoCalendarOutline className="text-xl" />
+                  <span>{reservation.date}</span>
+                </p>
+                <p className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-400">
+                  <IoTimeOutline className="text-xl" />
+                  <span>
+                    De {reservation.start_time} à {reservation.end_time}
+                  </span>
+                </p>
+              </div>
 
-            {/* Boutons d'action */}
-            <div className="flex space-x-2 mt-2 md:mt-0">
-              {reservation.status !== "accepted" &&
-                reservation.status !== "rejected" && (
-                  <>
-                    <Button
-                      onClick={() =>
-                        updateReservationStatus(reservation.id, "accepted")
-                      }
-                      className="text-green-600 dark:text-green-500 hover:underline"
-                      title="Accepter la réservation"
-                    >
-                      <FaCheck />
-                    </Button>
-                    <Button
-                      onClick={() =>
-                        updateReservationStatus(reservation.id, "rejected")
-                      }
-                      className="text-red-600 dark:text-red-500 hover:underline"
-                      title="Refuser la réservation"
-                    >
-                      <FaTimes />
-                    </Button>
-                  </>
-                )}
-              {reservation.status === "accepted" && (
-                <IoCheckmarkCircleOutline className="text-xl text-green-600" />
-              )}
-              {reservation.status === "rejected" && (
-                <IoCloseCircleOutline className="text-xl text-red-600" />
-              )}
-            </div>
-          </li>
-        ))}
+              {/* Statut et boutons d'action */}
+              <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4 mt-2 md:mt-0">
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-700 dark:text-gray-400">{text}</span>
+                  {icon}
+                </div>
+                <div className="flex space-x-2 mt-2 md:mt-0">
+                  {reservation.status !== "accepted" && reservation.status !== "rejected" && (
+                    <>
+                      <Button
+                        onClick={() =>
+                          updateReservationStatus(reservation.id, "accepted")
+                        }
+                        className="text-green-600 dark:text-green-500 hover:underline"
+                        title="Accepter la réservation"
+                      >
+                        <FaCheck />
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          updateReservationStatus(reservation.id, "rejected")
+                        }
+                        className="text-red-600 dark:text-red-500 hover:underline"
+                        title="Refuser la réservation"
+                      >
+                        <FaTimes />
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
