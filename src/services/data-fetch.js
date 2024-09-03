@@ -51,8 +51,9 @@ export async function putData(object, data) {
 // Fonction pour supprimer les données
 export async function deleteData(object) {
   try {
-    await kyInstance.delete(BASE_URL + object);
-    return null;
+    const response = await kyInstance.delete(BASE_URL + object);
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
     let errorData = await error.responseData;
     throw new Error(JSON.stringify(errorData));
