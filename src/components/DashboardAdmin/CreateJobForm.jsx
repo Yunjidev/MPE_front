@@ -112,13 +112,27 @@ const CreateJobForm = () => {
     }
   };
 
-  const handleJobSelect = (event) => {
+  const handleJobSelect = async (event) => {
     const selectedJobTitle = event.target.value;
     const selectedJob = jobs.find(job => job.name === selectedJobTitle);
     if (selectedJob) {
       setSelectedJob(selectedJob);
       setValue("jobTitle", selectedJob.name);
       console.log("Job selected:", selectedJob); // Ajout de console.log
+
+      // Récupérer l'image du job sélectionné
+      if (selectedJob.picture) {
+        setFormData((prevData) => ({
+          ...prevData,
+          photo: selectedJob.picture,
+        }));
+        console.log("Photo URL:", selectedJob.picture); // Ajout de console.log
+      } else {
+        setFormData((prevData) => ({
+          ...prevData,
+          photo: null,
+        }));
+      }
     } else {
       setSelectedJob(null);
       reset();
@@ -140,7 +154,7 @@ const CreateJobForm = () => {
             onChange={handleJobSelect}
             className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
           >
-            <option value="">Nouveau Métier</option>
+            <option value="">Selectionner métier</option>
             {jobs.map(job => (
               <option key={job.id} value={job.name}>{job.name}</option>
             ))}
