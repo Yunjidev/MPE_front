@@ -41,7 +41,7 @@ const CreateRegionForm = () => {
 
   const onUpdateRegion = async (data) => {
     try {
-      console.log(`Updating region: ${selectedRegion.id} with data:`, data); // Ajout de console.log
+      // console.log(`Updating region: ${selectedRegion.id} with data:`, data); 
       const regionResponse = await putData(`admin/country/${selectedRegion.id}`, { name: data.regionName });
 
       if (regionResponse) {
@@ -60,9 +60,9 @@ const CreateRegionForm = () => {
 
   const onDeleteRegion = async () => {
     try {
-      console.log(`Deleting region: ${selectedRegion.id}`); // Ajout de console.log
+      // console.log(`Deleting region: ${selectedRegion.id}`); 
       const regionResponse = await deleteData(`admin/country/${selectedRegion.id}`);
-      console.log('Delete response:', regionResponse); // Ajout de console.log
+      // console.log('Delete response:', regionResponse); 
 
       if (regionResponse && regionResponse.message === "Region supprimée") {
         toast.success("Région supprimée avec succès !");
@@ -84,11 +84,11 @@ const CreateRegionForm = () => {
     if (selectedRegion) {
       setSelectedRegion(selectedRegion);
       setValue("regionName", selectedRegion.name);
-      console.log("Region selected:", selectedRegion); // Ajout de console.log
+      // console.log("Region selected:", selectedRegion); 
     } else {
       setSelectedRegion(null);
       reset();
-      console.log("No region selected"); // Ajout de console.log
+      // console.log("No region selected"); 
     }
   };
 
