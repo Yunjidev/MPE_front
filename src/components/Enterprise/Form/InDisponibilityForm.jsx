@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import moment from "moment";
+import dayjs from "dayjs";
 
 export default function InDisponibilityForm({ onSubmit }) {
   const [start, setStart] = useState("");
@@ -11,10 +11,10 @@ export default function InDisponibilityForm({ onSubmit }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = {
-      start_date: moment(start).format("YYYY-MM-DD"),
-      start_hour: moment(start).format("HH:mm"),
-      end_date: moment(end).format("YYYY-MM-DD"),
-      end_hour: moment(end).format("HH:mm"),
+      start_date: dayjs(start).format("YYYY-MM-DD"),
+      start_hour: dayjs(start).format("HH:mm"),
+      end_date: dayjs(end).format("YYYY-MM-DD"),
+      end_hour: dayjs(end).format("HH:mm"),
     };
     onSubmit(data);
   };

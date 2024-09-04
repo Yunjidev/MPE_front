@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import moment from "moment";
+import dayjs from "dayjs";
 import Input from "../../Utils/Inputs/Input";
 import { daysOfWeek } from "../../Utils/Format/Time";
 
@@ -26,8 +26,8 @@ export default function DisponibilityForm({ onSubmit }) {
     event.preventDefault();
     const data = {
       day: days,
-      start_hour: moment(start_hour).format("HH:mm"),
-      end_hour: moment(end_hour).format("HH:mm"),
+      start_hour: dayjs(start_hour).format("HH:mm"),
+      end_hour: dayjs(end_hour).format("HH:mm"),
     };
     onSubmit(data);
   };
