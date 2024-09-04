@@ -180,6 +180,11 @@ const CreateJobForm = () => {
             url={formData.photo}
             isEditMode={isEditMode}
           />
+          {formData.photo && (
+            <div className="mt-4">
+              <img src={formData.photo} alt="Job" className="w-full h-auto rounded-lg" />
+            </div>
+          )}
         </div>
         <div className="col-span-2 flex justify-center mt-6">
           <button
