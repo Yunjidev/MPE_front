@@ -50,6 +50,7 @@ import ForgotPasswordForm from "./pages/user/ForgotPassword.jsx";
 import ResetPassword from "./pages/user/ResetPassword";
 import Planning from "./pages/user/Planning";
 import StatsEnterprises from "./pages/DashboardEnterprise/StatsEnterprises";
+import AdminStats from "./components/DashboardAdmin/ComponentsForStatsAdmin/AdminStats";
 import CreateJobsandCountry from "./pages/DashboardAdmin/CreateJobsandCountry";
 
 // Protected Routes
@@ -152,6 +153,7 @@ function AppContent() {
                 <Route path="accept-company" element={<AcceptCompanyPage />} />
                 <Route path="manage-companies" element={<Company />} />
                 <Route path="manage-users" element={<ManageUser />} />
+                <Route path="statistics" element={<AdminStats />} />
                 <Route path="jobsandcountrycreate" element={<CreateJobsandCountry />} />
               </Route>
             </Route>
