@@ -71,13 +71,13 @@ export default function ViewsChart() {
   };
 
   return (
-    <div className="bg-black p-6 rounded-lg">
-      <div className="flex justify-center mb-4">
+    <div className="bg-neutral-700 p-6 rounded-lg">
+      <div className="flex h-full justify-center mb-4">
         <button onClick={() => setTimeFrame('day')} className="mx-2 px-4 py-2 bg-gray-700 text-white rounded">Jour</button>
         <button onClick={() => setTimeFrame('month')} className="mx-2 px-4 py-2 bg-gray-700 text-white rounded">Mois</button>
         <button onClick={() => setTimeFrame('year')} className="mx-2 px-4 py-2 bg-gray-700 text-white rounded">Année</button>
       </div>
-      <Line data={data} options={options} height={100} />
+      <Line data={data} options={options} height={168} />
     </div>
   );
 }
