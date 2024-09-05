@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getData } from "../../../services/data-fetch";
+import { filterUsersLast24h } from "./filterLast24h";
 
-export default function UsersLast24h() {
-    const usersData = [
-        {
-          username: "johndoe",
-          email: "johndoe@example.com",
-          firstname: "John",
-          lastname: "Doe",
-          isentrepreneur: true,
-          avatar: "https://via.placeholder.com/40",
-          enterprises: ["Enterprise1", "Enterprise2"]
-        },
-        // Ajoutez plus de données fictives si nécessaire
-      ];
+const UsersLast24h = () => {
+  const [usersData, setUsersData] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const data = await getData("admin/users");
+        const filteredData = filterUsersLast24h(data);
+        console.log("data", data);
+        setUsersData(filteredData);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des utilisateurs:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   return (
     <div className="bg-neutral-800 text-white p-6 rounded-lg shadow-md w-full overflow-x-auto">
@@ -67,7 +73,9 @@ export default function UsersLast24h() {
                 <img src={user.avatar} alt="avatar" className="w-10 h-10 rounded-full" />
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
-                {user.enterprises.join(", ")}
+              {user.enterprises.map((enterprise, idx) => (
+                  <div key={idx}>{enterprise.name}</div>
+              ))}
               </td>
             </tr>
           ))}
@@ -75,4 +83,6 @@ export default function UsersLast24h() {
       </table>
     </div>
   );
-}
+};
+
+export default UsersLast24h;

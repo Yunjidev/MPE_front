@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getData } from "../../../services/data-fetch";
-import { filterLast24h } from "./filterLast24h";
+import { filterEnterprisesLast24h } from "./filterLast24h";
 
 export default function EnterprisesLast24h() {
     const [enterprisesData, setEnterprisesData] = useState([]);
@@ -9,7 +9,7 @@ export default function EnterprisesLast24h() {
       const fetchEnterprises = async () => {
         try {
           const data = await getData("admin/enterprises");
-          const filteredData = filterLast24h(data);
+          const filteredData = filterEnterprisesLast24h(data);
           console.log("data", data);
           setEnterprisesData(filteredData);
         } catch (error) {
