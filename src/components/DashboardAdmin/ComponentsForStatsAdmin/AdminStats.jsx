@@ -79,7 +79,7 @@ export default function AdminStats() {
           <StatCard
             icon={<FaUsers className="text-5xl" />}
             title="Abonnements"
-            value="N/A" // Valeur fictive pour le moment
+            value={data.subscriptions}
             gradientFrom="from-blue-400"
             gradientTo="to-blue-800"
           />

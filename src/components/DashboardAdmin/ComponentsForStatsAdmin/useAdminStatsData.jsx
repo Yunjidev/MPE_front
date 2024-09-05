@@ -11,12 +11,14 @@ export function useAdminStatsData() {
       try {
         const statsResponse = await getData("stats");
         const notValidatedEnterprisesResponse = await getData("admin/enterprises/not-validate");
+        const subscriptionsResponse = await getData("admin/subscriptions");
 
-        console.log('Données récupérées:', statsResponse, notValidatedEnterprisesResponse); // Vérifier les données récupérées
+        console.log('Données récupérées:', statsResponse, notValidatedEnterprisesResponse, subscriptionsResponse); // Vérifier les données récupérées
 
         setData({
           ...statsResponse,
           notValidatedEnterprises: notValidatedEnterprisesResponse.length,
+          subscriptions: subscriptionsResponse.length,
         });
       } catch (error) {
         console.error('Error fetching stats data:', error);
