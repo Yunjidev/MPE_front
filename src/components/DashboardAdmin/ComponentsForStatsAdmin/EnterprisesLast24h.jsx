@@ -10,7 +10,7 @@ export default function EnterprisesLast24h() {
         try {
           const data = await getData("admin/enterprises");
           const filteredData = filterEnterprisesLast24h(data);
-          console.log("data", data);
+          // console.log("data", data);
           setEnterprisesData(filteredData);
         } catch (error) {
           console.error("Erreur lors de la récupération des entreprises:", error);

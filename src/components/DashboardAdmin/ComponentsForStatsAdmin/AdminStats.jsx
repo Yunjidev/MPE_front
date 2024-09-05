@@ -84,7 +84,9 @@ export default function AdminStats() {
             gradientTo="to-blue-800"
           />
         </div>
-        <GraphForView />
+        <div className="m-4 p-4 border rounded-lg shadow-lg">
+          <GraphForView />
+        </div>
         <EnterprisesLast24h />
         <UsersLast24h />
         <SubscriptionsLast24h />

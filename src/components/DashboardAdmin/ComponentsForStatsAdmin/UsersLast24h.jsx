@@ -10,7 +10,7 @@ const UsersLast24h = () => {
       try {
         const data = await getData("admin/users");
         const filteredData = filterUsersLast24h(data);
-        console.log("data", data);
+        // console.log("data", data);
         setUsersData(filteredData);
       } catch (error) {
         console.error("Erreur lors de la récupération des utilisateurs:", error);

@@ -13,8 +13,6 @@ export function useAdminStatsData() {
         const notValidatedEnterprisesResponse = await getData("admin/enterprises/not-validate");
         const subscriptionsResponse = await getData("admin/subscriptions");
 
-        console.log('Données récupérées:', statsResponse, notValidatedEnterprisesResponse, subscriptionsResponse); // Vérifier les données récupérées
-
         setData({
           ...statsResponse,
           notValidatedEnterprises: notValidatedEnterprisesResponse.length,

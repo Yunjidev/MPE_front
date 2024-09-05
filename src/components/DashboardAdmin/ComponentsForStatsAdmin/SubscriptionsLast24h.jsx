@@ -9,7 +9,7 @@ const SubscriptionsLast24h = () => {
     const fetchSubscriptions = async () => {
       try {
         const data = await getData("admin/subscriptions");
-        console.log("data", data);
+        // console.log("data", data);
         const filteredData = filterSubscriptionsLast24h(data);
         setSubscriptionsData(filteredData);
       } catch (error) {
