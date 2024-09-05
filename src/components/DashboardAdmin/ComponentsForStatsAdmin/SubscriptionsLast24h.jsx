@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getData } from "../../../services/data-fetch";
+import { filterSubscriptionsLast24h } from "./filterLast24h";
 
-export default function SubscriptionsLast24h() {
-    const subscriptionsData = [
-        {
-          enterpriseName: "Enterprise1",
-          user: "johndoe",
-          subscriptionType: "Premium",
-          job: "Manager"
-        },
-        // Ajoutez plus de données fictives si nécessaire
-      ];
+const SubscriptionsLast24h = () => {
+  const [subscriptionsData, setSubscriptionsData] = useState([]);
+
+  useEffect(() => {
+    const fetchSubscriptions = async () => {
+      try {
+        const data = await getData("admin/subscriptions");
+        console.log("data", data);
+        const filteredData = filterSubscriptionsLast24h(data);
+        setSubscriptionsData(filteredData);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des abonnements:", error);
+      }
+    };
+
+    fetchSubscriptions();
+  }, []);
+
   return (
     <div className="bg-neutral-800 text-white p-6 rounded-lg shadow-md w-full overflow-x-auto">
       <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-white to-[#67FFCC] dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] text-transparent bg-clip-text">
@@ -22,13 +32,13 @@ export default function SubscriptionsLast24h() {
               Nom Entreprise
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-              User
+              Status
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
               Type Abonnement
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-              Job
+              Date de début
             </th>
           </tr>
         </thead>
@@ -36,16 +46,16 @@ export default function SubscriptionsLast24h() {
           {subscriptionsData.map((subscription, index) => (
             <tr key={index}>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
-                {subscription.enterpriseName}
+                {subscription.enterprise.name}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
-                {subscription.user}
+                {subscription.status}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
-                {subscription.subscriptionType}
+                {subscription.subscription_type}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
-                {subscription.job}
+                {new Date(subscription.start_date).toLocaleDateString()}
               </td>
             </tr>
           ))}
@@ -53,4 +63,6 @@ export default function SubscriptionsLast24h() {
       </table>
     </div>
   );
-}
+};
+
+export default SubscriptionsLast24h;

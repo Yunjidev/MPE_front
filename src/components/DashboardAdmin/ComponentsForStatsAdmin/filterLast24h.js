@@ -17,3 +17,13 @@ export const filterUsersLast24h = (data) => {
         return diffHours <= 24;
     });
 };
+
+export const filterSubscriptionsLast24h = (data) => {
+    return data.filter(subscription => {
+        const createdAt = new Date(subscription.start_date);
+        const now = new Date();
+        const diffTime = Math.abs(now - createdAt);
+        const diffHours = diffTime / (1000 * 60 * 60);
+        return diffHours <= 24;
+    });
+};
