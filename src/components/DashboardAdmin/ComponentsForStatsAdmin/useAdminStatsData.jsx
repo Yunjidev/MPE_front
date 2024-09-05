@@ -9,10 +9,15 @@ export function useAdminStatsData() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await getData("stats");
-        console.log('Données récupérées:', response); // Vérifier les données récupérées
+        const statsResponse = await getData("stats");
+        const notValidatedEnterprisesResponse = await getData("admin/enterprises/not-validate");
 
-        setData(response);
+        console.log('Données récupérées:', statsResponse, notValidatedEnterprisesResponse); // Vérifier les données récupérées
+
+        setData({
+          ...statsResponse,
+          notValidatedEnterprises: notValidatedEnterprisesResponse.length,
+        });
       } catch (error) {
         console.error('Error fetching stats data:', error);
       }

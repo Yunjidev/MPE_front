@@ -72,7 +72,7 @@ export default function AdminStats() {
           <StatCard
             icon={<FaTimesCircle className="text-5xl" />}
             title="Entreprises non validées"
-            value="N/A" // Valeur fictive pour le moment
+            value={data.notValidatedEnterprises}
             gradientFrom="from-red-400"
             gradientTo="to-red-800"
           />
