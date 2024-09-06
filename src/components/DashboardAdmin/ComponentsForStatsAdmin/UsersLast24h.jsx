@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getData } from "../../../services/data-fetch";
 import { filterUsersLast24h } from "./filterLast24h";
 
@@ -22,7 +22,7 @@ const UsersLast24h = () => {
 
   return (
     <div className="bg-neutral-800 text-white p-6 rounded-lg shadow-md w-full overflow-x-auto">
-      <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-white to-[#67FFCC] dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] text-transparent bg-clip-text">
+      <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-white to-[#67FFCC] text-transparent bg-clip-text">
         Utilisateurs inscrits ces dernières 24h
       </h2>
       <table className="min-w-full divide-y divide-gray-700">

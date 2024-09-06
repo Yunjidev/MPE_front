@@ -29,11 +29,11 @@ const Calendar = () => {
 
   return (
     <div className="flex items-center justify-center p-4">
-      <div className="w-full max-w-full sm:max-w-md md:max-w-3xl bg-white/50 dark:bg-neutral-800 bg-neutral-800 shadow-lg rounded-lg border dark:border-[#67FFCC]">
+      <div className="w-full max-w-full sm:max-w-md md:max-w-3xl bg-neutral-800 shadow-lg rounded-lg border border-[#67FFCC]">
         <div className="flex items-center justify-between p-4 border-b">
           <button
             onClick={handlePreviousMonth}
-            className="dark:text-white text-black"
+            className="text-white"
             aria-label="Previous month"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -41,10 +41,10 @@ const Calendar = () => {
               <polyline points="15 6 9 12 15 18" />
             </svg>
           </button>
-          <span className="text-lg dark:text-white text-black sm:text-xl font-semibold">{monthYear}</span>
+          <span className="text-lg text-white sm:text-xl font-semibold">{monthYear}</span>
           <button
             onClick={handleNextMonth}
-            className="dark:text-white text-black"
+            className="text-white"
             aria-label="Next month"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -58,7 +58,7 @@ const Calendar = () => {
             <thead>
               <tr>
                 {daysOfWeek.map(day => (
-                  <th key={day} className="p-2 dark:text-white text-black text-xs sm:text-sm md:text-base">{day}</th>
+                  <th key={day} className="p-2 text-white text-xs sm:text-sm md:text-base">{day}</th>
                 ))}
               </tr>
             </thead>
@@ -66,13 +66,13 @@ const Calendar = () => {
               {Array.from({ length: Math.ceil(days.length / 7) }).map((_, rowIndex) => (
                 <tr key={rowIndex}>
                   {days.slice(rowIndex * 7, (rowIndex + 1) * 7).map((day, index) => (
-                    <td key={index} className="p-2 text-center dark:text-white text-black text-xs sm:text-sm md:text-base">
+                    <td key={index} className="p-2 text-center text-white text-xs sm:text-sm md:text-base">
                       {day ? (
-                        <span className={`block p-2 rounded ${day === new Date().getDate() && currentMonth.getMonth() === new Date().getMonth() ? 'bg-[#67FFCC] text-black' : 'dark:text-white text-black'}`}>
+                        <span className={`block p-2 rounded ${day === new Date().getDate() && currentMonth.getMonth() === new Date().getMonth() ? 'bg-[#67FFCC] text-black' : 'text-white '}`}>
                           {day}
                         </span>
                       ) : (
-                        <span className="block p-2 dark:text-text-gray-400 text-black "> </span>
+                        <span className="block p-2 text-gray-400  "> </span>
                       )}
                     </td>
                   ))}

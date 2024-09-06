@@ -23,7 +23,7 @@ const IndexCardsEntreprises = ({ entreprise, userId }) => {
   };
 
   return (
-    <div className="card card-compact w-auto shadow-xl relative dark:bg-[#262626] dark:text-white light:bg-[#FDE8E8] card-hover-zoom" onClick={redirectToEnterprisePage}>
+    <div className="card card-compact w-auto shadow-xl relative bg-[#262626] text-white light:bg-[#FDE8E8] card-hover-zoom" onClick={redirectToEnterprisePage}>
       <div className="rating gap-1 absolute top-0 right-0 p-4">
         <LikeButton userId={userId} enterpriseId={entreprise.id} />
       </div>
