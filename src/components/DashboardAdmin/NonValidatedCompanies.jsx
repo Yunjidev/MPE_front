@@ -76,7 +76,7 @@ const NonValidatedCompanies = () => {
       </div>
 
       {/* Affichage des entreprises sous forme de cartes */}
-      <div className="grid grid-cols-1 gap-4">
+      <div className="flex flex-col gap-4">
         {companies
           .slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)
           .map((company) => (
@@ -88,7 +88,7 @@ const NonValidatedCompanies = () => {
                 {company.name}
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-1">
                 {/* Téléphone et Mail */}
                 <div className="flex-1 max-w-[120px]">
                   <div className="flex items-center text-gray-600 dark:text-gray-300 mb-1 text-xs">
@@ -111,7 +111,7 @@ const NonValidatedCompanies = () => {
                 </div>
 
                 {/* Siret et Métier */}
-                <div className="flex-1 max-w-[120px]">
+                <div className="grid grid-cols-1">
                   <div className="flex items-center text-gray-600 dark:text-gray-300 mb-1 text-xs">
                     <FaBuilding className="mr-1 text-sm" />{" "}
                     {company.siret_number}
@@ -120,23 +120,22 @@ const NonValidatedCompanies = () => {
                     <FaBriefcase className="mr-1 text-sm" /> {company.job.name}
                   </div>
                 </div>
-              </div>
-
-              <div className="flex justify-center md:justify-end mt-4">
-                <button
-                  onClick={() => validateCompany(company.id)}
-                  className="text-green-600 dark:text-green-400 hover:scale-110 transition-transform mx-1 text-xs md:text-sm"
-                  title="Valider l'entreprise"
-                >
-                  <FaCheckCircle size={16} />
-                </button>
-                <button
-                  onClick={() => rejectCompany(company.id)}
-                  className="text-red-600 dark:text-red-400 hover:scale-110 transition-transform mx-1 text-xs md:text-sm"
-                  title="Refuser l'entreprise"
-                >
-                  <FaTimesCircle size={16} />
-                </button>
+                <div className="flex justify-center md:justify-end mt-4">
+                  <button
+                    onClick={() => validateCompany(company.id)}
+                    className="text-green-600 dark:text-green-400 hover:scale-110 transition-transform mx-1 text-xs md:text-sm"
+                    title="Valider l'entreprise"
+                  >
+                    <FaCheckCircle size={16} />
+                  </button>
+                  <button
+                    onClick={() => rejectCompany(company.id)}
+                    className="text-red-600 dark:text-red-400 hover:scale-110 transition-transform mx-1 text-xs md:text-sm"
+                    title="Refuser l'entreprise"
+                  >
+                    <FaTimesCircle size={16} />
+                  </button>
+                </div>
               </div>
             </div>
           ))}

@@ -7,9 +7,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getData, deleteData } from "../../services/data-fetch";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
-import Button from "../Button/button";
 import Modal from "./Modal";
-import EditCompanyForm from "../DashboardEnterprise/EditCompanyForm";
 import { toast } from "react-toastify";
 
 const ValidatedCompanies = () => {
@@ -27,7 +25,6 @@ const ValidatedCompanies = () => {
     const fetchCompanies = async () => {
       try {
         const data = await getData("enterprises/validate");
-        console.log(data);
         setCompanies(data);
         setFilteredCompanies(data);
       } catch (error) {
@@ -88,11 +85,6 @@ const ValidatedCompanies = () => {
     }
   };
 
-  const editCompany = (company) => {
-    setSelectedCompany(company);
-    setIsModalOpen(true);
-  };
-
   const viewCompany = (companyId) => {
     navigate(`/enterprise/${companyId}`);
   };
@@ -143,7 +135,7 @@ const ValidatedCompanies = () => {
           .map((company) => (
             <div
               key={company.id}
-              className="mb-4 p-4 rounded-lg shadow-md bg-white dark:bg-neutral-800 flex items-start"
+              className="mb-4 p-4 rounded-lg shadow-md bg-white dark:bg-neutral-800 flex items-center"
             >
               <div className="flex-grow">
                 <div className="grid grid-cols-2 gap-4">
@@ -191,25 +183,20 @@ const ValidatedCompanies = () => {
                   </div>
                 </div>
               </div>
-              <div className="ml-4 flex flex-col justify-between">
-                <Button
+              <div className="ml-4 flex flex-col justify-center items-center mb-6 ">
+                {" "}
+                <button
                   onClick={() => viewCompany(company.id)}
-                  className="text-blue-600 dark:text-blue-500 hover:underline mb-2"
+                  className="text-blue-600 dark:text-blue-500 hover:underline text-2xl mb-6"
                 >
                   <FaEye />
-                </Button>
-                <Button
-                  onClick={() => editCompany(company)}
-                  className="text-green-600 dark:text-green-500 hover:underline mb-2"
-                >
-                  <FaEdit />
-                </Button>
-                <Button
+                </button>
+                <button
                   onClick={() => deleteCompany(company.id)}
-                  className="text-red-600 dark:text-red-500 hover:underline"
+                  className="text-red-600 dark:text-red-500 text hover:underline text-2xl"
                 >
                   <FaTrash />
-                </Button>
+                </button>
               </div>
             </div>
           ))}
