@@ -64,7 +64,7 @@ const CreateJobForm = () => {
 
   const onUpdateJob = async (data) => {
     try {
-      console.log(`Updating job: ${selectedJob.id} with data:`, data); // Ajout de console.log
+      // console.log(`Updating job: ${selectedJob.id} with data:`, data);
       const updatedFormData = new FormData();
       updatedFormData.append("name", data.jobTitle);
       if (formData.photo) {
@@ -73,7 +73,7 @@ const CreateJobForm = () => {
         updatedFormData.append("picture", selectedJob.picture);
       }
 
-      console.log('FormData:', updatedFormData.get("name"), updatedFormData.get("picture")); // Ajout de console.log
+      // console.log('FormData:', updatedFormData.get("name"), updatedFormData.get("picture")); 
 
       const jobResponse = await putData(`admin/job/${selectedJob.id}`, updatedFormData);
 
@@ -94,9 +94,9 @@ const CreateJobForm = () => {
 
   const onDeleteJob = async () => {
     try {
-      console.log(`Deleting job: ${selectedJob.id}`); // Ajout de console.log
+      // console.log(`Deleting job: ${selectedJob.id}`); 
       const jobResponse = await deleteData(`admin/job/${selectedJob.id}`);
-      console.log('Delete response:', jobResponse); // Ajout de console.log
+      // console.log('Delete response:', jobResponse); 
 
       if (jobResponse && jobResponse.message === "job supprimée") {
         toast.success("Métier supprimé avec succès !");
@@ -118,7 +118,7 @@ const CreateJobForm = () => {
     if (selectedJob) {
       setSelectedJob(selectedJob);
       setValue("jobTitle", selectedJob.name);
-      console.log("Job selected:", selectedJob); // Ajout de console.log
+      // console.log("Job selected:", selectedJob); 
 
       // Récupérer l'image du job sélectionné
       if (selectedJob.picture) {
@@ -126,7 +126,7 @@ const CreateJobForm = () => {
           ...prevData,
           photo: selectedJob.picture,
         }));
-        console.log("Photo URL:", selectedJob.picture); // Ajout de console.log
+        // console.log("Photo URL:", selectedJob.picture); 
       } else {
         setFormData((prevData) => ({
           ...prevData,
@@ -136,7 +136,7 @@ const CreateJobForm = () => {
     } else {
       setSelectedJob(null);
       reset();
-      console.log("No job selected"); // Ajout de console.log
+      // console.log("No job selected"); 
     }
   };
 
@@ -180,6 +180,11 @@ const CreateJobForm = () => {
             url={formData.photo}
             isEditMode={isEditMode}
           />
+          {formData.photo && (
+            <div className="mt-4">
+              <img src={formData.photo} alt="Job" className="w-full h-auto rounded-lg" />
+            </div>
+          )}
         </div>
         <div className="col-span-2 flex justify-center mt-6">
           <button
