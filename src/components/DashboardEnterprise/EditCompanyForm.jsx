@@ -12,6 +12,7 @@ const EditCompanyForm = ({ company, onClose, onSave }) => {
       zip_code: "",
       country: "",
       job: "",
+      description: "", // Ajout de la description dans les valeurs par défaut
     },
   });
 
@@ -42,6 +43,7 @@ const EditCompanyForm = ({ company, onClose, onSave }) => {
         zip_code: company.zip_code || "",
         country: company.country.name || "",
         job: company.job.name || "",
+        description: company.description || "", // Initialisation de la description
       });
 
       setValue("name", company.name || "");
@@ -49,6 +51,7 @@ const EditCompanyForm = ({ company, onClose, onSave }) => {
       setValue("zip_code", company.zip_code || "");
       setValue("country", company.country.name || "");
       setValue("job", company.job.name || "");
+      setValue("description", company.description || ""); // Initialisation de la description
     }
   }, [company, reset, setValue]);
 
@@ -62,11 +65,12 @@ const EditCompanyForm = ({ company, onClose, onSave }) => {
     if (data.country !== company.country.name)
       companyUpdate.country = { name: data.country };
     if (data.job !== company.job.name) companyUpdate.job = { name: data.job };
+    if (data.description !== company.description)
+      companyUpdate.description = data.description; // Mise à jour de la description
 
     try {
       const response = await putData(`enterprise/${company.id}`, companyUpdate);
-      // Supposons que `response` contient les données mises à jour
-      onSave(response); // Passez la réponse avec les données mises à jour
+      onSave(response);
       alert("Entreprise modifiée avec succès");
       onClose();
     } catch (error) {
@@ -144,6 +148,16 @@ const EditCompanyForm = ({ company, onClose, onSave }) => {
                 </option>
               ))}
             </select>
+          </div>
+          {/* Ajout du champ de description */}
+          <div className="relative flex items-center">
+            <textarea
+              id="description"
+              {...register("description", { required: false })}
+              placeholder="Description de l'entreprise"
+              className="w-full px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-green-300"
+              rows={4}
+            />
           </div>
         </div>
         <div className="col-span-2 flex justify-center mt-6">

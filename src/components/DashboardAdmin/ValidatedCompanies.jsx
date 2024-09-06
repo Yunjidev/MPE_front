@@ -27,7 +27,6 @@ const ValidatedCompanies = () => {
     const fetchCompanies = async () => {
       try {
         const data = await getData("enterprises/validate");
-        console.log(data);
         setCompanies(data);
         setFilteredCompanies(data);
       } catch (error) {
