@@ -51,6 +51,7 @@ import ResetPassword from "./pages/user/ResetPassword";
 import Planning from "./pages/user/Planning";
 import StatsEnterprises from "./pages/DashboardEnterprise/StatsEnterprises";
 import CreateJobsandCountry from "./pages/DashboardAdmin/CreateJobsandCountry";
+import SubscriptionManagement from "./pages/DashboardAdmin/SubscriptionManagement";
 
 // Protected Routes
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
@@ -153,6 +154,7 @@ function AppContent() {
                 <Route path="manage-companies" element={<Company />} />
                 <Route path="manage-users" element={<ManageUser />} />
                 <Route path="jobsandcountrycreate" element={<CreateJobsandCountry />} />
+                <Route path="subscriptionmanagement" element={<SubscriptionManagement />} />
               </Route>
             </Route>
           </Route>

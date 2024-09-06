@@ -8,6 +8,7 @@ import {
   FaChartBar,
   FaChartLine,
   FaPenFancy,
+  FaEuroSign,
 } from "react-icons/fa";
 
 export default function AdminSideBar({
@@ -59,6 +60,11 @@ export default function AdminSideBar({
           et des régions
         </>
       ),
+    },
+    {
+      to: "/dashboard/subscriptionmanagement",
+      icon: <FaEuroSign className={iconstyle} />,
+      label: "Gestion des abonnements",
     },
   ];
 
