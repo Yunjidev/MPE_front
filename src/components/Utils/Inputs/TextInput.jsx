@@ -5,8 +5,8 @@ export default function InputText({
   value = "",
   onChange,
   placeholder,
-  className,
-  inputStyle,
+  className="",
+  inputStyle="",
   icon,
   type = "text",
 }) {

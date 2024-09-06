@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import Input from "../../Utils/Inputs/Input";
 import { FaUser } from "react-icons/fa";
 
-export default function Edit({ fomData, onChange }) {
+export default function Edit({ fomData, onChange, className }) {
   return (
     <>
       <Input.Text
@@ -11,6 +11,7 @@ export default function Edit({ fomData, onChange }) {
         onChange={onChange}
         placeholder="Nom"
         icon={<FaUser />}
+        className={className}
       />
       <Input.Text
         id="firstname"
@@ -18,6 +19,7 @@ export default function Edit({ fomData, onChange }) {
         onChange={onChange}
         placeholder="Prénom"
         icon={<FaUser />}
+        className={className}
       />
     </>
   );
