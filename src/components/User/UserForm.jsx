@@ -9,8 +9,6 @@ import Input from "../Utils/Inputs/Input";
 import Inscription from "./Form/Inscription";
 import Edit from "./Form/Edit";
 
-const className = "w-11/12 mx-auto"
-
 export default function UserForm({ onSubmit, mode }) {
   const [user] = useAtom(userAtom);
   const [formData, setFormData] = useState({});
@@ -19,7 +17,7 @@ export default function UserForm({ onSubmit, mode }) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const isConnexion = mode === "Connexion";
   const isInscription = mode === "Inscription";
-  const isEdit = mode === "Edition";
+  const isEdit = mode === "Edit";
 
   useEffect(() => {
     if (isEdit) {
@@ -111,9 +109,9 @@ export default function UserForm({ onSubmit, mode }) {
               />
             </div>
           ) : (
-            <Inscription fomData={formData} onChange={handleInputChange} className={className} />
+            <Inscription fomData={formData} onChange={handleInputChange} />
           )}
-          {isEdit && <Edit fomData={formData} onChange={handleInputChange} className={className} />}
+          {isEdit && <Edit fomData={formData} onChange={handleInputChange} />}
           {(isConnexion || isInscription) && (
             <Input.Text
               id="password"
@@ -145,11 +143,9 @@ export default function UserForm({ onSubmit, mode }) {
             />
           )}
         </form>
-        <button type="submit" onClick={handleSubmit} className="flex dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text items-center justify-center w-2/3 mx-auto border border-neutral-300 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-green-200 transition duration-300 ease-in-out">
-          {isEdit ? (
-            <p>Sauvegarder</p>) : (
-            { mode })}
-        </button>
+        <Button type="submit" onClick={handleSubmit}>
+          {mode}
+        </Button>
         {mode === "Connexion" && (
           <a
             className="text-blue-500 hover:text-blue-800 text-sm"
