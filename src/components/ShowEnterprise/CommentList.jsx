@@ -60,7 +60,7 @@ const CommentList = ({ offers }) => {
         {/* Sort Dropdown */}
         <div className="flex justify-center">
           <select
-            className="p-2 rounded-lg border-neutral-800 bg-neutral-600"
+            className="p-2 rounded-lg dark:border-neutral-800 border-orange-300 dark:bg-neutral-600 bg-orange-200"
             value={sortOrder}
             onChange={handleSortChange}
           >
@@ -72,17 +72,17 @@ const CommentList = ({ offers }) => {
 
         {/* Rating Filter Buttons */}
         <div className="flex justify-center space-x-2">
-          {[1, 2, 3, 4, 5].map((rating) => (
+          {[1, 2, 3, 4, 5].map((rating) => (  
             <button
               key={rating}
-              className={`p-2 rounded-full ${selectedRating === rating ? 'bg-orange-400/75' : 'bg-neutral-500/25'}`}
+              className={`p-2 rounded-full ${selectedRating === rating ? 'bg-orange-400/75' : 'dark:bg-neutral-500/25 bg-neutral-500/25'}`}
               onClick={() => handleFilterChange(rating)}
             >
               {rating} ⭐
             </button>
           ))}
           <button
-            className={`p-2 rounded-full ${selectedRating === null ? 'bg-orange-400/75' : 'bg-neutral-500/25'}`}
+            className={`p-2 rounded-full ${selectedRating === null ? 'dark:bg-orange-400/75 bg-orange-200' : 'bg-neutral-500/25'}`}
             onClick={() => handleFilterChange(null)}
           >
             Tous
@@ -107,7 +107,7 @@ const CommentList = ({ offers }) => {
           {sortedComments.slice(visibleComments - commentsPerPage, visibleComments).map((rating, index) => (
             <div
               key={index}
-              className="bg-neutral-700 p-4 rounded-lg w-full sm:w-[250px] flex flex-col"
+              className="dark:bg-neutral-700 bg-orange-100 p-4 rounded-lg w-full sm:w-[250px] flex flex-col"
             >
               <div className="flex items-center mb-2">
                 <div className="w-10 h-10 bg-gray-500 rounded-full mr-3 flex items-center justify-center">
