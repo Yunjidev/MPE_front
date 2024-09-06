@@ -190,25 +190,25 @@ const ValidatedCompanies = () => {
                   </div>
                 </div>
               </div>
-              <div className="ml-4 flex flex-col justify-between">
-                <Button
+              <div className="ml-4 flex flex-col items-center">
+                <button
                   onClick={() => viewCompany(company.id)}
-                  className="text-blue-600 dark:text-blue-500 hover:underline mb-2"
+                  className="text-blue-600 dark:text-blue-500 hover:underline mb-4"
                 >
                   <FaEye />
-                </Button>
-                <Button
+                </button>
+                <button
                   onClick={() => editCompany(company)}
-                  className="text-green-600 dark:text-green-500 hover:underline mb-2"
+                  className="text-green-600 dark:text-green-500 hover:underline ml-1 mb-4"
                 >
                   <FaEdit />
-                </Button>
-                <Button
+                </button>
+                <button
                   onClick={() => deleteCompany(company.id)}
                   className="text-red-600 dark:text-red-500 hover:underline"
                 >
                   <FaTrash />
-                </Button>
+                </button>
               </div>
             </div>
           ))}
