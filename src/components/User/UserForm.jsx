@@ -111,7 +111,7 @@ export default function UserForm({ onSubmit, mode }) {
               />
             </div>
           ) : (
-            <Inscription fomData={formData} onChange={handleInputChange} className={className} />
+            <Inscription fomData={formData} onChange={handleInputChange} className={isEdit ? className : ""} />
           )}
           {isEdit && <Edit fomData={formData} onChange={handleInputChange} className={className} />}
           {(isConnexion || isInscription) && (
