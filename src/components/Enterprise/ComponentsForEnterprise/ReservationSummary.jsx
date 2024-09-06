@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react/prop-types */
 import { FaEdit, FaEye, FaRegListAlt } from "react-icons/fa";
 
 export default function ReservationSummary({ enterprise, onEdit, onView, onOffersList }) {

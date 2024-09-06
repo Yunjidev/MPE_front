@@ -75,14 +75,14 @@ const UsersList = () => {
   };
 
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-neutral-600 dark:bg-neutral-800 border dark:border-neutral-700 p-4">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-neutral-800 border border-neutral-700 p-4">
       <div className="p-4">
         <input
           type="text"
           placeholder="Rechercher..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-4 py-2 mb-4 rounded-lg dark:bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
+          className="w-full px-4 py-2 mb-4 rounded-lg bg-neutral-800 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
         />
       </div>
 
@@ -93,21 +93,28 @@ const UsersList = () => {
           .map((user) => (
             <div
               key={user.id}
-              className="p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-md"
+              className="p-4 bg-neutral-800 rounded-lg shadow-md"
             >
-              <div className="grid grid-cols-3 gap-4 items-center">
+              <div className="grid grid-cols-4 gap-4 items-center">
                 {/* Première colonne : Informations de l'utilisateur */}
                 <div className="flex flex-col">
-                  <div className="text-gray-900 dark:text-white text-sm">
-                    {user.username}
+                  <div className="text-white text-sm">
+                    {user.username} 
                   </div>
-                  <div className="text-gray-600 dark:text-gray-300 text-xs">
+                  <div className="text-gray-300 text-xs">
                     {user.email}
                   </div>
                 </div>
 
+                {/* Première colonne : Informations de l'utilisateur */}
+                <div className="flex flex-col">
+                  <div className="text-white text-sm">
+                    {user.firstname} {user.lastname}
+                  </div>
+                </div>
+
                 {/* Deuxième colonne : Rôles */}
-                <div className="text-gray-600 dark:text-gray-300 text-xs">
+                <div className="text-gray-300 text-xs">
                   {user.isAdmin ? "Admin" : "Utilisateur"} /{" "}
                   {user.isEntrepreneur ? "Entrepreneur" : "Client"}
                 </div>
@@ -116,14 +123,14 @@ const UsersList = () => {
                 <div className="flex justify-end space-x-2">
                   <button
                     onClick={() => editUser(user)}
-                    className="text-green-600 dark:text-green-400 hover:scale-110 transition-transform"
+                    className="text-green-400 hover:scale-110 transition-transform"
                     title="Modifier l'utilisateur"
                   >
                     <FaEdit size={16} />
                   </button>
                   <button
                     onClick={() => deleteUser(user.id)}
-                    className="text-red-600 dark:text-red-400 hover:scale-110 transition-transform"
+                    className="text-red-400 hover:scale-110 transition-transform"
                     title="Supprimer l'utilisateur"
                   >
                     <FaTrash size={16} />
@@ -139,11 +146,11 @@ const UsersList = () => {
         <button
           onClick={() => setPageIndex(pageIndex > 0 ? pageIndex - 1 : 0)}
           disabled={pageIndex === 0}
-          className="px-3 py-1 mx-1 bg-gray-200 rounded-lg mr-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out text-xs"
+          className="px-3 py-1 mx-1 rounded-lg mr-4 bg-neutral-700 text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out text-xs"
         >
           « Précédent
         </button>
-        <span className="dark:text-white text-black font-bold text-xs">
+        <span className="text-white font-bold text-xs">
           Page {pageIndex + 1} sur {Math.ceil(filteredUsers.length / pageSize)}
         </span>
         <button
@@ -155,7 +162,7 @@ const UsersList = () => {
             )
           }
           disabled={pageIndex >= Math.ceil(filteredUsers.length / pageSize) - 1}
-          className="px-3 py-1 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out text-xs"
+          className="px-3 py-1 mx-1 rounded-lg ml-4 bg-neutral-700 text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out text-xs"
         >
           Suivant »
         </button>

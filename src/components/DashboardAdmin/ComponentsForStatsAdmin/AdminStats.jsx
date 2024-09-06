@@ -1,4 +1,4 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import { FaUsers, FaBriefcase, FaBuilding, FaCalendarCheck, FaStar, FaEye, FaDollarSign, FaTimesCircle } from "react-icons/fa";
 import { useAdminStatsData } from "./useAdminStatsData";
 import EnterprisesLast24h from "./EnterprisesLast24h";
@@ -98,7 +98,7 @@ export default function AdminStats() {
 
 function StatCard({ icon, title, value, gradientFrom, gradientTo }) {
   return (
-    <div className={`bg-opacity-30 dark:bg-neutral-700 text-black dark:text-white shadow-md rounded-lg p-6 flex items-center space-x-4 w-full h-32`}>
+    <div className={`bg-opacity-30 bg-neutral-700 text-black text-white shadow-md rounded-lg p-6 flex items-center space-x-4 w-full h-32`}>
       {icon}
       <div>
         <h2 className={`text-xl font-bold bg-gradient-to-r ${gradientFrom} ${gradientTo} text-transparent bg-clip-text`}>

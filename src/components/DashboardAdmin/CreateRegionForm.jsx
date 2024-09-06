@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { postData, putData, deleteData, getData } from "../../services/data-fetch";
@@ -93,8 +93,8 @@ const CreateRegionForm = () => {
   };
 
   return (
-    <div className="flex flex-col h-full space-around bg-neutral-800 p-6 rounded-lg">
-      <h2 className="dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-black to-[#67FFCC] font-bold text-transparent bg-clip-text text-center text-2xl mb-5">
+    <div className="flex flex-col h-full space-around bg-neutral-800 p-6 rounded-lg mt-6">
+      <h2 className="bg-gradient-to-r from-white to-[#67FFCC] font-bold text-transparent bg-clip-text text-center text-2xl mb-5">
         Gestion des Régions
       </h2>
       <hr className="w-1/2 my-4 border-t-2 border-gray-400 mx-auto" />
@@ -128,7 +128,7 @@ const CreateRegionForm = () => {
         </div>
         <div className="col-span-2 flex justify-center mt-6">
           <button
-            className="flex w-full dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-black to-[#67FFCC] text-transparent bg-clip-text items-center justify-center border border-gray-500 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-[#67FFCC] transition duration-300 ease-in-out"
+            className="flex w-96 bg-gradient-to-r from-white to-[#67FFCC] text-transparent bg-clip-text items-center justify-center border border-gray-500 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-[#67FFCC] transition duration-300 ease-in-out"
             type="submit"
           >
             {selectedRegion ? "Modifier Région" : "Créer Région"}
@@ -138,7 +138,7 @@ const CreateRegionForm = () => {
       {selectedRegion && (
         <div className="col-span-2 flex justify-center mt-6">
           <button
-            className="flex w-full bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+            className="flex w-96 bg-red-500 hover:bg-red-700 text-white items-center justify-center font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
             onClick={onDeleteRegion}
           >
             Supprimer Région

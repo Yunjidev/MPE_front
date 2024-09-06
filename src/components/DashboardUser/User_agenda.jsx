@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from "react";
 import { getData, putData } from "../../services/data-fetch";
 import './user_agenda.css';
 import { CiCalendar, CiClock2 } from "react-icons/ci";
