@@ -60,7 +60,7 @@ const EditUserForm = ({ user, onClose, onSave }) => {
 
   return (
     <div className="flex flex-col h-full space-around bg-neutral-800 p-6 rounded-lg">
-      <h2 className="dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-black to-[#67FFCC] font-bold text-transparent bg-clip-text text-center text-2xl mb-5">Édition Utilisateur</h2>
+      <h2 className="bg-gradient-to-r from-white to-[#67FFCC] font-bold text-transparent bg-clip-text text-center text-2xl mb-5">Édition Utilisateur</h2>
       <hr className="w-1/2 my-4 border-t-2 border-gray-400 mx-auto" />
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -128,7 +128,7 @@ const EditUserForm = ({ user, onClose, onSave }) => {
         </div>
         <div className="col-span-2 flex justify-center mt-6">
           <button
-            className="flex w-full dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-black to-[#67FFCC] text-transparent bg-clip-text items-center justify-center border border-gray-500 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-[#67FFCC] transition duration-300 ease-in-out"
+            className="flex w-full bg-gradient-to-r from-white to-[#67FFCC] text-transparent bg-clip-text items-center justify-center border border-gray-500 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-[#67FFCC] transition duration-300 ease-in-out"
             type="submit"
           >
             Sauvegarder

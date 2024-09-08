@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { Calendar } from "react-big-calendar";
-import "moment/locale/fr";
 import dayjs from "dayjs";
 import "dayjs/locale/fr";
 import { dayjsLocalizer } from "react-big-calendar";

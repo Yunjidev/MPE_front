@@ -13,7 +13,7 @@ const Footer = () => {
   }, []);
 
   return (
-    <footer className="dark:text-white bg-footer h-72 border-t dark:border-neutral-700 border-neutral-400 flex justify-between items-center p-4 w-full">
+    <footer className="text-white bg-footer h-72 border-t border-neutral-700 border-neutral-400 flex justify-between items-center p-4 w-full">
       <div className="flex-1 flex justify-center">
         <img src={Logo} className='h-56' alt="Logo de Ma Petite Entreprise" />
       </div>

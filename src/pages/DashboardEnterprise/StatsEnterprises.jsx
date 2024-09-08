@@ -1,17 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { FaEdit, FaEye, FaRegListAlt, FaTimes } from "react-icons/fa";
 import { getData } from "../../services/data-fetch";
-import Likes from "../../components/Enterprise/ComponentsForStats/Likes";
-import LenghtSearch from "../../components/Enterprise/ComponentsForStats/LenghtSearch";
-import LenghtView from "../../components/Enterprise/ComponentsForStats/LenghtView";
-import LengthReservation from "../../components/Enterprise/ComponentsForStats/LengthReservation";
-import AverageRating from "../../components/Enterprise/ComponentsForStats/AverageRating";
-import Comments from "../../components/Enterprise/ComponentsForStats/Comments";
-import GraphForView from "../../components/Enterprise/ComponentsForStats/GraphForView";
-import CommentsList from "../../components/Enterprise/ComponentsForStats/CommentsList";
-import EditEnterprise from "../../components/Enterprise/EditEnterprise";
-import OffersList from "../../components/DashboardEnterprise/OffersList";
+import EditEnterpriseModal from "@/components/Enterprise/ComponentsForEnterprise/EditEnterpriseModal";
+import OffersListModal from "@/components/Enterprise/ComponentsForEnterprise/OffersListModal";
+import ReservationSummary from "@/components/Enterprise/ComponentsForEnterprise/ReservationSummary";
+import StatsSummary from "@/components/Enterprise/ComponentsForStats/StatsSummary";
 
 export default function StatsEnterprises() {
   const { id } = useParams();
@@ -33,118 +26,74 @@ export default function StatsEnterprises() {
     fetchEnterprise();
   }, [id]);
 
+  // Ouvre le modal de modification
   const handleEditClick = () => {
     setIsEditFormOpen(true);
   };
 
+  // Ferme le modal de modification
   const handleCloseEditForm = () => {
     setIsEditFormOpen(false);
   };
 
+  // Sauvegarde les changements et ferme le modal
   const handleSave = (updatedCompany) => {
     setEnterprise(updatedCompany);
     handleCloseEditForm();
   };
 
+  // Redirige vers la page de l'entreprise
   const handleViewClick = () => {
     if (enterprise) {
       navigate(`/enterprise/${enterprise.id}`);
     }
   };
 
+  // Ouvre le modal de la liste des offres
   const handleOffersListClick = () => {
     setIsOffersListOpen(true);
   };
 
+  // Ferme le modal de la liste des offres
   const handleCloseOffersList = () => {
     setIsOffersListOpen(false);
   };
 
-  const companyName = enterprise ? enterprise.name : "Chargement...";
-
   return (
-    <div className="dark:bg-neutral-900 bg-white text-white p-4 sm:p-6 rounded-lg max-w-full sm:max-w-8xl mt-8 sm:mt-6 mb-4 sm:mb-8">
+    <div className="dark:bg-neutral-900 bg-white text-white p-4 sm:p-6 rounded-lg max-w-full sm:max-w-8xl mt-8 sm:mt-6  sm:mb-8">
       <div className="flex items-center justify-between mb-4">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-semibold text-[#67FFCC]">Tableau de Bord</h2>
-          <h3 className="text-lg sm:text-xl font-medium text-[#67FFCC]">{companyName}</h3>
-        </div>
-        <div className="flex space-x-4">
-          <FaEdit 
-            className="text-[#67FFCC] cursor-pointer text-2xl" 
-            title="Modifier mon entreprise" 
-            onClick={handleEditClick} 
-          />
-          <FaRegListAlt 
-            className="text-[#67FFCC] cursor-pointer text-2xl" 
-            title="Services de l'entreprise" 
-            onClick={handleOffersListClick} 
-          />
-          <FaEye 
-            className="text-[#67FFCC] cursor-pointer text-2xl" 
-            title="Voir ma page entreprise" 
-            onClick={handleViewClick} 
-          />
+        <div className="flex flex-row items-center">
+          <h2 className="text-xl sm:text-2xl mr-20 font-semibold text-[#67FFCC]">Tableau de Bord</h2>
+          <h3 className="text-lg sm:text-xl font-medium text-[#67FFCC]">
+            {enterprise ? enterprise.name : "Chargement..."}
+          </h3>
         </div>
       </div>
-      <hr className="w-full sm:w-11/12 mb-8 sm:mb-12" />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <Likes />
-        <LenghtSearch />
-        <LenghtView />
-        <LengthReservation />
-        <AverageRating />
-        <Comments />
-      </div>
-      <div className="w-full mt-8">
-        <GraphForView />
-      </div>
-      <div className="w-full mt-8">
-        <CommentsList />
-      </div>
+      <hr className="mb-4" />
+      
+      {/* Résumé des réservations avec actions */}
+      <ReservationSummary
+        enterprise={enterprise}
+        onEdit={handleEditClick}
+        onView={handleViewClick}
+        onOffersList={handleOffersListClick}
+      />
 
-      {/* Affichage du pop-up d'édition */}
+      {/* Résumé des statistiques */}
+      <StatsSummary />
+
+      {/* Modal de modification de l'entreprise */}
       {isEditFormOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          onClick={handleCloseEditForm}
-        >
-          <div
-            className="p-2 rounded-lg shadow-lg relative max-w-4xl w-full max-h-[80vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <FaTimes
-              className="absolute top-6 right-6 z-50 text-[#67FFCC] cursor-pointer text-2xl"
-              title="Fermer"
-              onClick={handleCloseEditForm}
-            />
-            <EditEnterprise
-              enterpriseId={id}
-              onSave={handleSave}
-              onClose={handleCloseEditForm}
-            />
-          </div>
-        </div>
+        <EditEnterpriseModal
+          enterpriseId={id}
+          onSave={handleSave}
+          onClose={handleCloseEditForm}
+        />
       )}
 
-      {/* Affichage du pop-up des offres */}
+      {/* Modal de la liste des offres */}
       {isOffersListOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          onClick={handleCloseOffersList}
-        >
-          <div
-            className="bg-neutral-800 p-6 w-11/12 rounded-lg shadow-lg relative"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <FaTimes
-              className="absolute top-3 right-3 text-[#67FFCC] cursor-pointer text-2xl z-50"
-              title="Fermer"
-              onClick={handleCloseOffersList}
-            />
-            <OffersList />
-          </div>
-        </div>
+        <OffersListModal onClose={handleCloseOffersList} />
       )}
     </div>
   );

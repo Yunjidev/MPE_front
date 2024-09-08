@@ -194,7 +194,7 @@ const OffersList = () => {
           >
             &laquo; Précédente
           </button>
-          <span className="dark:text-white text-black font-bold">
+          <span className="text-white font-bold">
             Page {pageIndex + 1} sur {Math.ceil(filteredOffers.length / pageSize)}
           </span>
           <button

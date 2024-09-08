@@ -12,7 +12,7 @@ const DropdownMenu = ({ category, items }) => {
   return (
     <div className="my-4">
       <div
-        className="flex justify-between items-center  dark:bg-transparent bg-orange-100/25 py-3 px-6 rounded cursor-pointer border border-transparent hover:dark:border-violet-400 hover:border-violet-400/25 rounded-xl shadow-md dark:shadow-violet-400/50 "
+        className="flex justify-between items-center bg-transparent bg-orange-100/25 py-3 px-6 rounded cursor-pointer border border-transparent hover:border-violet-400 hover:border-violet-400/25 rounded-xl shadow-md shadow-violet-400/50 "
         onClick={handleToggle}
         aria-expanded={isOpen}
         aria-controls="dropdown-menu-content"
@@ -20,13 +20,13 @@ const DropdownMenu = ({ category, items }) => {
         tabIndex="0"
         aria-label={`Toggle ${category} dropdown`}
       >
-        <h2 className="text-2xl font-semibold text-black dark:text-gray-100">{category}</h2>
+        <h2 className="text-2xl font-semibold text-gray-100">{category}</h2>
         <button
           aria-label="Toggle dropdown"
           className="p-2"
           onClick={handleToggle}
         >
-          <IoIosArrowDown className={`w-6 h-6 bg-none text-gray-600 dark:text-violet-400 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+          <IoIosArrowDown className={`w-6 h-6 bg-none text-violet-400 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
         </button>
       </div>
       {isOpen && (
@@ -34,10 +34,10 @@ const DropdownMenu = ({ category, items }) => {
           {items.map((item, index) => (
             <div
               key={index}
-              className="bg-black-900 dark:bg-black-900 py-2 px-4 rounded-xl shadow-sm shadow-violet-300/50 dark:shadow-violet-400/25"
+              className="bg-black-900 py-2 px-4 rounded-xl shadow-sm shadow-violet-400/25"
             >
-              <h3 className="font-bold text-black dark:text-gray-100">{item.question}</h3>
-              <p className="text-black dark:text-gray-300">{item.answer}</p>
+              <h3 className="font-bold text-gray-100">{item.question}</h3>
+              <p className="text-gray-300">{item.answer}</p>
             </div>
           ))}
         </div>
