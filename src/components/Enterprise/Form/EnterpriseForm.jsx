@@ -145,7 +145,7 @@ export default function EnterpriseForm({
   };
 
   return (
-    <div className="rounded-xl flex items-center justify-center bg-neutral-900 border border-white">
+    <div className="rounded-xl flex items-center justify-center bg-neutral-900 border border-white mt-6">
       <div className="relative group max-w-8xl w-full">
         <div className="bg-neutral-900 p-10 rounded-xl shadow-xl relative z-10 ">
           <h2 className="text-white text-center text-2xl mb-5">{title}</h2>
@@ -186,7 +186,7 @@ export default function EnterpriseForm({
               inputStyle="h-full"
             />
             <Input.MultipleUpload
-              placeholder="Sélectionnez des images"
+              placeholder="Sélectionnez des images ( 3 images )"
               onFileUpload={handlePhotosChange}
               onFileDelete={handleDeletePhoto}
               url={formData.photos}

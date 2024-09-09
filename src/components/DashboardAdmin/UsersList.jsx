@@ -16,6 +16,8 @@ const UsersList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false); // Pour la modal de confirmation de suppression
+  const [userToDelete, setUserToDelete] = useState(null); // Utilisateur en cours de suppression
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -50,13 +52,21 @@ const UsersList = () => {
     setPageIndex(0); // Réinitialiser la page à 0 lors du changement de la recherche
   }, [searchQuery, users]);
 
-  const deleteUser = async (userId) => {
+  const confirmDeleteUser = (user) => {
+    setUserToDelete(user);
+    setIsDeleteConfirmOpen(true);
+  };
+
+  const deleteUser = async () => {
     try {
-      await deleteData(`admin/users/${userId}`);
-      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+      await deleteData(`admin/users/${userToDelete.id}`);
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userToDelete.id));
       alert("User deleted successfully");
     } catch (error) {
       console.error("Error deleting user:", error);
+    } finally {
+      setIsDeleteConfirmOpen(false);
+      setUserToDelete(null);
     }
   };
 
@@ -129,7 +139,7 @@ const UsersList = () => {
                     <FaEdit size={16} />
                   </button>
                   <button
-                    onClick={() => deleteUser(user.id)}
+                    onClick={() => confirmDeleteUser(user)}
                     className="text-red-400 hover:scale-110 transition-transform"
                     title="Supprimer l'utilisateur"
                   >
@@ -167,6 +177,31 @@ const UsersList = () => {
           Suivant »
         </button>
       </div>
+
+      {/* Modal de confirmation de suppression */}
+      {isDeleteConfirmOpen && (
+        <Modal isOpen={isDeleteConfirmOpen} onClose={() => setIsDeleteConfirmOpen(false)}>
+          <div className="text-white bg-neutral-800 p-4 border border-white rounded-lg">
+            <h2 className="text-lg font-semibold mb-4 text-center">Confirmation</h2>
+            <p className="text-center">Êtes-vous sûr de vouloir supprimer cet utilisateur ?</p>
+            <div className="flex justify-center space-x-2 mt-4">
+              <button
+                onClick={deleteUser}
+                className="w-32 px-4 py-2 bg-red-500 text-black font-semibold text-center rounded-lg hover:bg-red-600 transition duration-300"
+              >
+                Supprimer
+              </button>
+              <button
+                onClick={() => setIsDeleteConfirmOpen(false)}
+                className="w-32 px-4 py-2 bg-gray-500 text-black font-semibold text-center rounded-lg hover:bg-gray-600 transition duration-300"
+              >
+                Annuler
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
+
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         {selectedUser && (

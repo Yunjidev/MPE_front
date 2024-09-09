@@ -56,7 +56,7 @@ export default function UserSideBar({
             "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
           }
           alt="Profile"
-          className="w-12 h-12 rounded-full dark:bg-gray-500"
+          className="w-12 h-12 rounded-full bg-gray-500"
         />
         <div>
           <h2 className={`lg:text-2xl text-4xl font-bold ${colorStyle}`}>
@@ -65,7 +65,7 @@ export default function UserSideBar({
         </div>
       </div>
 
-      <div className="border-t border-black dark:border-white my-4 mx-2"></div>
+      <div className="border-t border-white my-4 mx-2"></div>
       <ul className="pt-2 pb-4 space-y-1 lg:text-sm text-2xl">
         {navItems.map((item, index) =>
           item.type === "dropdown" ? (
@@ -89,7 +89,7 @@ export default function UserSideBar({
           ),
         )}
       </ul>
-      <div className="border-t border-black dark:border-white my-4 mx-2"></div>
+      <div className="border-t border-white my-4 mx-2"></div>
     </div>
   );
 }

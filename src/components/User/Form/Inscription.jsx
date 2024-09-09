@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import PropTypes from "prop-types";
 import { FaUser, FaEnvelope } from "react-icons/fa";
 import Input from "../../Utils/Inputs/Input";

@@ -60,7 +60,7 @@ export default function StatsEnterprises() {
   };
 
   return (
-    <div className="dark:bg-neutral-900 bg-white text-white p-4 sm:p-6 rounded-lg max-w-full sm:max-w-8xl mt-8 sm:mt-6  sm:mb-8">
+    <div className="bg-neutral-900 text-white p-4 sm:p-6 rounded-lg max-w-full sm:max-w-8xl mt-8 sm:mt-6  sm:mb-8">
       <div className="flex items-center justify-between mb-4">
         <div className="flex flex-row items-center">
           <h2 className="text-xl sm:text-2xl mr-20 font-semibold text-[#67FFCC]">Tableau de Bord</h2>

@@ -50,19 +50,16 @@ const ReviewCard = ({ img, name, username, body }) => {
     <figure
       className={cn(
         "relative w-64 cursor-pointer overflow-hidden rounded-xl border p-4",
-        // light styles
-        "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
-        // dark styles
-        "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]"
+        "border-gray-50/[.1] bg-gray-50/[.10] hover:bg-gray-50/[.15]"
       )}
     >
       <div className="flex flex-row items-center gap-2">
         <img className="rounded-full" width="32" height="32" alt="" src={img} />
         <div className="flex flex-col">
-          <figcaption className="text-sm font-medium dark:text-white">
+          <figcaption className="text-sm font-medium text-white">
             {name}
           </figcaption>
-          <p className="text-xs font-medium dark:text-white/40">{username}</p>
+          <p className="text-xs font-medium text-white/40">{username}</p>
         </div>
       </div>
       <blockquote className="mt-2 text-sm">{body}</blockquote>
@@ -74,8 +71,8 @@ export function MarqueeDemo() {
   return (
     <>
     <div className="flex flex-col items-center">
-    <p className="text-3xl font-bold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-black to-[#67FFCC] text-transparent bg-clip-text">Découvrez </p>
-    <p className="text-4xl font-bold dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">Nos entreprises Premium</p>
+    <p className="text-3xl font-bold bg-gradient-to-r from-white to-[#67FFCC]  text-transparent bg-clip-text">Découvrez </p>
+    <p className="text-4xl font-bold bg-gradient-to-r from-orange-200 to-orange-400 text-transparent bg-clip-text">Nos entreprises Premium</p>
     </div>
     <div className="relative top-10 lg:top-16 flex h-auto w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-background ">
       <Marquee pauseOnHover className="[--duration:20s]">
@@ -88,8 +85,8 @@ export function MarqueeDemo() {
           <ReviewCard key={review.username} {...review} />
         ))}
       </Marquee>
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-orange-50 dark:bg-gradient-to-r dark:from-neutral-800 "></div>
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-orange-50 dark:bg-gradient-to-l dark:from-neutral-800"></div>
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-neutral-800 "></div>
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-neutral-800"></div>
     </div>
     </>
   );
