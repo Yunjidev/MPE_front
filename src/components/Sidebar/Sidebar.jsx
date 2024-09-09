@@ -8,14 +8,14 @@ import UserSideBar from "./UserSideBar";
 import AdminSideBar from "./AdminSideBar";
 import HamburgerIcon from "../Utils/Svg/HamburgerIcon";
 
-const iconstyle = "w-5 h-5 fill-current dark:text-white text-black";
-const linkstyle = "space-x-3 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 ";
+const iconstyle = "w-5 h-5 fill-current text-white";
+const linkstyle = "space-x-3 p-2 hover:bg-gray-700 ";
 const userColorStyle =
-  "bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 text-transparent bg-clip-text";
+  "bg-gradient-to-r from-violet-200 to-violet-400 text-transparent bg-clip-text";
 const enterpriseColorStyle =
-  "bg-gradient-to-r from-orange-400 to-orange-800 dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 text-transparent bg-clip-text";
+  "bg-gradient-to-r from-orange-200 to-orange-400 text-transparent bg-clip-text";
 const adminColorStyle =
-  "bg-gradient-to-r from-white to-[#67FFCC] dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] text-transparent bg-clip-text";
+  "bg-gradient-to-r from-white to-[#67FFCC] text-transparent bg-clip-text";
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -50,7 +50,7 @@ const Sidebar = () => {
       {/* Hamburger Button */}
       <button
         type="button"
-        className="fixed top-24 left-6 lg:hidden inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        className="fixed top-24 left-6 lg:hidden inline-flex items-center p-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200 :text-gray-400 :hover:bg-gray-700 :focus:ring-gray-600"
         onClick={toggleSidebar}
         aria-expanded={isSidebarOpen}
         aria-controls="sidebar"
@@ -64,7 +64,7 @@ const Sidebar = () => {
         id="sidebar"
         className={`sticky top-24 left-2 h-full text-white transition-transform lg:translate-x-0 ${isSidebarOpen ? "sidebar open" : "sidebar"} text-3xl`}
       >
-        <div className="flex flex-col h-full p-3 space-y-2 dark:bg-neutral-900 rounded-lg dark:text-gray-200 overflow-auto ">
+        <div className="flex flex-col h-full p-3 space-y-2 bg-neutral-900 rounded-lg text-gray-200 overflow-auto ">
           <UserSideBar
             user={user}
             colorStyle={userColorStyle}

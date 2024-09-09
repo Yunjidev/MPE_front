@@ -65,7 +65,7 @@ const FAQ = () => {
 
   return (
     <div className="flex flex-col items-center py-12 px-4 bg-black-900">
-      <p className="text-5xl bg-gradient-to-r from-violet-400 to-violet-800 text-transparent bg-clip-text mb-8 bg-gradient-to-r from-white to-violet-400">
+      <p className="text-5xl font-bold bg-gradient-to-r from-violet-400 to-violet-800 text-transparent bg-clip-text mb-8 bg-gradient-to-r from-white to-violet-400">
         Des Questions ?
       </p>
       <p className="lg:text-2xl text-xl text-center font-semibold text-white mb-8">

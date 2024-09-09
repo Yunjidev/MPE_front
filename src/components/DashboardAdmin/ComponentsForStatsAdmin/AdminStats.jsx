@@ -15,9 +15,6 @@ export default function AdminStats() {
 
   return (
     <div>
-      <div className="items-center">
-        <h2 className="text-xl sm:text-2xl font-semibold text-[#67FFCC] mb-6">Stats</h2>
-      </div>
       <div className="flex flex-col items-center">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
           <StatCard

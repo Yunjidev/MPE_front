@@ -45,7 +45,7 @@ export default function UpdatePassword() {
   };
 
   return (
-    <div className="mt-12 mb-6 flex items-center justify-center bg-neutral-900 rounded-xl">
+    <div className="mt-12 mb-6 flex items-center justify-center bg-neutral-900 rounded-xl border border-white">
       <div className="relative border-form-1 group max-w-8xl w-full ">
         <div className="absolute -top-1 -left-1 -right-1 -bottom-1 "></div>
         <div className="bg-neutral-900 p-10 rounded-xl relative z-10 transform transition duration-500 ease-in-out">
