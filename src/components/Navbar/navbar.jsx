@@ -53,7 +53,7 @@ const Navbar = () => {
   return (
     <>
       <div className="fixed top-0 left-1/2 transform -translate-x-1/2 w-full max-w-full z-50 mt-4">
-        <div className="navbar flex justify-between items-center backdrop-filter backdrop-blur-lg bg-orange-100 bg-opacity-30 dark:bg-[#232323] dark:bg-opacity-30 dark:text-white border border-neutral-200 font-semibold mx-auto w-5/6 h-16 rounded-xl neon-nav">
+        <div className="navbar flex justify-between items-center backdrop-filter backdrop-blur-lg bg-[#232323] bg-opacity-30 text-white border border-neutral-200 font-semibold mx-auto w-5/6 h-16 rounded-xl neon-nav">
           <div className="flex items-center">
             <Link to="/">
               <img
@@ -65,30 +65,30 @@ const Navbar = () => {
           </div>
 
           {!isSelectionPage && (
-            <div className="hidden md:flex justify-center items-center gap-8 text-black dark:text-white">
+            <div className="hidden md:flex justify-center items-center gap-8 text-white">
               {userType === "client" ? (
                 <>
                   <Link
                     to="/home-client"
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     Accueil
                   </Link>
                   <Link
                     to="/searchentreprise"
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     Recherche
                   </Link>
                   <Link
                     to="/faq"
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     FAQ
                   </Link>
                   <Link
                     to="/about"
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     À Propos
                   </Link>
@@ -97,31 +97,31 @@ const Navbar = () => {
                 <>
                   <Link
                     to="/home-enterprise"
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     Accueil
                   </Link>
                   <Link
                     to="/searchentreprise"
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     Recherche
                   </Link>
                   <Link
                     to="/pricing"
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     Tarifs
                   </Link>
                   <Link
                     to="/faq"
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     FAQ
                   </Link>
                   <Link
                     to="/about"
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     À Propos
                   </Link>
@@ -148,7 +148,7 @@ const Navbar = () => {
                     peer-checked:translate-x-full`}
                   ></div>
                 </div>
-                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                <span className="ms-3 text-sm font-medium text-gray-300">
                   {userType === "client"
                     ? "Mode Particulier"
                     : "Mode Professionnel"}
@@ -163,7 +163,7 @@ const Navbar = () => {
                 <input
                   type="text"
                   placeholder="Recherche service ..."
-                  className="dark:bg-neutral-800 bg-white rounded-xl input-bordered dark:border-neutral-600 input-sm w-full max-w-xs"
+                  className="bg-neutral-800 rounded-xl input-bordered border-neutral-600 input-sm w-full max-w-xs"
                 />
               </div>
             )}
@@ -181,7 +181,7 @@ const Navbar = () => {
                     src={avatarUrl} //
                   />
                 ) : (
-                  <FaUserCircle className="w-10 h-10 text-black dark:text-white" />
+                  <FaUserCircle className="w-10 h-10 text-white" />
                 )}
               </div>
               <AnimatePresence>
@@ -192,14 +192,14 @@ const Navbar = () => {
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.25, ease: "easeInOut" }}
                     tabIndex="0"
-                    className="menu menu-sm dropdown-content bg-[#F8D7DA] dark:bg-neutral-800 dark:text-white dark:border dark:border-neutral-600 border border-black rounded-lg rounded-box z-[1] mt-2 absolute right-0 w-52 p-2 shadow-lg"
+                    className="menu menu-sm dropdown-content bg-neutral-800 text-white border border-neutral-600 rounded-lg rounded-box z-[1] mt-2 absolute right-0 w-52 p-2 shadow-lg"
                   >
                     {user.isLogged ? (
                       <>
                         <li>
                           <Link
                             to={`/dashboard/user-db`}
-                            className="text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300"
+                            className="text-white hover:text-neutral-300"
                           >
                             Mon Dashboard
                           </Link>
@@ -213,7 +213,7 @@ const Navbar = () => {
                         <li>
                           <Link
                             to="/signin"
-                            className="text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300"
+                            className="text-white hover:text-neutral-300"
                           >
                             Connexion
                           </Link>
@@ -221,7 +221,7 @@ const Navbar = () => {
                         <li>
                           <Link
                             to="/signup"
-                            className="text-black dark:text-white hover:text-neutral-600 dark:hover:text-neutral-300"
+                            className="text-white hover:text-neutral-300"
                           >
                             Inscription
                           </Link>
@@ -247,35 +247,35 @@ const Navbar = () => {
           </div>
         </div>
         {!isSelectionPage && isMobileMenuOpen && (
-          <div className="md:hidden backdrop-filter backdrop-blur-lg bg-[#F8D7DA] bg-opacity-30 dark:bg-[#232323] dark:bg-opacity-30 dark:text-white border border-neutral-200 font-semibold mx-auto w-5/6 mt-4 rounded-xl neon-nav">
+          <div className="md:hidden backdrop-filter backdrop-blur-lg bg-[#232323] bg-opacity-30 text-white border border-neutral-200 font-semibold mx-auto w-5/6 mt-4 rounded-xl neon-nav">
             <div className="flex flex-col items-center gap-4 py-4">
               {userType === "client" ? (
                 <>
                   <Link
                     to="/home-client"
                     onClick={toggleMobileMenu}
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     Accueil
                   </Link>
                   <a
                     href="#"
                     onClick={toggleMobileMenu}
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     Recherche
                   </a>
                   <Link
                     to="/faq"
                     onClick={toggleMobileMenu}
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     FAQ
                   </Link>
                   <Link
                     to="/about"
                     onClick={toggleMobileMenu}
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     À Propos
                   </Link>
@@ -285,35 +285,35 @@ const Navbar = () => {
                   <Link
                     to="/home-enterprise"
                     onClick={toggleMobileMenu}
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     Accueil
                   </Link>
                   <a
                     href="#"
                     onClick={toggleMobileMenu}
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     Recherche
                   </a>
                   <Link
                     to="/pricing"
                     onClick={toggleMobileMenu}
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     Tarifs
                   </Link>
                   <Link
                     to="/faq"
                     onClick={toggleMobileMenu}
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     FAQ
                   </Link>
                   <Link
                     to="/about"
                     onClick={toggleMobileMenu}
-                    className="hover:text-neutral-600 hover:dark:text-neutral-300"
+                    className="hover:text-neutral-300"
                   >
                     À Propos
                   </Link>
@@ -339,7 +339,7 @@ const Navbar = () => {
                     peer-checked:translate-x-full`}
                   ></div>
                 </div>
-                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                <span className="ms-3 text-sm font-medium text-gray-300">
                   {userType === "client"
                     ? "Mode Particulier"
                     : "Mode Professionnel"}
