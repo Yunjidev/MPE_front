@@ -13,11 +13,11 @@ const requirements = [
 const Listing = () => {
   return (
     <div className="p-6">
-      <ul className="max-w-lg space-y-2 list-inside dark:text-white text-black">
+      <ul className="max-w-lg space-y-2 list-inside text-white">
         {requirements.map((item, index) => (
           <li key={index} className="flex items-center text-lg">
             <svg
-              className={`w-4 h-4 me-3 flex-shrink-0 ${item.fulfilled ? 'text-green-500 dark:text-green-400' : 'text-white dark:text-gray-400'}`} // Augmente la taille du SVG
+              className={`w-4 h-4 me-3 flex-shrink-0 ${item.fulfilled ? 'text-green-400' : 'text-gray-400'}`} // Augmente la taille du SVG
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"

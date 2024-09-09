@@ -11,13 +11,13 @@ export default function AverageRating() {
   const averageRating = data.averageRating;
 
   return (
-    <div className="bg-orange-100 bg-opacity-30 dark:bg-neutral-700 text-black dark:text-white shadow-md rounded-lg p-6 flex items-center space-x-4 w-56 h-32">
+    <div className="bg-neutral-700 text-white shadow-md rounded-lg p-6 flex items-center space-x-4 w-56 h-32">
       <FaStar className="text-5xl" />
       <div>
-        <h2 className="text-xl font-bold bg-gradient-to-r from-orange-400 to-orange-800 dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 text-transparent bg-clip-text">
+        <h2 className="text-xl font-bold bg-gradient-to-r from-white to-orange-400 text-transparent bg-clip-text">
           Note Globale
         </h2>
-        <p className="text-xl bg-gradient-to-r from-orange-400 to-orange-800 dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 text-transparent bg-clip-text">
+        <p className="text-xl bg-gradient-to-r from-white to-orange-400 text-transparent bg-clip-text">
           {averageRating}/5
         </p>
       </div>

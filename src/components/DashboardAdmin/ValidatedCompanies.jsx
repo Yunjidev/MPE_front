@@ -7,9 +7,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getData, deleteData } from "../../services/data-fetch";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
-import Button from "../Button/button";
 import Modal from "./Modal";
-import EditCompanyForm from "../DashboardEnterprise/EditCompanyForm";
 import { toast } from "react-toastify";
 
 const ValidatedCompanies = () => {
@@ -27,7 +25,6 @@ const ValidatedCompanies = () => {
     const fetchCompanies = async () => {
       try {
         const data = await getData("enterprises/validate");
-        console.log(data);
         setCompanies(data);
         setFilteredCompanies(data);
       } catch (error) {
@@ -88,11 +85,6 @@ const ValidatedCompanies = () => {
     }
   };
 
-  const editCompany = (company) => {
-    setSelectedCompany(company);
-    setIsModalOpen(true);
-  };
-
   const viewCompany = (companyId) => {
     navigate(`/enterprise/${companyId}`);
   };
@@ -125,14 +117,14 @@ const ValidatedCompanies = () => {
   };
 
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-neutral-600 dark:bg-neutral-800 border dark:border-neutral-700">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-neutral-800 border border-neutral-700">
       <div className="p-4">
         <input
           type="text"
           placeholder="Rechercher..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-4 py-2 mb-4 rounded-lg dark:bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
+          className="w-full px-4 py-2 mb-4 rounded-lg bg-neutral-800 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
         />
       </div>
 
@@ -143,108 +135,93 @@ const ValidatedCompanies = () => {
           .map((company) => (
             <div
               key={company.id}
-              className="mb-4 p-4 rounded-lg shadow-md bg-white dark:bg-neutral-800 flex items-start"
+              className="mb-4 p-4 rounded-lg shadow-md bg-neutral-800 flex items-center"
             >
               <div className="flex-grow">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="font-bold text-gray-900 dark:text-white">
+                  <div className="font-bold text-white">
                     Nom:
                   </div>
-                  <div className="text-gray-900 dark:text-white">
+                  <div className="text-white">
                     {company.name}
                   </div>
-                  <div className="font-bold text-gray-900 dark:text-white">
+                  <div className="font-bold text-white">
                     Ville:
                   </div>
-                  <div className="text-gray-900 dark:text-white">
+                  <div className="text-white">
                     {company.city}
                   </div>
-                  <div className="font-bold text-gray-900 dark:text-white">
+                  <div className="font-bold text-white">
                     CP:
                   </div>
-                  <div className="text-gray-900 dark:text-white">
+                  <div className="text-white">
                     {company.zip_code}
                   </div>
-                  <div className="font-bold text-gray-900 dark:text-white">
+                  <div className="font-bold text-white">
                     Région:
                   </div>
-                  <div className="text-gray-900 dark:text-white">
+                  <div className="text-white">
                     {company.country.name}
                   </div>
-                  <div className="font-bold text-gray-900 dark:text-white">
+                  <div className="font-bold text-white">
                     Métier:
                   </div>
-                  <div className="text-gray-900 dark:text-white">
+                  <div className="text-white">
                     {company.job.name}
                   </div>
-                  <div className="font-bold text-gray-900 dark:text-white">
+                  <div className="font-bold text-white">
                     Pseudo:
                   </div>
-                  <div className="text-gray-900 dark:text-white">
+                  <div className="text-white">
                     {company.entrepreneur.username}
                   </div>
-                  <div className="font-bold text-gray-900 dark:text-white">
+                  <div className="font-bold text-white">
                     Note moyenne:
                   </div>
-                  <div className="text-gray-900 dark:text-white">
+                  <div className="text-white">
                     {company.averageRating}
                   </div>
                 </div>
               </div>
-              <div className="ml-4 flex flex-col justify-between">
-                <Button
+              <div className="ml-4 flex flex-col justify-center items-center mb-6 ">
+                {" "}
+                <button
                   onClick={() => viewCompany(company.id)}
-                  className="text-blue-600 dark:text-blue-500 hover:underline mb-2"
+                  className="text-[#67FFCC] hover:scale-110 transition-transform text-2xl mb-6"
                 >
                   <FaEye />
-                </Button>
-                <Button
-                  onClick={() => editCompany(company)}
-                  className="text-green-600 dark:text-green-500 hover:underline mb-2"
-                >
-                  <FaEdit />
-                </Button>
-                <Button
+                </button>
+                <button
                   onClick={() => deleteCompany(company.id)}
-                  className="text-red-600 dark:text-red-500 hover:underline"
+                  className="text-red-500 hover:scale-110 transition-transform text-2xl"
                 >
                   <FaTrash />
-                </Button>
+                </button>
               </div>
             </div>
           ))}
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center items-center mt-4">
+      <div className="flex justify-center items-center mt-4 mb-4">
         <button
           onClick={() => setPageIndex(0)}
           disabled={pageIndex === 0}
-          className="px-4 py-2 mx-1 bg-gray-200 rounded-lg mr-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+          className="px-4 py-2 mx-1 bg-neutral-700 text-white rounded-lg mr-4 transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
         >
           &laquo; Précédent
         </button>
-        <span className="dark:text-white text-black font-bold">
+        <span className="text-white font-bold">
           Page {pageIndex + 1} sur {pageCount}
         </span>
         <button
           onClick={() => setPageIndex(pageIndex + 1)}
           disabled={pageIndex >= pageCount - 1}
-          className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 dark:bg-neutral-700 dark:text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+          className="px-4 py-2 mx-1 bg-neutral-700 text-white rounded-lg ml-4 transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
         >
           Suivant &raquo;
         </button>
       </div>
-
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        {selectedCompany && (
-          <EditCompanyForm
-            company={selectedCompany}
-            onClose={() => setIsModalOpen(false)}
-            onSave={handleSave}
-          />
-        )}
-      </Modal>
     </div>
   );
 };

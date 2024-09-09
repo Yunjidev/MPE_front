@@ -52,6 +52,7 @@ import Planning from "./pages/user/Planning";
 import StatsEnterprises from "./pages/DashboardEnterprise/StatsEnterprises";
 import AdminStats from "./components/DashboardAdmin/ComponentsForStatsAdmin/AdminStats";
 import CreateJobsandCountry from "./pages/DashboardAdmin/CreateJobsandCountry";
+import AdminDashboard from "./pages/DashboardAdmin/Admin_db";
 import SubscriptionManagement from "./pages/DashboardAdmin/SubscriptionManagement";
 
 // Protected Routes
@@ -59,8 +60,6 @@ import AuthenticatedRoute from "./context/AuthenticatedRoute";
 import EntrepreneurRoute from "./context/EntrepreneurRoute";
 import AdminRoute from "./context/AdminRoute";
 import OfferList from "./components/DashboardEnterprise/OffersList";
-
-
 
 function App() {
   useSocketIo();
@@ -121,7 +120,10 @@ function AppContent() {
           <Route path="/searchentreprise" element={<SearchEntreprise />} />
           <Route path="/cookie-policies" element={<CookiePolicies />} />
           <Route path="/legal-notices" element={<LegalNotices />} />
-          <Route path="/condifentiality-policies" element={<ConfidentialityPolicies />} />
+          <Route
+            path="/condifentiality-policies"
+            element={<ConfidentialityPolicies />}
+          />
           <Route path="/usage-policies" element={<UsagePolicies />} />
           <Route path="/FAQ" element={<FAQ />} />
           <Route path="/pricing" element={<Pricing_page />} />
@@ -154,8 +156,16 @@ function AppContent() {
                 <Route path="accept-company" element={<AcceptCompanyPage />} />
                 <Route path="manage-companies" element={<Company />} />
                 <Route path="manage-users" element={<ManageUser />} />
+                <Route
+                  path="jobsandcountrycreate"
+                  element={<CreateJobsandCountry />}
+                />
+                <Route path="admin-overview" element={<AdminDashboard />} />
                 <Route path="statistics" element={<AdminStats />} />
-                <Route path="jobsandcountrycreate" element={<CreateJobsandCountry />} />
+                <Route
+                  path="jobsandcountrycreate"
+                  element={<CreateJobsandCountry />}
+                />
                 <Route path="subscriptionmanagement" element={<SubscriptionManagement />} />
               </Route>
             </Route>

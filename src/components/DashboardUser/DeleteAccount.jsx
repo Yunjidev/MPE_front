@@ -35,7 +35,7 @@ const DeleteAccount = () => {
         </p>
         <button
           onClick={handleDeleteAccount}
-          className="flex w-full max-w-xs dark:bg-gradient-to-r dark:from-red-400 dark:to-red-600 bg-gradient-to-r from-red-600 to-red-800 text-transparent bg-clip-text items-center justify-center border border-gray-500 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-red-400 transition duration-300 ease-in-out"
+          className="flex w-full max-w-xs bg-gradient-to-r from-red-400 to-red-600 text-transparent bg-clip-text items-center justify-center border border-gray-500 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-red-400 transition duration-300 ease-in-out"
         >
           Supprimer mon compte
         </button>
