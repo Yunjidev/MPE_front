@@ -18,6 +18,8 @@ const ValidatedCompanies = () => {
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [companyToDelete, setCompanyToDelete] = useState(null);
 
   const navigate = useNavigate();
 
@@ -70,18 +72,26 @@ const ValidatedCompanies = () => {
     setPageIndex(0); // Reset to page 0 on search
   }, [searchQuery, companies]);
 
-  const deleteCompany = async (companyId) => {
+  const confirmDeleteCompany = (company) => {
+    setCompanyToDelete(company);
+    setIsDeleteConfirmOpen(true);
+  };
+
+  const deleteCompany = async () => {
     try {
-      await deleteData(`enterprise/${companyId}`);
+      await deleteData(`enterprise/${companyToDelete.id}`);
       setCompanies((prevCompanies) =>
-        prevCompanies.filter((company) => company.id !== companyId)
+        prevCompanies.filter((company) => company.id !== companyToDelete.id)
       );
       setFilteredCompanies((prevCompanies) =>
-        prevCompanies.filter((company) => company.id !== companyId)
+        prevCompanies.filter((company) => company.id !== companyToDelete.id)
       );
       toast.success("Entreprise supprimée avec succès");
     } catch (error) {
       console.error("Error deleting company:", error);
+    } finally {
+      setIsDeleteConfirmOpen(false);
+      setCompanyToDelete(null);
     }
   };
 
@@ -183,8 +193,7 @@ const ValidatedCompanies = () => {
                   </div>
                 </div>
               </div>
-              <div className="ml-4 flex flex-col justify-center items-center mb-6 ">
-                {" "}
+              <div className="ml-4 flex flex-col justify-center items-center mb-6">
                 <button
                   onClick={() => viewCompany(company.id)}
                   className="text-[#67FFCC] hover:scale-110 transition-transform text-2xl mb-6"
@@ -192,7 +201,7 @@ const ValidatedCompanies = () => {
                   <FaEye />
                 </button>
                 <button
-                  onClick={() => deleteCompany(company.id)}
+                  onClick={() => confirmDeleteCompany(company)}
                   className="text-red-500 hover:scale-110 transition-transform text-2xl"
                 >
                   <FaTrash />
@@ -222,6 +231,30 @@ const ValidatedCompanies = () => {
           Suivant &raquo;
         </button>
       </div>
+
+      {/* Modal de confirmation de suppression */}
+      {isDeleteConfirmOpen && (
+        <Modal isOpen={isDeleteConfirmOpen} onClose={() => setIsDeleteConfirmOpen(false)}>
+          <div className="text-white bg-neutral-800 p-4 border border-white rounded-lg">
+            <h2 className="text-lg font-semibold mb-4 text-center">Confirmation</h2>
+            <p className="text-center">Êtes-vous sûr de vouloir supprimer cette entreprise ?</p>
+            <div className="flex justify-center space-x-2 mt-4">
+              <button
+                onClick={deleteCompany}
+                className="w-32 px-4 py-2 bg-red-500 text-black font-semibold text-center rounded-lg hover:bg-red-600 transition duration-300"
+              >
+                Supprimer
+              </button>
+              <button
+                onClick={() => setIsDeleteConfirmOpen(false)}
+                className="w-32 px-4 py-2 bg-gray-500 text-black font-semibold text-center rounded-lg hover:bg-gray-600 transition duration-300"
+              >
+                Annuler
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

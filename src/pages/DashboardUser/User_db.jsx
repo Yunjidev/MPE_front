@@ -5,7 +5,7 @@ import CommentsOfUser from "@/components/DashboardUser/Company_coms";
 
 const Companydb = () => {
   return (
-    <div className="dark:bg-neutral-900 bg-white text-white p-6 rounded-lg lg:mt-6 mt-16 mb-8">
+    <div className="bg-neutral-900 text-white p-6 rounded-lg lg:mt-6 mt-16 mb-8">
       <h2 className="text-2xl font-semibold mb-4 text-[#67FFCC]">
         Gestion du Profil
       </h2>

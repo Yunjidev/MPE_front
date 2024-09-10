@@ -110,11 +110,11 @@ const PricingPage = () => {
     return (
         <>
             <div className="mx-auto">
-                <h1 className="text-5xl text-center font-semibold mt-14 dark:text-white gradient-text-orange">Notre formule premium</h1>
+                <h1 className="text-5xl text-center font-bold mt-14 text-white gradient-text-orange">Notre formule premium</h1>
 
                 <div className="mx-auto flex flex-col text-center lg:text-start justify-around lg:flex-row items-center py-6 ">
                     <div className="md:ml-8 md:mt-0">
-                        <p className="lg:text-2xl md:text-xl text-center lg:mx-6 dark:text-white">
+                        <p className="lg:text-2xl md:text-xl text-center lg:mx-6 text-white">
                             Profitez de toutes les fonctionnalités proposées par MPE à un tarif avantageux pour une durée choisie.
                         </p>
                     </div>
@@ -123,8 +123,8 @@ const PricingPage = () => {
                 <div className="mx-auto flex flex-col lg:flex-row justify-start items-center py-8 lg:py-12">
                     <img src="public/assets/img/decouvrez.png" alt="Image 2" className="lg:w-5/12 w-full mt-8 lg:mt-0 lg:mr-8 order-first lg:order-last rounded-lg" />
                     <div className="mt-4 text-center lg:text-start md:mt-0 flex flex-col ">
-                        <h1 className="text-4xl text-center lg:text-start mb-12 lg:ml-6 font-semibold dark:text-white gradient-text-violet">Mise en avant de votre entreprise</h1>
-                        <p className="lg:text-2xl md:text-xl lg:mx-6 dark:text-white">
+                        <h1 className="text-4xl text-center lg:text-start mb-12 lg:ml-6 font-semibold text-white gradient-text-violet">Mise en avant de votre entreprise</h1>
+                        <p className="lg:text-2xl md:text-xl lg:mx-6 text-white">
                             Augmentez votre chiffre d’affaires en apparaissant dans les premiers résultats de recherche d’un utilisateur. Votre entreprise sera également affichée sur la page d’accueil.
                         </p>
                     </div>
@@ -134,7 +134,7 @@ const PricingPage = () => {
                     <img src="public/assets/img/vector.png" alt="Image 3" className="w-1/2 rounded-lg hide-on-small" />
                     <img src="src/assets/calendarpres.png" alt="Image 3" className="mr-16 w-full rounded-lg block lg:hidden" />
                     <div className="md:ml-8 text-center lg:text-start lg:mt-4 md:mt-0 lg:w-1/2">
-                        <p className="lg:text-2xl md:text-xl lg:mx-6 dark:text-white">
+                        <p className="lg:text-2xl md:text-xl lg:mx-6 text-white">
                             Profitez de toutes les fonctionnalités proposées par MPE à un tarif avantageux pour une durée choisie.
                         </p>
                     </div>
@@ -143,14 +143,14 @@ const PricingPage = () => {
                 <div className="mx-auto flex flex-col lg:flex-row justify-start items-center py-8 lg:py-16">
                     <img src="public/assets/img/decouvrez.png" alt="Image 4" className="w-10/12 lg:w-5/12 mt-8 lg:mt-0 lg:mr-8 order-first lg:order-last rounded-lg" />
                     <div className="mt-4 md:mt-0 text-center lg:text-start flex flex-col lg:items-start lg:text-left">
-                        <h1 className="text-4xl mb-12 lg:ml-6 font-bold dark:text-white gradient-text-green">Organisez l’activité de votre entreprise</h1>
-                        <p className="lg:text-2xl md:text-xl lg:mx-6 dark:text-white">
+                        <h1 className="text-4xl mb-12 lg:ml-6 font-bold text-white gradient-text-green">Organisez l’activité de votre entreprise</h1>
+                        <p className="lg:text-2xl md:text-xl lg:mx-6 text-white">
                             Le dashboard administrateur mit à votre disposition permet d’avoir un regard précis sur le nombre de passage de clients sur votre page, les rendez-vous, demande de contact,...
                         </p>
                     </div>
                 </div>
 
-                <h2 className="text-4xl font-bold text-center dark:text-white gradient-text-orange">Comparez nos formules</h2>
+                <h2 className="text-4xl font-bold text-center text-white gradient-text-orange">Comparez nos formules</h2>
             </div>
 
             <section className="py-4 mb-28">
@@ -168,7 +168,7 @@ const PricingPage = () => {
                                                 <div className="relative lg:hidden">
                                                     <select
                                                         value={selectedPlan}
-                                                        className="bg-gray-900 appearance-none outline-none px-4 py-2 cursor-pointer dark:bg-gray-700 dark:text-white"
+                                                        className="bg-gray-900 appearance-none outline-none px-4 py-2 cursor-pointer bg-gray-700 text-white"
                                                         onChange={(e) => setSelectedPlan(e.target.value)}
                                                     >
                                                         {plans.map((option, idx) => (
@@ -183,7 +183,7 @@ const PricingPage = () => {
                                                 <span>{item.name}</span>
                                                 <span className="text-lg font-normal">{item.price}/mois</span>
                                             </div>
-                                            <p className="text-sm dark:text-white text-center">{item.desc}</p>
+                                            <p className="text-sm text-white text-center">{item.desc}</p>
                                             <a href="#" className={`px-4 py-3 block text-center rounded-lg w-full font-semibold text-base duration-150 text-black  ${item.buttonColor}`}>
                                                 Souscrire
                                             </a>
@@ -198,34 +198,34 @@ const PricingPage = () => {
                         <div className="w-full flex justify-center overflow-auto md:overflow-visible flex justify-center">
                             {tables.map((table, idx) => (
                                 <table key={idx} className="w-fulltable-auto text-sm text-left">
-                                    <thead className="text-gray-600 font-medium border-b dark:text-white">
+                                    <thead className="text-gray-600 font-medium border-b text-white">
                                         <tr>
                                             <th className="z-20 top-12 py-6">
                                                 <div className="flex items-center gap-x-3">
                                                     <div className="w-12 h-12 text-indigo-600 rounded-full border flex items-center justify-center">
                                                         {table.label_icon}
                                                     </div>
-                                                    <h4 className="text-gray-400 text-xl font-medium dark:text-white">{table.label}</h4>
+                                                    <h4 className="text-gray-400 text-xl font-medium text-white">{table.label}</h4>
                                                 </div>
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-ydark:divide-gray-700">
+                                    <tbody className="divide-ydivide-gray-700">
                                         {table.items.map((item, idx) => (
                                             <tr key={idx}>
-                                                <td className="px-6 py-4 m-4 whitespace-nowrap dark:text-white">{item.name}</td>
+                                                <td className="px-6 py-4 m-4 whitespace-nowrap text-white">{item.name}</td>
                                                 {/* For large devices */}
-                                                <td className="text-center w-[250px] px-6 py-4 whitespace-nowrap hidden lg:table-cell dark:text-white">
+                                                <td className="text-center w-[250px] px-6 py-4 whitespace-nowrap hidden lg:table-cell text-white">
                                                     {item.basique}
                                                 </td>
-                                                <td className="text-center w-[250px] px-6 py-4 whitespace-nowrap hidden lg:table-cell dark:text-white">
+                                                <td className="text-center w-[250px] px-6 py-4 whitespace-nowrap hidden lg:table-cell text-white">
                                                     {item.mensuel}
                                                 </td>
-                                                <td className="text-center w-[250px] px-6 py-4 whitespace-nowrap hidden lg:table-cell dark:text-white">
+                                                <td className="text-center w-[250px] px-6 py-4 whitespace-nowrap hidden lg:table-cell text-white">
                                                     {item.annuel}
                                                 </td>
                                                 {/* For small devices */}
-                                                <td className="text-center w-[250px] px-6 py-4 whitespace-nowrap lg:hidden dark:text-white">
+                                                <td className="text-center w-[250px] px-6 py-4 whitespace-nowrap lg:hidden text-white">
                                                     {item[selectedPlan.toLowerCase()]}
                                                 </td>
                                             </tr>

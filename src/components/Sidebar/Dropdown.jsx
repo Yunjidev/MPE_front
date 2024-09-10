@@ -23,7 +23,7 @@ export default function Dropdown({
   return (
     <>
       <button
-        className="flex items-center justify-between w-full p-2 space-x-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+        className="flex items-center justify-between w-full p-2 space-x-3 rounded-md hover:bg-gray-700"
         onClick={toggleDropdown}
         disabled={isDisabled}
       >

@@ -41,7 +41,7 @@ const EnterpriseShow = () => {
   }
 
   return (
-    <div className="p-6 mt-12 dark:text-white">
+    <div className="p-6 mt-12 text-white">
       <div className="flex flex-col md:flex-row">
         <PhotoGallery photos={enterprise.photos} openPopup={openPopup} />
 
@@ -50,7 +50,7 @@ const EnterpriseShow = () => {
 
           {/* Affichage de la description avec dangerouslySetInnerHTML */}
           <p
-            className="text-sm dark:bg-neutral-700 bg-orange-300/25 p-4 rounded-xl"
+            className="text-sm bg-neutral-700 p-4 rounded-xl"
             dangerouslySetInnerHTML={{ __html: enterprise.description }}
           />
         </div>
@@ -63,14 +63,14 @@ const EnterpriseShow = () => {
       </div>
 
       <div className="mt-8">
-        <h2 className="text-2xl text-center font-bold dark:bg-gradient-to-r dark:from-violet-200 dark:to-violet-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text mb-4">
+        <h2 className="text-4xl text-center font-bold bg-gradient-to-r from-white to-violet-400 text-transparent bg-clip-text mb-12">
           Prestations
         </h2>
         <OfferList offers={enterprise.offers} />
       </div>
 
       <div className="mt-8">
-        <h2 className="text-2xl text-center font-bold bg-gradient-to-r from-violet-400 to-violet-800 dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 text-transparent bg-clip-text mb-4">
+        <h2 className="text-4xl text-center font-bold bg-gradient-to-r from-white to-orange-400 text-transparent bg-clip-text mb-12">
           Commentaires
         </h2>
         <CommentList offers={enterprise.offers} />
@@ -91,7 +91,7 @@ const EnterpriseShow = () => {
               className="object-contain max-w-full max-h-[80vh] rounded-lg"
             />
             <button
-              className="absolute top-0 right-0 mt-4 mr-6 text-white dark:text-white text-3xl"
+              className="absolute top-0 right-0 mt-4 mr-6 text-white text-3xl"
               onClick={closePopup}
             >
               &times;
