@@ -15,7 +15,7 @@ const SearchBar = ({ filterText, onFilterTextChange }) => {
         placeholder="Rechercher..."
         value={filterText}
         onChange={(e) => onFilterTextChange(e.target.value)}
-        className="border rounded-lg p-2 w-48 mr-2"  // Réduit la largeur du champ de recherche
+        className="border rounded-lg p-2 w-48 mr-2 bg-neutral-800 text-white border-neutral-600" // Utilise des styles sombres par défaut
       />
     </div>
   );
@@ -27,7 +27,7 @@ const DurationFilter = ({ selectedDuration, onDurationChange }) => {
     <select
       value={selectedDuration}
       onChange={(e) => onDurationChange(e.target.value)}
-      className="border rounded-lg p-2 w-32 mr-2"  // Réduit la largeur du filtre de durée
+      className="border rounded-lg p-2 w-32 mr-2 bg-neutral-800 text-white border-neutral-600" // Utilise des styles sombres par défaut
     >
       <option value="">Toutes les durées</option>
       <option value="60">1h</option>
@@ -43,7 +43,7 @@ const EstimateFilter = ({ isEstimated, onEstimateChange }) => {
     <select
       value={isEstimated}
       onChange={(e) => onEstimateChange(e.target.value === 'true')}
-      className="border rounded-lg p-2 w-32 mr-2"  // Réduit la largeur du filtre d'estimation
+      className="border rounded-lg p-2 w-32 mr-2 bg-neutral-800 text-white border-neutral-600" // Utilise des styles sombres par défaut
     >
       <option value="">Toutes les estimations</option>
       <option value="true">Estimé</option>
@@ -58,7 +58,7 @@ const DurationSort = ({ sortOrder, onSortOrderChange }) => {
     <select
       value={sortOrder}
       onChange={(e) => onSortOrderChange(e.target.value)}
-      className="border rounded-lg p-2 w-32 mr-2"  // Réduit la largeur du tri par durée
+      className="border rounded-lg p-2 w-32 mr-2 bg-neutral-800 text-white border-neutral-600" // Utilise des styles sombres par défaut
     >
       <option value="">Pas de tri</option>
       <option value="asc">Durée croissante</option>
@@ -165,7 +165,7 @@ const OffersList = () => {
   };
 
   return (
-    <div className="relative bg-neutral-600 bg-neutral-800 border border-neutral-700 p-4 rounded-lg">
+    <div className="relative bg-neutral-800 border border-neutral-700 p-4 rounded-lg">
       <div className="flex flex-col md:flex-row justify-between items-start mb-4 space-y-4 md:space-y-0">
         <SearchBar filterText={filterText} onFilterTextChange={setFilterText} />
         <div className="flex flex-wrap items-center space-x-2">
@@ -180,9 +180,9 @@ const OffersList = () => {
           <div className="mb-4">
             <button
               onClick={handleAddNew}
-              className="flex dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text items-center justify-center w-full md:w-auto h-10 border border-neutral-300 font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+              className="flex bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text items-center justify-center w-full md:w-auto h-10 border border-neutral-300 font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
             >
-              <FaPlus className="text-gray-800 dark:text-gray-100 w-6 h-6 mr-2" />
+              <FaPlus className="text-gray-100 w-6 h-6 mr-2" />
               <p className="text-transparent bg-clip-text bg-gradient-to-r from-[#67FFCC] to-[#FFFFFF]">Ajouter une offre</p>
             </button>
           </div>
@@ -191,7 +191,7 @@ const OffersList = () => {
 
       <ul className="space-y-4">
         {paginatedOffers.map(offer => (
-          <li key={offer.id} className="bg-white bg-neutral-700 border border-neutral-200 border-neutral-600 p-4 rounded-lg flex flex-col md:flex-row justify-between items-center">
+          <li key={offer.id} className="bg-neutral-700 border border-neutral-600 p-4 rounded-lg flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-6 md:flex-1">
               {offer.image && (
                 <img
@@ -201,79 +201,63 @@ const OffersList = () => {
                 />
               )}
               <div className="flex flex-wrap items-center space-x-6">
-                <h3 className="text-lg font-bold text-gray-900">{offer.name}</h3>
-                <p className="flex items-center space-x-2 text-sm text-gray-700 text-gray-400">
-                  <IoTimeOutline className="text-xl" />
-                  <span>Durée : {offer.duration} min</span>
+                <h3 className="text-lg font-bold text-white">{offer.name}</h3>
+                <p className="flex items-center space-x-2 text-sm text-gray-400">
+                  <IoTimeOutline className="w-4 h-4" />
+                  <span>{offer.duration} minutes</span>
                 </p>
-                <p className="flex items-center space-x-2 text-sm text-gray-700 text-gray-400">
-                  <IoInformationCircleOutline className="text-xl" />
-                  <span>Estimation : {offer.estimate ? <span> Oui</span> : <span> Non</span>}</span>
+                <p className="flex items-center space-x-2 text-sm text-gray-400">
+                  <IoInformationCircleOutline className="w-4 h-4" />
+                  <span>{offer.estimate ? 'Estimé' : 'Non estimé'}</span>
                 </p>
               </div>
             </div>
-            <div className="flex space-x-2 mt-2 md:mt-0">
+            <div className="flex items-center space-x-4 mt-4 md:mt-0">
               <button
                 onClick={() => handleEdit(offer)}
-                className="flex bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text items-center justify-center w-32 h-10 border border-neutral-300 font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+                className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
               >
-                <FaEdit className="text-gray-800 dark:text-gray-100 w-3 h-3 mr-2" />
-                <p>Editer</p>
+                <FaEdit className="w-5 h-5" />
               </button>
               <button
                 onClick={() => handleDelete(offer.id)}
-                className="flex dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text items-center justify-center w-32 h-10 border border-neutral-300 font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+                className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
               >
-                <FaTrash className="text-gray-800 text-gray-100 w-6 h-6 mr-2" />
-                <p>Supprimer</p>
+                <FaTrash className="w-5 h-5" />
               </button>
             </div>
           </li>
         ))}
       </ul>
 
-      <div className="flex justify-between items-center mt-4">
-        <div className="flex space-x-4">
-          <button
-            onClick={() => setPageIndex(prevIndex => Math.max(prevIndex - 1, 0))}
-            disabled={pageIndex === 0}
-            className="px-4 py-2 bg-gray-200 rounded-lg bg-neutral-700 text-white border hover:border-[#67FFCC] transition duration-300 ease-in-out"
-          >
-            &laquo; Précédente
-          </button>
-          <span className="text-white font-bold">
-            Page {pageIndex + 1} sur {Math.ceil(filteredOffers.length / pageSize)}
-          </span>
-          <button
-            onClick={() => setPageIndex(prevIndex => Math.min(prevIndex + 1, Math.ceil(filteredOffers.length / pageSize) - 1))}
-            disabled={pageIndex >= Math.ceil(filteredOffers.length / pageSize) - 1}
-            className="px-4 py-2 bg-gray-200 rounded-lg bg-neutral-700 text-white border hover:border-[#67FFCC] transition duration-300 ease-in-out"
-          >
-            Suivante &raquo;
-          </button>
+      {/* Pagination */}
+      <div className="mt-4 flex flex-wrap justify-between items-center">
+        <div className="space-x-2">
+          {[...Array(Math.ceil(filteredOffers.length / pageSize)).keys()].map((page) => (
+            <button
+              key={page}
+              onClick={() => setPageIndex(page)}
+              className={`px-4 py-2 rounded ${pageIndex === page ? 'bg-neutral-700 text-white' : 'bg-neutral-600 text-gray-300'}`}
+            >
+              {page + 1}
+            </button>
+          ))}
         </div>
         <select
           value={pageSize}
           onChange={handlePageSizeChange}
-          className="border rounded-lg bg-neutral-700 text-white p-2"
+          className="border rounded-lg p-2 bg-neutral-800 text-white border-neutral-600"
         >
-          {[10, 20, 30, 40].map(size => (
-            <option key={size} value={size}>
-              {size} offres par page
-            </option>
-          ))}
+          <option value={5}>5 par page</option>
+          <option value={10}>10 par page</option>
+          <option value={15}>15 par page</option>
         </select>
       </div>
 
-      {isModalOpen && (
-        <Modal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          title={selectedOffer ? "Modifier l'offre" : "Ajouter une nouvelle offre"}
-        >
-          <OfferForm offer={selectedOffer} onSave={handleSave} onCancel={() => setIsModalOpen(false)} />
-        </Modal>
-      )}
+      {/* Modal pour ajouter/éditer une offre */}
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <OfferForm onSave={handleSave} offer={selectedOffer} />
+      </Modal>
     </div>
   );
 };

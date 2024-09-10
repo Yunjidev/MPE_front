@@ -54,13 +54,13 @@ const ReservationsList = () => {
       .filter((reservation) => selectedStatus === "" || reservation.status === selectedStatus);
 
     setFilteredReservations(filtered);
-    setPageIndex(0); // Réinitialiser la page à 0 lors du filtrage
+    setPageIndex(0); // Reset page index when filtering
   }, [searchQuery, reservations, selectedStatus]);
 
   const updateReservationStatus = async (reservationId, status) => {
     try {
       await putData(`reservation/${reservationId}`, { status: status.toLowerCase() });
-      fetchReservations(); // Rafraîchir les données après la mise à jour
+      fetchReservations(); // Refresh data after updating
     } catch (error) {
       console.error(
         "Erreur lors de la mise à jour du statut de la réservation:",
@@ -79,7 +79,7 @@ const ReservationsList = () => {
   const handlePageSizeChange = (event) => {
     const newSize = Number(event.target.value);
     setPageSize(newSize);
-    setPageIndex(0); // Réinitialiser la page à 0
+    setPageIndex(0); // Reset page index when changing page size
   };
 
   const getStatusDetails = (status) => {
@@ -87,72 +87,49 @@ const ReservationsList = () => {
       case "pending":
         return { icon: <IoEllipseOutline className="text-yellow-500" />, text: "En attente" };
       case "accepted":
-        return { icon: <IoCheckmarkCircleOutline className="text-green-600" />, text: "Acceptée" };
+        return { icon: <IoCheckmarkCircleOutline className="text-green-500" />, text: "Acceptée" };
       case "rejected":
-        return { icon: <IoCloseCircleOutline className="text-red-600" />, text: "Rejetée" };
+        return { icon: <IoCloseCircleOutline className="text-red-500" />, text: "Rejetée" };
       case "cancelled":
-        return { icon: <IoCloseCircleOutline className="text-gray-600" />, text: "Annulée" };
+        return { icon: <IoCloseCircleOutline className="text-gray-500" />, text: "Annulée" };
       case "done":
-        return { icon: <IoCheckmarkCircleOutline className="text-blue-600" />, text: "Terminée" };
+        return { icon: <IoCheckmarkCircleOutline className="text-blue-500" />, text: "Terminée" };
       default:
         return { icon: <IoEllipseOutline className="text-gray-500" />, text: status };
     }
   };
 
   return (
-    <div className="relative bg-neutral-600 bg-neutral-800 border border-neutral-700 p-4 rounded-lg flex flex-col h-full">
-      {/* Deuxième ligne : Barre de recherche et Filtres */}
+    <div className="relative bg-neutral-800 border border-neutral-700 p-4 rounded-lg flex flex-col h-full">
+      {/* Search Bar and Status Filters */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-4 space-y-4 md:space-y-0 md:space-x-4">
-        {/* Barre de recherche */}
+        {/* Search Bar */}
         <input
           type="text"
           placeholder="Rechercher..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full md:w-1/4 px-4 py-2 rounded-lg bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
+          className="w-full md:w-1/4 px-4 py-2 rounded-lg bg-neutral-700 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
         />
-        {/* Filtres par statut */}
+        {/* Status Filters */}
         <div className="flex flex-wrap items-center space-x-2">
-          <button
-            onClick={() => setSelectedStatus("pending")}
-            className={`px-4 py-2 rounded-lg ${selectedStatus === "pending" ? "bg-[#67FFCC] text-white" : "bg-gray-200 bg-neutral-700 text-white"} border hover:border-[#67FFCC] transition duration-300 ease-in-out`}
-          >
-            En attente
-          </button>
-          <button
-            onClick={() => setSelectedStatus("accepted")}
-            className={`px-4 py-2 rounded-lg ${selectedStatus === "accepted" ? "bg-[#67FFCC] text-white" : "bg-gray-200 bg-neutral-700 text-white"} border hover:border-[#67FFCC] transition duration-300 ease-in-out`}
-          >
-            Acceptée
-          </button>
-          <button
-            onClick={() => setSelectedStatus("rejected")}
-            className={`px-4 py-2 rounded-lg ${selectedStatus === "rejected" ? "bg-[#67FFCC] text-white" : "bg-gray-200 bg-neutral-700 text-white"} border hover:border-[#67FFCC] transition duration-300 ease-in-out`}
-          >
-            Rejetée
-          </button>
-          <button
-            onClick={() => setSelectedStatus("cancelled")}
-            className={`px-4 py-2 rounded-lg ${selectedStatus === "cancelled" ? "bg-[#67FFCC] text-white" : "bg-gray-200 bg-neutral-700 text-white"} border hover:border-[#67FFCC] transition duration-300 ease-in-out`}
-          >
-            Annulée
-          </button>
-          <button
-            onClick={() => setSelectedStatus("done")}
-            className={`px-4 py-2 rounded-lg ${selectedStatus === "done" ? "bg-[#67FFCC] text-white" : "bg-gray-200 bg-neutral-700 text-white"} border hover:border-[#67FFCC] transition duration-300 ease-in-out`}
-          >
-            Terminée
-          </button>
-          <button
-            onClick={() => setSelectedStatus("")}
-            className={`px-4 py-2 rounded-lg ${selectedStatus === "" ? "bg-[#67FFCC] text-white" : "bg-gray-200 bg-neutral-700 dark:text-white"} border hover:border-[#67FFCC] transition duration-300 ease-in-out`}
-          >
-            Tous
-          </button>
+          {["pending", "accepted", "rejected", "cancelled", "done", ""].map((status, index) => {
+            const statusText = status === "" ? "Tous" : getStatusDetails(status).text;
+            const isActive = selectedStatus === status;
+            return (
+              <button
+                key={index}
+                onClick={() => setSelectedStatus(status)}
+                className={`px-4 py-2 rounded-lg ${isActive ? "bg-[#67FFCC] text-white" : "bg-neutral-700 text-white"} border hover:border-[#67FFCC] transition duration-300 ease-in-out`}
+              >
+                {statusText}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Liste des réservations */}
+      {/* Reservations List */}
       <div className="flex-grow">
         <ul className="space-y-4">
           {paginatedReservations.map((reservation) => {
@@ -160,25 +137,25 @@ const ReservationsList = () => {
             return (
               <li
                 key={reservation.id}
-                className="p-4 bg-gray-100 rounded-lg flex flex-col md:flex-row justify-between items-center"
+                className="p-4 bg-neutral-700 rounded-lg flex flex-col md:flex-row justify-between items-center"
               >
-                {/* Détails de la réservation sur une seule ligne */}
+                {/* Reservation Details */}
                 <div className="flex flex-wrap items-center space-x-6">
-                  <h3 className="text-lg font-bold text-gray-900">
+                  <h3 className="text-lg font-bold text-white">
                     {reservation.offer?.name || "Offre non disponible"}
                   </h3>
-                  <p className="flex items-center space-x-2 text-sm text-gray-700 text-gray-400">
+                  <p className="flex items-center space-x-2 text-sm text-gray-400">
                     <IoPersonOutline className="text-xl" />
                     <span>
                       {reservation.user?.firstName || "Inconnu"}{" "}
                       {reservation.user?.lastName || ""}
                     </span>
                   </p>
-                  <p className="flex items-center space-x-2 text-sm text-gray-700 text-gray-400">
+                  <p className="flex items-center space-x-2 text-sm text-gray-400">
                     <IoCalendarOutline className="text-xl" />
                     <span>{reservation.date}</span>
                   </p>
-                  <p className="flex items-center space-x-2 text-sm text-gray-700 text-gray-400">
+                  <p className="flex items-center space-x-2 text-sm text-gray-400">
                     <IoTimeOutline className="text-xl" />
                     <span>
                       De {reservation.start_time} à {reservation.end_time}
@@ -186,10 +163,10 @@ const ReservationsList = () => {
                   </p>
                 </div>
 
-                {/* Statut et boutons d'action */}
+                {/* Status and Action Buttons */}
                 <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4 mt-2 md:mt-0">
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm text-gray-700 text-gray-400">{text}</span>
+                    <span className="text-sm text-white">{text}</span>
                     {icon}
                   </div>
                   <div className="flex space-x-2 mt-2 md:mt-0">
@@ -199,7 +176,7 @@ const ReservationsList = () => {
                           onClick={() =>
                             updateReservationStatus(reservation.id, "accepted")
                           }
-                          className="text-green-600 text-green-500 hover:underline"
+                          className="text-green-500 hover:underline"
                           title="Accepter la réservation"
                         >
                           <FaCheck />
@@ -208,7 +185,7 @@ const ReservationsList = () => {
                           onClick={() =>
                             updateReservationStatus(reservation.id, "rejected")
                           }
-                          className="text-red-600 text-red-500 hover:underline"
+                          className="text-red-500 hover:underline"
                           title="Refuser la réservation"
                         >
                           <FaTimes />
@@ -223,23 +200,23 @@ const ReservationsList = () => {
         </ul>
       </div>
 
-      {/* Première ligne : Pagination et Sélecteur de taille de page */}
+      {/* Pagination and Page Size Selector */}
       <div className="flex flex-col md:flex-row justify-between items-center mt-auto space-y-4 md:space-y-0 md:space-x-4">
         <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
           <button
             onClick={() => setPageIndex(pageIndex - 1)}
             disabled={pageIndex === 0}
-            className="w-full md:w-auto px-4 py-2 bg-gray-200 rounded-lg bg-neutral-700 text-white border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+            className="w-full md:w-auto px-4 py-2 bg-neutral-700 text-white border hover:border-[#67FFCC] transition duration-300 ease-in-out"
           >
             &laquo; Précédente
           </button>
-          <span className="text-white text-black font-bold">
+          <span className="text-white font-bold">
             Page {pageIndex + 1} sur {Math.ceil(filteredReservations.length / pageSize)}
           </span>
           <button
             onClick={() => setPageIndex(pageIndex + 1)}
             disabled={pageIndex >= Math.ceil(filteredReservations.length / pageSize) - 1}
-            className="w-full md:w-auto px-4 py-2 bg-gray-200 rounded-lg bg-neutral-700 text-white border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+            className="w-full md:w-auto px-4 py-2 bg-neutral-700 text-white border hover:border-[#67FFCC] transition duration-300 ease-in-out"
           >
             Suivante &raquo;
           </button>
