@@ -53,37 +53,37 @@ const PremiumCompanies = () => {
                   Nom:
                 </div>
                 <div className="text-gray-900 dark:text-white">
-                  {company.enterprise?.name || "N/A"}
+                  {company.name || "N/A"}
                 </div>
                 <div className="font-bold text-gray-900 dark:text-white">
                   Ville:
                 </div>
                 <div className="text-gray-900 dark:text-white">
-                  {company.enterprise?.city || "N/A"}
+                  {company.city || "N/A"}
                 </div>
                 <div className="font-bold text-gray-900 dark:text-white">
                   CP:
                 </div>
                 <div className="text-gray-900 dark:text-white">
-                  {company.enterprise?.zip_code || "N/A"}
+                  {company.zip_code || "N/A"}
                 </div>
                 <div className="font-bold text-gray-900 dark:text-white">
                   Région:
                 </div>
                 <div className="text-gray-900 dark:text-white">
-                  {company.enterprise?.country?.name || "N/A"}
+                  {company.country?.name || "N/A"}
                 </div>
                 <div className="font-bold text-gray-900 dark:text-white">
                   Métier:
                 </div>
                 <div className="text-gray-900 dark:text-white">
-                  {company.enterprise?.job?.name || "N/A"}
+                  {company.job?.name || "N/A"}
                 </div>
                 <div className="font-bold text-gray-900 dark:text-white">
                   Pseudo:
                 </div>
                 <div className="text-gray-900 dark:text-white">
-                  {company.enterprise?.entrepreneur?.username || "N/A"}
+                  {company.entrepreneur?.username || "N/A"}
                 </div>
                 <div className="font-bold text-gray-900 dark:text-white">
                   Note moyenne:
@@ -95,7 +95,7 @@ const PremiumCompanies = () => {
             </div>
             <div className="ml-4 flex flex-col justify-between">
               <Button
-                onClick={() => viewCompany(company.enterprise.id)}
+                onClick={() => viewCompany(company.id)}
                 className="text-blue-600 dark:text-blue-500 hover:underline mb-2"
               >
                 <FaEye />

@@ -37,7 +37,13 @@ export default function AdminSideBar({
     {
       to: "/dashboard/manage-companies",
       icon: <FaBuilding className={iconstyle} />,
-      label: "Liste des entreprises",
+      label: (
+        <>
+          Liste des entreprises
+          <br />
+          validées
+        </>
+      ),
     },
     {
       to: "/dashboard/reports",
