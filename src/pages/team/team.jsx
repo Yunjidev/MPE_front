@@ -10,7 +10,7 @@ const Team = () => {
   return (
     <div className="font-sans">
       <div className="p-4 pt-14">
-        <h1 className="text-center text-5xl mb-12 dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-orange-400 text-transparent bg-clip-text">
+        <h1 className="text-center font-bold text-4xl mb-12 bg-gradient-to-r from-orange-200 to-orange-400 bg-orange-400 text-transparent bg-clip-text">
           Rencontrez l'équipe de développeurs
         </h1>
         <TeamMembersSection />
