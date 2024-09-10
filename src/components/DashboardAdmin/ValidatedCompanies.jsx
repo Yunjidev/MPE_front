@@ -228,7 +228,7 @@ const ValidatedCompanies = () => {
                     setSelectedCompany(company);
                     setIsSubscriptionModalOpen(true);
                   }}
-                  className="text-blue-500 hover:scale-110 transition-transform text-2xl"
+                  className="text-blue-500 hover:scale-110 transition-transform text-2xl mt-5"
                 >
                   <FaPlusCircle/>
                 </button>
