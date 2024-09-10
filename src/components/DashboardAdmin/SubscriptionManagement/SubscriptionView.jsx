@@ -9,6 +9,8 @@ const SubscriptionView = () => {
   const [subscriptions, setSubscriptions] = useState([]);
   const [pageSize, setPageSize] = useState(1);
   const [pageIndex, setPageIndex] = useState(0);
+  const [selectedSubscriptionType, setSelectedSubscriptionType] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +37,26 @@ const SubscriptionView = () => {
         toast.error("Une erreur est survenue lors de la suppression de la souscription");
       });
   };
+// Fetch update type d'abonnement
+const handleUpdateSubscription = (id, data) => {
+  updateSubscription(id, data)
+    .then(() => {
+      toast.success("La souscription a été modifiée avec succès");
+      setSubscriptions(subscriptions.map(sub => sub.id === id ? { ...sub, ...data } : sub));
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la modification de la souscription:", error);
+      toast.error("Une erreur est survenue lors de la modification de la souscription");
+    });
+};
+
+const handleSubscriptionTypeChange = (event) => {
+  setSelectedSubscriptionType(event.target.value);
+};
+
+const handleStatusChange = (event) => {
+  setSelectedStatus(event.target.value);
+};
 
   // Pagination
   const pageCount = Math.ceil(subscriptions.length / pageSize);
@@ -112,6 +134,33 @@ const SubscriptionView = () => {
               >
                 Supprimer
               </Button>
+              <form onSubmit={e => {
+                e.preventDefault();
+                handleUpdateSubscription(subscription.id, { subscription_type: selectedSubscriptionType, status: selectedStatus });
+              }}>
+                <select
+                  name="subscription_type"
+                  value={selectedSubscriptionType}
+                  onChange={handleSubscriptionTypeChange}
+                  className="bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-700 rounded-md px-4 py-2 m-2"
+                >
+                  <option value="forever">forever</option>
+                  <option value="monthly">monthly</option>
+                  <option value="yearly">yearly</option>
+                </select>
+                <select
+                  name="status"
+                  value={selectedStatus}
+                  onChange={handleStatusChange}
+                  className="bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-700 rounded-md px-4 py-2 m-2"
+                >
+                  <option value="active">active</option>
+                  <option value="inactive">inactive</option>
+                </select>
+                <Button type="submit" className="text-green-600 dark:text-green-500 hover:underline">
+                  Modifier
+                </Button>
+              </form>
             </div>
           </div>
         ))}
