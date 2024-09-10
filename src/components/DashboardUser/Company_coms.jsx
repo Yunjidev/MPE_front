@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react/no-unescaped-entities */
+import { useState, useEffect } from "react";
 import { getData } from "../../services/data-fetch";
 
 const CommentsOfUser = () => {

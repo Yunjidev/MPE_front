@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { FaTimes } from "react-icons/fa";
 import OffersList from "@/components/DashboardEnterprise/OffersList";
 

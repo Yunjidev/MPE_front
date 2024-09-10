@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaBriefcase } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { postData, putData, deleteData, getData } from "../../services/data-fetch";
@@ -10,6 +10,7 @@ const CreateJobForm = () => {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [formData, setFormData] = useState({ photo: null });
+  // eslint-disable-next-line no-unused-vars
   const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
@@ -64,7 +65,7 @@ const CreateJobForm = () => {
 
   const onUpdateJob = async (data) => {
     try {
-      console.log(`Updating job: ${selectedJob.id} with data:`, data); // Ajout de console.log
+      // console.log(`Updating job: ${selectedJob.id} with data:`, data);
       const updatedFormData = new FormData();
       updatedFormData.append("name", data.jobTitle);
       if (formData.photo) {
@@ -73,7 +74,7 @@ const CreateJobForm = () => {
         updatedFormData.append("picture", selectedJob.picture);
       }
 
-      console.log('FormData:', updatedFormData.get("name"), updatedFormData.get("picture")); // Ajout de console.log
+      // console.log('FormData:', updatedFormData.get("name"), updatedFormData.get("picture")); 
 
       const jobResponse = await putData(`admin/job/${selectedJob.id}`, updatedFormData);
 
@@ -94,9 +95,9 @@ const CreateJobForm = () => {
 
   const onDeleteJob = async () => {
     try {
-      console.log(`Deleting job: ${selectedJob.id}`); // Ajout de console.log
+      // console.log(`Deleting job: ${selectedJob.id}`); 
       const jobResponse = await deleteData(`admin/job/${selectedJob.id}`);
-      console.log('Delete response:', jobResponse); // Ajout de console.log
+      // console.log('Delete response:', jobResponse); 
 
       if (jobResponse && jobResponse.message === "job supprimée") {
         toast.success("Métier supprimé avec succès !");
@@ -118,7 +119,7 @@ const CreateJobForm = () => {
     if (selectedJob) {
       setSelectedJob(selectedJob);
       setValue("jobTitle", selectedJob.name);
-      console.log("Job selected:", selectedJob); // Ajout de console.log
+      // console.log("Job selected:", selectedJob); 
 
       // Récupérer l'image du job sélectionné
       if (selectedJob.picture) {
@@ -126,7 +127,7 @@ const CreateJobForm = () => {
           ...prevData,
           photo: selectedJob.picture,
         }));
-        console.log("Photo URL:", selectedJob.picture); // Ajout de console.log
+        // console.log("Photo URL:", selectedJob.picture); 
       } else {
         setFormData((prevData) => ({
           ...prevData,
@@ -136,13 +137,13 @@ const CreateJobForm = () => {
     } else {
       setSelectedJob(null);
       reset();
-      console.log("No job selected"); // Ajout de console.log
+      // console.log("No job selected"); 
     }
   };
 
   return (
     <div className="flex flex-col h-full space-around bg-neutral-800 p-6 rounded-lg">
-      <h2 className="dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-black to-[#67FFCC] font-bold text-transparent bg-clip-text text-center text-2xl mb-5">
+      <h2 className="bg-gradient-to-r from-white to-[#67FFCC] font-bold text-transparent bg-clip-text text-center text-2xl mb-5">
         Gestion des Métiers
       </h2>
       <hr className="w-1/2 my-4 border-t-2 border-gray-400 mx-auto" />
@@ -180,10 +181,15 @@ const CreateJobForm = () => {
             url={formData.photo}
             isEditMode={isEditMode}
           />
+          {formData.photo && (
+            <div className="mt-4">
+              <img src={formData.photo} alt="Job" className="w-full h-auto rounded-lg" />
+            </div>
+          )}
         </div>
         <div className="col-span-2 flex justify-center mt-6">
           <button
-            className="flex w-full dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-black to-[#67FFCC] text-transparent bg-clip-text items-center justify-center border border-gray-500 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-[#67FFCC] transition duration-300 ease-in-out"
+            className="flex w-96 bg-gradient-to-r from-white to-[#67FFCC] text-transparent bg-clip-text items-center justify-center border border-gray-500 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-[#67FFCC] transition duration-300 ease-in-out"
             type="submit"
           >
             {selectedJob ? "Modifier Métier" : "Créer Métier"}
@@ -193,7 +199,7 @@ const CreateJobForm = () => {
       {selectedJob && (
         <div className="col-span-2 flex justify-center mt-6">
           <button
-            className="flex w-full bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+            className="flex w-96 bg-red-500 hover:bg-red-700 text-white items-center justify-center font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
             onClick={onDeleteJob}
           >
             Supprimer Métier

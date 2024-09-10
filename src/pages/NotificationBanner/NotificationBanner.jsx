@@ -18,9 +18,9 @@ const CookieBanner = () => {
   if (!isVisible) return null;
 
   return (
-    <section className="fixed max-w-2xl items-center p-4 mx-auto bg-white/50 border dark:border-orange-500/80 border-emerald-400/80 md:gap-x-4 left-1/2 transform -translate-x-1/2 bottom-2 dark:bg-neutral-900/75 md:flex md:items-center dark:border-white-700 rounded-2xl z-50">
+    <section className="fixed max-w-2xl items-center p-4 mx-auto md:gap-x-4 left-1/2 transform -translate-x-1/2 bottom-2 bg-neutral-900/75 md:flex md:items-center border border-white-700 rounded-2xl z-50">
       <div className="flex items-center gap-x-4">
-        <span className="inline-flex p-2 dark:text-white-500 rounded-lg shrink-0 dark:bg-orange-500 white: bg-emerald-400/80">
+        <span className="inline-flex p-2 text-white-500 rounded-lg shrink-0 bg-orange-500 white: bg-emerald-400/80">
           <svg
             width="20"
             height="20"
@@ -35,7 +35,7 @@ const CookieBanner = () => {
           </svg>
         </span>
 
-        <p className="text-sm text-gray-600 dark:text-gray-300">
+        <p className="text-sm text-gray-300">
           Nous utilisons des cookies pour vous garantir la meilleure expérience
           sur notre site web.{" "}
           <a href="/cookie-policies" className="text-blue-500 hover:underline">
@@ -47,7 +47,7 @@ const CookieBanner = () => {
 
       <div className="flex items-center mt-6 gap-x-4 shrink-0 lg:mt-0">
         <button
-          className="text-xs w-1/2 md:w-auto font-medium dark:bg-orange-500 bg-emerald-400 rounded-lg dark:hover:bg-neutral-500 hover:bg-gray-300 dark:text-white text-black px-4 py-2.5 duration-300 transition-colors focus:outline-none"
+          className="text-xs w-1/2 md:w-auto font-medium bg-orange-500 rounded-lg hover:bg-orange-700 text-white px-4 py-2.5 duration-300 transition-colors focus:outline-none"
           onClick={handleAcceptAll}
         >
           Accepter tous les cookies

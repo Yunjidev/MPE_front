@@ -78,13 +78,13 @@ const UsersCard = () => {
   };
 
   return (
-    <div className="max-w-sm w-full bg-white rounded-lg shadow dark:bg-neutral-800 border dark:border-[#67FFCC] p-4 md:p-6">
+    <div className="max-w-sm w-full rounded-lg shadow bg-neutral-800 border border-[#67FFCC] p-4 md:p-6">
       <div className="flex justify-between">
         <div>
-          <h5 className="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">16</h5>
-          <p className="text-base font-normal text-gray-500 dark:text-gray-400">Réservations cette semaine</p>
+          <h5 className="leading-none text-3xl font-bold text-white pb-2">16</h5>
+          <p className="text-base font-normal text-gray-400">Réservations cette semaine</p>
         </div>
-        <div className="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
+        <div className="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 text-center">
           12%
           <svg
             className="w-3 h-3 ms-1"

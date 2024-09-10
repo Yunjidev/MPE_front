@@ -145,7 +145,7 @@ export default function EnterpriseForm({
   };
 
   return (
-    <div className="rounded-xl flex items-center justify-center bg-neutral-900 border border-white">
+    <div className="rounded-xl flex items-center justify-center bg-neutral-900 border border-white mt-6">
       <div className="relative group max-w-8xl w-full">
         <div className="bg-neutral-900 p-10 rounded-xl shadow-xl relative z-10 ">
           <h2 className="text-white text-center text-2xl mb-5">{title}</h2>
@@ -186,7 +186,7 @@ export default function EnterpriseForm({
               inputStyle="h-full"
             />
             <Input.MultipleUpload
-              placeholder="Sélectionnez des images"
+              placeholder="Sélectionnez des images ( 3 images )"
               onFileUpload={handlePhotosChange}
               onFileDelete={handleDeletePhoto}
               url={formData.photos}
@@ -197,7 +197,7 @@ export default function EnterpriseForm({
             <button
               type="submit"
               onClick={handleSubmit}
-              className="flex w-full dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text items-center justify-center h-12 mr-2 border border-neutral-300 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+              className="flex w-full bg-gradient-to-r from-white to-[#67FFCC] text-transparent bg-clip-text items-center justify-center h-12 mr-2 border border-neutral-300 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
             >
               Soumettre
             </button>

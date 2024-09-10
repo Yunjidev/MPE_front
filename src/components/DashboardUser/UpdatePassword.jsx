@@ -1,4 +1,5 @@
-import React, { useState, useContext } from "react";
+/* eslint-disable no-unused-vars */
+import { useState, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { putData } from "../../services/data-fetch";
 import { FaLock, FaKey } from "react-icons/fa";
@@ -44,7 +45,7 @@ export default function UpdatePassword() {
   };
 
   return (
-    <div className="mt-12 mb-6 flex items-center justify-center bg-neutral-900 rounded-xl">
+    <div className="mt-12 mb-6 flex items-center justify-center bg-neutral-900 rounded-xl border border-white">
       <div className="relative border-form-1 group max-w-8xl w-full ">
         <div className="absolute -top-1 -left-1 -right-1 -bottom-1 "></div>
         <div className="bg-neutral-900 p-10 rounded-xl relative z-10 transform transition duration-500 ease-in-out">
@@ -92,7 +93,7 @@ export default function UpdatePassword() {
 
             <div className="flex justify-center">
               <button
-                className="flex w-full dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text items-center justify-center w-44 h-12 mr-2 border border-neutral-300 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+                className="flex w-full bg-gradient-to-r from-white to-[#67FFCC] text-transparent bg-clip-text items-center justify-center w-44 h-12 mr-2 border border-neutral-300 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
                 type="submit"
               >
                 Changer le mot de passe

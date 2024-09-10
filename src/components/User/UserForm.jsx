@@ -9,6 +9,8 @@ import Input from "../Utils/Inputs/Input";
 import Inscription from "./Form/Inscription";
 import Edit from "./Form/Edit";
 
+const className = "w-10/12 mx-auto"
+
 export default function UserForm({ onSubmit, mode }) {
   const [user] = useAtom(userAtom);
   const [formData, setFormData] = useState({});
@@ -17,7 +19,7 @@ export default function UserForm({ onSubmit, mode }) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const isConnexion = mode === "Connexion";
   const isInscription = mode === "Inscription";
-  const isEdit = mode === "Edit";
+  const isEdit = mode === "Edition";
 
   useEffect(() => {
     if (isEdit) {
@@ -109,9 +111,9 @@ export default function UserForm({ onSubmit, mode }) {
               />
             </div>
           ) : (
-            <Inscription fomData={formData} onChange={handleInputChange} />
+            <Inscription fomData={formData} onChange={handleInputChange} className={isEdit ? className : ""} />
           )}
-          {isEdit && <Edit fomData={formData} onChange={handleInputChange} />}
+          {isEdit && <Edit fomData={formData} onChange={handleInputChange} className={className} />}
           {(isConnexion || isInscription) && (
             <Input.Text
               id="password"
@@ -143,9 +145,15 @@ export default function UserForm({ onSubmit, mode }) {
             />
           )}
         </form>
-        <Button type="submit" onClick={handleSubmit}>
-          {mode}
-        </Button>
+        {isEdit ? (
+          <button type="submit" onClick={handleSubmit} className="flex bg-gradient-to-r from-white to-[#67FFCC] text-transparent bg-clip-text items-center justify-center w-2/3 mx-auto border border-neutral-300 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-green-200 transition duration-300 ease-in-out">
+            Sauvegarder
+          </button>
+        ) : (
+          <Button type="submit" onClick={handleSubmit}>
+            {mode}
+          </Button>
+        )}
         {mode === "Connexion" && (
           <a
             className="text-blue-500 hover:text-blue-800 text-sm"
