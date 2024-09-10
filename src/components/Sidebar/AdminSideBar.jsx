@@ -5,7 +5,6 @@ import {
   FaTachometerAlt,
   FaBuilding,
   FaUsers,
-  FaChartBar,
   FaChartLine,
   FaPenFancy,
 } from "react-icons/fa";
@@ -20,9 +19,9 @@ export default function AdminSideBar({
   // Nav Items
   const navItems = [
     {
-      to: "/dashboard/admin-overview",
+      to: "/dashboard/admin-db",
       icon: <FaTachometerAlt className={iconstyle} />,
-      label: "Tableau de bord",
+      label: "Tableau de Bord",
     },
     {
       to: "/dashboard/accept-company",
@@ -38,11 +37,6 @@ export default function AdminSideBar({
       to: "/dashboard/manage-companies",
       icon: <FaBuilding className={iconstyle} />,
       label: "Liste des entreprises",
-    },
-    {
-      to: "/dashboard/statistics",
-      icon: <FaChartBar className={iconstyle} />,
-      label: "Statistiques",
     },
     {
       to: "/dashboard/reports",
@@ -66,13 +60,13 @@ export default function AdminSideBar({
     <>
       {user && user.isAdmin && (
         <div className="flex flex-col flex-grow space-y-4">
-          <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
-            <FaUserShield className="w-10 h-10 mr-2 fill-current dark:text-white text-black" />
+          <div className="flex items-center space-x-2 text-gray-400">
+            <FaUserShield className="w-10 h-10 mr-2 fill-current text-white" />
             <div>
-              <h3 className="lg:text-2xl text-4xl font-bold dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text">
+              <h3 className="lg:text-2xl text-4xl font-bold bg-gradient-to-r from-white to-[#67FFCC] text-transparent bg-clip-text">
                 Dashboard
               </h3>
-              <p className="lg:text-xs text-2xl dark:text-white text-black">
+              <p className="lg:text-xs text-2xl text-white">
                 Admin
               </p>
             </div>

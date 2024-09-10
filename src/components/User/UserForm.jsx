@@ -146,7 +146,7 @@ export default function UserForm({ onSubmit, mode }) {
           )}
         </form>
         {isEdit ? (
-          <button type="submit" onClick={handleSubmit} className="flex dark:bg-gradient-to-r dark:from-white dark:to-[#67FFCC] bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text items-center justify-center w-2/3 mx-auto border border-neutral-300 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-green-200 transition duration-300 ease-in-out">
+          <button type="submit" onClick={handleSubmit} className="flex bg-gradient-to-r from-white to-[#67FFCC] text-transparent bg-clip-text items-center justify-center w-2/3 mx-auto border border-neutral-300 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-green-200 transition duration-300 ease-in-out">
             Sauvegarder
           </button>
         ) : (

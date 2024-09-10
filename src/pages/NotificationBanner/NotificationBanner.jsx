@@ -47,7 +47,7 @@ const CookieBanner = () => {
 
       <div className="flex items-center mt-6 gap-x-4 shrink-0 lg:mt-0">
         <button
-          className="text-xs w-1/2 md:w-auto font-medium bg-orange-500 rounded-lg hover:bg-neutral-500 text-white px-4 py-2.5 duration-300 transition-colors focus:outline-none"
+          className="text-xs w-1/2 md:w-auto font-medium bg-orange-500 rounded-lg hover:bg-orange-700 text-white px-4 py-2.5 duration-300 transition-colors focus:outline-none"
           onClick={handleAcceptAll}
         >
           Accepter tous les cookies

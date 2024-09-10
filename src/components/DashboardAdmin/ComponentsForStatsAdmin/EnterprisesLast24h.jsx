@@ -21,7 +21,7 @@ export default function EnterprisesLast24h() {
     }, []);
       
     return (
-      <div className="bg-neutral-800 text-white p-6 rounded-lg shadow-md w-full overflow-x-auto">
+      <div className="bg-neutral-800 text-white p-6 rounded-lg shadow-md w-full overflow-x-auto mb-12">
         <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-white to-[#67FFCC] bg-gradient-to-r from-white to-[#67FFCC] text-transparent bg-clip-text">
           Entreprises créées ces dernières 24h
         </h2>
