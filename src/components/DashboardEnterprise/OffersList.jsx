@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+/* eslint-disable react/prop-types */
+import { useState, useEffect, useMemo } from 'react';
 import { getData, deleteData, postData, putData } from '../../services/data-fetch';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import { IoTimeOutline, IoInformationCircleOutline } from 'react-icons/io5';
