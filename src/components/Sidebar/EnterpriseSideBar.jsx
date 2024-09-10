@@ -108,45 +108,6 @@ export default function EnterpriseSideBar({
                     onClick={onClick}
                   />
                 </div>
-                <Dropdown
-                  dropdownItems={[
-                    {
-                      to: `/dashboard/enterprise/${enterprise.id}/dashboard`,
-                      icon: <MdDashboard className={`w-5 h-5 ${iconStyle} mr-3`} />, // Taille uniforme de l'icône
-                      label: "Tableau de Bord",
-                    },
-                    {
-                      to: `/dashboard/enterprise/${enterprise.id}/planning`,
-                      icon: <FaCalendarAlt className={`w-5 h-5 ${iconStyle} mr-3`} />, // Taille uniforme de l'icône
-                      label: "Planning",
-                    },
-                  ]}
-                  label={enterprise.name}
-                  icon={
-                    enterprise.logo ? (
-                      <img
-                        src={enterprise.logo}
-                        alt="Logo de l'entreprise"
-                        className="w-6 h-6 rounded-full" // Ajustement de la taille de l'image
-                      />
-                    ) : (
-                      <FaBuilding className={`w-5 h-5 ${iconStyle}`} /> // Taille uniforme de l'icône
-                    )
-                  }
-                  linkstyle={`hover:bg-gray-700 hover:text-white w-full p-2 space-x-3 rounded-md hover:bg-gray-700 ${linkstyle}`} // Ajout du hover
-                  colorStyle={`font-semibold ${
-                    !enterprise.isValidate ? "text-gray-400" : `${colorStyle}`
-                  }`}
-                  option={
-                    !enterprise.isValidate ? (
-                      <span className="text-xs font-medium px-1 py-0.5 rounded bg-red-900 text-gray-500">
-                        En Validation ...
-                      </span>
-                    ) : null
-                  }
-                  isDisabled={!enterprise.isValidate}
-                  onClick={onClick}
-                />
               </li>
             ))}
         </ul>
