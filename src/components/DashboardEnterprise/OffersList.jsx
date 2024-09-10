@@ -16,7 +16,7 @@ const SearchBar = ({ filterText, onFilterTextChange }) => {
         placeholder="Rechercher..."
         value={filterText}
         onChange={(e) => onFilterTextChange(e.target.value)}
-        className="border rounded-lg p-2 w-48 mr-2 bg-neutral-800 text-white border-neutral-600" // Utilise des styles sombres par défaut
+        className="border rounded-lg p-2 w-48 mr-2 bg-neutral-800 text-white border-neutral-600"
       />
     </div>
   );
@@ -28,7 +28,7 @@ const DurationFilter = ({ selectedDuration, onDurationChange }) => {
     <select
       value={selectedDuration}
       onChange={(e) => onDurationChange(e.target.value)}
-      className="border rounded-lg p-2 w-32 mr-2 bg-neutral-800 text-white border-neutral-600" // Utilise des styles sombres par défaut
+      className="border rounded-lg p-2 w-32 mr-2 bg-neutral-800 text-white border-neutral-600"
     >
       <option value="">Toutes les durées</option>
       <option value="60">1h</option>
@@ -44,7 +44,7 @@ const EstimateFilter = ({ isEstimated, onEstimateChange }) => {
     <select
       value={isEstimated}
       onChange={(e) => onEstimateChange(e.target.value === 'true')}
-      className="border rounded-lg p-2 w-32 mr-2 bg-neutral-800 text-white border-neutral-600" // Utilise des styles sombres par défaut
+      className="border rounded-lg p-2 w-32 mr-2 bg-neutral-800 text-white border-neutral-600"
     >
       <option value="">Toutes les estimations</option>
       <option value="true">Estimé</option>
@@ -59,7 +59,7 @@ const DurationSort = ({ sortOrder, onSortOrderChange }) => {
     <select
       value={sortOrder}
       onChange={(e) => onSortOrderChange(e.target.value)}
-      className="border rounded-lg p-2 w-32 mr-2 bg-neutral-800 text-white border-neutral-600" // Utilise des styles sombres par défaut
+      className="border rounded-lg p-2 w-32 mr-2 bg-neutral-800 text-white border-neutral-600"
     >
       <option value="">Pas de tri</option>
       <option value="asc">Durée croissante</option>
@@ -203,6 +203,7 @@ const OffersList = () => {
               )}
               <div className="flex flex-wrap items-center space-x-6">
                 <h3 className="text-lg font-bold text-white">{offer.name}</h3>
+                <p className="text-sm text-gray-400 mt-2">{offer.description}</p>
                 <p className="flex items-center space-x-2 text-sm text-gray-400">
                   <IoTimeOutline className="w-4 h-4" />
                   <span>{offer.duration} minutes</span>
@@ -216,15 +217,15 @@ const OffersList = () => {
             <div className="flex items-center space-x-4 mt-4 md:mt-0">
               <button
                 onClick={() => handleEdit(offer)}
-                className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+                className="text-green-400 hover:scale-110 transition-transform"
               >
-                <FaEdit className="w-5 h-5" />
+                <FaEdit className="w-4 h-4" />
               </button>
               <button
                 onClick={() => handleDelete(offer.id)}
-                className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+                className="text-red-400 hover:scale-110 transition-transform"
               >
-                <FaTrash className="w-5 h-5" />
+                <FaTrash className="w-4 h-4"  />
               </button>
             </div>
           </li>
