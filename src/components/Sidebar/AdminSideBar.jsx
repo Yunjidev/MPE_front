@@ -5,7 +5,6 @@ import {
   FaTachometerAlt,
   FaBuilding,
   FaUsers,
-  FaChartLine,
   FaPenFancy,
 } from "react-icons/fa";
 
@@ -37,11 +36,6 @@ export default function AdminSideBar({
       to: "/dashboard/manage-companies",
       icon: <FaBuilding className={iconstyle} />,
       label: "Liste des entreprises",
-    },
-    {
-      to: "/dashboard/reports",
-      icon: <FaChartLine className={iconstyle} />,
-      label: "Reports",
     },
     {
       to: "/dashboard/jobsandcountrycreate",
