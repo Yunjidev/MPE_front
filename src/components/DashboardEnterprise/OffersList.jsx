@@ -1,24 +1,70 @@
-/* eslint-disable react/jsx-key */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
-import {
-  getData,
-  deleteData,
-  postData,
-  putData,
-} from "../../services/data-fetch";
-import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
-import Button from "../Button/button";
-import Modal from "../DashboardAdmin/Modal";
-import OfferForm from "./OfferForm";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useMemo } from 'react';
+import { getData, deleteData, postData, putData } from '../../services/data-fetch';
+import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import { IoTimeOutline, IoInformationCircleOutline } from 'react-icons/io5';
+import Modal from '../DashboardAdmin/Modal';
+import OfferForm from './OfferForm';
+import { useParams } from 'react-router-dom';
 
-// Fonction pour décoder les entités HTML
-const decodeHtml = (html) => {
-  const txt = document.createElement("textarea");
-  txt.innerHTML = html;
-  return txt.value;
+// Composant de filtrage
+const SearchBar = ({ filterText, onFilterTextChange }) => {
+  return (
+    <div className="mb-4">
+      <input
+        type="text"
+        placeholder="Rechercher..."
+        value={filterText}
+        onChange={(e) => onFilterTextChange(e.target.value)}
+        className="border rounded-lg p-2 w-48 mr-2 bg-neutral-800 text-white border-neutral-600" // Utilise des styles sombres par défaut
+      />
+    </div>
+  );
+};
+
+// Composant de filtrage pour la durée
+const DurationFilter = ({ selectedDuration, onDurationChange }) => {
+  return (
+    <select
+      value={selectedDuration}
+      onChange={(e) => onDurationChange(e.target.value)}
+      className="border rounded-lg p-2 w-32 mr-2 bg-neutral-800 text-white border-neutral-600" // Utilise des styles sombres par défaut
+    >
+      <option value="">Toutes les durées</option>
+      <option value="60">1h</option>
+      <option value="120">2h</option>
+      <option value="180">3h</option>
+    </select>
+  );
+};
+
+// Composant de filtrage pour l'estimation
+const EstimateFilter = ({ isEstimated, onEstimateChange }) => {
+  return (
+    <select
+      value={isEstimated}
+      onChange={(e) => onEstimateChange(e.target.value === 'true')}
+      className="border rounded-lg p-2 w-32 mr-2 bg-neutral-800 text-white border-neutral-600" // Utilise des styles sombres par défaut
+    >
+      <option value="">Toutes les estimations</option>
+      <option value="true">Estimé</option>
+      <option value="false">Non estimé</option>
+    </select>
+  );
+};
+
+// Composant de tri pour la durée
+const DurationSort = ({ sortOrder, onSortOrderChange }) => {
+  return (
+    <select
+      value={sortOrder}
+      onChange={(e) => onSortOrderChange(e.target.value)}
+      className="border rounded-lg p-2 w-32 mr-2 bg-neutral-800 text-white border-neutral-600" // Utilise des styles sombres par défaut
+    >
+      <option value="">Pas de tri</option>
+      <option value="asc">Durée croissante</option>
+      <option value="desc">Durée décroissante</option>
+    </select>
+  );
 };
 
 const OffersList = () => {
@@ -27,192 +73,190 @@ const OffersList = () => {
   const [filteredOffers, setFilteredOffers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
+  const [filterText, setFilterText] = useState('');
+  const [selectedDuration, setSelectedDuration] = useState('');
+  const [isEstimated, setIsEstimated] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
 
-  // Récupération des offres
+  // Fetch offers from API
   const fetchOffers = async () => {
+    console.log('Fetching offers...');
     try {
-      const data = await getData(`enterprise/${id}`);
-      setOffers(data.offers || []);
-      setFilteredOffers(data.offers || []);
+      const response = await getData(`enterprise/${id}`);
+      console.log('Offers fetched:', response);
+      setOffers(response.offers || []);
     } catch (error) {
-      console.error("Erreur lors de la récupération des offres:", error);
+      console.error('Error fetching offers:', error);
     }
   };
 
   useEffect(() => {
-    if (id) {
-      fetchOffers();
-    }
+    if (id) fetchOffers();
   }, [id]);
 
   useEffect(() => {
-    const lowercasedQuery = searchQuery.toLowerCase();
-    const filtered = offers.filter((offer) => {
-      const name = offer.name ? offer.name.toLowerCase() : "";
-      const description = offer.description ? offer.description.toLowerCase() : "";
+    // Apply filters whenever offers or filters change
+    let filtered = offers
+      .filter(offer => offer.name.toLowerCase().includes(filterText.toLowerCase()))
+      .filter(offer => selectedDuration === '' || offer.duration === parseInt(selectedDuration))
+      .filter(offer => isEstimated === '' || offer.estimate === isEstimated);
 
-      return name.includes(lowercasedQuery) || description.includes(lowercasedQuery);
-    });
+    // Apply sorting
+    if (sortOrder === 'asc') {
+      filtered = filtered.sort((a, b) => a.duration - b.duration);
+    } else if (sortOrder === 'desc') {
+      filtered = filtered.sort((a, b) => b.duration - a.duration);
+    }
+
     setFilteredOffers(filtered);
-    setPageIndex(0);
-  }, [searchQuery, offers]);
+  }, [offers, filterText, selectedDuration, isEstimated, sortOrder]);
 
-  const deleteOffer = async (offerId) => {
+  // Paginate offers
+  const paginatedOffers = useMemo(() => {
+    const start = pageIndex * pageSize;
+    const end = start + pageSize;
+    return filteredOffers.slice(start, end);
+  }, [filteredOffers, pageIndex, pageSize]);
+
+  const handleDelete = async (offerId) => {
+    console.log('Deleting offer with ID:', offerId);
     try {
       await deleteData(`enterprise/${id}/offer/${offerId}`);
-      setOffers((prevOffers) => prevOffers.filter((offer) => offer.id !== offerId));
+      fetchOffers(); // Refresh offers after delete
     } catch (error) {
-      console.error("Erreur lors de la suppression de l'offre:", error);
-      alert("Une erreur est survenue lors de la suppression de l'offre.");
+      console.error('Error deleting offer:', error);
     }
   };
 
-  const editOffer = (offer) => {
+  const handleEdit = (offer) => {
     setSelectedOffer(offer);
     setIsModalOpen(true);
   };
 
-  const addNewOffer = () => {
+  const handleAddNew = () => {
     setSelectedOffer(null);
     setIsModalOpen(true);
   };
 
   const handleSave = async (formDataToSend) => {
+    console.log('Saving offer...', formDataToSend);
     try {
       if (selectedOffer) {
-        await putData(`enterprise/${id}/offer/${selectedOffer.id}`, formDataToSend);
-        alert("Offre mise à jour avec succès.");
+        await putData(`enterprise/${id}/offer/${selectedOffer.id}`, formDataToSend, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
       } else {
-        await postData(`enterprise/${id}/offer`, formDataToSend);
-        alert("Offre créée avec succès.");
+        await postData(`enterprise/${id}/offer`, formDataToSend, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
       }
-
-      fetchOffers();
+      fetchOffers(); // Refresh offers after save
       setIsModalOpen(false);
     } catch (error) {
-      console.error("Erreur lors de la sauvegarde de l'offre:", error);
-      alert("Une erreur est survenue lors de la sauvegarde de l'offre.");
+      console.error('Error saving offer:', error);
     }
   };
 
+  const handlePageSizeChange = (event) => {
+    setPageSize(Number(event.target.value));
+    setPageIndex(0); // Reset page index when page size changes
+  };
+
   return (
-    <div className=" w-full bg-neutral-600 bg-neutral-800">
-      <div className="p-4">
-        <input
-          type="text"
-          placeholder="Rechercher..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-4 py-2 mb-4 rounded-lg bg-neutral-800 bg-gray-300 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
-        />
-        <div className="overflow-y-auto max-h-96">
-          {filteredOffers.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize).map((offer) => (
-            <div
-              key={offer.id}
-              className="flex items-center justify-between border-b bg-neutral-800 border-gray-200 hover:bg-gray-50 hover:bg-gray-600 p-4"
+    <div className="relative bg-neutral-800 border border-neutral-700 p-4 rounded-lg">
+      <div className="flex flex-col md:flex-row justify-between items-start mb-4 space-y-4 md:space-y-0">
+        <SearchBar filterText={filterText} onFilterTextChange={setFilterText} />
+        <div className="flex flex-wrap items-center space-x-2">
+          {/* Filtre de Durée */}
+          <DurationFilter selectedDuration={selectedDuration} onDurationChange={setSelectedDuration} />
+          {/* Filtre d'Estimation */}
+          <EstimateFilter isEstimated={isEstimated} onEstimateChange={setIsEstimated} />
+          {/* Tri par Durée */}
+          <DurationSort sortOrder={sortOrder} onSortOrderChange={setSortOrder} />
+        </div>
+        <div className="flex flex-col w-full md:w-auto">
+          <div className="mb-4">
+            <button
+              onClick={handleAddNew}
+              className="flex bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text items-center justify-center w-full md:w-auto h-10 border border-neutral-300 font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
             >
-              <div className="flex-1 flex items-center space-x-4">
-                <div className="flex-1">
-                  <h3 className="text-lg font-bold text-white">{offer.name}</h3>
-                </div>
-                <div className="flex-1">
-                  <div
-                    className="text-sm text-white"
-                    dangerouslySetInnerHTML={{ __html: decodeHtml(offer.description) }}
-                  />
-                </div>
-                <div className="flex-1 text-sm text-white">
-                  Durée : {offer.duration} min
-                </div>
-                <div className="flex-1 text-sm text-white">
-                  Prix : {offer.price} €
-                </div>
-                <div className="flex-1 text-sm text-white">
-                  Estimation : {offer.estimate ? "Oui" : "Non"}
-                </div>
-                <div className="flex-1">
-                  {offer.image ? (
-                    <img
-                      src={offer.image}
-                      alt="Offer"
-                      className="w-16 h-16 object-cover rounded-full"
-                    />
-                  ) : (
-                    <span className="text-sm text-white">Aucune image</span>
-                  )}
-                </div>
-              </div>
-              <div className="flex space-x-2">
-                <Button
-                  onClick={() => editOffer(offer)}
-                  className="text-green-500 hover:underline"
-                >
-                  <FaEdit />
-                </Button>
-                <Button
-                  onClick={() => deleteOffer(offer.id)}
-                  className="text-red-500 hover:underline"
-                >
-                  <FaTrash />
-                </Button>
+              <FaPlus className="text-gray-100 w-6 h-6 mr-2" />
+              <p className="text-transparent bg-clip-text bg-gradient-to-r from-[#67FFCC] to-[#FFFFFF]">Ajouter une offre</p>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ul className="space-y-4">
+        {paginatedOffers.map(offer => (
+          <li key={offer.id} className="bg-neutral-700 border border-neutral-600 p-4 rounded-lg flex flex-col md:flex-row justify-between items-center">
+            <div className="flex items-center space-x-6 md:flex-1">
+              {offer.image && (
+                <img
+                  src={offer.image}
+                  alt={offer.name}
+                  className="w-20 h-20 object-cover rounded-lg"
+                />
+              )}
+              <div className="flex flex-wrap items-center space-x-6">
+                <h3 className="text-lg font-bold text-white">{offer.name}</h3>
+                <p className="flex items-center space-x-2 text-sm text-gray-400">
+                  <IoTimeOutline className="w-4 h-4" />
+                  <span>{offer.duration} minutes</span>
+                </p>
+                <p className="flex items-center space-x-2 text-sm text-gray-400">
+                  <IoInformationCircleOutline className="w-4 h-4" />
+                  <span>{offer.estimate ? 'Estimé' : 'Non estimé'}</span>
+                </p>
               </div>
             </div>
+            <div className="flex items-center space-x-4 mt-4 md:mt-0">
+              <button
+                onClick={() => handleEdit(offer)}
+                className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+              >
+                <FaEdit className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => handleDelete(offer.id)}
+                className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+              >
+                <FaTrash className="w-5 h-5" />
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      {/* Pagination */}
+      <div className="mt-4 flex flex-wrap justify-between items-center">
+        <div className="space-x-2">
+          {[...Array(Math.ceil(filteredOffers.length / pageSize)).keys()].map((page) => (
+            <button
+              key={page}
+              onClick={() => setPageIndex(page)}
+              className={`px-4 py-2 rounded ${pageIndex === page ? 'bg-neutral-700 text-white' : 'bg-neutral-600 text-gray-300'}`}
+            >
+              {page + 1}
+            </button>
           ))}
         </div>
-
-        <div className="flex justify-center items-center mt-4">
-          <button
-            onClick={() => setPageIndex(0)}
-            disabled={pageIndex === 0}
-            className="px-4 py-2 mx-1 bg-gray-200 rounded-lg mr-4 bg-neutral-700 text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
-          >
-            &laquo; Précédent
-          </button>
-          <span className="text-white font-bold">
-            Page {pageIndex + 1} sur {Math.ceil(filteredOffers.length / pageSize)}
-          </span>
-          <button
-            onClick={() => setPageIndex(pageIndex + 1)}
-            disabled={pageIndex >= Math.ceil(filteredOffers.length / pageSize) - 1}
-            className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 bg-neutral-700 text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
-          >
-            Suivant &raquo;
-          </button>
-        </div>
-
-        <div className="mt-4">
-          <select
-            value={pageSize}
-            onChange={(e) => setPageSize(Number(e.target.value))}
-            className="border rounded-lg bg-neutral-700 text-white p-2"
-          >
-            {[10, 20, 30, 40].map((size) => (
-              <option key={size} value={size}>
-                {size} offres par page
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div className="absolute bottom-4 right-4">
-        <Button
-          onClick={addNewOffer}
-          className="bg-gradient-to-r from-[#67FFCC] to-[#33B7A6] bg-[#4CAF50] rounded-full shadow-lg hover:bg-[#56D6B8] hover:bg-[#45A049] transition-colors duration-300 ease-in-out"
+        <select
+          value={pageSize}
+          onChange={handlePageSizeChange}
+          className="border rounded-lg p-2 bg-neutral-800 text-white border-neutral-600"
         >
-          <FaPlus className="text-white text-xl" />
-        </Button>
+          <option value={5}>5 par page</option>
+          <option value={10}>10 par page</option>
+          <option value={15}>15 par page</option>
+        </select>
       </div>
 
+      {/* Modal pour ajouter/éditer une offre */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <OfferForm
-          offer={selectedOffer}
-          onClose={() => setIsModalOpen(false)}
-          onSubmit={handleSave}
-        />
+        <OfferForm onSave={handleSave} offer={selectedOffer} />
       </Modal>
     </div>
   );

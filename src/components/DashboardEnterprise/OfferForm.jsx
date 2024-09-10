@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const OfferForm = ({ offer, onSubmit, onClose }) => {
   const [formData, setFormData] = useState({
@@ -11,13 +11,26 @@ const OfferForm = ({ offer, onSubmit, onClose }) => {
     image: null,
   });
 
+  useEffect(() => {
+    if (offer) {
+      setFormData({
+        name: offer.name || "",
+        description: offer.description || "",
+        duration: offer.duration || "",
+        price: offer.price || "",
+        estimate: offer.estimate || false,
+        image: null, // Reset image on edit, so user can choose to keep or change it
+      });
+    }
+  }, [offer]);
+
   const handleChange = (e) => {
     const { id, value, type, checked, files } = e.target;
 
     if (type === "file") {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [id]: files[0],
+        image: files[0], // Update with the new file
       }));
     } else if (type === "checkbox") {
       setFormData((prevFormData) => ({
@@ -35,7 +48,7 @@ const OfferForm = ({ offer, onSubmit, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Créez une instance de FormData pour gérer l'envoi des fichiers et des autres données du formulaire
+    // Prepare FormData object to send data and file if any
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
     formDataToSend.append("description", formData.description);
@@ -48,11 +61,11 @@ const OfferForm = ({ offer, onSubmit, onClose }) => {
     }
 
     try {
-      await onSubmit(formDataToSend);
-      onClose();  // Fermer la modal après succès
+      await onSubmit(formDataToSend);  // Send formData object
+      onClose();  // Close the modal after success
     } catch (error) {
-      console.error("Erreur lors de la création de l'offre:", error);
-      alert("Une erreur est survenue lors de la création de l'offre.");
+      console.error("Erreur lors de la création ou modification de l'offre:", error);
+      alert("Une erreur est survenue lors de la création ou modification de l'offre.");
     }
   };
 
@@ -62,13 +75,13 @@ const OfferForm = ({ offer, onSubmit, onClose }) => {
         <h2 className="text-2xl font-semibold">{offer ? "Modifier l'offre" : "Créer une nouvelle offre"}</h2>
       </div>
       <form onSubmit={handleSubmit}>
-        {['name', 'description', 'duration', 'price'].map(field => (
+        {['Nom', 'Description', 'Durée', 'prix'].map(field => (
           <div key={field} className="mb-4">
             <label htmlFor={field} className="block text-sm font-medium">
               {field.charAt(0).toUpperCase() + field.slice(1)}
             </label>
             <input
-              type={field === 'duration' || field === 'price' ? 'number' : 'text'}
+              type={field === 'la durée' || field === 'le prix' ? 'number' : 'text'}
               id={field}
               value={formData[field]}
               onChange={handleChange}
@@ -103,6 +116,13 @@ const OfferForm = ({ offer, onSubmit, onClose }) => {
           />
         </div>
         <div className="flex justify-end mt-6">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 mr-4"
+          >
+            Annuler
+          </button>
           <button
             type="submit"
             className="bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text font-semibold py-2 px-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
