@@ -1,5 +1,4 @@
-import { FaInstagram } from 'react-icons/fa';
-import { BsTwitterX } from "react-icons/bs";
+import { BsInstagram, BsFacebook, BsTwitterX, BsLinkedin } from 'react-icons/bs';
 import ParticlesDemo from '../ParticlesDemo';
 
 const SocialLinks = () => {
@@ -10,7 +9,7 @@ const SocialLinks = () => {
           href="#"
           target="_blank"
           rel="noopener noreferrer"
-          className="mb-4 text-white hover:text-blue-400 transition"
+          className="mb-4 text-white hover:text-[#67FFCC] transition"
           aria-label="Compte X"
           id="twitter-link"
         >
@@ -20,11 +19,31 @@ const SocialLinks = () => {
           href="#"
           target="_blank"
           rel="noopener noreferrer"
-          className="mb-4 text-white hover:text-blue-400 transition"
+          className="mb-4 text-white hover:text-[#67FFCC] transition"
           aria-label="Compte Instagram"
           id="instagram-link"
         >
-          <FaInstagram className="text-2xl" />
+          <BsInstagram className="text-2xl" />
+        </a>
+        <a
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mb-4 text-white hover:text-[#67FFCC] transition"
+          aria-label="Compte Instagram"
+          id="instagram-link"
+        >
+          <BsFacebook className="text-2xl" />
+        </a>
+        <a
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mb-4 text-white hover:text-[#67FFCC] transition"
+          aria-label="Compte Instagram"
+          id="instagram-link"
+        >
+          <BsLinkedin className="text-2xl" />
         </a>
       </section>
       <ParticlesDemo isDarkMode={true} />
