@@ -81,10 +81,10 @@ const handleStatusChange = (event) => {
         {paginatedSubscriptions.map((subscription) => (
           <div
             key={subscription.enterprise.name}
-            className="mb-4 p-4 rounded-lg shadow-md bg-neutral-800 flex items-start"
+            className="mb-4 p-4 rounded-lg shadow-md bg-neutral-800 flex items-center"
           >
             <div className="flex-grow">
-              <div className="grid grid-cols-2 gap-4 items-center">
+              <div className="grid grid-cols-2 gap-6 items-center">
                 <div className="flex items-center">
                   <img
                     src={subscription.enterprise.logo}
@@ -121,7 +121,7 @@ const handleStatusChange = (event) => {
                 </div>
               </div>
             </div>
-            <div className="ml-4 flex flex-col justify-between">
+            <div className="ml-4 flex flex-col justify-between basis-1/">
               <Button
                 onClick={() => viewEnterprise(subscription.enterprise.name)}
                 className="text-blue-500 hover:underline mb-2"
