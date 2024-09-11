@@ -53,6 +53,7 @@ import StatsEnterprises from "./pages/DashboardEnterprise/StatsEnterprises";
 import Admindb from "./pages/DashboardAdmin/Admin_db";
 import CreateJobsandCountry from "./pages/DashboardAdmin/CreateJobsandCountry";
 import AdminDashboard from "./pages/DashboardAdmin/Admin_db";
+import SubscriptionManagement from "./pages/DashboardAdmin/SubscriptionManagement";
 
 // Protected Routes
 import AuthenticatedRoute from "./context/AuthenticatedRoute";
@@ -167,6 +168,7 @@ function AppContent() {
                   path="jobsandcountrycreate"
                   element={<CreateJobsandCountry />}
                 />
+                <Route path="subscriptionmanagement" element={<SubscriptionManagement />} />
               </Route>
             </Route>
           </Route>

@@ -6,7 +6,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getData, deleteData } from "../../services/data-fetch";
-import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
+import { addSubscription } from "./SubscriptionManagement/FunctionForSubscription";
+import { FaEdit, FaTrash, FaEye, FaPlusCircle } from "react-icons/fa";
 import Modal from "./Modal";
 import { toast } from "react-toastify";
 
@@ -20,6 +21,9 @@ const ValidatedCompanies = () => {
   const [pageIndex, setPageIndex] = useState(0);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [companyToDelete, setCompanyToDelete] = useState(null);
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+  const [subscriptionStatus, setSubscriptionStatus] = useState("");
+  const [subscriptionType, setSubscriptionType] = useState("");
 
   const navigate = useNavigate();
 
@@ -43,14 +47,16 @@ const ValidatedCompanies = () => {
       const name = company.name ? company.name.toLowerCase() : "";
       const city = company.city ? company.city.toLowerCase() : "";
       const zipCode = company.zip_code ? company.zip_code.toLowerCase() : "";
-      const country = company.country.name
+      const country = company.country && company.country.name
         ? company.country.name.toLowerCase()
         : "";
-      const activity = company.job.name ? company.job.name.toLowerCase() : "";
+      const activity = company.job && company.job.name
+        ? company.job.name.toLowerCase()
+        : "";
       const siretNumber = company.siret_number
         ? company.siret_number.toLowerCase()
         : "";
-      const username = company.entrepreneur.username
+      const username = company.entrepreneur && company.entrepreneur.username
         ? company.entrepreneur.username.toLowerCase()
         : "";
       const averageRating = company.averageRating
@@ -117,6 +123,17 @@ const ValidatedCompanies = () => {
     setIsModalOpen(false);
   };
 
+  const handleSubscriptionSubmit = async () => {
+    try {
+      await addSubscription(selectedCompany.id, subscriptionStatus, subscriptionType);
+      toast.success("Subscription ajoutée avec succès");
+      setIsSubscriptionModalOpen(false);
+    } catch (error) {
+      console.error("Error ajout subscritpion:", error);
+      toast.error("Error ajout subscritpion");
+    }
+  };
+
   // Pagination
   const pageCount = Math.ceil(filteredCompanies.length / pageSize);
 
@@ -171,19 +188,19 @@ const ValidatedCompanies = () => {
                     Région:
                   </div>
                   <div className="text-white">
-                    {company.country.name}
+                    {company.country && company.country.name}
                   </div>
                   <div className="font-bold text-white">
                     Métier:
                   </div>
                   <div className="text-white">
-                    {company.job.name}
+                    {company.job && company.job.name}
                   </div>
                   <div className="font-bold text-white">
                     Pseudo:
                   </div>
                   <div className="text-white">
-                    {company.entrepreneur.username}
+                    {company.entrepreneur && company.entrepreneur.username}
                   </div>
                   <div className="font-bold text-white">
                     Note moyenne:
@@ -205,6 +222,15 @@ const ValidatedCompanies = () => {
                   className="text-red-500 hover:scale-110 transition-transform text-2xl"
                 >
                   <FaTrash />
+                </button>
+                <button
+                  onClick={() => {
+                    setSelectedCompany(company);
+                    setIsSubscriptionModalOpen(true);
+                  }}
+                  className="text-blue-500 hover:scale-110 transition-transform text-2xl mt-5"
+                >
+                  <FaPlusCircle/>
                 </button>
               </div>
             </div>
@@ -252,6 +278,60 @@ const ValidatedCompanies = () => {
                 Annuler
               </button>
             </div>
+          </div>
+        </Modal>
+      )}
+
+      {/* Modal d'abonnement */}
+      {isSubscriptionModalOpen && (
+        <Modal isOpen={isSubscriptionModalOpen} onClose={() => setIsSubscriptionModalOpen(false)}>
+          <div className="text-white bg-neutral-800 p-4 border border-white rounded-lg">
+            <h2 className="text-lg font-semibold mb-4 text-center">Ajouter un abonnement</h2>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              handleSubscriptionSubmit();
+            }}>
+              <div className="mb-4">
+                <label className="block text-white mb-2">Statut de l'abonnement</label>
+                <select
+                  value={subscriptionStatus}
+                  onChange={(e) => setSubscriptionStatus(e.target.value)}
+                  className="w-full px-4 py-2 rounded-lg bg-neutral-800 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
+                >
+                  <option value="">Sélectionner un statut</option>
+                  <option value="active">Actif</option>
+                  <option value="inactive">Inactif</option>
+                </select>
+              </div>
+              <div className="mb-4">
+                <label className="block text-white mb-2">Type d'abonnement</label>
+                <select
+                  value={subscriptionType}
+                  onChange={(e) => setSubscriptionType(e.target.value)}
+                  className="w-full px-4 py-2 rounded-lg bg-neutral-800 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
+                >
+                  <option value="">Sélectionner un type</option>
+                  <option value="yearly">Annuel</option>
+                  <option value="monthly">Mensuel</option>
+                  <option value="forever">À vie</option>
+                </select>
+              </div>
+              <div className="flex justify-center space-x-2 mt-4">
+                <button
+                  type="submit"
+                  className="w-32 px-4 py-2 bg-green-500 text-black font-semibold text-center rounded-lg hover:bg-green-600 transition duration-300"
+                >
+                  Ajouter
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsSubscriptionModalOpen(false)}
+                  className="w-32 px-4 py-2 bg-gray-500 text-black font-semibold text-center rounded-lg hover:bg-gray-600 transition duration-300"
+                >
+                  Annuler
+                </button>
+              </div>
+            </form>
           </div>
         </Modal>
       )}

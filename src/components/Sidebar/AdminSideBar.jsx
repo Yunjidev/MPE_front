@@ -6,6 +6,7 @@ import {
   FaBuilding,
   FaUsers,
   FaPenFancy,
+  FaEuroSign,
 } from "react-icons/fa";
 
 export default function AdminSideBar({
@@ -35,7 +36,13 @@ export default function AdminSideBar({
     {
       to: "/dashboard/manage-companies",
       icon: <FaBuilding className={iconstyle} />,
-      label: "Liste des entreprises",
+      label: (
+        <>
+          Liste des entreprises
+          <br />
+          validées
+        </>
+      ),
     },
     {
       to: "/dashboard/jobsandcountrycreate",
@@ -47,6 +54,11 @@ export default function AdminSideBar({
           et des régions
         </>
       ),
+    },
+    {
+      to: "/dashboard/subscriptionmanagement",
+      icon: <FaEuroSign className={iconstyle} />,
+      label: "Gestion des abonnements",
     },
   ];
 
