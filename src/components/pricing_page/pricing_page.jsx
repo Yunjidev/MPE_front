@@ -110,7 +110,7 @@ const PricingPage = () => {
     return (
         <>
             <div className="mx-auto">
-                <h1 className="text-5xl text-center font-bold mt-14 text-white gradient-text-orange">Notre formule premium</h1>
+                <h1 className="text-4xl text-center font-bold mt-14 text-white gradient-text-orange">Notre formule premium</h1>
 
                 <div className="mx-auto flex flex-col text-center lg:text-start justify-around lg:flex-row items-center py-6 ">
                     <div className="md:ml-8 md:mt-0">

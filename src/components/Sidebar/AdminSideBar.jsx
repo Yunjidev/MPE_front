@@ -5,7 +5,6 @@ import {
   FaTachometerAlt,
   FaBuilding,
   FaUsers,
-  FaChartLine,
   FaPenFancy,
   FaEuroSign,
 } from "react-icons/fa";
@@ -44,11 +43,6 @@ export default function AdminSideBar({
           validées
         </>
       ),
-    },
-    {
-      to: "/dashboard/reports",
-      icon: <FaChartLine className={iconstyle} />,
-      label: "Reports",
     },
     {
       to: "/dashboard/jobsandcountrycreate",

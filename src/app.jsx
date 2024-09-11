@@ -60,6 +60,7 @@ import AuthenticatedRoute from "./context/AuthenticatedRoute";
 import EntrepreneurRoute from "./context/EntrepreneurRoute";
 import AdminRoute from "./context/AdminRoute";
 import OfferList from "./components/DashboardEnterprise/OffersList";
+import ReservationsList from "./components/DashboardEnterprise/ReservationsList";
 
 function App() {
   useSocketIo();
@@ -146,6 +147,7 @@ function AppContent() {
                 />
                 <Route path="enterprise/:id/offer" element={<OfferList />} />
                 <Route path="enterprise/:id/planning" element={<Planning />} />
+                <Route path="enterprise/:id/reservations" element={<ReservationsList />} />
                 <Route
                   path="enterprise/:id/dashboard"
                   element={<StatsEnterprises />}
