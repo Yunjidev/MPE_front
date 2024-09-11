@@ -14,7 +14,7 @@ const PremiumCompanies = () => {
     const fetchCompanies = async () => {
       try {
         const data = await getData("enterprises/premium");
-        console.log(data);
+        // console.log(data);
         setCompanies(data);
       } catch (error) {
         console.error("Error fetching companies:", error);

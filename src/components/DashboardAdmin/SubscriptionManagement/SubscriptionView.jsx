@@ -27,12 +27,7 @@ const SubscriptionView = () => {
   }, []);
 
   const handleDeleteSubscription = (id) => {
-    if (!id) {
-      console.error("ID de la souscription est undefined");
-      toast.error("Impossible de supprimer la souscription : ID non défini");
-      return;
-    }
-  
+      
     deleteSubscription(id)
       .then(() => {
         toast.success("La souscription a été supprimée avec succès");
@@ -85,7 +80,7 @@ const SubscriptionView = () => {
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-neutral-800 border border-neutral-700 w-1/2 mx-auto">
       <div className="flex flex-col">
         {paginatedSubscriptions.map((subscription) => (
-          console.log(subscription),
+          // console.log(subscription),
           <div
             key={subscription.enterprise.name}
             className="mb-4 p-4 rounded-lg shadow-md bg-neutral-800 flex items-start"
@@ -137,7 +132,7 @@ const SubscriptionView = () => {
               </Button>
               <Button
   onClick={() => {
-    console.log("ID de la souscription:", subscription.id);
+    // console.log("ID de la souscription:", subscription.id);
     handleDeleteSubscription(subscription.id);
   }}
                 className="text-red-500 hover:underline mb-2 min-w-max"
