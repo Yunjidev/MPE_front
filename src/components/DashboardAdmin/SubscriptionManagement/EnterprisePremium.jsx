@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getData } from "../../../services/data-fetch";
 import { FaEye } from "react-icons/fa";
 import Button from "../../Button/button";

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaEye } from "react-icons/fa";
 import Button from "../../Button/button";
 import { useNavigate } from "react-router-dom";
-import { getSubscription, deleteSubscription, updateSubscription, addSubscription } from "./FunctionForSubscription";
+import { getSubscription, deleteSubscription, updateSubscription } from "./FunctionForSubscription";
 import { toast } from "react-toastify";
 
 const SubscriptionView = () => {
@@ -27,6 +27,12 @@ const SubscriptionView = () => {
   }, []);
 
   const handleDeleteSubscription = (id) => {
+    if (!id) {
+      console.error("ID de la souscription est undefined");
+      toast.error("Impossible de supprimer la souscription : ID non défini");
+      return;
+    }
+  
     deleteSubscription(id)
       .then(() => {
         toast.success("La souscription a été supprimée avec succès");
@@ -37,26 +43,26 @@ const SubscriptionView = () => {
         toast.error("Une erreur est survenue lors de la suppression de la souscription");
       });
   };
-// Fetch update type d'abonnement
-const handleUpdateSubscription = (id, data) => {
-  updateSubscription(id, data)
-    .then(() => {
-      toast.success("La souscription a été modifiée avec succès");
-      setSubscriptions(subscriptions.map(sub => sub.id === id ? { ...sub, ...data } : sub));
-    })
-    .catch((error) => {
-      console.error("Erreur lors de la modification de la souscription:", error);
-      toast.error("Une erreur est survenue lors de la modification de la souscription");
-    });
-};
+  // Fetch update type d'abonnement
+  const handleUpdateSubscription = (id, data) => {
+    updateSubscription(id, data)
+      .then(() => {
+        toast.success("La souscription a été modifiée avec succès");
+        setSubscriptions(subscriptions.map(sub => sub.id === id ? { ...sub, ...data } : sub));
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la modification de la souscription:", error);
+        toast.error("Une erreur est survenue lors de la modification de la souscription");
+      });
+  };
 
-const handleSubscriptionTypeChange = (event) => {
-  setSelectedSubscriptionType(event.target.value);
-};
+  const handleSubscriptionTypeChange = (event) => {
+    setSelectedSubscriptionType(event.target.value);
+  };
 
-const handleStatusChange = (event) => {
-  setSelectedStatus(event.target.value);
-};
+  const handleStatusChange = (event) => {
+    setSelectedStatus(event.target.value);
+  };
 
   // Pagination
   const pageCount = Math.ceil(subscriptions.length / pageSize);
@@ -76,16 +82,17 @@ const handleStatusChange = (event) => {
   };
 
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-neutral-800 border border-neutral-700">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-neutral-800 border border-neutral-700 w-1/2 mx-auto">
       <div className="flex flex-col">
         {paginatedSubscriptions.map((subscription) => (
+          console.log(subscription),
           <div
             key={subscription.enterprise.name}
-            className="mb-4 p-4 rounded-lg shadow-md bg-neutral-800 flex items-center"
+            className="mb-4 p-4 rounded-lg shadow-md bg-neutral-800 flex items-start"
           >
             <div className="flex-grow">
               <div className="grid grid-cols-2 gap-6 items-center">
-                <div className="flex items-center">
+                <div className="flex items-center col-span-2">
                   <img
                     src={subscription.enterprise.logo}
                     alt={`${subscription.enterprise.name} logo`}
@@ -121,23 +128,31 @@ const handleStatusChange = (event) => {
                 </div>
               </div>
             </div>
-            <div className="ml-4 flex flex-col justify-between basis-1/">
+            <div className="ml-4 flex flex-col justify-between">
               <Button
                 onClick={() => viewEnterprise(subscription.enterprise.name)}
-                className="text-blue-500 hover:underline mb-2"
+                className="text-blue-500 hover:underline mb-2 min-w-max"
               >
                 <FaEye />
               </Button>
               <Button
-                onClick={() => handleDeleteSubscription(subscription.id)}
-                className="text-red-500 hover:underline mb-2"
+  onClick={() => {
+    console.log("ID de la souscription:", subscription.id);
+    handleDeleteSubscription(subscription.id);
+  }}
+                className="text-red-500 hover:underline mb-2 min-w-max"
               >
                 Supprimer
               </Button>
-              <form onSubmit={e => {
-                e.preventDefault();
-                handleUpdateSubscription(subscription.id, { subscription_type: selectedSubscriptionType, status: selectedStatus });
-              }}>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleUpdateSubscription(subscription.id, {
+                    subscription_type: selectedSubscriptionType,
+                    status: selectedStatus,
+                  });
+                }}
+              >
                 <select
                   name="subscription_type"
                   value={selectedSubscriptionType}
@@ -157,7 +172,7 @@ const handleStatusChange = (event) => {
                   <option value="active">active</option>
                   <option value="inactive">inactive</option>
                 </select>
-                <Button type="submit" className="text-green-500 hover:underline">
+                <Button type="submit" className="text-green-500 hover:underline min-w-max">
                   Modifier
                 </Button>
               </form>
@@ -165,13 +180,12 @@ const handleStatusChange = (event) => {
           </div>
         ))}
       </div>
-
       {/* Pagination */}
       <div className="flex justify-center items-center mt-4">
         <button
           onClick={() => setPageIndex(pageIndex - 1)}
           disabled={pageIndex === 0}
-          className="px-4 py-2 mx-1 bg-gray-200 rounded-lg mr-4 bg-neutral-700 text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+          className="px-4 py-2 mx-1 bg-neutral-700 text-white rounded-lg mr-4 transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out w-auto"
         >
           « Précédent
         </button>
@@ -181,7 +195,7 @@ const handleStatusChange = (event) => {
         <button
           onClick={() => setPageIndex(pageIndex + 1)}
           disabled={pageIndex >= pageCount - 1}
-          className="px-4 py-2 mx-1 bg-gray-200 rounded-lg ml-4 bg-neutral-700 text-white transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
+          className="px-4 py-2 mx-1 bg-neutral-700 text-white rounded-lg ml-4 transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out w-auto"
         >
           Suivant »
         </button>

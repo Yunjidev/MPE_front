@@ -1,4 +1,3 @@
-import React from "react";
 import { getData, postData, putData, deleteData } from "../../../services/data-fetch";
 import { toast } from "react-toastify";
 
@@ -27,16 +26,17 @@ export const addSubscription = async (data) => {
 
 // Fonction pour supprimer une souscription
 export const deleteSubscription = async (id) => {
-    try {
+      
+      try {
         console.log(`Suppression de la souscription ${id}`);
-        await deleteData(`admin/subscriptions/${id}`);
-        console.log(`La souscription ${id} a été supprimée avec succès`);
-        toast.success("La souscription a été supprimée avec succès");
-    } catch (error) {
+        await deleteData(`subscription/${id}`);
+        console.log(`La souscription ${id} a été supprimée avec succès`);
+        toast.success("La souscription a été supprimée avec succès");
+      } catch (error) {
         console.error(`Erreur lors de la suppression de la souscription ${id}:`, error);
         toast.error("Une erreur est survenue lors de la suppression de la souscription");
-    }
-}
+      }
+    };
 
 // Fonction pour modifier une souscription
 export const updateSubscription = async (id, data) => {
