@@ -1,11 +1,16 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import { getData } from "../../services/data-fetch";  // Importation de getData
+import { getData } from "../../services/data-fetch";
 import { cn } from "../../@/lib/utils";
 import Marquee from "../../@/components/magicui/marquee";
+import StarRating from "../../components/ShowEnterprise/StarRatings"; // Importation du système d'étoiles
+import { FaMapMarkerAlt } from "react-icons/fa"; // Importation des icônes
+import { FaMapLocationDot } from "react-icons/fa6";
+import { MdOutlineWork } from "react-icons/md";
 import './spot.css';
 
-// Composant ReviewCard inchangé
-const ReviewCard = ({ img, name, username, body }) => {
+const ReviewCard = ({ img, name, username, body, city, zip_code, rating }) => {
   return (
     <figure
       className={cn(
@@ -19,27 +24,47 @@ const ReviewCard = ({ img, name, username, body }) => {
           <figcaption className="text-sm font-medium text-white">
             {name}
           </figcaption>
-          <p className="text-xs font-medium text-white/40">{username}</p>
+          <div className="flex items-center">
+            <StarRating rating={Math.round(rating)} /> {/* Étoiles */}
+            <p className="ml-2 text-lg font-semibold text-white">{rating.toFixed(1)}</p> {/* Note moyenne */}
+          </div>
         </div>
       </div>
-      <blockquote className="mt-2 text-sm">{body}</blockquote>
+
+      <blockquote className="mt-2 text-sm text-white flex items-center gap-1">
+        <MdOutlineWork className="text-white/60" /> {/* Icône pour username */}
+        {username}
+      </blockquote>
+
+      <blockquote className="mt-2 text-sm text-white flex items-center gap-1">
+        <FaMapLocationDot className="text-white/60" /> {/* Icône pour body */}
+        {body}
+      </blockquote>
+
+      <blockquote className="mt-2 text-sm text-white flex items-center gap-1">
+        <FaMapMarkerAlt className="text-white/60" /> {/* Icône pour zip_code et city */}
+        {zip_code} {city}
+      </blockquote>
     </figure>
   );
 };
 
+
 export function MarqueeDemo() {
   const [reviews, setReviews] = useState([]);
 
-  // Utilisation de useEffect pour fetcher les données de l'API
   useEffect(() => {
     const fetchPremiumEnterprises = async () => {
       try {
-        const data = await getData('enterprises/premium');  // Utilisation de getData
+        const data = await getData('enterprises/premium');
         const formattedData = data.map((enterprise) => ({
           name: enterprise.name,
-          username: enterprise.country.name,
-          body: enterprise.job.name,
-          img: enterprise.logo || enterprise.entrepreneur.avatar, // Choix de l'image appropriée
+          username: enterprise.job.name,
+          body: enterprise.country.name,
+          city: enterprise.city,
+          zip_code: enterprise.zip_code,
+          rating: enterprise.averageRating,
+          img: enterprise.logo || enterprise.entrepreneur.avatar,
         }));
         setReviews(formattedData);
       } catch (error) {
@@ -50,7 +75,6 @@ export function MarqueeDemo() {
     fetchPremiumEnterprises();
   }, []);
 
-  // Division des reviews en deux pour l'effet Marquee
   const firstRow = reviews.slice(0, reviews.length / 2);
   const secondRow = reviews.slice(reviews.length / 2);
 

@@ -86,7 +86,7 @@ const OfferForm = ({ offer, onSubmit, onClose }) => {
               value={formData[field]}
               onChange={handleChange}
               className="w-full mt-1 p-2 rounded bg-neutral-800 border border-neutral-700 text-white"
-              placeholder={`Entrée pour ${field}`}
+              placeholder={`${field}`}
               required
             />
           </div>
@@ -125,7 +125,7 @@ const OfferForm = ({ offer, onSubmit, onClose }) => {
           </button>
           <button
             type="submit"
-            className="bg-gradient-to-r from-[#67FFCC] to-black text-transparent bg-clip-text font-semibold py-2 px-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+            className="bg-gradient-to-r from-white to-[#67FFCC] text-transparent bg-clip-text font-semibold py-2 px-6 rounded-xl shadow-lg transform border border-white hover:scale-105 transition duration-300 ease-in-out"
           >
             {offer ? "Modifier l'offre" : "Créer Offre"}
           </button>

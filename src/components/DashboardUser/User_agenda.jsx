@@ -14,6 +14,7 @@ const UserAgenda = () => {
     const fetchReservation = async () => {
       try {
         const data = await getData("user/profile");
+        console.log(data);
         const reservations = data.reservations;
         setReservations(reservations);
       } catch (error) {
@@ -135,6 +136,7 @@ const ReservationItem = ({ reservation, onCancel }) => {
         <p className="mr-4"> {new Date(reservation.date).toLocaleDateString()}</p>
         <p className="mr-1"><CiClock2 /></p>
         <p className="mr-12">{formatTimeWithoutSeconds(reservation.start_time)}</p>
+        <p className="w-3/12 font-bold">{reservation.offer.enterprise.name}</p>
         <h3 className="w-3/12 font-bold">{reservation.offer.name}</h3>
       </div>
   
