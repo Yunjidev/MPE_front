@@ -1,50 +1,10 @@
-/* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
+import { getData } from "../../services/data-fetch";  // Importation de getData
 import { cn } from "../../@/lib/utils";
 import Marquee from "../../@/components/magicui/marquee";
 import './spot.css';
 
-const reviews = [
-  {
-    name: "Jack",
-    username: "@jack",
-    body: "I've never seen anything like this before. It's amazing. I love it.",
-    img: "https://avatar.vercel.sh/jack",
-  },
-  {
-    name: "Jill",
-    username: "@jill",
-    body: "I don't know what to say. I'm speechless. This is amazing.",
-    img: "https://avatar.vercel.sh/jill",
-  },
-  {
-    name: "John",
-    username: "@john",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/john",
-  },
-  {
-    name: "Jane",
-    username: "@jane",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/jane",
-  },
-  {
-    name: "Jenny",
-    username: "@jenny",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/jenny",
-  },
-  {
-    name: "James",
-    username: "@james",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/james",
-  },
-];
-
-const firstRow = reviews.slice(0, reviews.length / 2);
-const secondRow = reviews.slice(reviews.length / 2);
-
+// Composant ReviewCard inchangé
 const ReviewCard = ({ img, name, username, body }) => {
   return (
     <figure
@@ -68,26 +28,52 @@ const ReviewCard = ({ img, name, username, body }) => {
 };
 
 export function MarqueeDemo() {
+  const [reviews, setReviews] = useState([]);
+
+  // Utilisation de useEffect pour fetcher les données de l'API
+  useEffect(() => {
+    const fetchPremiumEnterprises = async () => {
+      try {
+        const data = await getData('enterprises/premium');  // Utilisation de getData
+        const formattedData = data.map((enterprise) => ({
+          name: enterprise.name,
+          username: enterprise.country.name,
+          body: enterprise.job.name,
+          img: enterprise.logo || enterprise.entrepreneur.avatar, // Choix de l'image appropriée
+        }));
+        setReviews(formattedData);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données:", error);
+      }
+    };
+
+    fetchPremiumEnterprises();
+  }, []);
+
+  // Division des reviews en deux pour l'effet Marquee
+  const firstRow = reviews.slice(0, reviews.length / 2);
+  const secondRow = reviews.slice(reviews.length / 2);
+
   return (
     <>
-    <div className="flex flex-col items-center">
-    <p className="text-3xl font-bold bg-gradient-to-r from-white to-[#67FFCC]  text-transparent bg-clip-text">Découvrez </p>
-    <p className="text-4xl font-bold bg-gradient-to-r from-orange-200 to-orange-400 text-transparent bg-clip-text">Nos entreprises Premium</p>
-    </div>
-    <div className="relative top-10 lg:top-16 flex h-auto w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-background ">
-      <Marquee pauseOnHover className="[--duration:20s]">
-        {firstRow.map((review) => (
-          <ReviewCard key={review.username} {...review} />
-        ))}
-      </Marquee>
-      <Marquee reverse pauseOnHover className="[--duration:20s]">
-        {secondRow.map((review) => (
-          <ReviewCard key={review.username} {...review} />
-        ))}
-      </Marquee>
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-neutral-800 "></div>
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-neutral-800"></div>
-    </div>
+      <div className="flex flex-col items-center">
+        <p className="text-3xl font-bold bg-gradient-to-r from-white to-[#67FFCC] text-transparent bg-clip-text">Découvrez </p>
+        <p className="text-4xl font-bold bg-gradient-to-r from-orange-200 to-orange-400 text-transparent bg-clip-text">Nos entreprises Premium</p>
+      </div>
+      <div className="relative top-10 lg:top-16 flex h-auto w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-background">
+        <Marquee pauseOnHover className="[--duration:20s]">
+          {firstRow.map((review, index) => (
+            <ReviewCard key={index} {...review} />
+          ))}
+        </Marquee>
+        <Marquee reverse pauseOnHover className="[--duration:20s]">
+          {secondRow.map((review, index) => (
+            <ReviewCard key={index} {...review} />
+          ))}
+        </Marquee>
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-neutral-800 "></div>
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-neutral-800"></div>
+      </div>
     </>
   );
 }
