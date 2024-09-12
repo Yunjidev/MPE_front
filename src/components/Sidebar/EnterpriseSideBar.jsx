@@ -3,7 +3,8 @@ import Dropdown from "./Dropdown";
 import {
   FaBriefcase,
   FaCalendarAlt,
-  FaBuilding  
+  FaBuilding,
+  FaBook  
 } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { useAtom } from "jotai";
@@ -52,6 +53,11 @@ export default function EnterpriseSideBar({
                       to: `/dashboard/enterprise/${enterprise.id}/planning`,
                       icon: <FaCalendarAlt className={`w-5 h-5 ${iconStyle} mr-3`} />, // Taille uniforme de l'icône
                       label: "Planning",
+                    },
+                    {
+                      to: `/dashboard/enterprise/${enterprise.id}/reservations`,
+                      icon: <FaBook className={`${iconStyle} mr-3`} />,
+                      label: "Réservations",
                     },
                   ]}
                   label={enterprise.name}

@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useMemo } from 'react';
 import { getData, deleteData, postData, putData } from '../../services/data-fetch';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import { AiOutlineEuro } from "react-icons/ai";
 import { IoTimeOutline, IoInformationCircleOutline } from 'react-icons/io5';
 import Modal from '../DashboardAdmin/Modal';
 import OfferForm from './OfferForm';
@@ -191,45 +193,62 @@ const OffersList = () => {
       </div>
 
       <ul className="space-y-4">
-        {paginatedOffers.map(offer => (
-          <li key={offer.id} className="bg-neutral-700 border border-neutral-600 p-4 rounded-lg flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center space-x-6 md:flex-1">
-              {offer.image && (
-                <img
-                  src={offer.image}
-                  alt={offer.name}
-                  className="w-20 h-20 object-cover rounded-lg"
-                />
-              )}
-              <div className="flex flex-wrap items-center space-x-6">
-                <h3 className="text-lg font-bold text-white">{offer.name}</h3>
-                <p className="flex items-center space-x-2 text-sm text-gray-400">
-                  <IoTimeOutline className="w-4 h-4" />
-                  <span>{offer.duration} minutes</span>
-                </p>
-                <p className="flex items-center space-x-2 text-sm text-gray-400">
-                  <IoInformationCircleOutline className="w-4 h-4" />
-                  <span>{offer.estimate ? 'Estimé' : 'Non estimé'}</span>
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4 mt-4 md:mt-0">
-              <button
-                onClick={() => handleEdit(offer)}
-                className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
-              >
-                <FaEdit className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => handleDelete(offer.id)}
-                className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold py-2 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
-              >
-                <FaTrash className="w-5 h-5" />
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+  {paginatedOffers.map(offer => {
+    const hours = Math.floor(offer.duration / 60);
+    const minutes = offer.duration % 60;
+    const formattedDuration = hours > 0 
+      ? (minutes > 0 ? `${hours}H${minutes}` : `${hours}H`)
+      : `${minutes}min`;
+
+    return (
+      <li key={offer.id} className="bg-neutral-700 border border-neutral-600 p-4 rounded-lg flex flex-col md:flex-row justify-between items-center">
+        <div className="flex items-center space-x-6 md:flex-1">
+          {offer.image && (
+            <img
+              src={offer.image}
+              alt={offer.name}
+              className="w-20 h-20 object-cover rounded-lg"
+            />
+          )}
+          <div className="flex flex-wrap items-center space-x-6">
+            <h3 className="text-lg font-bold text-white">{offer.name}</h3>
+            <p className="text-sm text-gray-400">{offer.description}</p>
+            <p className="flex items-center space-x-2 text-sm text-gray-400">
+              <AiOutlineEuro className="w-4 h-4" />
+              <span>{offer.price} €</span>
+            </p>
+            <p className="flex items-center space-x-2 text-sm text-gray-400">
+              <IoTimeOutline className="w-4 h-4" />
+              <span>{formattedDuration}</span>
+            </p>
+            <p className="flex items-center space-x-2 text-sm text-gray-400">
+              <IoInformationCircleOutline className="w-4 h-4" />
+              <span>{offer.estimate ? 'Estimé' : 'Non estimé'}</span>
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-4 mt-4 md:mt-0">
+          <button
+            onClick={() => handleEdit(offer)}
+            className="text-green-400 hover:scale-110 transition-transform"
+            title="Modifier l'offre"
+          >
+            <FaEdit className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => handleDelete(offer.id)}
+            className="text-red-400 hover:scale-110 transition-transform"
+            title="Supprimer l'offre"
+          >
+            <FaTrash className="w-5 h-5" />
+          </button>
+        </div>
+      </li>
+    );
+  })}
+</ul>
+
+
 
       {/* Pagination */}
       <div className="mt-4 flex flex-wrap justify-between items-center">

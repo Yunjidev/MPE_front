@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { getData, putData } from "../../services/data-fetch";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import {
@@ -192,6 +192,15 @@ const ReservationsList = () => {
                         </Button>
                       </>
                     )}
+                    {reservation.status === "accepted" && (
+                      <Button
+                        onClick={() => updateReservationStatus(reservation.id, "done")}
+                        className="text-blue-500 hover:underline"
+                        title="Marquer comme terminée"
+                      >
+                        <FaCheck /> Terminée
+                      </Button>
+                    )}
                   </div>
                 </div>
               </li>
@@ -208,27 +217,24 @@ const ReservationsList = () => {
             disabled={pageIndex === 0}
             className="w-full md:w-auto px-4 py-2 bg-neutral-700 text-white border hover:border-[#67FFCC] transition duration-300 ease-in-out"
           >
-            &laquo; Précédente
+            Précédent
           </button>
-          <span className="text-white font-bold">
-            Page {pageIndex + 1} sur {Math.ceil(filteredReservations.length / pageSize)}
-          </span>
           <button
             onClick={() => setPageIndex(pageIndex + 1)}
-            disabled={pageIndex >= Math.ceil(filteredReservations.length / pageSize) - 1}
+            disabled={paginatedReservations.length < pageSize}
             className="w-full md:w-auto px-4 py-2 bg-neutral-700 text-white border hover:border-[#67FFCC] transition duration-300 ease-in-out"
           >
-            Suivante &raquo;
+            Suivant
           </button>
         </div>
         <select
           value={pageSize}
           onChange={handlePageSizeChange}
-          className="w-full md:w-auto border rounded-lg bg-neutral-700 text-white p-2"
+          className="px-4 py-2 bg-neutral-700 text-white border border-neutral-600 rounded-lg"
         >
           {[10, 20, 30, 40].map((size) => (
             <option key={size} value={size}>
-              {size} réservations par page
+              {size} éléments par page
             </option>
           ))}
         </select>
