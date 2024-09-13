@@ -1,7 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { postData, putData } from "../../services/data-fetch";
 
-const OfferForm = ({ offer, onSubmit, onClose }) => {
+const OfferForm = ({ offer, onClose = () => {} }) => {
+  const { id } = useParams(); // Récupération de l'ID de l'entreprise
+  const isEdit = !!offer; // Vérification si on modifie une offre existante ou non
+
   const [formData, setFormData] = useState({
     name: offer ? offer.name : "",
     description: offer ? offer.description : "",
@@ -19,18 +24,18 @@ const OfferForm = ({ offer, onSubmit, onClose }) => {
         duration: offer.duration || "",
         price: offer.price || "",
         estimate: offer.estimate || false,
-        image: null, // Reset image on edit, so user can choose to keep or change it
+        image: null, // Réinitialise l'image lors de la modification
       });
     }
   }, [offer]);
 
   const handleChange = (e) => {
     const { id, value, type, checked, files } = e.target;
-
+    
     if (type === "file") {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        image: files[0], // Update with the new file
+        image: files[0],
       }));
     } else if (type === "checkbox") {
       setFormData((prevFormData) => ({
@@ -47,41 +52,63 @@ const OfferForm = ({ offer, onSubmit, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Prepare FormData object to send data and file if any
+    
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
     formDataToSend.append("description", formData.description);
     formDataToSend.append("duration", formData.duration);
     formDataToSend.append("price", formData.price);
     formDataToSend.append("estimate", formData.estimate);
-
+  
     if (formData.image) {
       formDataToSend.append("image", formData.image);
     }
-
+    
     try {
-      await onSubmit(formDataToSend);  // Send formData object
-      onClose();  // Close the modal after success
+      let response;
+  
+      if (isEdit) {
+        // Modification de l'offre existante avec une requête PUT
+        response = await putData(`/enterprise/${id}/offer/${offer.id}`, formDataToSend);
+      } else {
+        // Création d'une nouvelle offre avec une requête POST
+        response = await postData(`/enterprise/${id}/offer`, formDataToSend);
+      }
+  
+      // Inspectez la réponse complète
+      console.log("Réponse brute du serveur:", response);
+      console.log("Réponse JSON du serveur:", await response.json());
+  
+      if (response.message === 'Offre créée') {
+        alert("Offre créée avec succès !");
+      } else if (response.message === 'Offre modifiée') {
+        alert("Offre modifiée avec succès !");
+      } else {
+        alert("Une erreur est survenue lors de la soumission de l'offre.");
+      }
+      
+      onClose(); // Ferme le formulaire après la soumission
     } catch (error) {
-      console.error("Erreur lors de la création ou modification de l'offre:", error);
-      alert("Une erreur est survenue lors de la création ou modification de l'offre.");
+      console.error("Erreur lors de la soumission de l'offre:", error);
+      alert("Une erreur est survenue lors de la soumission de l'offre.");
     }
   };
 
   return (
     <div className="bg-neutral-900 text-white w-full p-8">
       <div className="mb-4 text-center">
-        <h2 className="text-2xl font-semibold">{offer ? "Modifier l'offre" : "Créer une nouvelle offre"}</h2>
+        <h2 className="text-2xl font-semibold">
+          {offer ? "Modifier l'offre" : "Créer une nouvelle offre"}
+        </h2>
       </div>
       <form onSubmit={handleSubmit}>
-        {['Nom', 'Description', 'Durée', 'prix'].map(field => (
+        {['name', 'description', 'duration', 'price'].map((field) => (
           <div key={field} className="mb-4">
             <label htmlFor={field} className="block text-sm font-medium">
               {field.charAt(0).toUpperCase() + field.slice(1)}
             </label>
             <input
-              type={field === 'la durée' || field === 'le prix' ? 'number' : 'text'}
+              type={field === "duration" || field === "price" ? "number" : "text"}
               id={field}
               value={formData[field]}
               onChange={handleChange}
