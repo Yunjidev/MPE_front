@@ -1,0 +1,50 @@
+.gradient-text-orange {
+    background: linear-gradient(90deg, #ffffff, #7304fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dark .gradient-text-orange {
+    background: linear-gradient(90deg, #ffffff, #ff6600);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-violet {
+    background: linear-gradient(90deg, #ffffff, #9743d6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dark .gradient-text-violet {
+    background: linear-gradient(90deg, #ffffff, #BD6FF8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-green {
+    background: linear-gradient(90deg, #ffffff, #03b63c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dark .gradient-text-green {
+    background: linear-gradient(90deg, #ffffff, #4ADE80);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 1023px) {
+    .hide-on-small {
+      display: none;
+    }
+    .display-on-small {
+        display: block;
+    }
+  }
+
+  @media (min-width: 1023px) {
+    .display-on-small {
+        display: block;
+    }
+  }

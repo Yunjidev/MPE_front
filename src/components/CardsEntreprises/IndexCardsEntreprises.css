@@ -1,0 +1,16 @@
+.card-hover-zoom {
+    cursor: pointer; /* Change le curseur en main pour indiquer un élément cliquable */
+    transition: transform 0.3s ease-in-out; /* Ajoute une transition fluide pour l'effet de zoom */
+  }
+  
+  .card-hover-zoom:hover {
+    transform: scale(1.05); /* Zoom léger au survol */
+  }
+
+ 
+  
+ 
+  
+ 
+  
+  

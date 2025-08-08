@@ -1,0 +1,9 @@
+/*.border-form-1 {
+    transition: box-shadow 0.5s ease-in-out;
+}
+
+  .border-form-1:hover {
+    box-shadow: -8px 8px 20px 5px #FF6600, -7px -8px 20px 5px #67FFCC, 12px -5px 20px 5px #BD6FF8, 0px 0px 20px 10px rgba(0,0,0,0);
+    
+  }
+*/

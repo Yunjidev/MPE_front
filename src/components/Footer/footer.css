@@ -1,0 +1,45 @@
+/* Partie générique pour le footer principal */
+.footer {
+  background-size: cover;
+  background-position: center -40px;
+  background-repeat: no-repeat;
+  min-height: 215px;
+  color: white;
+}
+
+/* Fond spécifique du footer avec SVG */
+.bg-footer {
+  background-image: url('../../assets/svgs/bgfooter.svg');
+  background-size: cover;
+  background-position: bottom;
+  background-repeat: no-repeat;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Responsive adjustments --- */
+
+/* Mobile (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  .footer {
+    background-position: center center;
+    min-height: auto;
+    padding: 1rem;
+  }
+
+  .bg-footer {
+    background-size: contain;
+    background-position: bottom;
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem 1rem;
+    height: auto;
+  }
+
+  .footer img {
+    height: 80px !important;
+    margin-bottom: 1rem;
+  }
+}

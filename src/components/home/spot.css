@@ -1,0 +1,30 @@
+/* From Uiverse.io by KhelVers */ 
+/* #Container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    height: 100%;
+  } */
+  
+  #rays {
+    z-index: 2;
+    position: relative;
+    bottom: -1.5em;
+    animation: rays 2s ease-in-out infinite;
+  }
+  
+  @keyframes rays {
+    0% {
+      opacity: 0.6;
+    }
+  
+    50% {
+      opacity: 1;
+    }
+  
+    100% {
+      opacity: 0.6;
+    }
+  }
+  

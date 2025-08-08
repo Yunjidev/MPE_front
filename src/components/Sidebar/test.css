@@ -1,0 +1,23 @@
+/* Utilisez Tailwind CSS pour les classes conditionnelles */
+
+/* Style de la sidebar en mode mobile */
+@media (max-width: 1024px) {
+    
+    #sidebar {
+        z-index: 999;
+        top: 3em;
+        width: 100%;
+        height: 100%;
+        background-color: #1f2937;
+        /* Couleur de fond de la sidebar */
+        transform: translateX(-200%);
+        transition: transform 0.3s ease;
+        position: fixed;
+    }
+
+    /* #sidebar.open {
+        transform: translateX(0);
+    } */
+
+
+}

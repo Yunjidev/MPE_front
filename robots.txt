@@ -1,0 +1,24 @@
+# Robots.txt pour le site Ma Petite Entreprise
+
+# Empêcher les robots d'explorer les pages de tableau de bord
+User-agent: *
+Disallow: /dashboard
+Disallow: /dashboard/user-db
+Disallow: /dashboard/register-company
+Disallow: /dashboard/security
+Disallow: /dashboard/accept-company
+Disallow: /dashboard/manage-companies
+Disallow: /dashboard/manage-users
+Disallow: /dashboard/enterprise/*/edit
+
+# Autoriser l'accès aux autres parties du site
+Allow: /
+
+# Autoriser les fichiers CSS, JavaScript et images pour un rendu complet
+Allow: /css/
+Allow: /js/
+Allow: /images/
+
+# Sitemaps pour aider les moteurs de recherche à indexer votre site
+Sitemap: https://www.example.com/sitemap.xml
+Sitemap: https://www.example.com/sitemap-pages.xml
