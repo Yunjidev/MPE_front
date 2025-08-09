@@ -4,10 +4,10 @@ import {
   IoMailOutline,
   IoPhonePortraitOutline,
   IoBusinessOutline,
-  IoGlobeOutline,
 } from "react-icons/io5";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { FaGlobe } from "react-icons/fa";
 import StarRating from "./StarRatings";
 import LikeButton from "../CardsEntreprises/LikesForCards/LikeButton";
 import { useContext } from "react";
@@ -16,119 +16,154 @@ import { UserContext } from "../../context/UserContext";
 const EnterpriseDetails = ({ enterprise }) => {
   const { user } = useContext(UserContext);
 
-  return (
-    <div className="w-full flex flex-col justify-between p-3 rounded-lg bg-neutral-800 border border-neutral-700 mt-12 mb-6">
-      <div className="flex flex-col md:flex-row md:items-start text-white gap-6">
+  const avg = Number.isFinite(enterprise?.averageRating)
+    ? enterprise.averageRating
+    : 0;
 
-        {/* Colonne gauche : logo + job + étoiles */}
-        <div className="flex flex-col items-center md:items-start md:mr-6">
-          {enterprise.logo ? (
-            <img
-              src={enterprise.logo}
-              alt="Logo"
-              className="w-24 h-24 rounded-full"
-            />
-          ) : (
-            <div className="w-24 h-24 bg-gray-700 rounded-full flex items-center justify-center mb-2">
-              <span className="text-gray-400">Logo</span>
-            </div>
-          )}
-          <p className="font-semibold text-lg text-center mt-2">
-            {enterprise.job.name}
-          </p>
-          <div className="flex items-center mt-2">
-            <StarRating rating={Math.round(enterprise.averageRating)} />
-            <p className="ml-2 text-lg font-semibold">
-              {enterprise.averageRating.toFixed(1)}
+  return (
+<section className="lg:w-1/2 bg-neutral-950/60 border border-neutral-800 rounded-2xl p-6 flex flex-col gap-4 shadow-lg shadow-black/30 backdrop-blur relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-px rounded-2xl bg-gradient-to-br from-orange-500/10 via-transparent to-violet-400/10" />
+
+      <div className="relative p-5 sm:p-6">
+        <div className="flex flex-col md:flex-row gap-6 text-white">
+
+          {/* Colonne gauche */}
+          <div className="flex flex-col items-center gap-3 min-w-[10rem]">
+            {enterprise.logo ? (
+              <img
+                src={enterprise.logo}
+                alt={`${enterprise.name} - logo`}
+                className="w-24 h-24 rounded-full object-cover border border-neutral-700"
+                onError={(e) => {
+                  e.currentTarget.src =
+                    "https://via.placeholder.com/96x96.png?text=Logo";
+                }}
+              />
+            ) : (
+              <div className="w-24 h-24 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center">
+                <span className="text-neutral-400 text-sm">Logo</span>
+              </div>
+            )}
+
+            {/* Métier centré */}
+            <p className="text-sm text-center px-2 py-1 rounded-md border border-neutral-700 bg-neutral-900/80">
+              {enterprise?.job?.name || "Métier non spécifié"}
             </p>
+
+            <div className="flex items-center gap-2">
+              <StarRating rating={Math.round(avg)} />
+              <span className="text-sm font-semibold text-neutral-200">
+                {avg ? avg.toFixed(1) : "—"}
+              </span>
+            </div>
           </div>
+
+          {/* Colonne centrale : infos + description */}
+          <div className="flex flex-col flex-1 gap-6">
+            
+            {/* Ligne nom + like */}
+            <div className="flex items-center justify-between">
+              <h1 className="truncate text-2xl sm:text-3xl font-bold bg-gradient-to-r from-orange-300 to-orange-600 text-transparent bg-clip-text">
+                {enterprise.name}
+              </h1>
+              <LikeButton userId={user?.id} enterpriseId={enterprise.id} />
+            </div>
+
+            {/* Infos entreprise */}
+            <ul className="space-y-2 text-neutral-200">
+              <li className="flex items-start gap-2">
+                <IoLocationOutline className="mt-0.5 text-neutral-400 shrink-0" />
+                <span>
+                  {enterprise.adress}
+                  {enterprise.city ? `, ${enterprise.city}` : ""}
+                  {enterprise.zip_code ? ` (${enterprise.zip_code})` : ""}
+                </span>
+              </li>
+
+              {enterprise.siret_number && (
+                <li className="flex items-start gap-2">
+                  <IoBusinessOutline className="mt-0.5 text-neutral-400 shrink-0" />
+                  <span>{enterprise.siret_number}</span>
+                </li>
+              )}
+
+              {enterprise.mail && (
+                <li className="flex items-start gap-2">
+                  <IoMailOutline className="mt-0.5 text-neutral-400 shrink-0" />
+                  <a
+                    href={`mailto:${enterprise.mail}`}
+                    className="text-neutral-100 hover:text-orange-300 transition-colors"
+                  >
+                    {enterprise.mail}
+                  </a>
+                </li>
+              )}
+
+              {enterprise.phone && (
+                <li className="flex items-start gap-2">
+                  <IoPhonePortraitOutline className="mt-0.5 text-neutral-400 shrink-0" />
+                  <span>{enterprise.phone}</span>
+                </li>
+              )}
+            </ul>
+
+            {/* Description intégrée */}
+            {enterprise.description && (
+              <div
+                className="mt-4 p-4 rounded-xl border border-neutral-800 bg-neutral-900/60 shadow-inner shadow-black/20 text-sm text-neutral-300 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: enterprise.description }}
+              />
+            )}
+          </div>
+
+          {/* Colonne icônes droite */}
+          <div className="flex flex-col items-center justify-center gap-4">
+          {enterprise.instagram && (
+            <a
+              href={enterprise.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="h-10 w-10 rounded-lg border border-neutral-700 bg-neutral-900/60 flex items-center justify-center text-xl text-neutral-200 hover:text-orange-300 hover:border-orange-400/60 transition-colors"
+            >
+              <FaInstagram />
+            </a>
+          )}
+          {enterprise.twitter && (
+            <a
+              href={enterprise.twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="h-10 w-10 rounded-lg border border-neutral-700 bg-neutral-900/60 flex items-center justify-center text-xl text-neutral-200 hover:text-orange-300 hover:border-orange-400/60 transition-colors"
+            >
+              <FaXTwitter />
+            </a>
+          )}
+          {enterprise.facebook && (
+            <a
+              href={enterprise.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="h-10 w-10 rounded-lg border border-neutral-700 bg-neutral-900/60 flex items-center justify-center text-xl text-neutral-200 hover:text-orange-300 hover:border-orange-400/60 transition-colors"
+            >
+              <FaFacebookF />
+            </a>
+          )}
+          {enterprise.website && (
+            <a
+              href={enterprise.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="h-10 w-10 rounded-lg border border-neutral-700 bg-neutral-900/60 flex items-center justify-center text-xl text-neutral-200 hover:text-orange-300 hover:border-orange-400/60 transition-colors"
+              title="Visiter le site"
+            >
+              <FaGlobe />
+            </a>
+          )}
         </div>
 
-        {/* Colonne droite */}
-        <div className="flex flex-col md:flex-row justify-between flex-grow w-full">
-          {/* Infos entreprise */}
-          <div className="flex flex-col mb-4 flex-grow">
-            <p className="flex items-center space-x-2 mb-2">
-              <span className="text-2xl font-bold bg-gradient-to-r from-emerald-200 to-emerald-500 text-transparent bg-clip-text break-words">
-                {enterprise.name}
-              </span>
-              <LikeButton userId={user.id} enterpriseId={enterprise.id} />
-            </p>
-            <p className="flex items-center space-x-2 mb-2">
-              <IoLocationOutline className="text-xl" />
-              <span>
-                {enterprise.adress}, {enterprise.city}
-              </span>
-            </p>
-            <p className="flex items-center space-x-2 mb-2">
-              <IoBusinessOutline className="text-xl" />
-              <span>{enterprise.siret_number}</span>
-            </p>
-            <p className="flex items-center space-x-2 mb-2">
-              <IoMailOutline className="text-xl" />
-              <a
-                href={`mailto:${enterprise.mail}`}
-                className="text-white hover:text-emerald-300 transition-colors duration-300 break-words"
-              >
-                {enterprise.mail}
-              </a>
-            </p>
-            <p className="flex items-center space-x-2 mb-2">
-              <IoPhonePortraitOutline className="text-xl" />
-              <span>{enterprise.phone}</span>
-            </p>
-            <p className="flex items-center space-x-2 mb-2">
-              <IoGlobeOutline className="text-xl" />
-              <a
-                href={enterprise.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white hover:text-emerald-300 transition-colors duration-300 break-words max-w-full overflow-hidden text-ellipsis"
-              >
-                {enterprise.website}
-              </a>
-            </p>
-          </div>
-
-          {/* Réseaux sociaux */}
-          <div className="flex flex-row md:flex-col items-center md:items-end justify-center space-x-4 md:space-x-0 md:space-y-4 mt-6 md:mt-12 ml-0 md:ml-9">
-            {enterprise.instagram && (
-              <a
-                href={enterprise.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xl text-white hover:text-emerald-300 transition-colors duration-300"
-                title="Instagram link"
-              >
-                <FaInstagram />
-              </a>
-            )}
-            {enterprise.twitter && (
-              <a
-                href={enterprise.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xl text-white hover:text-emerald-300 transition-colors duration-300"
-                title="Twitter link"
-              >
-                <FaXTwitter />
-              </a>
-            )}
-            {enterprise.facebook && (
-              <a
-                href={enterprise.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xl text-white hover:text-emerald-300 transition-colors duration-300"
-                title="Facebook link"
-              >
-                <FaFacebookF />
-              </a>
-            )}
-          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

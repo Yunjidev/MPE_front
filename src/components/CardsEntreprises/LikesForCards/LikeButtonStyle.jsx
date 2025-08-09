@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
 import { FaHeart } from "react-icons/fa";
+import { useState } from "react";
 
-const LikeButtonStyle = ({ hasLiked, isHovered, handleLike, setIsHovered }) => {
-  // Styles pour l'icône de cœur
-  const heartStyles = {
-    color: hasLiked ? "#e3342f" : isHovered ? "#60a5fa" : "#fca5a5",
-    transform: isHovered ? "scale(2)" : "scale(1)",
-    transition: "color 0.2s, transform 0.2s",
-    cursor: "pointer",
+const LikeButtonStyle = ({ hasLiked, handleLike }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const handleClick = () => {
+    setIsAnimating(true);
+    handleLike();
+    setTimeout(() => setIsAnimating(false), 300); // durée de l’anim
   };
 
   return (
@@ -16,13 +18,35 @@ const LikeButtonStyle = ({ hasLiked, isHovered, handleLike, setIsHovered }) => {
         hasLiked
           ? "Cliquez pour annuler votre like."
           : "Cliquez pour liker cette entreprise."
-      } // Infobulle
-      onClick={handleLike}
+      }
+      onClick={handleClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative flex items-center justify-center p-2 rounded-full"
     >
+      {/* Halo animé si liké */}
+      {hasLiked && (
+        <span
+          className="absolute w-8 h-8 rounded-full bg-orange-500/30 animate-ping"
+          style={{ zIndex: 0 }}
+        ></span>
+      )}
+
       <FaHeart
-        style={heartStyles}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        className={`relative z-10 transition-all duration-300 ${
+          hasLiked
+            ? "text-orange-400 drop-shadow-[0_0_6px_rgba(255,153,0,0.6)]"
+            : isHovered
+            ? "text-orange-300"
+            : "text-neutral-400"
+        }`}
+        style={{
+          transform: isAnimating
+            ? "scale(1.4)"
+            : isHovered
+            ? "scale(1.2)"
+            : "scale(1)",
+        }}
       />
     </button>
   );

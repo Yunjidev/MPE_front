@@ -15,7 +15,7 @@ const IndexCardsEntreprises = ({ entreprise, userId }) => {
     nextAvailableDate,
     logo,
     averageRating,
-    isPremium, // si dispo côté API; sinon sera ignoré
+    isPremium,
   } = entreprise;
 
   const jobName = job?.name || 'Métier non spécifié';
@@ -30,13 +30,13 @@ const IndexCardsEntreprises = ({ entreprise, userId }) => {
       onClick={goTo}
       className="group relative rounded-2xl overflow-hidden cursor-pointer
                  border border-neutral-800 bg-neutral-900/70
-                 hover:border-emerald-400/40 transition-all duration-300
-                 shadow-lg hover:shadow-emerald-500/10"
+                 hover:border-orange-400/40 transition-all duration-300
+                 shadow-lg hover:shadow-orange-500/10"
     >
       {/* Gradient ring on hover */}
-      <div className="pointer-events-none absolute inset-px rounded-2xl bg-gradient-to-br from-emerald-500/0 via-emerald-500/0 to-emerald-500/0 group-hover:from-emerald-500/10 group-hover:via-transparent group-hover:to-emerald-400/10 transition-colors"></div>
+      <div className="pointer-events-none absolute inset-px rounded-2xl bg-gradient-to-br from-orange-500/0 via-orange-500/0 to-orange-500/0 group-hover:from-orange-500/10 group-hover:via-transparent group-hover:to-orange-400/10 transition-colors"></div>
 
-      {/* Like button (ne pas propager le clic) */}
+      {/* Like button */}
       <div
         className="absolute top-3 right-3 z-20"
         onClick={(e) => e.stopPropagation()}
@@ -44,11 +44,11 @@ const IndexCardsEntreprises = ({ entreprise, userId }) => {
         <LikeButton userId={userId} enterpriseId={id} />
       </div>
 
-      {/* Badges en overlay */}
+      {/* Badges */}
       <div className="absolute top-3 left-3 z-20 flex items-center gap-2">
         {isPremium && (
           <span className="px-2 py-1 rounded-md text-xs font-semibold
-                           bg-amber-500/20 text-amber-300 border border-amber-400/30">
+                           bg-orange-500/20 text-orange-300 border border-orange-400/30">
             Premium
           </span>
         )}
@@ -70,14 +70,13 @@ const IndexCardsEntreprises = ({ entreprise, userId }) => {
           className="h-full w-full object-cover"
           onError={(e) => { e.currentTarget.src = indexcards; }}
         />
-        {/* Overlay gradient for readability */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-neutral-900/10 to-transparent"></div>
       </div>
 
       {/* Body */}
       <div className="relative z-10 p-4">
         {/* Title */}
-        <h2 className="text-lg font-semibold text-white leading-tight line-clamp-2 group-hover:text-emerald-300 transition-colors">
+        <h2 className="text-lg font-semibold text-white leading-tight line-clamp-2 group-hover:text-orange-300 transition-colors">
           {name}
         </h2>
 
@@ -101,14 +100,11 @@ const IndexCardsEntreprises = ({ entreprise, userId }) => {
         </div>
 
         {/* Footer */}
-        <div className="mt-4 flex items-center justify-between">
-          <div className="text-xs text-neutral-400">
-            ID: {id}
-          </div>
+        <div className="mt-4 flex items-center justify-center">
           <button
             onClick={(e) => { e.stopPropagation(); goTo(); }}
             className="h-9 px-3 rounded-lg border border-neutral-600 text-neutral-200
-                       hover:border-emerald-400/60 hover:text-emerald-300
+                       hover:border-orange-400/60 hover:text-orange-300
                        transition-colors"
             aria-label="Voir la fiche"
           >

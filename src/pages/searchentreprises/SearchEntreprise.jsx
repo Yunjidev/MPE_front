@@ -3,8 +3,6 @@ import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
 import { getData } from "../../services/data-fetch";
 import IndexCardsEntreprises from "../../components/CardsEntreprises/IndexCardsEntreprises";
-
-// ⬇️ importe la sidebar que je t’ai fournie
 import FiltersSidebar from "../../components/IndexSearchbarEntreprises/FiltersSidebar";
 
 const SearchEntreprise = () => {
@@ -12,7 +10,7 @@ const SearchEntreprise = () => {
   const [user] = useAtom(userAtom);
   const userId = user.id;
 
-  // états des filtres (la sidebar les contrôle)
+  // États des filtres (pilotés par la sidebar)
   const [selectedJobs, setSelectedJobs] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]); // régions
   const [selectedCities, setSelectedCities] = useState([]);
@@ -31,7 +29,7 @@ const SearchEntreprise = () => {
     fetchEntreprises();
   }, [fetchEntreprises]);
 
-  // Recherche côté front (on filtre ce que renvoie l’API validate)
+  // Recherche front (filtre ce que renvoie /validate)
   const performSearch = useCallback(async () => {
     try {
       const response = await getData("enterprises/validate");
@@ -43,7 +41,9 @@ const SearchEntreprise = () => {
 
         const countryMatch =
           selectedCountries.length === 0 ||
-          selectedCountries.some((r) => e.country && e.country.name === r.label);
+          selectedCountries.some(
+            (r) => e.country && e.country.name === r.label
+          );
 
         const cityMatch =
           selectedCities.length === 0 ||
@@ -71,36 +71,39 @@ const SearchEntreprise = () => {
     setSelectedCountries([]);
     setSelectedCities([]);
     setSelectedRatings([]);
-    fetchEntreprises(); // réinitialise les résultats
+    fetchEntreprises();
   }, [fetchEntreprises]);
 
   return (
-    <section className="py-2">
-      <div className="font-sans mx-auto max-w-7xl mt-10 px-4">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl dark:bg-gradient-to-r dark:from-orange-200 dark:to-orange-400 bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text text-center mb-8">
+    <section className="py-8">
+      <div className="max-w-7xl mx-auto px-4">
+        <h1 className="text-center mb-8 text-3xl sm:text-4xl md:text-5xl bg-gradient-to-r from-orange-400 to-orange-800 text-transparent bg-clip-text">
           Recherchez vos entreprises
         </h1>
 
-        <div className="grid grid-cols-12 gap-6">
+        {/* Layout Amazon-like */}
+        <div className="grid grid-cols-12 gap-y-8 gap-x-10 xl:gap-x-14 items-start">
           {/* Sidebar */}
-          <div className="col-span-12 md:col-span-3">
-            <FiltersSidebar
-              selectedJobs={selectedJobs}
-              setSelectedJobs={setSelectedJobs}
-              selectedCountries={selectedCountries}
-              setSelectedCountries={setSelectedCountries}
-              selectedCities={selectedCities}
-              setSelectedCities={setSelectedCities}
-              selectedRatings={selectedRatings}
-              setSelectedRatings={setSelectedRatings}
-              performSearch={performSearch}
-              resetAll={resetAll}
-            />
-          </div>
+          <aside className="col-span-12 lg:col-span-3">
+            <div className="lg:sticky lg:top-6 lg:pr-6 xl:pr-8 lg:border-r lg:border-neutral-800">
+              <FiltersSidebar
+                selectedJobs={selectedJobs}
+                setSelectedJobs={setSelectedJobs}
+                selectedCountries={selectedCountries}
+                setSelectedCountries={setSelectedCountries}
+                selectedCities={selectedCities}
+                setSelectedCities={setSelectedCities}
+                selectedRatings={selectedRatings}
+                setSelectedRatings={setSelectedRatings}
+                performSearch={performSearch}
+                resetAll={resetAll}
+              />
+            </div>
+          </aside>
 
           {/* Résultats */}
-          <div className="col-span-12 md:col-span-9">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          <main className="col-span-12 lg:col-span-9 lg:pl-8 xl:pl-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
               {entreprises.map((entreprise) => (
                 <IndexCardsEntreprises
                   key={entreprise.id}
@@ -109,7 +112,7 @@ const SearchEntreprise = () => {
                 />
               ))}
             </div>
-          </div>
+          </main>
         </div>
       </div>
     </section>
