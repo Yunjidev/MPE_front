@@ -10,50 +10,39 @@ export default function Dropdown({
   colorStyle = "",
   iconStyle = "",
   linkstyle = "",
-  option = <></>,
+  option = null,
   isDisabled = false,
   onClick,
 }) {
   const [isOpen, setIsOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleDropdown = () => !isDisabled && setIsOpen((s) => !s);
 
   return (
-    <>
+    <div className={`rounded-lg ${isDisabled ? "opacity-60 cursor-not-allowed" : ""}`}>
       <button
-        className="flex items-center justify-between w-full p-2 space-x-3 rounded-md hover:bg-gray-700"
+        className={`flex items-center justify-between w-full ${linkstyle}`}
         onClick={toggleDropdown}
         disabled={isDisabled}
+        type="button"
       >
-        <div className="flex items-center space-x-3">
-          {icon}
-          <span className={`font-semibold ${colorStyle}`}>{label}</span>
-          {option}
+        <div className="flex items-center gap-3 min-w-0">
+          <span className="shrink-0">{icon}</span>
+          <span className={`font-semibold truncate ${colorStyle}`}>{label}</span>
+          {option && <span className="shrink-0">{option}</span>}
         </div>
-        <div>
-          {!isOpen ? (
-            <FaChevronDown className={iconStyle} />
-          ) : (
-            <FaChevronUp className={iconStyle} />
-          )}
+        <div className="shrink-0 text-neutral-400">
+          {!isOpen ? <FaChevronDown className={iconStyle} /> : <FaChevronUp className={iconStyle} />}
         </div>
       </button>
-      {isOpen && (
-        <ul className="pl-3 mt-2 space-y-1 lg:text-sm text-2xl">
+
+      {isOpen && !isDisabled && (
+        <ul className="pl-3 mt-2 space-y-1 lg:text-sm text-base">
           {dropdownItems.map((item, index) => (
-            <NavLink
-              key={index}
-              {...item}
-              colorStyle={colorStyle}
-              linkstyle={linkstyle}
-              onClick={onClick}
-            />
+            <NavLink key={index} {...item} colorStyle={colorStyle} linkstyle={linkstyle} onClick={onClick} />
           ))}
         </ul>
       )}
-    </>
+    </div>
   );
 }
 

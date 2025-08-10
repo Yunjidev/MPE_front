@@ -1,75 +1,91 @@
-import { useEffect, useState } from "react";
+/* eslint-disable react/prop-types */
+import { useEffect, useState, useCallback } from "react";
 import { getData, postData, deleteData } from "../../../services/data-fetch";
 import { toast } from "react-toastify";
 
-// Composant pour la logique
+// Composant logique (render-prop)
 const LikeButtonFonction = ({ userId, enterpriseId, children, onUnlike }) => {
   const [hasLiked, setHasLiked] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+
+  // Normalise pour éviter les comparaisons string/number
+  const uid = Number(userId);
+  const eid = Number(enterpriseId);
 
   useEffect(() => {
+    let mounted = true;
+
     const checkIfLiked = async () => {
-      // Supposons que l'API renvoie un tableau de "likes" pour l'entreprise
-      const likes = await getData("likes");
-      // Vérifiez si l'utilisateur actuel a déjà "liké" l'entreprise
-      const userLike = likes.find(
-        (like) => like.User_id === userId && like.Enterprise_id === enterpriseId
-      );
-      setHasLiked(!!userLike);
+      try {
+        const likes = await getData("likes"); // [{ id, User_id, Enterprise_id }, ...]
+        const userLike = likes.find(
+          (like) => Number(like.User_id) === uid && Number(like.Enterprise_id) === eid
+        );
+        if (mounted) setHasLiked(Boolean(userLike));
+      } catch (err) {
+        console.error("Erreur lors de la récupération des likes:", err);
+      }
     };
 
-    checkIfLiked();
-  }, [userId, enterpriseId]);
-
-  const toggleLike = async (event) => {
-    event.stopPropagation();
-
-    if (!userId) {
-      toast.info("Veuillez vous connecter pour liker ou annuler un like.");
-      return;
-    }
-
-    if (hasLiked) {
-      await handleUnlike();
-    } else {
-      await handleLike();
-    }
-  };
-
-  const handleLike = async () => {
-    const likeData = {
-      User_id: userId,
-      Enterprise_id: enterpriseId,
+    if (uid && eid) checkIfLiked();
+    return () => {
+      mounted = false;
     };
+  }, [uid, eid]);
 
-    const result = await postData(`enterprise/${enterpriseId}/like`, likeData);
-    if (result.error) {
+  const handleLikeCreate = useCallback(async () => {
+    const likeData = { User_id: uid, Enterprise_id: eid };
+
+    const result = await postData(`enterprise/${eid}/like`, likeData);
+    if (result?.error) {
       toast.error("Une erreur est survenue lors de la création du like.");
-      console.error("Erreur lors de la création du like:", result.error);
-    } else {
-      toast.success("Like créé avec succès.");
-      console.log("Like créé avec succès:", result.data);
-      setHasLiked(true);
+      console.error("Erreur création like:", result.error);
+      return false;
     }
-  };
+    toast.success("Like créé avec succès.");
+    return true;
+  }, [uid, eid]);
 
-  const handleUnlike = async () => {
+  const handleLikeDelete = useCallback(async () => {
     try {
-      await deleteData(`enterprise/${enterpriseId}/like`);
+      await deleteData(`enterprise/${eid}/like`);
       toast.success("Like supprimé avec succès.");
-      setHasLiked(false);
-      if (onUnlike) onUnlike(enterpriseId); // Appelle la fonction de suppression
+      if (typeof onUnlike === "function") onUnlike(eid); // MAJ liste favoris
+      return true;
     } catch (error) {
       toast.error("Une erreur est survenue lors de la suppression du like.");
-      console.error("Erreur lors de la suppression du like:", error);
+      console.error("Erreur suppression like:", error);
+      return false;
     }
-  };
+  }, [eid, onUnlike]);
 
+  const toggleLike = useCallback(
+    async (event) => {
+      // protège si l’event n’est pas passé
+      event?.stopPropagation?.();
+
+      if (!uid) {
+        toast.info("Veuillez vous connecter pour liker ou annuler un like.");
+        return;
+      }
+      if (!eid) return;
+
+      // Optimistic UI
+      const next = !hasLiked;
+      setHasLiked(next);
+
+      const ok = next ? await handleLikeCreate() : await handleLikeDelete();
+      if (!ok) {
+        // rollback si API échoue
+        setHasLiked(!next);
+      }
+    },
+    [uid, eid, hasLiked, handleLikeCreate, handleLikeDelete]
+  );
+
+  // Render prop
   return children({
     hasLiked,
-    isHovered,
     handleLike: toggleLike,
-    setIsHovered,
   });
 };
 

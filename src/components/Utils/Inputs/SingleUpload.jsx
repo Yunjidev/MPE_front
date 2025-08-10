@@ -7,69 +7,73 @@ export default function SingleUpload({
   placeholder,
   url = "",
   isEditMode,
-  className,
+  className = "",
 }) {
   const [logoUrl, setLogoUrl] = useState();
+
   const memoizedUrl = useMemo(() => {
-    if (typeof url === "string") {
-      return url;
-    } else if (url instanceof File) {
-      return URL.createObjectURL(url);
-    }
+    if (typeof url === "string") return url;
+    if (url instanceof File) return URL.createObjectURL(url);
     return "";
   }, [url]);
 
   useEffect(() => {
-    if (isEditMode && memoizedUrl !== logoUrl) {
-      setLogoUrl(memoizedUrl);
-    }
+    if (isEditMode && memoizedUrl !== logoUrl) setLogoUrl(memoizedUrl);
   }, [memoizedUrl, logoUrl, isEditMode]);
 
   const handleUpload = (event) => {
-    const file = event.target.files[0];
-    setLogoUrl(URL.createObjectURL(file));
-    if (onFileUpload) {
-      onFileUpload(file);
-    }
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const nextUrl = URL.createObjectURL(file);
+    setLogoUrl(nextUrl);
+    onFileUpload?.(file);
   };
 
   const handleDelete = () => {
     setLogoUrl(null);
-    if (onFileDelete) {
-      onFileDelete();
-    }
+    onFileDelete?.();
   };
 
   return (
-    <div className={`${className} flex justify-center items-center`}>
+    <div className={`${className} relative flex items-center justify-center py-2`}>
       <label
         htmlFor="single-upload"
-        className="border border-gray-500 p-10 rounded-full cursor-pointer text-gray-400 hover:bg-neutral-700 h-56 w-56 flex flex-col justify-center items-center"
+        className="
+          h-40 w-40 rounded-full overflow-hidden
+          grid place-items-center cursor-pointer
+          bg-neutral-900/70
+          ring-1 ring-neutral-800 hover:ring-neutral-700
+          transition
+        "
+        title={logoUrl ? "Changer l’avatar" : "Choisir un avatar"}
       >
         {logoUrl ? (
-          <img
-            src={logoUrl}
-            alt="Logo"
-            className="h-full w-full object-cover rounded-full"
-          />
+          <img src={logoUrl} alt="Avatar" className="h-full w-full object-cover" />
         ) : (
-          <>
-            <p className="mt-2 text-center text-sm">{placeholder}</p>
-          </>
+          <span className="text-neutral-500 text-sm text-center px-4 leading-relaxed">
+            {placeholder || "Sélectionnez un avatar"}
+          </span>
         )}
       </label>
-      <input
-        id="single-upload"
-        type="file"
-        onChange={handleUpload}
-        className="hidden"
-      />
+
+      <input id="single-upload" type="file" onChange={handleUpload} className="hidden" />
+
       {logoUrl && (
         <button
-          className="absolute top-32 left-64 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          type="button"
           onClick={handleDelete}
+          className="
+            absolute right-2 top-2
+            h-8 w-8 rounded-full
+            bg-neutral-800 text-neutral-200
+            ring-1 ring-neutral-700 hover:bg-neutral-700
+            flex items-center justify-center
+            transition
+          "
+          aria-label="Supprimer l’avatar"
+          title="Supprimer l’avatar"
         >
-          X
+          ×
         </button>
       )}
     </div>

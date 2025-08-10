@@ -6,18 +6,17 @@ const LikeButtonStyle = ({ hasLiked, handleLike }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = (e) => {
     setIsAnimating(true);
-    handleLike();
-    setTimeout(() => setIsAnimating(false), 300); // durée de l’anim
+    handleLike(e); // on passe l’event pour stopPropagation
+    setTimeout(() => setIsAnimating(false), 300);
   };
 
   return (
     <button
+      type="button"
       title={
-        hasLiked
-          ? "Cliquez pour annuler votre like."
-          : "Cliquez pour liker cette entreprise."
+        hasLiked ? "Cliquez pour annuler votre like." : "Cliquez pour liker cette entreprise."
       }
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
@@ -29,7 +28,7 @@ const LikeButtonStyle = ({ hasLiked, handleLike }) => {
         <span
           className="absolute w-8 h-8 rounded-full bg-orange-500/30 animate-ping"
           style={{ zIndex: 0 }}
-        ></span>
+        />
       )}
 
       <FaHeart
@@ -41,11 +40,7 @@ const LikeButtonStyle = ({ hasLiked, handleLike }) => {
             : "text-neutral-400"
         }`}
         style={{
-          transform: isAnimating
-            ? "scale(1.4)"
-            : isHovered
-            ? "scale(1.2)"
-            : "scale(1)",
+          transform: isAnimating ? "scale(1.4)" : isHovered ? "scale(1.2)" : "scale(1)",
         }}
       />
     </button>

@@ -2,12 +2,11 @@
 /* eslint-disable no-undef */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-key */
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getData, deleteData } from "../../services/data-fetch";
 import { addSubscription } from "./SubscriptionManagement/FunctionForSubscription";
-import { FaEdit, FaTrash, FaEye, FaPlusCircle } from "react-icons/fa";
+import { FaEdit, FaTrash, FaEye, FaPlusCircle, FaSearch, FaMapMarkerAlt, FaUserAlt, FaStar, FaBriefcase } from "react-icons/fa";
 import Modal from "./Modal";
 import { toast } from "react-toastify";
 
@@ -15,12 +14,15 @@ const ValidatedCompanies = () => {
   const [companies, setCompanies] = useState([]);
   const [filteredCompanies, setFilteredCompanies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // (réservé si tu veux un modal d’édition plus tard)
   const [selectedCompany, setSelectedCompany] = useState(null);
+
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
+
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [companyToDelete, setCompanyToDelete] = useState(null);
+
   const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
   const [subscriptionStatus, setSubscriptionStatus] = useState("");
   const [subscriptionType, setSubscriptionType] = useState("");
@@ -31,51 +33,41 @@ const ValidatedCompanies = () => {
     const fetchCompanies = async () => {
       try {
         const data = await getData("enterprises/validate");
-        setCompanies(data);
-        setFilteredCompanies(data);
+        setCompanies(data || []);
+        setFilteredCompanies(data || []);
       } catch (error) {
         console.error("Error fetching companies:", error);
       }
     };
-
     fetchCompanies();
   }, []);
 
+  // recherche
   useEffect(() => {
-    const lowercasedQuery = searchQuery.toLowerCase();
+    const q = searchQuery.toLowerCase().trim();
     const filtered = companies.filter((company) => {
-      const name = company.name ? company.name.toLowerCase() : "";
-      const city = company.city ? company.city.toLowerCase() : "";
-      const zipCode = company.zip_code ? company.zip_code.toLowerCase() : "";
-      const country = company.country && company.country.name
-        ? company.country.name.toLowerCase()
-        : "";
-      const activity = company.job && company.job.name
-        ? company.job.name.toLowerCase()
-        : "";
-      const siretNumber = company.siret_number
-        ? company.siret_number.toLowerCase()
-        : "";
-      const username = company.entrepreneur && company.entrepreneur.username
-        ? company.entrepreneur.username.toLowerCase()
-        : "";
-      const averageRating = company.averageRating
-        ? company.averageRating.toString().toLowerCase()
-        : "";
+      const name = company.name?.toLowerCase() || "";
+      const city = company.city?.toLowerCase() || "";
+      const zipCode = company.zip_code?.toLowerCase() || "";
+      const country = company.country?.name?.toLowerCase() || "";
+      const activity = company.job?.name?.toLowerCase() || "";
+      const siretNumber = company.siret_number?.toLowerCase() || "";
+      const username = company.entrepreneur?.username?.toLowerCase() || "";
+      const averageRating = company.averageRating?.toString().toLowerCase() || "";
 
       return (
-        name.includes(lowercasedQuery) ||
-        city.includes(lowercasedQuery) ||
-        zipCode.includes(lowercasedQuery) ||
-        country.includes(lowercasedQuery) ||
-        activity.includes(lowercasedQuery) ||
-        username.includes(lowercasedQuery) ||
-        averageRating.includes(lowercasedQuery) ||
-        siretNumber.includes(lowercasedQuery)
+        name.includes(q) ||
+        city.includes(q) ||
+        zipCode.includes(q) ||
+        country.includes(q) ||
+        activity.includes(q) ||
+        username.includes(q) ||
+        averageRating.includes(q) ||
+        siretNumber.includes(q)
       );
     });
     setFilteredCompanies(filtered);
-    setPageIndex(0); // Reset to page 0 on search
+    setPageIndex(0);
   }, [searchQuery, companies]);
 
   const confirmDeleteCompany = (company) => {
@@ -86,194 +78,221 @@ const ValidatedCompanies = () => {
   const deleteCompany = async () => {
     try {
       await deleteData(`enterprise/${companyToDelete.id}`);
-      setCompanies((prevCompanies) =>
-        prevCompanies.filter((company) => company.id !== companyToDelete.id)
-      );
-      setFilteredCompanies((prevCompanies) =>
-        prevCompanies.filter((company) => company.id !== companyToDelete.id)
-      );
+      setCompanies((prev) => prev.filter((c) => c.id !== companyToDelete.id));
+      setFilteredCompanies((prev) => prev.filter((c) => c.id !== companyToDelete.id));
       toast.success("Entreprise supprimée avec succès");
     } catch (error) {
       console.error("Error deleting company:", error);
+      toast.error("Erreur lors de la suppression de l'entreprise");
     } finally {
       setIsDeleteConfirmOpen(false);
       setCompanyToDelete(null);
     }
   };
 
-  const viewCompany = (companyId) => {
-    navigate(`/enterprise/${companyId}`);
-  };
-
-  const handleSave = (updatedCompany) => {
-    setCompanies((prevCompanies) =>
-      prevCompanies.map((company) =>
-        company.id === updatedCompany.id
-          ? { ...company, ...updatedCompany }
-          : company
-      )
-    );
-    setFilteredCompanies((prevCompanies) =>
-      prevCompanies.map((company) =>
-        company.id === updatedCompany.id
-          ? { ...company, ...updatedCompany }
-          : company
-      )
-    );
-    setIsModalOpen(false);
-  };
+  const viewCompany = (companyId) => navigate(`/enterprise/${companyId}`);
 
   const handleSubscriptionSubmit = async () => {
+    if (!selectedCompany) return;
     try {
       await addSubscription(selectedCompany.id, subscriptionStatus, subscriptionType);
-      toast.success("Subscription ajoutée avec succès");
+      toast.success("Abonnement ajouté avec succès");
       setIsSubscriptionModalOpen(false);
+      setSubscriptionStatus("");
+      setSubscriptionType("");
     } catch (error) {
-      console.error("Error ajout subscritpion:", error);
-      toast.error("Error ajout subscritpion");
+      console.error("Error ajout subscription:", error);
+      toast.error("Erreur lors de l’ajout de l’abonnement");
     }
   };
 
-  // Pagination
-  const pageCount = Math.ceil(filteredCompanies.length / pageSize);
+  // pagination
+  const pageCount = Math.max(1, Math.ceil(filteredCompanies.length / pageSize));
+  const currentSlice = filteredCompanies.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize);
 
-  const handlePageSizeChange = (event) => {
-    const newSize = Number(event.target.value);
-    setPageSize(newSize);
-    setPageIndex(0); // Reset to page 0
-  };
+  const primaryIconBtn =
+    "h-10 w-10 grid place-items-center rounded-xl border border-neutral-700 text-neutral-200 hover:bg-neutral-800 hover:text-white active:scale-[0.98] transition";
+  const dangerIconBtn =
+    "h-10 w-10 grid place-items-center rounded-xl border border-red-600/40 text-red-300 hover:bg-red-600/10 hover:text-red-200 active:scale-[0.98] transition";
 
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-neutral-800 border border-neutral-700">
-      <div className="p-4">
-        <input
-          type="text"
-          placeholder="Rechercher..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-4 py-2 mb-4 rounded-lg bg-neutral-800 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
-        />
+    <div className="rounded-2xl border border-neutral-800/70 bg-neutral-900/60 backdrop-blur-sm shadow-[0_10px_30px_-12px_rgba(0,0,0,0.6)]">
+      {/* Header + recherche */}
+      <div className="p-5 lg:p-6 border-b border-neutral-800/70">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h2 className="text-xl lg:text-2xl font-semibold text-white">Entreprises validées</h2>
+            <p className="text-sm text-neutral-400">Parcourez, recherchez et gérez les entreprises.</p>
+          </div>
+
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            {/* search */}
+            <div className="relative">
+              <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" />
+              <input
+                type="text"
+                placeholder="Rechercher par nom, ville, métier…"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full sm:w-80 pl-10 pr-3 h-11 rounded-xl bg-neutral-900/80 text-white placeholder:text-neutral-500 border border-neutral-800 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/30 transition"
+              />
+            </div>
+
+            {/* page size */}
+            <select
+              value={pageSize}
+              onChange={(e) => {
+                const newSize = Number(e.target.value);
+                setPageSize(newSize);
+                setPageIndex(0);
+              }}
+              className="h-11 rounded-xl bg-neutral-900/80 text-white border border-neutral-800 outline-none px-3 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/30 transition"
+            >
+              {[5, 10, 20, 50].map((n) => (
+                <option value={n} key={n}>
+                  {n} / page
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
       </div>
 
-      {/* Affichage en cartes horizontales tout le temps avec colonnes */}
-      <div className="flex flex-col">
-        {filteredCompanies
-          .slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)
-          .map((company) => (
-            <div
-              key={company.id}
-              className="mb-4 p-4 rounded-lg shadow-md bg-neutral-800 flex items-center"
-            >
-              <div className="flex-grow">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="font-bold text-white">
-                    Nom:
-                  </div>
-                  <div className="text-white">
-                    {company.name}
-                  </div>
-                  <div className="font-bold text-white">
-                    Ville:
-                  </div>
-                  <div className="text-white">
-                    {company.city}
-                  </div>
-                  <div className="font-bold text-white">
-                    CP:
-                  </div>
-                  <div className="text-white">
-                    {company.zip_code}
-                  </div>
-                  <div className="font-bold text-white">
-                    Région:
-                  </div>
-                  <div className="text-white">
-                    {company.country && company.country.name}
-                  </div>
-                  <div className="font-bold text-white">
-                    Métier:
-                  </div>
-                  <div className="text-white">
-                    {company.job && company.job.name}
-                  </div>
-                  <div className="font-bold text-white">
-                    Pseudo:
-                  </div>
-                  <div className="text-white">
-                    {company.entrepreneur && company.entrepreneur.username}
-                  </div>
-                  <div className="font-bold text-white">
-                    Note moyenne:
-                  </div>
-                  <div className="text-white">
-                    {company.averageRating}
+      {/* Liste / cartes */}
+      <div className="p-5 lg:p-6">
+        {currentSlice.length === 0 ? (
+          <div className="w-full h-40 grid place-items-center rounded-xl border border-neutral-800 bg-neutral-900/60 text-neutral-400">
+            Aucune entreprise trouvée.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-4">
+            {currentSlice.map((company) => {
+              const country = company.country?.name || "—";
+              const job = company.job?.name || "—";
+              const username = company.entrepreneur?.username || "—";
+              const rating = company.averageRating ?? "—";
+
+              return (
+                <div
+                  key={company.id}
+                  className="rounded-xl border border-neutral-800 bg-neutral-900/70 p-4 shadow-[0_6px_18px_-10px_rgba(0,0,0,0.7)]"
+                >
+                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                    {/* Infos principales */}
+                    <div className="flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="text-white font-semibold text-lg leading-tight">
+                          {company.name || "Nom inconnu"}
+                        </h3>
+                        <span className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-lg border border-emerald-500/30 text-emerald-300 bg-emerald-500/10">
+                          <FaStar className="opacity-80" />
+                          {rating}
+                        </span>
+                      </div>
+
+                      <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
+                        <div className="flex items-center gap-2 text-neutral-300">
+                          <FaMapMarkerAlt className="text-neutral-500" />
+                          <span className="truncate">
+                            {company.city || "—"} {company.zip_code ? `(${company.zip_code})` : ""} • {country}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-neutral-300">
+                          <FaBriefcase className="text-neutral-500" />
+                          <span className="truncate">{job}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-neutral-300">
+                          <FaUserAlt className="text-neutral-500" />
+                          <span className="truncate">Entrepreneur : {username}</span>
+                        </div>
+                        {company.siret_number && (
+                          <div className="text-neutral-400">
+                            <span className="text-neutral-500">SIRET :</span> {company.siret_number}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="md:ml-4 flex md:flex-col gap-2 md:items-end">
+                      <button
+                        onClick={() => viewCompany(company.id)}
+                        className={primaryIconBtn}
+                        title="Voir la fiche"
+                      >
+                        <FaEye />
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setSelectedCompany(company);
+                          setIsSubscriptionModalOpen(true);
+                        }}
+                        className={primaryIconBtn}
+                        title="Ajouter un abonnement"
+                      >
+                        <FaPlusCircle />
+                      </button>
+
+                      <button
+                        onClick={() => confirmDeleteCompany(company)}
+                        className={dangerIconBtn}
+                        title="Supprimer l'entreprise"
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="ml-4 flex flex-col justify-center items-center mb-6">
-                <button
-                  onClick={() => viewCompany(company.id)}
-                  className="text-[#67FFCC] hover:scale-110 transition-transform text-2xl mb-6"
-                >
-                  <FaEye />
-                </button>
-                <button
-                  onClick={() => confirmDeleteCompany(company)}
-                  className="text-red-500 hover:scale-110 transition-transform text-2xl"
-                >
-                  <FaTrash />
-                </button>
-                <button
-                  onClick={() => {
-                    setSelectedCompany(company);
-                    setIsSubscriptionModalOpen(true);
-                  }}
-                  className="text-blue-500 hover:scale-110 transition-transform text-2xl mt-5"
-                >
-                  <FaPlusCircle/>
-                </button>
-              </div>
-            </div>
-          ))}
+              );
+            })}
+          </div>
+        )}
+
+        {/* Pagination */}
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button
+            onClick={() => setPageIndex((p) => Math.max(0, p - 1))}
+            disabled={pageIndex === 0}
+            className={`h-11 px-4 rounded-xl border ${pageIndex === 0 ? "border-neutral-800 text-neutral-600" : "border-neutral-700 text-neutral-200 hover:bg-neutral-800 hover:text-white"} transition`}
+          >
+            &laquo; Précédent
+          </button>
+
+          <div className="text-neutral-300">
+            Page <span className="text-white font-semibold">{pageIndex + 1}</span> sur{" "}
+            <span className="text-white font-semibold">{pageCount}</span>
+          </div>
+
+          <button
+            onClick={() => setPageIndex((p) => Math.min(pageCount - 1, p + 1))}
+            disabled={pageIndex >= pageCount - 1}
+            className={`h-11 px-4 rounded-xl border ${pageIndex >= pageCount - 1 ? "border-neutral-800 text-neutral-600" : "border-neutral-700 text-neutral-200 hover:bg-neutral-800 hover:text-white"} transition`}
+          >
+            Suivant &raquo;
+          </button>
+        </div>
       </div>
 
-      {/* Pagination */}
-      <div className="flex justify-center items-center mt-4 mb-4">
-        <button
-          onClick={() => setPageIndex(0)}
-          disabled={pageIndex === 0}
-          className="px-4 py-2 mx-1 bg-neutral-700 text-white rounded-lg mr-4 transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
-        >
-          &laquo; Précédent
-        </button>
-        <span className="text-white font-bold">
-          Page {pageIndex + 1} sur {pageCount}
-        </span>
-        <button
-          onClick={() => setPageIndex(pageIndex + 1)}
-          disabled={pageIndex >= pageCount - 1}
-          className="px-4 py-2 mx-1 bg-neutral-700 text-white rounded-lg ml-4 transform hover:scale-105 border hover:border-[#67FFCC] transition duration-300 ease-in-out"
-        >
-          Suivant &raquo;
-        </button>
-      </div>
-
-      {/* Modal de confirmation de suppression */}
+      {/* Modal confirmation suppression */}
       {isDeleteConfirmOpen && (
         <Modal isOpen={isDeleteConfirmOpen} onClose={() => setIsDeleteConfirmOpen(false)}>
-          <div className="text-white bg-neutral-800 p-4 border border-white rounded-lg">
-            <h2 className="text-lg font-semibold mb-4 text-center">Confirmation</h2>
-            <p className="text-center">Êtes-vous sûr de vouloir supprimer cette entreprise ?</p>
-            <div className="flex justify-center space-x-2 mt-4">
+          <div className="text-white bg-neutral-900/90 p-6 border border-neutral-800 rounded-2xl shadow-xl">
+            <h2 className="text-lg font-semibold mb-2 text-center">Confirmer la suppression</h2>
+            <p className="text-neutral-300 text-center">
+              Êtes-vous sûr de vouloir supprimer{" "}
+              <span className="text-white font-medium">{companyToDelete?.name}</span> ?
+            </p>
+            <div className="flex justify-center gap-3 mt-5">
               <button
                 onClick={deleteCompany}
-                className="w-32 px-4 py-2 bg-red-500 text-black font-semibold text-center rounded-lg hover:bg-red-600 transition duration-300"
+                className="h-11 w-36 rounded-xl border border-red-600/50 text-red-300 hover:bg-red-600/10 hover:text-red-200 transition"
               >
                 Supprimer
               </button>
               <button
                 onClick={() => setIsDeleteConfirmOpen(false)}
-                className="w-32 px-4 py-2 bg-gray-500 text-black font-semibold text-center rounded-lg hover:bg-gray-600 transition duration-300"
+                className="h-11 w-36 rounded-xl border border-neutral-700 text-neutral-200 hover:bg-neutral-800 hover:text-white transition"
               >
                 Annuler
               </button>
@@ -282,33 +301,37 @@ const ValidatedCompanies = () => {
         </Modal>
       )}
 
-      {/* Modal d'abonnement */}
+      {/* Modal abonnement */}
       {isSubscriptionModalOpen && (
         <Modal isOpen={isSubscriptionModalOpen} onClose={() => setIsSubscriptionModalOpen(false)}>
-          <div className="text-white bg-neutral-800 p-4 border border-white rounded-lg">
+          <div className="text-white bg-neutral-900/90 p-6 rounded-2xl shadow-xl w-[min(90vw,480px)]">
             <h2 className="text-lg font-semibold mb-4 text-center">Ajouter un abonnement</h2>
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              handleSubscriptionSubmit();
-            }}>
-              <div className="mb-4">
-                <label className="block text-white mb-2">Statut de l'abonnement</label>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubscriptionSubmit();
+              }}
+              className="space-y-4"
+            >
+              <div>
+                <label className="block text-sm text-neutral-300 mb-2">Statut</label>
                 <select
                   value={subscriptionStatus}
                   onChange={(e) => setSubscriptionStatus(e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg bg-neutral-800 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
+                  className="w-full h-11 rounded-xl bg-neutral-900/80 text-white border border-neutral-800 px-3 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/30 transition"
                 >
                   <option value="">Sélectionner un statut</option>
                   <option value="active">Actif</option>
                   <option value="inactive">Inactif</option>
                 </select>
               </div>
-              <div className="mb-4">
-                <label className="block text-white mb-2">Type d'abonnement</label>
+
+              <div>
+                <label className="block text-sm text-neutral-300 mb-2">Type</label>
                 <select
                   value={subscriptionType}
                   onChange={(e) => setSubscriptionType(e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg bg-neutral-800 text-white focus:outline-none focus:ring-[#67FFCC] focus:border-[#67FFCC]"
+                  className="w-full h-11 rounded-xl bg-neutral-900/80 text-white border border-neutral-800 px-3 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/30 transition"
                 >
                   <option value="">Sélectionner un type</option>
                   <option value="yearly">Annuel</option>
@@ -316,17 +339,18 @@ const ValidatedCompanies = () => {
                   <option value="forever">À vie</option>
                 </select>
               </div>
-              <div className="flex justify-center space-x-2 mt-4">
+
+              <div className="flex justify-center gap-3 pt-2">
                 <button
                   type="submit"
-                  className="w-32 px-4 py-2 bg-green-500 text-black font-semibold text-center rounded-lg hover:bg-green-600 transition duration-300"
+                  className="h-11 w-36 rounded-xl border border-neutral-700 text-neutral-200 hover:bg-neutral-800 hover:text-white transition"
                 >
                   Ajouter
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsSubscriptionModalOpen(false)}
-                  className="w-32 px-4 py-2 bg-gray-500 text-black font-semibold text-center rounded-lg hover:bg-gray-600 transition duration-300"
+                  className="h-11 w-36 rounded-xl border border-neutral-800 text-neutral-400 hover:bg-neutral-900 transition"
                 >
                   Annuler
                 </button>

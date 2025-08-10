@@ -5,163 +5,246 @@ import { userAtom } from "../../store/user";
 import { toast } from "react-toastify";
 import Button from "../Button/button";
 import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
-import Input from "../Utils/Inputs/Input";
+import Input from "../Utils/Inputs/Input"; // doit exposer Input.Text et Input.SingleUpload
 import Inscription from "./Form/Inscription";
 import Edit from "./Form/Edit";
 
-const className = "w-10/12 mx-auto"
+const innerWidthClass = "w-10/12 mx-auto";
 
 export default function UserForm({ onSubmit, mode }) {
   const [user] = useAtom(userAtom);
+
+  const isConnexion = mode === "Connexion";
+  const isInscription = mode === "Inscription";
+  const isEdit = mode === "Edition"; // IMPORTANT: on aligne sur "Edition"
+
   const [formData, setFormData] = useState({});
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const isConnexion = mode === "Connexion";
-  const isInscription = mode === "Inscription";
-  const isEdit = mode === "Edition";
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Hydrate le form en mode édition
   useEffect(() => {
-    if (isEdit) {
+    if (isEdit && user) {
       setFormData({
-        username: user.username,
-        email: user.email,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        avatar: user.avatar,
+        username: user?.username ?? "",
+        email: user?.email ?? "",
+        firstname: user?.firstname ?? "",
+        lastname: user?.lastname ?? "",
+        avatar: user?.avatar ?? null,
       });
     }
   }, [isEdit, user]);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [id]: value }));
+    setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
   const handleAvatarChange = (file) => {
-    if (file) {
-      setFormData((prevFormData) => ({ ...prevFormData, avatar: file }));
-    }
-  };
-
-  const handleAvatarDelete = () => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      avatar: null,
-      removeAvatar: true,
+    setFormData((prev) => ({
+      ...prev,
+      avatar: file || null,
+      removeAvatar: !file || undefined,
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (isEdit) {
-      const formDataToSend = new FormData();
-      Object.keys(formData).forEach((key) => {
-        if (
-          formData[key] !== null &&
-          formData[key] !== undefined &&
-          formData[key] !== "" &&
-          formData[key] !== user[key]
-        ) {
-          formDataToSend.append(key, formData[key]);
-        }
-      });
-      onSubmit(formDataToSend);
-      return;
-    }
+  const handleAvatarDelete = () => {
+    setFormData((prev) => ({ ...prev, avatar: null, removeAvatar: true }));
+  };
 
-    if (isInscription && confirmPassword !== formData.password) {
+  const handleSubmit = async (e) => {
+    e?.preventDefault?.();
+    if (isSubmitting) return;
+
+    // Validation simple inscription
+    if (isInscription && confirmPassword !== (formData.password || "")) {
       toast.error("Les mots de passe ne correspondent pas !");
       return;
     }
-    onSubmit(formData);
+
+    try {
+      setIsSubmitting(true);
+
+      if (isEdit) {
+        // Envoi sélectif des champs modifiés
+        const formDataToSend = new FormData();
+        Object.keys(formData).forEach((key) => {
+          const val = formData[key];
+          const initial = user?.[key];
+
+          const shouldSend =
+            val !== null &&
+            val !== undefined &&
+            val !== "" &&
+            (val !== initial || (key === "removeAvatar" && val === true));
+
+          if (shouldSend) {
+            formDataToSend.append(key, val);
+          }
+        });
+
+        await onSubmit(formDataToSend);
+      } else {
+        await onSubmit(formData);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div className="relative border-form-1 group">
+    <div className="relative group">
+      {/* Halo soft uniquement sur connexion/inscription */}
       {!isEdit && (
-        <div className="absolute -top-1 -left-1 -right-1 -bottom-1 rounded-xl bg-gradient-to-b from-violet-400 via-green-200 to-orange-400 shadow-lg transition-transform duration-500 group-hover:scale-101"></div>
+        <div className="pointer-events-none absolute -inset-[2px] rounded-2xl bg-[linear-gradient(120deg,rgba(139,92,246,.25),rgba(16,185,129,.25),rgba(251,146,60,.25))] opacity-70 blur-[2px]" />
       )}
-      <div
 
-        className={` ${isEdit ? "p-5 h-full bg-neutral-800" : "bg-neutral-900 p-16"
-          } rounded-xl shadow-2xl w-90 relative z-10`}
+      <div
+        className={`
+          relative z-10 rounded-2xl
+          border border-neutral-800/80
+          bg-neutral-900/80
+          backdrop-blur-sm
+          shadow-[0_10px_30px_-12px_rgba(0,0,0,0.6)]
+        `}
       >
-        <h2 className="text-center text-3xl font-bold mb-10 text-white">
-          {mode}
-        </h2>
-        <form onSubmit={handleSubmit} className="mb-5 space-y-5">
-          {isEdit && (
-            <Input.SingleUpload
-              placeholder="Sélectionnez un avatar"
-              onFileUpload={handleAvatarChange}
-              onFileDelete={handleAvatarDelete}
-              url={formData.avatar}
-              isEditMode={true}
-            />
-          )}
-          {isConnexion ? (
-            <div>
-              <Input.Text
-                id="identifier"
-                value={formData.identifier}
-                onChange={handleInputChange}
-                placeholder="Nom d'utilisateur/Email"
-                icon={<FaUser />}
+        <div className={`${isEdit ? "p-6" : "p-8 lg:p-12"} ${innerWidthClass} max-w-3xl`}>
+          {/* Header */}
+          <div className="mb-8 text-center">
+            <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-white">{mode}</h2>
+            {!isEdit && (
+              <p className="mt-2 text-sm text-neutral-400">
+                Entrez vos informations pour continuer.
+              </p>
+            )}
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Upload avatar seulement en édition */}
+            {isEdit && (
+              <Input.SingleUpload
+                placeholder="Sélectionnez un avatar"
+                onFileUpload={handleAvatarChange}
+                onFileDelete={handleAvatarDelete}
+                url={formData.avatar}
+                isEditMode={true}
               />
-            </div>
-          ) : (
-            <Inscription fomData={formData} onChange={handleInputChange} className={isEdit ? className : ""} />
-          )}
-          {isEdit && <Edit fomData={formData} onChange={handleInputChange} className={className} />}
-          {(isConnexion || isInscription) && (
-            <Input.Text
-              id="password"
-              type={showPassword ? "text" : "password"}
-              value={formData.password}
-              onChange={handleInputChange}
-              placeholder="Mot de passe"
-              icon={
-                <span onClick={() => setShowPassword(!showPassword)}>
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
-                </span>
-              }
-            />
-          )}
-          {isInscription && (
-            <Input.Text
-              id="confirmPassword"
-              type={showConfirmPassword ? "text" : "password"}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Confirmation mot de passe"
-              icon={
-                <span
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            )}
+
+            {/* Connexion vs Inscription/Edition */}
+            {isConnexion ? (
+              <div className="space-y-4">
+                <Input.Text
+                  id="identifier"
+                  value={formData.identifier || ""}
+                  onChange={handleInputChange}
+                  placeholder="Nom d'utilisateur / Email"
+                  icon={<FaUser className="opacity-70" />}
+                />
+              </div>
+            ) : (
+              // ⚠️ Si tes sous-formulaires attendent `formData` et non `fomData`,
+              // renomme la prop dans Inscription/Edit.
+              <Inscription
+                fomData={formData}
+                onChange={handleInputChange}
+                className={isEdit ? innerWidthClass : ""}
+              />
+            )}
+
+            {/* Compléments spécifiques Edition */}
+            {isEdit && (
+              <Edit
+                fomData={formData}
+                onChange={handleInputChange}
+                className={innerWidthClass}
+              />
+            )}
+
+            {/* Mot de passe (Connexion & Inscription) */}
+            {(isConnexion || isInscription) && (
+              <Input.Text
+                id="password"
+                type={showPassword ? "text" : "password"}
+                value={formData.password || ""}
+                onChange={handleInputChange}
+                placeholder="Mot de passe"
+                icon={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((s) => !s)}
+                    className="p-1 -mr-1 rounded hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                    aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                }
+              />
+            )}
+
+            {/* Confirmation (Inscription) */}
+            {isInscription && (
+              <Input.Text
+                id="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirmation du mot de passe"
+                icon={
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword((s) => !s)}
+                    className="p-1 -mr-1 rounded hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                    aria-label={showConfirmPassword ? "Masquer la confirmation" : "Afficher la confirmation"}
+                  >
+                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                }
+              />
+            )}
+
+            {/* Actions */}
+            <div className="pt-2">
+              {isEdit ? (
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`
+                    w-full md:w-2/3 mx-auto block
+                    rounded-2xl
+                    border ${isSubmitting ? "border-neutral-700" : "border-neutral-700 hover:border-neutral-600"}
+                    bg-neutral-800 text-neutral-200 hover:bg-neutral-700 hover:text-white
+                    active:scale-[0.98]
+                    font-medium py-3 px-6
+                    transition-all duration-200
+                    ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}
+                  `}
                 >
-                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                </span>
-              }
-            />
-          )}
-        </form>
-        {isEdit ? (
-          <button type="submit" onClick={handleSubmit} className="flex bg-gradient-to-r from-white to-[#67FFCC] text-transparent bg-clip-text items-center justify-center w-2/3 mx-auto border border-neutral-300 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 hover:border-green-200 transition duration-300 ease-in-out">
-            Sauvegarder
-          </button>
-        ) : (
-          <Button type="submit" onClick={handleSubmit}>
-            {mode}
-          </Button>
-        )}
-        {mode === "Connexion" && (
-          <a
-            className="text-blue-500 hover:text-blue-800 text-sm"
-            href="http://localhost:5173/forgot-password"
-          >
-            Mot de passe oublié ?
-          </a>
-        )}
+                  {isSubmitting ? "Sauvegarde…" : "Sauvegarder"}
+                </button>
+              ) : (
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Envoi…" : mode}
+                </Button>
+              )}
+            </div>
+
+            {/* Lien mdp oublié */}
+            {mode === "Connexion" && (
+              <div className="text-right">
+                <a
+                  className="text-blue-400 hover:text-blue-300 text-sm underline underline-offset-4"
+                  href="http://localhost:5173/forgot-password"
+                >
+                  Mot de passe oublié ?
+                </a>
+              </div>
+            )}
+          </form>
+        </div>
       </div>
     </div>
   );
@@ -169,5 +252,5 @@ export default function UserForm({ onSubmit, mode }) {
 
 UserForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  mode: PropTypes.oneOf(["Connexion", "Inscription", "Edit"]).isRequired,
+  mode: PropTypes.oneOf(["Connexion", "Inscription", "Edition"]).isRequired,
 };

@@ -22,56 +22,36 @@ export default function StatsEnterprises() {
         console.error("Error fetching enterprise:", error);
       }
     };
-
     fetchEnterprise();
   }, [id]);
 
-  // Ouvre le modal de modification
-  const handleEditClick = () => {
-    setIsEditFormOpen(true);
-  };
+  const handleEditClick = () => setIsEditFormOpen(true);
+  const handleCloseEditForm = () => setIsEditFormOpen(false);
 
-  // Ferme le modal de modification
-  const handleCloseEditForm = () => {
-    setIsEditFormOpen(false);
-  };
-
-  // Sauvegarde les changements et ferme le modal
   const handleSave = (updatedCompany) => {
     setEnterprise(updatedCompany);
     handleCloseEditForm();
   };
 
-  // Redirige vers la page de l'entreprise
   const handleViewClick = () => {
-    if (enterprise) {
-      navigate(`/enterprise/${enterprise.id}`);
-    }
+    if (enterprise) navigate(`/enterprise/${enterprise.id}`);
   };
 
-  // Ouvre le modal de la liste des offres
-  const handleOffersListClick = () => {
-    setIsOffersListOpen(true);
-  };
-
-  // Ferme le modal de la liste des offres
-  const handleCloseOffersList = () => {
-    setIsOffersListOpen(false);
-  };
+  const handleOffersListClick = () => setIsOffersListOpen(true);
+  const handleCloseOffersList = () => setIsOffersListOpen(false);
 
   return (
-    <div className="bg-neutral-900 text-white p-4 sm:p-6 rounded-lg max-w-full sm:max-w-8xl mt-8 sm:mt-6  sm:mb-8">
+    <div className="bg-neutral-900 text-white p-4 sm:p-6 rounded-lg mt-8 sm:mt-6 sm:mb-8 border border-neutral-800">
       <div className="flex items-center justify-between mb-4">
-        <div className="flex flex-row items-center">
-          <h2 className="text-xl sm:text-2xl mr-20 font-semibold text-[#67FFCC]">Tableau de Bord</h2>
-          <h3 className="text-lg sm:text-xl font-medium text-[#67FFCC]">
+        <div className="flex flex-row items-center gap-6">
+          <h2 className="text-xl sm:text-2xl font-semibold text-emerald-300">Tableau de Bord</h2>
+          <h3 className="text-lg sm:text-xl font-medium text-neutral-200">
             {enterprise ? enterprise.name : "Chargement..."}
           </h3>
         </div>
       </div>
-      <hr className="mb-4" />
-      
-      {/* Résumé des réservations avec actions */}
+
+      {/* Actions + réservations du jour */}
       <ReservationSummary
         enterprise={enterprise}
         onEdit={handleEditClick}
@@ -79,10 +59,12 @@ export default function StatsEnterprises() {
         onOffersList={handleOffersListClick}
       />
 
-      {/* Résumé des statistiques */}
-      <StatsSummary />
+      {/* Statistiques agrégées depuis le back */}
+      <div className="mt-6">
+        <StatsSummary enterprise={enterprise} />
+      </div>
 
-      {/* Modal de modification de l'entreprise */}
+      {/* Modals */}
       {isEditFormOpen && (
         <EditEnterpriseModal
           enterpriseId={id}
@@ -90,11 +72,7 @@ export default function StatsEnterprises() {
           onClose={handleCloseEditForm}
         />
       )}
-
-      {/* Modal de la liste des offres */}
-      {isOffersListOpen && (
-        <OffersListModal onClose={handleCloseOffersList} />
-      )}
+      {isOffersListOpen && <OffersListModal onClose={handleCloseOffersList} />}
     </div>
   );
 }

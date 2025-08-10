@@ -1,69 +1,113 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
-import { FaEdit, FaEye, FaRegListAlt } from "react-icons/fa";
+import { FaEdit, FaEye, FaRegListAlt, FaClock } from "react-icons/fa";
+
+function getTodayReservations(enterprise) {
+  if (!enterprise?.offers?.length) return [];
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+
+  const list = [];
+  for (const offer of enterprise.offers) {
+    for (const r of offer.reservations || []) {
+      const d = new Date(r.date);
+      if (d >= today && d < tomorrow) {
+        list.push({
+          ...r,
+          offerName: offer.name,
+        });
+      }
+    }
+  }
+  // tri par heure de début
+  return list.sort(
+    (a, b) =>
+      new Date(`${a.date}T${a.start_time}`) - new Date(`${b.date}T${b.start_time}`)
+  );
+}
 
 export default function ReservationSummary({ enterprise, onEdit, onView, onOffersList }) {
-  const getTodayReservations = () => {
-    if (!enterprise || !enterprise.offers) return [];
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
+  const todayReservations = getTodayReservations(enterprise);
+  const currentDate = new Date().toLocaleDateString();
 
-    const todayReservations = [];
-
-    enterprise.offers.forEach(offer => {
-      offer.reservations.forEach(reservation => {
-        const reservationDate = new Date(reservation.date);
-        if (reservationDate >= today && reservationDate < tomorrow) {
-          todayReservations.push({ ...reservation, offerName: offer.name });
-        }
-      });
-    });
-
-    todayReservations.sort((a, b) => new Date(`${a.date}T${a.start_time}`) - new Date(`${b.date}T${b.start_time}`));
-
-    return todayReservations;
-  };
-
-  const nowDate = new Date();
-  const currentDate = nowDate.toLocaleDateString();
-  const todayReservations = getTodayReservations();
+  const ActionButton = ({ icon, label, onClick }) => (
+    <button
+      onClick={onClick}
+      className="group flex items-center gap-3 h-14 px-4 rounded-xl bg-neutral-900 text-neutral-200 ring-1 ring-neutral-800 hover:bg-neutral-800 hover:ring-neutral-700 transition active:scale-[0.98]"
+      type="button"
+    >
+      <span className="text-emerald-300">{icon}</span>
+      <span className="font-medium">{label}</span>
+    </button>
+  );
 
   return (
-    <div className="bg-neutral-800 p-4 rounded-lg mb-4 text-neutral-300">
-      <p className="text-xl">Gestion de mon entreprise</p>
-      <hr className="w-full mb-4" />
-      <div className="flex flex-row justify-between">
-        <div className="flex items-center mb-4">
-          <button onClick={onEdit} className="flex h-24 mx-1 items-center w-44 flex-row bg-neutral-700 p-2 rounded-lg">
-            <FaEdit className="text-[#67FFCC] cursor-pointer text-xl ml-2" title="Modifier mon entreprise" />
-            Modification entreprise
-          </button>
-          <button onClick={onView} className="flex h-24 mx-1 items-center w-44 flex-row bg-neutral-700 p-2 rounded-lg">
-            <FaEye className="text-[#67FFCC] cursor-pointer text-2xl ml-2" title="Voir ma page entreprise" />Voir ma page entreprise
-          </button>
-          <button onClick={onOffersList} className="flex h-24 mx-1 items-center w-44 flex-row bg-neutral-700 p-2 rounded-lg">
-            <FaRegListAlt className="text-[#67FFCC] cursor-pointer text-2xl ml-2" title="Services de l'entreprise" />Services de l'entreprise
-          </button>
+    <div className="relative overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/80 backdrop-blur-sm shadow-[0_10px_30px_-12px_rgba(0,0,0,0.6)]">
+      {/* Header */}
+      <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-800">
+        <div className="flex items-center gap-2">
+          <FaClock className="text-neutral-400" />
+          <p className="text-white font-semibold">Gestion de mon entreprise</p>
+        </div>
+        <span className="text-xs text-neutral-400">
+          Réservations du jour — <span className="text-neutral-200">{currentDate}</span>
+        </span>
+      </div>
+
+      {/* Actions + Réservations */}
+      <div className="p-5 flex flex-col lg:flex-row gap-5">
+        {/* Actions */}
+        <div className="flex flex-wrap gap-3">
+          <ActionButton
+            icon={<FaEdit className="text-lg" />}
+            label="Modifier l'entreprise"
+            onClick={onEdit}
+          />
+          <ActionButton
+            icon={<FaEye className="text-lg" />}
+            label="Voir la page entreprise"
+            onClick={onView}
+          />
+          <ActionButton
+            icon={<FaRegListAlt className="text-lg" />}
+            label="Liste des services"
+            onClick={onOffersList}
+          />
         </div>
 
-        <div className="bg-neutral-700 rounded-lg p-4 w-1/2 h-28 overflow-y-auto">
-          <p className="text-lg font-semibold mb-2">Réservations du jour : {currentDate}</p>
-          <hr className="w-full mb-1" />
+        {/* Réservations du jour */}
+        <div className="flex-1 rounded-xl bg-neutral-900 ring-1 ring-neutral-800 p-4 max-h-48 overflow-y-auto">
           {todayReservations.length > 0 ? (
-            <div className="divide-y">
-              {todayReservations.map((reservation, index) => (
-                <div key={index} className=" flex flex-row justify-between">
-                  <p> {reservation.offerName}</p>
-                  <p><strong>Début :</strong> {reservation.start_time}</p>
-                  <p><strong>Fin :</strong> {reservation.end_time}</p>
-                  <p><strong>Status :</strong> {reservation.status}</p>
+            <div className="divide-y divide-neutral-800">
+              {todayReservations.map((r, idx) => (
+                <div key={`${r.offerName}-${r.start_time}-${idx}`} className="py-2 flex flex-wrap items-center gap-x-6 gap-y-1 text-sm">
+                  <p className="text-white font-medium min-w-[160px]">{r.offerName}</p>
+                  <p className="text-neutral-300">
+                    <strong className="text-neutral-400">Début :</strong> {r.start_time}
+                  </p>
+                  <p className="text-neutral-300">
+                    <strong className="text-neutral-400">Fin :</strong> {r.end_time}
+                  </p>
+                  <span
+                    className={`text-[11px] px-2 py-0.5 rounded-md ring-1 ${
+                      r.status === "approved"
+                        ? "bg-emerald-500/10 text-emerald-300 ring-emerald-500/30"
+                        : r.status === "pending"
+                        ? "bg-amber-500/10 text-amber-300 ring-amber-500/30"
+                        : "bg-neutral-800 text-neutral-300 ring-neutral-700"
+                    }`}
+                  >
+                    {r.status || "inconnu"}
+                  </span>
                 </div>
               ))}
             </div>
           ) : (
-            <p>Aucune réservation aujourd'hui</p>
+            <div className="grid place-items-center h-20 text-neutral-400 text-sm">
+              Aucune réservation aujourd'hui
+            </div>
           )}
         </div>
       </div>

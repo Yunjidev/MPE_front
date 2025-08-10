@@ -1,112 +1,164 @@
 /* eslint-disable no-unused-vars */
-import { useState, useContext } from "react";
-import { UserContext } from "../../context/UserContext";
+import { useState } from "react";
 import { putData } from "../../services/data-fetch";
-import { FaLock, FaKey } from "react-icons/fa";
+import { FaLock, FaKey, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 
 export default function UpdatePassword() {
-  const { user } = useContext(UserContext);
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
+    watch,
   } = useForm();
 
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [showOld, setShowOld] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showNew2, setShowNew2] = useState(false);
 
   const onSubmitHandler = async (data) => {
-    const { password, confirmPassword } = data;
+    setError(null);
+    setSuccess(null);
 
-    // Vérifier que les deux mots de passe sont identiques
-    if (password !== confirmPassword) {
+    if (data.password !== data.passwordConfirmation) {
       setError("Les mots de passe ne correspondent pas.");
       return;
     }
 
     try {
-      const response = await putData("user/update", {
-        password: password.trim(),
-      });
+      setSubmitting(true);
 
-      if (response.error) {
-        setError(
-          response.error.message || "Erreur lors du changement de mot de passe."
-        );
+      // IMPORTANT: multipart/form-data
+      const fd = new FormData();
+      fd.append("current_password", data.current_password.trim());
+      fd.append("password", data.password.trim());
+      fd.append("passwordConfirmation", data.passwordConfirmation.trim());
+
+      // ⚠️ ne force surtout pas le Content-Type ici,
+      // laisse fetch/XHR le définir avec le boundary
+      const response = await putData("user/update", fd);
+
+      if (response?.error) {
+        setError(response.error.message || "Erreur lors du changement de mot de passe.");
       } else {
         setSuccess("Mot de passe mis à jour avec succès !");
-        setError(null);
+        reset();
       }
-    } catch (error) {
+    } catch (err) {
+      console.error("Error changing password:", err);
       setError("Erreur lors du changement de mot de passe.");
-      console.error("Error changing password:", error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
+  const baseInput =
+    "w-full pl-10 pr-12 h-12 rounded-xl bg-neutral-900/80 text-white placeholder:text-neutral-500 " +
+    "border border-neutral-800 outline-none ring-0 " +
+    "focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/30 transition";
+
+  const eyeBtn =
+    "absolute top-1/2 -translate-y-1/2 right-3 h-8 w-8 flex items-center justify-center rounded-lg text-neutral-400 " +
+    "hover:text-white hover:bg-neutral-700/60 transition";
+
+  const field = ({ id, icon, type, show, setShow, placeholder, reg }) => (
+    <div className="relative">
+      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500">{icon}</span>
+      <input
+        id={id}
+        type={show ? "text" : type}
+        placeholder={placeholder}
+        className={baseInput}
+        {...reg}
+      />
+      <button
+        type="button"
+        onClick={() => setShow((s) => !s)}
+        className={eyeBtn}
+        aria-label={show ? "Masquer" : "Afficher"}
+      >
+        {show ? <FaEyeSlash /> : <FaEye />}
+      </button>
+    </div>
+  );
+
   return (
-    <div className="mt-12 mb-6 flex items-center justify-center bg-neutral-900 rounded-xl border border-white">
-      <div className="relative border-form-1 group max-w-8xl w-full ">
-        <div className="absolute -top-1 -left-1 -right-1 -bottom-1 "></div>
-        <div className="bg-neutral-900 p-10 rounded-xl relative z-10 transform transition duration-500 ease-in-out">
-          <h2 className="text-white text-center text-2xl mb-5">
-            Changer le mot de passe
-          </h2>
-          <hr className="w-1/2 my-4 border-t-2 border-gray-400 mx-auto" />
-          <form
-            onSubmit={handleSubmit(onSubmitHandler)}
-            className="flex flex-col lg:space-y-5 lg:grid lg:grid-cols-1 gap-5"
-          >
-            <div className="relative flex items-center">
-              <FaLock className="absolute left-3 text-gray-400" />
-              <input
-                type="password"
-                {...register("password", {
-                  required: "Le mot de passe est requis",
-                })}
-                placeholder="Nouveau mot de passe"
-                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
-              />
-              {errors.password && (
-                <span className="text-red-500 text-sm absolute right-3">
-                  {errors.password.message}
-                </span>
-              )}
-            </div>
+    <div className="mt-12 mb-6 flex items-center justify-center">
+      <div className="w-full max-w-xl rounded-2xl border border-neutral-800/80 bg-neutral-900/80 backdrop-blur-sm shadow-[0_10px_30px_-12px_rgba(0,0,0,0.6)]">
+        <div className="px-6 py-6">
+          <h2 className="text-white text-center text-2xl font-semibold">Changer le mot de passe</h2>
+          <p className="text-center text-sm text-neutral-400 mt-1">
+            Entrez l’ancien mot de passe, puis votre nouveau mot de passe (deux fois).
+          </p>
 
-            <div className="relative flex items-center">
-              <FaKey className="absolute left-3 text-gray-400" />
-              <input
-                type="password"
-                {...register("confirmPassword", {
-                  required: "La confirmation du mot de passe est requise",
-                })}
-                placeholder="Confirmer le nouveau mot de passe"
-                className="w-full pl-10 px-3 py-2 rounded-xl bg-neutral-800 text-white focus:outline-none focus:ring-green-400 focus:border-green-400"
-              />
-              {errors.confirmPassword && (
-                <span className="text-red-500 text-sm absolute right-3">
-                  {errors.confirmPassword.message}
-                </span>
-              )}
-            </div>
+          <hr className="my-6 border-neutral-800" />
 
-            <div className="flex justify-center">
+          <form onSubmit={handleSubmit(onSubmitHandler)} className="flex flex-col gap-4">
+            {/* Ancien mot de passe */}
+            {field({
+              id: "current_password",
+              icon: <FaLock />,
+              type: "password",
+              show: showOld,
+              setShow: setShowOld,
+              placeholder: "Ancien mot de passe",
+              reg: register("current_password", { required: "L’ancien mot de passe est requis" }),
+            })}
+            {errors.current_password && (
+              <span className="text-red-400 text-xs">{errors.current_password.message}</span>
+            )}
+
+            {/* Nouveau mot de passe */}
+            {field({
+              id: "password",
+              icon: <FaLock />,
+              type: "password",
+              show: showNew,
+              setShow: setShowNew,
+              placeholder: "Nouveau mot de passe",
+              reg: register("password", {
+                required: "Le mot de passe est requis",
+                minLength: { value: 8, message: "Minimum 8 caractères" },
+              }),
+            })}
+            {errors.password && <span className="text-red-400 text-xs">{errors.password.message}</span>}
+
+            {/* Confirmation */}
+            {field({
+              id: "passwordConfirmation",
+              icon: <FaKey />,
+              type: "password",
+              show: showNew2,
+              setShow: setShowNew2,
+              placeholder: "Confirmer le nouveau mot de passe",
+              reg: register("passwordConfirmation", {
+                required: "La confirmation du mot de passe est requise",
+              }),
+            })}
+            {errors.passwordConfirmation && (
+              <span className="text-red-400 text-xs">{errors.passwordConfirmation.message}</span>
+            )}
+
+            <div className="pt-2">
               <button
-                className="flex w-full bg-gradient-to-r from-white to-[#67FFCC] text-transparent bg-clip-text items-center justify-center w-44 h-12 mr-2 border border-neutral-300 font-bold py-3 px-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
                 type="submit"
+                disabled={submitting}
+                className={`w-full h-12 rounded-2xl border ${
+                  submitting ? "border-neutral-700" : "border-neutral-700 hover:border-neutral-600"
+                } bg-neutral-800 text-neutral-200 hover:bg-neutral-700 hover:text-white active:scale-[0.98] font-medium transition-all duration-200 ${
+                  submitting ? "opacity-70 cursor-not-allowed" : ""
+                }`}
               >
-                Changer le mot de passe
+                {submitting ? "En cours…" : "Changer le mot de passe"}
               </button>
             </div>
 
-            {/* Afficher les messages d'erreur et de succès */}
-            {error && (
-              <div className="text-red-500 text-center mt-4">{error}</div>
-            )}
-            {success && (
-              <div className="text-green-500 text-center mt-4">{success}</div>
-            )}
+            {error && <div className="text-red-400 text-center mt-2 text-sm">{error}</div>}
+            {success && <div className="text-emerald-400 text-center mt-2 text-sm">{success}</div>}
           </form>
         </div>
       </div>
