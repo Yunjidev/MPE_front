@@ -7,7 +7,7 @@ import Input from "../../Utils/Inputs/Input";
 const fetchCitiesByPostalCode = async (postalCode) => {
   try {
     const res = await fetch(
-      `https://geo.api.gouv.fr/communes?codePostal=${postalCode}&fields=nom,codePostal,region&format=json`
+      `https://geo.api.gouv.fr/communes?codePostal=${postalCode}&fields=nom,region&format=json`
     );
     return await res.json();
   } catch (e) {
@@ -24,14 +24,21 @@ export default function ContactEnterprise({ formData, countryOptions, onChange }
 
   const wrapperRef = useRef(null);
   const panelRef = useRef(null);
+  const lastZipFetchedRef = useRef(""); // ← évite les re-fetchs pour le même CP
 
-  // util: trouver l'id de région seed à partir du nom
   const findCountryIdByRegionName = (name) => {
     if (!name) return "";
     const match = (countryOptions || []).find(
       (c) => (c.name || c.label || "").toLowerCase() === name.toLowerCase()
     );
-    return match?.id || match?.value || ""; // selon ton shape d’option
+    return match?.id || match?.value || "";
+  };
+
+  // n'appelle onChange que si nécessaire
+  const safeSet = (id, value) => {
+    if ((formData?.[id] ?? "") !== (value ?? "")) {
+      onChange({ target: { id, value } });
+    }
   };
 
   useEffect(() => {
@@ -49,15 +56,21 @@ export default function ContactEnterprise({ formData, countryOptions, onChange }
   useEffect(() => {
     const run = async () => {
       const cp = (formData.zip_code || "").trim();
+
       if (cp.length !== 5) {
         setShowCitySuggestions(false);
         setCitySuggestions([]);
         setHasChosenCity(false);
-        onChange({ target: { id: "city", value: "" } });
-        onChange({ target: { id: "region", value: "" } });
-        onChange({ target: { id: "Country_id", value: "" } });
+        lastZipFetchedRef.current = "";
+        safeSet("city", "");
+        safeSet("region", "");
+        safeSet("Country_id", "");
         return;
       }
+
+      // évite relances pour le même CP
+      if (lastZipFetchedRef.current === cp) return;
+      lastZipFetchedRef.current = cp;
 
       setIsLoadingCities(true);
       try {
@@ -67,23 +80,20 @@ export default function ContactEnterprise({ formData, countryOptions, onChange }
         if (cities?.length === 1) {
           const c = cities[0];
           const regionName = c.region?.nom || "";
-          onChange({ target: { id: "city", value: c.nom } });
-          onChange({ target: { id: "region", value: regionName } });
-
-          // map vers Country_id (seed) → backend content
-          const regionId = findCountryIdByRegionName(regionName);
-          onChange({ target: { id: "Country_id", value: regionId } });
-
+          safeSet("city", c.nom);
+          safeSet("region", regionName);
+          safeSet("Country_id", findCountryIdByRegionName(regionName));
           setHasChosenCity(true);
           setShowCitySuggestions(false);
         } else if (cities?.length > 1) {
-          setShowCitySuggestions(!hasChosenCity);
+          setHasChosenCity(false);
+          setShowCitySuggestions(true);
         } else {
           setShowCitySuggestions(false);
           setHasChosenCity(false);
-          onChange({ target: { id: "city", value: "" } });
-          onChange({ target: { id: "region", value: "" } });
-          onChange({ target: { id: "Country_id", value: "" } });
+          safeSet("city", "");
+          safeSet("region", "");
+          safeSet("Country_id", "");
         }
       } finally {
         setIsLoadingCities(false);
@@ -92,13 +102,14 @@ export default function ContactEnterprise({ formData, countryOptions, onChange }
 
     const t = setTimeout(run, 300);
     return () => clearTimeout(t);
-  }, [formData.zip_code, hasChosenCity, countryOptions, onChange]);
+    // ⚠️ deps réduites pour casser la boucle
+  }, [formData.zip_code]); // <-- seulement le CP
 
   const handleCitySelect = (city) => {
     const regionName = city.region?.nom || "";
-    onChange({ target: { id: "city", value: city.nom } });
-    onChange({ target: { id: "region", value: regionName } });
-    onChange({ target: { id: "Country_id", value: findCountryIdByRegionName(regionName) } });
+    safeSet("city", city.nom);
+    safeSet("region", regionName);
+    safeSet("Country_id", findCountryIdByRegionName(regionName));
     setHasChosenCity(true);
     setShowCitySuggestions(false);
   };
@@ -106,42 +117,18 @@ export default function ContactEnterprise({ formData, countryOptions, onChange }
   const handleZipCodeChange = (e) => {
     onChange(e);
     setHasChosenCity(false);
-    if (showCitySuggestions) setShowCitySuggestions(false);
+    setShowCitySuggestions(false);
+    // on laisse lastZipFetchedRef se mettre à jour dans l'effet
   };
 
   return (
     <>
-      <Input.Text
-        id="phone"
-        value={formData.phone}
-        onChange={onChange}
-        placeholder="Contact"
-        icon={<FaPhone />}
-      />
-      <Input.Text
-        id="mail"
-        value={formData.mail}
-        placeholder="E-mail"
-        onChange={onChange}
-        icon={<MdOutlineAlternateEmail />}
-      />
-      <Input.Text
-        id="adress"
-        value={formData.adress}
-        onChange={onChange}
-        placeholder="Adresse"
-        icon={<FaMapMarkerAlt />}
-      />
+      <Input.Text id="phone" value={formData.phone} onChange={onChange} placeholder="Contact" icon={<FaPhone />} />
+      <Input.Text id="mail" value={formData.mail} placeholder="E-mail" onChange={onChange} icon={<MdOutlineAlternateEmail />} />
+      <Input.Text id="adress" value={formData.adress} onChange={onChange} placeholder="Adresse" icon={<FaMapMarkerAlt />} />
 
-      {/* Code Postal + dropdown */}
       <div ref={wrapperRef} className="relative">
-        <Input.Text
-          id="zip_code"
-          value={formData.zip_code}
-          onChange={handleZipCodeChange}
-          placeholder="Code Postal"
-          icon={<FaBarcode />}
-        />
+        <Input.Text id="zip_code" value={formData.zip_code} onChange={handleZipCodeChange} placeholder="Code Postal" icon={<FaBarcode />} />
         {isLoadingCities && (
           <div className="absolute right-2 top-1/2 -translate-y-1/2">
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500" />
@@ -170,7 +157,7 @@ export default function ContactEnterprise({ formData, countryOptions, onChange }
             <div className="max-h-56 overflow-auto">
               {citySuggestions.map((city, idx) => (
                 <div
-                  key={`${city.codePostal}-${city.nom}-${idx}`}
+                  key={`${(city.codesPostaux?.[0] || "")}-${city.nom}-${idx}`}
                   onMouseDown={(e) => {
                     e.stopPropagation();
                     handleCitySelect(city);
@@ -179,7 +166,7 @@ export default function ContactEnterprise({ formData, countryOptions, onChange }
                 >
                   <div className="font-medium text-gray-900">{city.nom}</div>
                   <div className="text-sm text-gray-500">
-                    {city.codePostal} · {city.region?.nom}
+                    {(city.codesPostaux?.[0] || formData.zip_code)} · {city.region?.nom}
                   </div>
                 </div>
               ))}
@@ -188,27 +175,8 @@ export default function ContactEnterprise({ formData, countryOptions, onChange }
         )}
       </div>
 
-
-      {/* Ville */}
-      <Input.Text
-        id="city"
-        value={formData.city}
-        onChange={onChange}
-        placeholder="Ville"
-        icon={<FaCity />}
-        disabled
-      />
-
-      {/* Région (seed) */}
-      <Input.Select
-        id="Country_id"
-        value={formData.Country_id}
-        onChange={onChange}
-        placeholder="Région"
-        options={countryOptions}
-        icon={<MdOutlineAreaChart />}
-        // className="hidden" // décommente pour cacher
-      />
+      <Input.Text id="city" value={formData.city} onChange={onChange} placeholder="Ville" icon={<FaCity />} disabled />
+      <Input.Select id="Country_id" value={formData.Country_id} onChange={onChange} placeholder="Région" options={countryOptions} icon={<MdOutlineAreaChart />} />
     </>
   );
 }
